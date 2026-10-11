@@ -4,12 +4,10 @@
 !*.html
 !.gitignore
 
-# 학습자료가 아닌 HTML
+# 학습자료가 아닌 것 (과목 폴더 공통 구조)
 _시안/
 node_modules/
-고급웹프로그래밍/ex.html
-고급웹프로그래밍/example1/
-고급웹프로그래밍/week+5/
-고급웹프로그래밍/timer/
-고급웹프로그래밍/timer-thoughtstream/
-고급웹프로그래밍/새 폴더/
+*/수업txt/
+*/수업pdf/
+*/실습/
+*/메모/

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>논리회로 10월 8일 · 드모르간 실습 · 최소항과 최대항</title>
+<title>논리회로 10월 8일 · 드모르간 실습 · 최소항</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 /* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
@@ -255,212 +255,193 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">10월 8일 (목) · 6주차 ② · 실습 과제 4 (드모르간) + 제5장 03~06절 (녹음 없음 · 자료 기준)</div>
-    <h1>진리표에서 1인 줄만 모으면 식이 된다? 최소항과 최대항</h1>
-    <p class="lead">드모르간을 회로로 확인하는 실습 과제 4가 나온 날이에요. 그리고 10/6에 "다음 시간"이라고 예고한 내용 — 회로를 식으로, 식을 회로로 바꾸기, 진리표에서 식을 뽑는 두 가지 표준형(최소항 SOP, 최대항 POS), 불 대수로 줄이기 — 을 자료(제5장 p.17~48) 순서대로 정리했어요. 이날은 녹음이 없어서 강의자료와 실습 파일만으로 만들었어요.</p>
+    <div class="eyebrow">10월 8일 (목) · 6주차 ② · 제5장 불 대수 p.11~31 + 실습 과제 4 (드모르간 법칙)</div>
+    <h1>큰 모자를 잘라 작은 모자로 — 드모르간은 왜 시험에 꼭 나올까?</h1>
+    <p class="lead">교수님이 수업 첫마디부터 "이 부분은 시험에 거의 꼭 나온다"고 한 드모르간의 날이에요. 식 위에 씌운 긴 바(부정)를 <b>모자</b>라고 생각하고 잘라 나가면 복잡한 식이 쑥쑥 줄어요. 그다음 합의의 정리 증명, 회로를 보고 식 쓰기, 그리고 최소항(minterm)의 시작까지 봐요.</p>
     <div class="goal">
       <h2>이 페이지를 다 보면 할 수 있는 것</h2>
       <ol>
-        <li>NOR · NAND 회로가 드모르간으로 어떤 회로와 같은지 설명할 수 있다 (실습 과제 4)</li>
-        <li>진리표를 보고 F를 Σm(…) 최소항식, ΠM(…) 최대항식으로 쓸 수 있다</li>
-        <li>최소항식을 불 대수 법칙으로 간소화할 수 있다</li>
+        <li>드모르간을 "결과를 뒤집기 = 입력을 뒤집고 연산 바꾸기"로 설명하고 진리표로 증명할 수 있다</li>
+        <li>모자 자르기로 부정이 씌워진 식을 풀고, 두 식이 같음을 보이는 3가지 방법을 말할 수 있다</li>
+        <li>회로를 보고 논리식을 적고, 진리표에서 최소항식 Σm(…)을 쓸 수 있다</li>
       </ol>
       <div class="time">약 40분 · 장면 5개 · 장면마다 확인 문제 1개</div>
     </div>
     <div class="exam">
-      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험 관련</h2>
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것</h2>
       <ul>
-        <li><b>드모르간 — 시험에 반드시 나옴</b> (시험 메모) · 이날 실습 과제 4번 질문이 "드모르간의 정리에 대하여 설명하시오"</li>
-        <li>자료 학습목표: SOP와 최소항, POS와 최대항의 개념을 이해하고 활용</li>
+        <li>드모르간 — "이 부분은 <b>시험에 거의 꼭 나온다</b>", "이건 <b>꼭 나와요</b>" (시험 메모에도 "드모르간 반드시")</li>
+        <li>회로를 보고 논리식 적기 · 식을 보고 회로 그리기 — "<b>문제 나올 수 있으니까 연습을 꼭</b> 해야 됩니다"</li>
       </ul>
     </div>
     <nav class="flow" aria-label="오늘의 흐름">
-      <a href="#c1"><b>장면 1</b>실습 4: 드모르간</a>
-      <a href="#c2"><b>장면 2</b>회로 ↔ 식</a>
-      <a href="#c3"><b>장면 3</b>SOP · 최소항</a>
-      <a href="#c4"><b>장면 4</b>POS · 최대항</a>
-      <a href="#c5"><b>장면 5</b>간소화</a>
+      <a href="#c1"><b>장면 1</b>뒤집는 두 방법</a>
+      <a href="#c2"><b>장면 2</b>모자 자르기 · 실습 4</a>
+      <a href="#c3"><b>장면 3</b>합의의 정리 증명</a>
+      <a href="#c4"><b>장면 4</b>회로 ↔ 식</a>
+      <a href="#c5"><b>장면 5</b>SOP · 최소항</a>
       <a href="#review"><b>복습</b>시험 직전 정리</a>
     </nav>
   </div>
 
   <section class="ch" id="c1">
     <div class="ch-head"><span class="ch-num">장면 1</span>
-      <div><h2>모양이 다른 두 회로, 정말 같은 일을 할까?</h2><div class="sub">실습 과제 4 · 드모르간 정리 회로 확인 · NOR = 반전 입력 AND</div></div></div>
+      <div><h2>결과를 뒤집는 것과 입력을 뒤집는 것, 정말 같을까?</h2><div class="sub">드모르간의 정리 · 2항 진리표 증명 · 3항 · n항</div></div></div>
 
-    <p>10/6에 식으로 배운 드모르간을 이번엔 <b>회로 두 개</b>로 확인해요. 실습 1 · 4의 질문이 "다음 두 논리회로는 동일한가?"예요.</p>
-    <figure class="fig">
-      <svg viewBox="0 0 640 170" role="img" aria-label="왼쪽 회로는 A와 B를 OR한 뒤 NOT하는 NOR, 오른쪽 회로는 A와 B를 각각 NOT한 뒤 AND. 둘의 출력 F1과 F2가 같다">
-        <g font-size="13" font-weight="700" fill="var(--ink)">
-          <text x="20" y="56">A</text><text x="20" y="106">B</text>
-          <text x="340" y="56">A</text><text x="340" y="106">B</text></g>
-        <g stroke="var(--ink-2)" stroke-width="2" fill="none">
-          <path d="M34 52 H110"/><path d="M34 102 H110"/>
-          <path d="M100 40 Q130 40 150 77 Q130 114 100 114 Q118 77 100 40 Z" fill="var(--teal-soft)"/>
-          <path d="M150 77 H180"/><circle cx="186" cy="77" r="6" fill="var(--surface)"/><path d="M192 77 H240"/>
-          <path d="M354 52 H380"/><path d="M354 102 H380"/>
-          <path d="M380 40 L380 64 L402 52 Z" fill="var(--teal-soft)"/><circle cx="407" cy="52" r="5" fill="var(--surface)"/>
-          <path d="M380 90 L380 114 L402 102 Z" fill="var(--teal-soft)"/><circle cx="407" cy="102" r="5" fill="var(--surface)"/>
-          <path d="M412 52 H440 V62 H460"/><path d="M412 102 H440 V92 H460"/>
-          <path d="M460 50 H485 A27 27 0 0 1 485 104 H460 Z" fill="var(--teal-soft)"/>
-          <path d="M512 77 H560"/></g>
-        <g font-size="13" font-weight="700"><text x="248" y="82" fill="var(--exam)">F1</text><text x="568" y="82" fill="var(--exam)">F2</text></g>
-        <g font-size="12" text-anchor="middle" fill="var(--ink-3)">
-          <text x="140" y="150">NOR: (A + B)′</text><text x="460" y="150">NOT 후 AND: A′ · B′</text></g>
-        <text x="300" y="82" text-anchor="middle" font-size="18" font-weight="800" fill="var(--exam)">=</text>
-      </svg>
-      <figcaption>드모르간 16: (A + B)′ = A′B′ → 두 회로의 출력 파형 F1과 F2는 같다</figcaption>
-    </figure>
-    <p>방법은 10/6 분배법칙 실습과 같아요. 두 회로를 LogicWorks에 그리고, 입력 A · B에 클록(또는 바이너리 스위치)을 넣어 4가지 경우를 다 돌린 뒤, <mark>출력 F1과 F2의 파형이 같은지</mark> 봐요. 3입력(3항 드모르간 (A + B + C)′ = A′B′C′)도 같은 방식이고, 실습 2에선 합의의 정리도 확인해요.</p>
-    <p>제출: ① 회로도 이미지 ② 출력 파형 이미지 ③ 두 회로가 동일함을 설명 ④ <b>드모르간의 정리에 대하여 설명</b> → PPT로 LMS 제출.</p>
+    <p>교수님이 먼저 두 입력짜리로 보여 줬어요. 왼쪽은 A, B를 <b>그냥 더한 다음 결과를 뒤집고</b>, 오른쪽은 <b>입력을 먼저 뒤집은 다음 곱해요</b>. 식은 달라 보이는데…</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>A</th><th>B</th><th>A + B</th><th>왼쪽 (A + B)′<br><small>더하고 결과 뒤집기</small></th><th>A′</th><th>B′</th><th>오른쪽 A′ · B′<br><small>입력 뒤집고 곱하기</small></th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>0</td><td><b>1</b></td><td>1</td><td>1</td><td><b>1</b></td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td><b>0</b></td><td>1</td><td>0</td><td><b>0</b></td></tr>
+        <tr><td>1</td><td>0</td><td>1</td><td><b>0</b></td><td>0</td><td>1</td><td><b>0</b></td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td><b>0</b></td><td>0</td><td>0</td><td><b>0</b></td></tr>
+      </tbody></table></div>
+    <p>네 줄 모두 같아요. 교수님 말로 "이진법이니까 말도 안 되는 소리가 성립하는 거예요". 정리하면 <mark>한쪽은 결과를 뒤집고, 한쪽은 입력 자체를 뒤집는다. 그러면서 더하기와 곱하기가 바뀐다</mark>. 반대 방향도 똑같이 돼요.</p>
+    <div class="key" style="margin-top:0"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>드모르간의 정리 (시험에 꼭)</span>
+      <p>(A + B)′ = A′ · B′ &nbsp;&nbsp;&nbsp; (A · B)′ = A′ + B′</p>
+      <div class="mn">3개 · 4개 · n개도 똑같이: (A + B + C)′ = A′B′C′, (ABC)′ = A′ + B′ + C′</div></div>
+    <p>왜 이게 맞는지 대수로도 보일 수 있어요. A′B′가 (A + B)의 보수라면, 둘을 더하면 1, 곱하면 0이어야 하죠. (A + B) + A′B′는 <b>무조건 1</b>이에요. A, B가 둘 다 0이면 A′B′ = 1이 되고, 하나라도 1이면 A + B = 1이니까요. 교수님이 0과 1을 하나씩 넣어 보며 확인한 부분이에요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>드모르간의 정리에 의해 NOR 게이트((A + B)′)는 입력을 각각 반전한 AND 게이트(A′B′)와 같고, NAND 게이트((AB)′)는 입력을 각각 반전한 OR 게이트(A′ + B′)와 같다. 두 회로의 진리표 또는 출력 파형이 모든 입력에서 같으면 동일한 회로다.</p>
-      <div class="mn">외우는 법: <b>끊고 · 바꾸고</b> — 출력의 NOT을 입력 쪽으로 끌고 오면 AND ↔ OR가 바뀐다</div></div>
+      <p>드모르간의 정리는 (A + B)′ = A′B′, (AB)′ = A′ + B′로, 연산 결과를 부정한 것은 각 입력을 부정하고 AND와 OR를 바꾼 것과 같다. 변수가 n개여도 성립하며, 진리표에서 좌변과 우변이 모든 입력 조합에 대해 같음으로 증명한다.</p>
+      <div class="mn">외우는 법: <b>결과를 뒤집든, 입력을 뒤집고 연산을 바꾸든 같다</b></div></div>
 
     <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
-      <div class="q">A와 B를 각각 NOT한 뒤 OR한 회로와 같은 것은?</div>
+      <div class="q">(A · B · C)′와 같은 것은?</div>
       <div class="opts">
-        <button class="o">NOR</button>
-        <button class="o">NAND</button>
-        <button class="o">XOR</button></div>
-      <div class="fb">A′ + B′ = (AB)′ = <b>NAND</b>.</div></div>
+        <button class="o">A′ · B′ · C′</button>
+        <button class="o">A′ + B′ + C′</button>
+        <button class="o">A + B + C</button></div>
+      <div class="fb">입력을 각각 뒤집고 <b>곱하기 → 더하기</b>. A′B′C′는 (A + B + C)′.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
   </section>
 
   <section class="ch" id="c2">
     <div class="ch-head"><span class="ch-num">장면 2</span>
-      <div><h2>회로를 보고 식 쓰기, 식을 보고 회로 그리기</h2><div class="sub">논리회로의 논리식 변환 · 논리식의 회로 구성 · AND-OR / OR-AND</div></div></div>
+      <div><h2>"큰 모자를 잘라서 작은 모자로 씌워 주면 된다"</h2><div class="sub">모자 자르기 · 드모르간 예제 · 실습 과제 4 · 두 식이 같음을 보이는 3가지 방법</div></div></div>
 
-    <p><b>회로 → 식</b>: 입력 쪽에서 출발해 <mark>게이트를 하나 지날 때마다 그 출력을 식으로 적으면서</mark> 출력 쪽으로 한 단계씩 가요(자료 p.17). 예를 들어 A, B가 AND로 들어가 AB, 그게 C와 OR로 들어가면 AB + C, 그 뒤에 NOT이 있으면 (AB + C)′.</p>
-    <p><b>식 → 회로</b>: 곱(AND)을 먼저 만들고 그걸 합(OR)으로 모아요. 바(′)가 붙은 변수는 NOT 게이트를 쓰거나 보수 입력을 바로 써요(자료 p.20).</p>
+    <div class="analogy"><b>교수님 비유 — 모자</b><br>식 위에 길게 그은 바(부정)는 <b>큰 모자</b>예요. A · B · C 위에 큰 모자 하나가 씌워져 있으면, 그걸 <b>작은 모자 3개로 잘라서</b> 각자 씌워 줘요. 대신 모자를 자른 자리의 <b>곱셈은 덧셈으로</b>(덧셈은 곱셈으로) 바꿔요. 모자를 두 번 씌운 곳은 원래대로 돌아오고요(뒤집고 또 뒤집으면 제자리).</div>
+    <p>목적은 하나예요. 교수님 말로 "<b>괄호 안에 있는 덧셈을 없애서 괄호를 다 푸는 것</b>". 그러려고 모자를 잘라요.</p>
+    <pre class="code"><span class="file">모자 자르기 예 (이해용)</span>(AB + C)′
+= (AB)′ · C′          <span class="c">// 큰 모자를 + 자리에서 자름 → + 가 · 로</span>
+= (A′ + B′) · C′      <span class="c">// AB 위 모자를 또 자름 → · 가 + 로</span>
+= A′C′ + B′C′         <span class="c">// 분배법칙으로 괄호 풀기</span></pre>
+    <p>교수님은 자료 p.13의 예제 4개를 이렇게 2인용 · 4인용 모자를 잘라 가며 풀었어요. "드모르간을 한 번 써 버리니까 바로 빠지는 거죠. 안 그러면 일반 불 대수만 가지고는 쉽지 않아요."</p>
+
+    <h3>실습 과제 4 — F1과 F2가 정말 같은가</h3>
+    <p>앞부분은 똑같고 <b>가운데만 다른</b> 두 식이 있어요. 한쪽은 OR로 묶은 뒤 결과에 부정, 다른 쪽은 입력에 부정을 붙여 AND. 가운데에 드모르간이 적용된 거예요. 왼쪽 식을 <mark>F1</mark>, 오른쪽을 <mark>F2</mark>로 놓고 LogicWorks에 그려서 0000부터 16가지를 다 넣어 보면(스위치 또는 클록) 출력이 전부 같아요.</p>
     <div class="table-wrap"><table>
-      <thead><tr><th>기본 형태</th><th>구성</th><th>예</th></tr></thead>
+      <thead><tr><th>두 식이 같음을 보이는 방법</th><th>교수님 코멘트</th></tr></thead>
       <tbody>
-        <tr><td><b>AND-OR</b></td><td>1단계 AND들 → 2단계 OR</td><td>F = A′BC + AB′C + …</td></tr>
-        <tr><td><b>OR-AND</b></td><td>1단계 OR들 → 2단계 AND</td><td>F = (A + B)(A′ + B + C)</td></tr>
+        <tr><td><b>① 실습</b> — LogicWorks로 회로를 그려 파형 비교</td><td>"제일 쉬운 건 실습"</td></tr>
+        <tr><td><b>② 진리표</b> — 왼쪽식 · 오른쪽식 열을 만들어 비교</td><td>"이거는 누구나 할 수 있잖아요"</td></tr>
+        <tr><td><b>③ 불 대수</b> — 법칙으로 전개해 수학적으로 정리</td><td>"복잡해지면 생각보다 쉽지 않아요. 잘 안 되면 쉬운 걸(진리표) 시켜요"</td></tr>
       </tbody></table></div>
-    <p>OR-AND 형태도 분배법칙으로 전개하면 AND-OR 형태로 바꿀 수 있어요. 단계가 더 많은 <b>다단계 논리회로</b>도 있어요.</p>
+    <p>제출: 회로도 이미지 · 출력 파형 이미지 · 두 회로가 같음을 설명 · <b>드모르간 정리 설명</b>(PPT 서너 장). 파형이 살짝 밀리면 게이트 지연(delay)을 0으로.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>논리회로를 논리식으로 바꿀 때는 입력에서 출력 쪽으로 게이트를 지날 때마다 게이트 출력을 적어 나간다. 논리식의 기본 형태는 AND-OR(곱의 합)과 OR-AND(합의 곱) 두 가지다.</p>
-      <div class="mn">외우는 법: <b>게이트 지날 때마다 적어라</b></div></div>
+      <p>부정이 씌워진 식은 드모르간으로 부정을 각 항에 나눠 주며 AND와 OR를 바꾸고, 분배법칙으로 괄호를 풀어 간소화한다. 두 논리식이 같음은 회로 실습(파형), 진리표, 불 대수 전개의 세 방법으로 보일 수 있다.</p>
+      <div class="mn">외우는 법: <b>모자를 자르면 기호가 바뀐다 · 두 번 쓰면 벗겨진다</b> / 증명은 <b>실습 · 진리표 · 대수</b></div></div>
 
-    <div class="check" data-id="k2" data-answer="0"><div class="lbl">바로 확인</div>
-      <div class="q">A와 B를 OR한 결과와 C를 AND하고, 그 결과를 NOT했다. 출력식은?</div>
+    <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">((A + B)′)′을 정리하면?</div>
       <div class="opts">
-        <button class="o">((A + B)C)′</button>
-        <button class="o">(A + B)′C</button>
-        <button class="o">A + BC′</button></div>
-      <div class="fb">순서대로 A + B → (A + B)C → <b>((A + B)C)′</b>.</div></div>
+        <button class="o">A′B′</button>
+        <button class="o">A′ + B′</button>
+        <button class="o">A + B</button></div>
+      <div class="fb">모자를 두 번 씌우면 <b>벗겨져서</b> 원래대로 A + B.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
   </section>
 
   <section class="ch" id="c3">
     <div class="ch-head"><span class="ch-num">장면 3</span>
-      <div><h2>출력이 1인 줄마다 곱의 항 하나 — 최소항(minterm)</h2><div class="sub">SOP(곱의 합) · 최소항 m0~m7 · Σm 표기 · 예제 5-3 · 5-4</div></div></div>
+      <div><h2>세 항이 두 항으로 — 의미 없는 1을 곱해서 증명하기</h2><div class="sub">예제 5-1 · 합의의 정리 · 대수 증명 · 진리표 증명</div></div></div>
 
-    <p><mark>SOP</mark>(Sum of Products, 곱의 합)는 1단계가 AND항(곱), 2단계가 OR(합)인 식이에요. 그중 <b>함수의 모든 변수를 다 포함한</b> 곱의 항을 <mark>최소항(minterm)</mark>이라고 해요. 변수 4개(A, B, C, D)라면 A′BCD′는 최소항, AC는 변수가 빠져서 최소항이 아니에요.</p>
-    <h3>진리표에서 최소항 뽑기</h3>
-    <p>규칙은 하나예요. <mark>출력이 1인 줄</mark>에서, 그 줄의 변수 값이 <b>0이면 바(′)</b>, <b>1이면 그대로</b> 써서 곱하고, 그 항들을 다 더해요.</p>
-    <div class="table-wrap"><table>
-      <thead><tr><th>A B C</th><th>최소항</th><th>기호</th><th>F</th></tr></thead>
-      <tbody>
-        <tr><td>0 0 0</td><td>A′B′C′</td><td>m0</td><td><b>1</b></td></tr>
-        <tr><td>0 0 1</td><td>A′B′C</td><td>m1</td><td><b>1</b></td></tr>
-        <tr><td>0 1 0</td><td>A′BC′</td><td>m2</td><td>0</td></tr>
-        <tr><td>0 1 1</td><td>A′BC</td><td>m3</td><td><b>1</b></td></tr>
-        <tr><td>1 0 0</td><td>AB′C′</td><td>m4</td><td>0</td></tr>
-        <tr><td>1 0 1</td><td>AB′C</td><td>m5</td><td><b>1</b></td></tr>
-        <tr><td>1 1 0</td><td>ABC′</td><td>m6</td><td>0</td></tr>
-        <tr><td>1 1 1</td><td>ABC</td><td>m7</td><td><b>1</b></td></tr>
-      </tbody></table></div>
-    <p>그래서 <code>F(A, B, C) = A′B′C′ + A′B′C + A′BC + AB′C + ABC = Σm(0, 1, 3, 5, 7)</code>. 기호 m의 번호는 그 줄의 ABC를 2진수로 읽은 값이에요(101 → m5). 반대로 F′는 0인 줄을 모으면 돼요: <code>F′ = Σm(2, 4, 6)</code>. (자료 p.28)</p>
-    <h3>최소항이 아닌 식을 최소항식으로 (예제 5-4 방식)</h3>
-    <p>빠진 변수가 있으면 <b>(X′ + X) = 1</b>을 곱해서 채워요. 예: 변수 A, B, C에서 AB는 C가 없으니 AB(C′ + C) = ABC′ + ABC.</p>
+    <p>합의의 정리는 세 항짜리 식이 두 항으로 줄어드는 신기한 법칙이에요. 교수님은 "<b>아무 의미 없는</b>" 걸 끼워 넣는 걸로 시작했어요. BC 항에 (A + A′)를 곱하는 거죠. A + A′는 항상 1이라 곱해도 값은 그대로예요.</p>
+    <pre class="code"><span class="file">AB + BC + A′C = AB + A′C (자료 p.9 · 예제 5-1)</span>AB + BC + A′C
+= AB + (A + A′)BC + A′C       <span class="c">// 의미 없는 1을 곱함 (A + A′ = 1)</span>
+= AB + ABC + A′BC + A′C       <span class="c">// 전개 → 네 항</span>
+= AB(1 + C) + A′C(B + 1)      <span class="c">// 같은 것끼리 묶기</span>
+= <span class="hl">AB + A′C</span>                    <span class="c">// 1 + X = 1</span></pre>
+    <p>두 번째 식 (A + B)(B + C)(A′ + C) = (A + B)(A′ + C)는 반대로 (B + C)에 <b>AA′(항상 0)를 더해서</b> 시작해요. 0을 더해도 의미가 없으니까요. 그다음 분배법칙 X + YZ = (X + Y)(X + Z)를 써서 풀어요.</p>
+    <p>이것도 대수가 헷갈리면 진리표로 8줄을 비교하면 똑같이 나와요. 교수님이 "대수로 해도 되고 진리표로 해도 같다는 걸 볼 수 있다"고 했어요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>SOP(곱의 합)는 1단계 AND항, 2단계 OR로 이루어진 식이다. 최소항은 함수의 모든 변수를 포함한 표준 곱의 항이며, 진리표에서 출력이 1인 행의 최소항을 OR하여 F = Σm(…)으로 나타낸다(변수 값 0 → 보수, 1 → 그대로).</p>
-      <div class="mn">외우는 법: <b>최소항 = 1인 줄 · 0은 바 · 곱해서 더해</b></div></div>
+      <p>합의의 정리 AB + BC + A′C = AB + A′C는 BC에 (A + A′) = 1을 곱해 전개한 뒤 공통 인수로 묶고 1 + X = 1을 적용해 증명한다. 쌍대인 (A + B)(B + C)(A′ + C) = (A + B)(A′ + C)는 AA′ = 0을 더하고 분배법칙을 써서 증명한다.</p>
+      <div class="mn">외우는 법: <b>합이면 1을 곱하고, 곱이면 0을 더한다</b> (의미 없는 걸 끼워 넣기)</div></div>
 
-    <div class="check" data-id="k3" data-answer="2"><div class="lbl">바로 확인</div>
-      <div class="q">A, B, C 3변수에서 최소항 m6은?</div>
+    <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">합의의 정리 증명에서 BC에 (A + A′)를 곱해도 되는 이유는?</div>
       <div class="opts">
-        <button class="o">A′BC</button>
-        <button class="o">A + B + C′</button>
-        <button class="o">ABC′</button></div>
-      <div class="fb">6 = 110 → A=1, B=1, C=0 → <b>ABC′</b>.</div></div>
+        <button class="o">A + A′ = 1이라 값이 바뀌지 않아서</button>
+        <button class="o">A + A′ = 0이라 항이 사라져서</button>
+        <button class="o">드모르간 때문에</button></div>
+      <div class="fb">1을 곱하는 건 <b>의미 없는</b> 연산이라 값은 그대로, 항만 늘어나요.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
   </section>
 
   <section class="ch" id="c4">
     <div class="ch-head"><span class="ch-num">장면 4</span>
-      <div><h2>이번엔 0인 줄을 모아 곱한다 — 최대항(maxterm)</h2><div class="sub">POS(합의 곱) · 최대항 M0~M7 · ΠM 표기 · 최소항과의 보수 관계</div></div></div>
+      <div><h2>회로 그림을 받으면 식을, 식을 받으면 회로를 (시험 대비 연습)</h2><div class="sub">논리회로 → 논리식 · 논리식 → 회로 · 보수 입력 vs NOT 게이트</div></div></div>
 
-    <p><mark>POS</mark>(Product of Sums, 합의 곱)는 1단계가 OR항(합), 2단계가 AND(곱)인 식이에요. 모든 변수를 포함한 OR항이 <mark>최대항(maxterm)</mark>이에요. 최대항은 규칙이 <b>최소항과 반대</b>예요.</p>
-    <div class="vs"><div class="x"><b>최소항 m</b>출력 <b>1</b>인 줄 · 변수 0이면 <b>바</b> · <b>곱</b> → 더해서 Σm</div>
-      <div class="o"><b>최대항 M</b>출력 <b>0</b>인 줄 · 변수 <b>1이면 바</b> · <b>합</b> → 곱해서 ΠM</div></div>
-    <div class="table-wrap"><table>
-      <thead><tr><th>A B C</th><th>최소항 mi</th><th>최대항 Mi</th></tr></thead>
-      <tbody>
-        <tr><td>0 0 0</td><td>A′B′C′ (m0)</td><td>A + B + C (M0)</td></tr>
-        <tr><td>0 1 1</td><td>A′BC (m3)</td><td>A + B′ + C′ (M3)</td></tr>
-        <tr><td>1 1 0</td><td>ABC′ (m6)</td><td>A′ + B′ + C (M6)</td></tr>
-      </tbody></table></div>
-    <p>같은 번호의 최소항과 최대항은 서로 <mark>보수</mark>예요: <b>mi′ = Mi</b>. 드모르간으로 확인해 보면 (A′B′C′)′ = A + B + C = M0이죠. 그래서 같은 함수를 두 가지로 쓸 수 있어요.</p>
-    <pre class="code"><span class="file">예제 5-3 · 5-7 방식 (자료 p.29, p.39)</span>F(A, B, C) = Σm(1, 2, 3, 4, 5)       <span class="c">// 1인 줄: 1~5</span>
-           = ΠM(0, 6, 7)              <span class="c">// 0인 줄: 0, 6, 7</span>
-F′          = Σm(0, 6, 7) = ΠM(1, 2, 3, 4, 5)</pre>
-    <p>자료 정리로는 "최소항을 부정하면 최대항 형식이 되고, 최대항을 부정하면 최소항 형식이 된다", 그리고 "일반적으로 최소항을 선호한다".</p>
+    <p>교수님 말로 "회로를 딱 주고 논리식을 적으세요 하면 적을 수 있어야 된다". 방법은 <mark>게이트를 하나 지날 때마다 그 출력을 식으로 적으면서</mark> 출력 쪽으로 가는 거예요. 게이트 위에 이름(출력식)을 붙여 두면 안 헷갈려요.</p>
+    <pre class="code"><span class="file">회로 → 식 (연습용)</span>[B, C] → AND        → BC
+[A, B] → AND        → AB
+[BC, AB] → OR       → BC + AB
+[B′, C] → AND       → B′C
+[(BC + AB), B′C] → AND  → <span class="hl">(BC + AB)B′C</span>     <span class="c">// 앞 결과를 다음 게이트로 넘기며 적기</span></pre>
+    <p><b>식 → 회로</b>는 반대로 곱(AND)을 먼저 만들고 합(OR)으로 모아요. 여기서 바(′)가 붙은 입력을 그리는 방법이 두 가지예요.</p>
+    <div class="vs"><div class="x"><b>보수 입력을 따로 준비</b>A, A′, B, B′… 입력선이 6개로 늘지만 NOT 게이트가 필요 없다</div>
+      <div class="o"><b>NOT 게이트 사용</b>입력은 A, B, C 3개뿐 · 대신 선이 복잡해진다. "결과는 똑같다, 편한 쪽으로"</div></div>
+    <p>그리고 식 모양은 두 가지가 있어요. 곱을 먼저 하고 나중에 더하는 <b>곱의 합</b>, 더하기를 먼저 하고 나중에 곱하는 <b>합의 곱</b>(인수분해한 모양). 교수님 말로 회로가 깊어지면 "곱셈 덧셈 곱셈 덧셈 계속 반복해서 나중에는 결국 섞인다"고 했어요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>POS(합의 곱)는 1단계 OR항, 2단계 AND로 이루어진 식이며, 모든 변수를 포함한 OR항을 최대항이라 한다. 최소항은 출력이 1인 항을 SOP로, 최대항은 출력이 0인 항을 POS로 나타낸 것이고 서로 보수 관계(mi′ = Mi)다. Σm(1,2,3,4,5) = ΠM(0,6,7).</p>
-      <div class="mn">외우는 법: <b>m은 1을 모아 더하고 · M은 0을 모아 곱한다</b> / <b>번호 합치면 전부(0~7)</b></div></div>
+      <p>논리회로를 논리식으로 바꿀 때는 입력에서 출력 쪽으로 게이트를 지날 때마다 게이트의 출력을 적어 나간다. 논리식으로 회로를 구성할 때 보수 입력은 NOT 게이트를 쓰거나 보수 입력을 직접 사용한다. 기본 형태는 AND-OR(곱의 합)과 OR-AND(합의 곱)다.</p>
+      <div class="mn">외우는 법: <b>게이트 지날 때마다 이름표</b></div></div>
 
-    <div class="check" data-id="k4" data-answer="0"><div class="lbl">바로 확인</div>
-      <div class="q">3변수 함수 F = Σm(0, 2, 5)를 최대항식으로 쓰면?</div>
+    <div class="check" data-id="k4" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">A와 B를 AND한 결과와 C를 OR하고, 그 결과에 NOT을 달았다. 출력식은?</div>
       <div class="opts">
-        <button class="o">ΠM(1, 3, 4, 6, 7)</button>
-        <button class="o">ΠM(0, 2, 5)</button>
-        <button class="o">Σm(1, 3, 4, 6, 7)</button></div>
-      <div class="fb">최대항은 <b>0인 줄</b> = 나머지 번호. Σm(1,3,4,6,7)은 F′예요.</div></div>
+        <button class="o">AB + C′</button>
+        <button class="o">(A + B)C′</button>
+        <button class="o">(AB + C)′</button></div>
+      <div class="fb">AB → AB + C → <b>(AB + C)′</b>. 드모르간으로 풀면 A′C′ + B′C′.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
   </section>
 
   <section class="ch" id="c5">
     <div class="ch-head"><span class="ch-num">장면 5</span>
-      <div><h2>다섯 항짜리 식이 두 항으로 줄어든다</h2><div class="sub">불 대수로 간소화 · X + X = X 활용 · 예제 5-9 · 2변수 함수 16개</div></div></div>
+      <div><h2>진리표에서 1인 줄만 모으면 식이 된다 — 최소항</h2><div class="sub">SOP(곱의 합) · 최소항(minterm) · m 번호 · Σ 표기 · F′</div></div></div>
 
-    <p>최소항식은 길어요. 10/6에 배운 법칙으로 줄여요. 핵심 도구는 세 개예요: <b>묶기(분배)</b>, <b>X + X′ = 1</b>, 그리고 같은 항을 하나 더 써도 되는 <b>X + X = X</b>.</p>
-    <pre class="code"><span class="file">F = Σm(0, 1, 3, 5, 7) 간소화</span>F = A′B′C′ + A′B′C + A′BC + AB′C + ABC
-  = A′B′(C′ + C) + C(A′B + AB′ + AB)     <span class="c">// 묶기</span>
-  = A′B′ + C(A′B + A)                    <span class="c">// C′ + C = 1, AB′ + AB = A</span>
-  = A′B′ + C(A + B)                      <span class="c">// A + A′B = A + B (분배 15)</span>
-  = A′B′ + AC + BC
-  = <span class="hl">A′B′ + C</span>                          <span class="c">// C가 1인 줄(1, 3, 5, 7)은 전부 포함돼 있음</span></pre>
-    <p>마지막 줄은 진리표로도 확인돼요. C = 1인 네 줄(m1, m3, m5, m7)이 다 1이니 그냥 C, 남은 m0(A′B′C′)은 A′B′가 덮어요. 한 줄 정리: <mark>F = A′B′ + C</mark>. 반대로 <b>F′ = Σm(2, 4, 6) = C′(A + B) = AC′ + BC′</b>.</p>
-    <pre class="code"><span class="file">예제 5-9 방식: F = Σm(1, 2, 3, 4, 5)</span>F = A′B′C + A′BC′ + A′BC + AB′C′ + AB′C
-  = A′C(B′ + B) + A′B(C′ + C) + AB′(C′ + C)   <span class="c">// A′BC를 한 번 더 써서(X + X = X) 묶기</span>
-  = <span class="hl">A′C + A′B + AB′</span>
-F′ = Σm(0, 6, 7) = A′B′C′ + AB(C′ + C) = <span class="hl">A′B′C′ + AB</span></pre>
-    <p>덧붙여, 입력이 n개면 진리표 줄은 2<sup>n</sup>개이고 만들 수 있는 서로 다른 함수는 <b>2<sup>2ⁿ</sup></b>개예요. 2변수면 16개(F0 = 0, F1 = AB, … F15 = 1), 3변수면 256개.</p>
-    <p>그런데 이렇게 대수로 줄이는 건 교수님 말대로 "하다 보면 실수할 수도" 있어요. 그래서 다음엔 그림으로 줄이는 <b>카르노 맵</b>이 나와요.</p>
+    <p>곱의 합을 영어로 <mark>SOP(Sum of Products)</mark>라고 해요. 그중 <mark>최소항(minterm)</mark>은 <b>모든 변수가 다 들어 있는</b> 곱의 항이에요. 변수가 A, B, C, D 4개라면 A′BCD′처럼 네 글자가 다 있어야 최소항이고, 바가 있든 없든 상관없어요. A만 있는 항은 다른 변수가 0이든 1이든 영향을 안 받게 <b>이미 간략화된</b> 항이라 최소항이 아니에요.</p>
+    <p>변수가 n개면 진리표는 2<sup>n</sup>줄이고, 최소항도 2<sup>n</sup>개예요(2개 → 4개, 3개 → 8개, 4개 → 16개). 그런데 매번 A′B′C 이렇게 쓰면 너무 복잡하니까 <b>번호</b>로 써요. 그 줄의 입력을 2진수로 읽은 값이 번호예요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>A</th><th>B</th><th>최소항</th><th>기호</th><th>F</th></tr></thead>
+      <tbody>
+        <tr><td>0</td><td>0</td><td>A′B′</td><td>m0</td><td>0</td></tr>
+        <tr><td>0</td><td>1</td><td>A′B</td><td>m1</td><td><b>1</b></td></tr>
+        <tr><td>1</td><td>0</td><td>AB′</td><td>m2</td><td><b>1</b></td></tr>
+        <tr><td>1</td><td>1</td><td>AB</td><td>m3</td><td><b>1</b></td></tr>
+      </tbody></table></div>
+    <p>출력이 1인 m1, m2, m3만 모아서(m0은 0이라 의미가 없으니 빼고) <mark>F = A′B + AB′ + AB = Σm(1, 2, 3)</mark>. 시그마(Σ)는 "1인 최소항들을 더한다"는 뜻이에요. 교수님 말로 "<b>여기서부터 출발합니다</b>".</p>
+    <p>3변수면 m0~m7. 예를 들어 1인 줄이 0, 1, 3, 5, 7이면 F = Σm(0, 1, 3, 5, 7)이고, 나머지 0인 줄 2, 4, 6을 모은 게 <b>F′ = Σm(2, 4, 6)</b>이에요. 0인 줄을 다르게 표현하는 방법(최대항)은 교수님이 "다음 시간에"로 넘겼어요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>최소항식은 공통 인수로 묶고 X + X′ = 1, X + X = X(동일 항 추가), 분배 · 흡수법칙을 이용해 간소화한다. n개 입력 변수에서 진리표의 행은 2<sup>n</sup>개, 서로 다른 함수는 2<sup>2ⁿ</sup>개다.</p>
-      <div class="mn">외우는 법: <b>짝을 찾아 묶으면 변수 하나가 사라진다</b> (X′ + X = 1)</div></div>
+      <p>최소항은 함수의 모든 변수를 포함한 표준 곱의 항이다. 진리표에서 출력이 1인 행의 최소항(변수 0은 보수, 1은 그대로)을 OR하면 SOP 형태의 최소항식이 되며 F = Σm(…)으로 표기한다. 출력이 0인 행의 번호를 모으면 F′의 최소항식이 된다.</p>
+      <div class="mn">외우는 법: <b>1인 줄 · 0은 바 · 곱해서 더해 · 번호는 2진수</b></div></div>
 
     <div class="check" data-id="k5" data-answer="1"><div class="lbl">바로 확인</div>
-      <div class="q">AB′C + ABC를 간소화하면?</div>
+      <div class="q">3변수에서 최소항 m5는?</div>
       <div class="opts">
-        <button class="o">ABC</button>
-        <button class="o">AC</button>
-        <button class="o">A + C</button></div>
-      <div class="fb">AC(B′ + B) = AC · 1 = <b>AC</b>. B만 다른 짝이라 B가 사라져요.</div></div>
+        <button class="o">A′BC′</button>
+        <button class="o">AB′C</button>
+        <button class="o">ABC</button></div>
+      <div class="fb">5 = 101 → A=1, B=0, C=1 → <b>AB′C</b>.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
   </section>
@@ -472,27 +453,25 @@ F′ = Σm(0, 6, 7) = A′B′C′ + AB(C′ + C) = <span class="hl">A′B′C�
     <h3 class="rv-h">한 장 정리 <small>공책에 옮겨 적기</small></h3>
     <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요.</p>
     <div class="box sheet" id="sheet">
-      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 시험</p>
-      <div class="grp"><h4>① 실습 4 드모르간 <span class="ex-t">★ 반드시</span><span class="mn">끊고 · 바꾸고</span></h4><ul>
-        <li><span class="kw">NOR = A′B′</span>(반전 입력 AND) · <span class="kw">NAND = A′ + B′</span>(반전 입력 OR)</li>
-        <li>두 회로 출력 파형 F1 = F2 → 동일 회로</li></ul></div>
-      <div class="grp"><h4>② 회로 ↔ 식 <span class="mn">게이트 지날 때마다 적어라</span></h4><ul>
-        <li>기본 형태 <span class="kw">AND-OR</span> / <span class="kw">OR-AND</span> · 다단계</li></ul></div>
-      <div class="grp"><h4>③ SOP · 최소항 <span class="mn">1을 모아 더한다</span></h4><ul>
-        <li><span class="kw">최소항</span> = 모든 변수 포함 곱의 항 · 1인 줄 · 0이면 바</li>
-        <li>F = <span class="kw">Σm</span>(0,1,3,5,7) · 번호 = 줄의 2진값</li></ul></div>
-      <div class="grp"><h4>④ POS · 최대항 <span class="mn">0을 모아 곱한다</span></h4><ul>
-        <li><span class="kw">최대항</span> = 모든 변수 포함 합의 항 · 0인 줄 · 1이면 바</li>
-        <li><span class="kw">mi′ = Mi</span> · Σm(1,2,3,4,5) = <span class="kw">ΠM</span>(0,6,7) · 최소항 선호</li></ul></div>
-      <div class="grp"><h4>⑤ 간소화 <span class="mn">짝 묶으면 변수 하나 사라짐</span></h4><ul>
-        <li>X′ + X = 1 · X + X = X · Σm(0,1,3,5,7) = <span class="kw">A′B′ + C</span></li>
-        <li>n변수 → 함수 <span class="kw">2^(2ⁿ)</span>개 (2변수 16개)</li></ul></div>
+      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 시험 확정</p>
+      <div class="grp"><h4>① 드모르간 <span class="ex-t">★ 꼭 나옴</span><span class="mn">결과 뒤집기 = 입력 뒤집고 연산 바꾸기</span></h4><ul>
+        <li><span class="kw">(A + B)′ = A′B′</span> · <span class="kw">(AB)′ = A′ + B′</span> · n항도 동일 · 진리표 4줄로 증명</li></ul></div>
+      <div class="grp"><h4>② 모자 자르기 · 실습 4 <span class="mn">자르면 기호 바뀜 · 두 번 쓰면 벗겨짐</span></h4><ul>
+        <li>큰 모자 → 작은 모자 · 곱 ↔ 합 · 목적 = <span class="kw">괄호 안 덧셈 없애기</span></li>
+        <li>F1 = F2 확인 · 같음을 보이는 법 = <span class="kw">실습 · 진리표 · 불 대수</span></li></ul></div>
+      <div class="grp"><h4>③ 합의의 정리 <span class="mn">합이면 1을 곱하고, 곱이면 0을 더한다</span></h4><ul>
+        <li>AB + BC + A′C = <span class="kw">AB + A′C</span> · BC에 <span class="kw">(A + A′)</span> 곱하기 → 묶기 → 1 + X = 1</li></ul></div>
+      <div class="grp"><h4>④ 회로 ↔ 식 <span class="ex-t">★ 연습 꼭</span><span class="mn">게이트마다 이름표</span></h4><ul>
+        <li>게이트를 지날 때마다 <span class="kw">출력식 적기</span> · 보수 입력 vs <span class="kw">NOT 게이트</span> · 곱의 합 / 합의 곱</li></ul></div>
+      <div class="grp"><h4>⑤ 최소항 <span class="mn">1인 줄 · 0은 바 · 번호는 2진수</span></h4><ul>
+        <li><span class="kw">SOP</span> = Sum of Products · 최소항 = <span class="kw">모든 변수 포함</span> · 2ⁿ개</li>
+        <li>F = <span class="kw">Σm(1, 2, 3)</span> = A′B + AB′ + AB · F′ = 0인 줄 번호</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
     <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
     <div class="box cloze-box">
-      <p>NOR 게이트는 드모르간에 의해 입력을 각각 반전한 <span class="cloze">AND</span> 게이트와 같다. 모든 변수를 포함한 곱의 항을 <span class="cloze">최소항</span>, 합의 항을 <span class="cloze">최대항</span>이라 한다. 최소항식은 출력이 <span class="cloze">1</span>인 행을, 최대항식은 출력이 <span class="cloze">0</span>인 행을 모은 것이다. 같은 번호의 최소항과 최대항은 서로 <span class="cloze">보수</span> 관계다. 2변수로 만들 수 있는 서로 다른 함수는 <span class="cloze">16</span>개다.</p>
+      <p>드모르간에 의해 (A + B)′ = <span class="cloze">A′B′</span>, (AB)′ = <span class="cloze">A′ + B′</span>이다. 큰 모자를 자르면 곱셈은 <span class="cloze">덧셈</span>으로 바뀐다. 두 논리식이 같음은 실습, <span class="cloze">진리표</span>, 불 대수로 보일 수 있다. 합의의 정리 증명에서는 BC에 <span class="cloze">A + A′</span>을 곱한다. 모든 변수를 포함한 곱의 항을 <span class="cloze">최소항</span>이라 하고, 출력이 1인 최소항의 합을 <span class="cloze">Σ</span>로 표기한다.</p>
       <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
     </div>
 
@@ -503,17 +482,17 @@ F′ = Σm(0, 6, 7) = A′B′C′ + AB(C′ + C) = <span class="hl">A′B′C�
       <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
       <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
       <div class="fc-items">
-        <div class="fc-item"><div class="q">NOR와 같은 회로는?</div><div class="a">입력 A, B를 각각 NOT한 뒤 AND: (A + B)′ = A′B′.</div></div>
-        <div class="fc-item"><div class="q">NAND와 같은 회로는?</div><div class="a">입력 A, B를 각각 NOT한 뒤 OR: (AB)′ = A′ + B′.</div></div>
-        <div class="fc-item"><div class="q">회로를 논리식으로 바꾸는 방법은?</div><div class="a">입력에서 출력 쪽으로, 게이트를 지날 때마다 그 출력을 식으로 적어 나간다.</div></div>
-        <div class="fc-item"><div class="q">SOP와 POS는?</div><div class="a">SOP = 곱의 합(AND-OR). POS = 합의 곱(OR-AND).</div></div>
-        <div class="fc-item"><div class="q">최소항이란?</div><div class="a">함수의 모든 변수를 포함한 표준 곱의 항. 출력 1인 행에서 변수 0은 보수로.</div></div>
-        <div class="fc-item"><div class="q">최대항이란?</div><div class="a">모든 변수를 포함한 합의 항. 출력 0인 행에서 변수 1은 보수로.</div></div>
-        <div class="fc-item"><div class="q">3변수 m5와 M5는?</div><div class="a">101 → m5 = AB′C, M5 = A′ + B + C′.</div></div>
-        <div class="fc-item"><div class="q">최소항과 최대항의 관계는?</div><div class="a">서로 보수: mi′ = Mi. 최소항을 부정하면 최대항 형식, 그 반대도 성립.</div></div>
-        <div class="fc-item"><div class="q">Σm(1,2,3,4,5)의 최대항식은?</div><div class="a">ΠM(0, 6, 7).</div></div>
-        <div class="fc-item"><div class="q">Σm(0,1,3,5,7)을 간소화하면?</div><div class="a">A′B′ + C.</div></div>
-        <div class="fc-item"><div class="q">n변수 진리표 행 수와 함수 개수는?</div><div class="a">행 2ⁿ개, 서로 다른 함수 2^(2ⁿ)개(2변수 16, 3변수 256).</div></div>
+        <div class="fc-item"><div class="q">드모르간의 정리 두 식은?</div><div class="a">(A + B)′ = A′B′, (AB)′ = A′ + B′.</div></div>
+        <div class="fc-item"><div class="q">드모르간을 말로 하면?</div><div class="a">결과를 뒤집은 것 = 입력을 각각 뒤집고 AND와 OR를 바꾼 것.</div></div>
+        <div class="fc-item"><div class="q">3항 드모르간은?</div><div class="a">(A + B + C)′ = A′B′C′, (ABC)′ = A′ + B′ + C′.</div></div>
+        <div class="fc-item"><div class="q">교수님의 '모자' 비유는?</div><div class="a">긴 바(부정) = 큰 모자. 잘라서 작은 모자로 나눠 씌우면 곱 ↔ 합이 바뀐다. 두 번 씌우면 벗겨진다.</div></div>
+        <div class="fc-item"><div class="q">(AB + C)′를 풀면?</div><div class="a">(AB)′C′ = (A′ + B′)C′ = A′C′ + B′C′.</div></div>
+        <div class="fc-item"><div class="q">두 논리식이 같음을 보이는 3가지 방법은?</div><div class="a">LogicWorks 실습(파형 비교), 진리표, 불 대수 전개.</div></div>
+        <div class="fc-item"><div class="q">합의의 정리와 증명 요령은?</div><div class="a">AB + BC + A′C = AB + A′C. BC에 (A + A′) = 1을 곱해 전개 → 묶기 → 1 + X = 1.</div></div>
+        <div class="fc-item"><div class="q">회로를 논리식으로 적는 법은?</div><div class="a">입력에서 출력 쪽으로, 게이트를 지날 때마다 그 출력식을 적어 나간다.</div></div>
+        <div class="fc-item"><div class="q">보수 입력을 그리는 두 방법은?</div><div class="a">A′ 입력을 따로 준비(입력선 많음) 또는 NOT 게이트 사용(선 복잡). 결과는 같다.</div></div>
+        <div class="fc-item"><div class="q">최소항이란?</div><div class="a">모든 변수를 포함한 곱의 항(바 유무는 상관없음). 변수 n개면 2ⁿ개.</div></div>
+        <div class="fc-item"><div class="q">2변수에서 1인 줄이 01, 10, 11이면?</div><div class="a">F = A′B + AB′ + AB = Σm(1, 2, 3).</div></div>
       </div>
       <ol class="fc-print"></ol>
     </div>
@@ -525,67 +504,70 @@ F′ = Σm(0, 6, 7) = A′B′C′ + AB(C′ + C) = <span class="hl">A′B′C�
         <label class="opt"><input type="radio" name="q1" value="1">ABC</label>
         <label class="opt"><input type="radio" name="q1" value="2">A′B′C′</label>
         <label class="opt"><input type="radio" name="q1" value="3">(ABC)′</label>
-        <div class="explain">3항 드모르간.</div></div>
-      <div class="q" data-answer="0"><p class="qt"><b>Q2</b>진리표에서 출력이 1인 행이 001, 100, 111이다. F를 Σ로 쓰면?</p>
-        <label class="opt"><input type="radio" name="q2" value="0">Σm(1, 4, 7)</label>
-        <label class="opt"><input type="radio" name="q2" value="1">ΠM(1, 4, 7)</label>
-        <label class="opt"><input type="radio" name="q2" value="2">Σm(0, 2, 3, 5, 6)</label>
-        <label class="opt"><input type="radio" name="q2" value="3">Σm(1, 3, 7)</label>
-        <div class="explain">001=1, 100=4, 111=7.</div></div>
-      <div class="q" data-answer="3"><p class="qt"><b>Q3</b>3변수 최소항 m3은?</p>
-        <label class="opt"><input type="radio" name="q3" value="0">AB′C′</label>
-        <label class="opt"><input type="radio" name="q3" value="1">A + B′ + C′</label>
-        <label class="opt"><input type="radio" name="q3" value="2">ABC</label>
-        <label class="opt"><input type="radio" name="q3" value="3">A′BC</label>
-        <div class="explain">011 → A′BC.</div></div>
-      <div class="q" data-answer="1"><p class="qt"><b>Q4</b>3변수 최대항 M0은?</p>
-        <label class="opt"><input type="radio" name="q4" value="0">A′B′C′</label>
-        <label class="opt"><input type="radio" name="q4" value="1">A + B + C</label>
-        <label class="opt"><input type="radio" name="q4" value="2">A′ + B′ + C′</label>
-        <label class="opt"><input type="radio" name="q4" value="3">ABC</label>
-        <div class="explain">000 → 0인 변수는 그대로, 합.</div></div>
-      <div class="q" data-answer="2"><p class="qt"><b>Q5</b>F = ΠM(0, 6, 7)일 때 F′의 최소항식은?</p>
-        <label class="opt"><input type="radio" name="q5" value="0">Σm(1, 2, 3, 4, 5)</label>
-        <label class="opt"><input type="radio" name="q5" value="1">ΠM(1, 2, 3, 4, 5)</label>
-        <label class="opt"><input type="radio" name="q5" value="2">Σm(0, 6, 7)</label>
-        <label class="opt"><input type="radio" name="q5" value="3">Σm(0, 1, 2)</label>
-        <div class="explain">F의 0인 줄 = F′의 1인 줄 = 0, 6, 7.</div></div>
-      <div class="q" data-answer="0"><p class="qt"><b>Q6</b>A′BC + A′BC′를 간소화하면?</p>
-        <label class="opt"><input type="radio" name="q6" value="0">A′B</label>
-        <label class="opt"><input type="radio" name="q6" value="1">A′C</label>
-        <label class="opt"><input type="radio" name="q6" value="2">BC</label>
-        <label class="opt"><input type="radio" name="q6" value="3">1</label>
-        <div class="explain">A′B(C + C′) = A′B.</div></div>
-      <div class="q" data-answer="3"><p class="qt"><b>Q7</b>3변수로 만들 수 있는 서로 다른 논리 함수의 개수는?</p>
-        <label class="opt"><input type="radio" name="q7" value="0">8</label>
-        <label class="opt"><input type="radio" name="q7" value="1">16</label>
-        <label class="opt"><input type="radio" name="q7" value="2">64</label>
-        <label class="opt"><input type="radio" name="q7" value="3">256</label>
-        <div class="explain">2^(2³) = 2⁸ = 256.</div></div>
-      <div class="q" data-answer="1"><p class="qt"><b>Q8</b>변수 A, B, C에서 AB를 최소항식으로 바꾸면?</p>
-        <label class="opt"><input type="radio" name="q8" value="0">ABC</label>
-        <label class="opt"><input type="radio" name="q8" value="1">ABC′ + ABC</label>
-        <label class="opt"><input type="radio" name="q8" value="2">A + B</label>
-        <label class="opt"><input type="radio" name="q8" value="3">AB + C</label>
-        <div class="explain">AB(C′ + C) = ABC′ + ABC = Σm(6, 7).</div></div>
+        <div class="explain">합에 씌운 모자를 자르면 곱.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q2</b>(AB′)′을 정리하면?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">A′ + B</label>
+        <label class="opt"><input type="radio" name="q2" value="1">A′B</label>
+        <label class="opt"><input type="radio" name="q2" value="2">A + B′</label>
+        <label class="opt"><input type="radio" name="q2" value="3">A′ + B′</label>
+        <div class="explain">A′ + (B′)′ = A′ + B.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q3</b>(A′ + BC)′을 정리하면?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">A′BC</label>
+        <label class="opt"><input type="radio" name="q3" value="1">A + BC</label>
+        <label class="opt"><input type="radio" name="q3" value="2">A′(B′ + C′)</label>
+        <label class="opt"><input type="radio" name="q3" value="3">AB′ + AC′</label>
+        <div class="explain">A · (BC)′ = A(B′ + C′) = AB′ + AC′.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q4</b>교수님이 "누구나 할 수 있다"고 한, 두 식이 같음을 보이는 방법은?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">불 대수 전개</label>
+        <label class="opt"><input type="radio" name="q4" value="1">진리표</label>
+        <label class="opt"><input type="radio" name="q4" value="2">카르노 맵</label>
+        <label class="opt"><input type="radio" name="q4" value="3">암기</label>
+        <div class="explain">불 대수는 복잡해지면 쉽지 않아서, 안 되면 진리표로.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q5</b>AB + BC + A′C를 간소화하면?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">BC</label>
+        <label class="opt"><input type="radio" name="q5" value="1">A + C</label>
+        <label class="opt"><input type="radio" name="q5" value="2">AB + A′C</label>
+        <label class="opt"><input type="radio" name="q5" value="3">AB + BC</label>
+        <div class="explain">합의의 정리.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q6</b>A, B를 OR → 그 결과와 C를 AND → NOT. 출력식은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">((A + B)C)′</label>
+        <label class="opt"><input type="radio" name="q6" value="1">(A + B)′C</label>
+        <label class="opt"><input type="radio" name="q6" value="2">A + BC′</label>
+        <label class="opt"><input type="radio" name="q6" value="3">(A + B)C′</label>
+        <div class="explain">게이트를 지날 때마다 적기: A + B → (A + B)C → 전체 NOT.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q7</b>변수 A, B, C, D인 함수에서 최소항인 것은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">AC</label>
+        <label class="opt"><input type="radio" name="q7" value="1">A + B + C + D</label>
+        <label class="opt"><input type="radio" name="q7" value="2">A′BC</label>
+        <label class="opt"><input type="radio" name="q7" value="3">A′BCD′</label>
+        <div class="explain">네 변수가 모두 들어간 곱의 항. 2번은 합(최대항 쪽).</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q8</b>3변수 함수에서 출력이 1인 행이 000, 011, 110이다. F는?</p>
+        <label class="opt"><input type="radio" name="q8" value="0">Σm(0, 2, 5)</label>
+        <label class="opt"><input type="radio" name="q8" value="1">Σm(0, 3, 6)</label>
+        <label class="opt"><input type="radio" name="q8" value="2">Σm(1, 2, 4, 5, 7)</label>
+        <label class="opt"><input type="radio" name="q8" value="3">Σm(0, 1, 2)</label>
+        <div class="explain">000 = 0, 011 = 3, 110 = 6. 3번은 F′.</div></div>
       <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
     </form>
 
-    <h3 class="rv-h">내 말로 설명하기 <small>서술형 대비</small></h3>
+    <h3 class="rv-h">내 말로 설명하기 <small>실습 과제 4번 · 시험 대비</small></h3>
     <div class="box explain-box">
-      <p class="eq">"최소항과 최대항의 차이, 그리고 둘의 관계를 진리표를 예로 들어 설명해 보세요."</p>
+      <p class="eq">"드모르간의 정리를 설명하고, (A + B)′ = A′B′임을 진리표로 증명해 보세요."</p>
       <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
       <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
-      <div class="model-answer">최소항은 함수의 모든 변수를 포함한 곱의 항이고, 진리표에서 출력이 1인 행을 골라 변수 값이 0이면 보수로, 1이면 그대로 곱해 만들어요. 이 항들을 OR하면 SOP(곱의 합) 형태의 최소항식 F = Σm(…)이 돼요. 최대항은 모든 변수를 포함한 합의 항이고, 출력이 0인 행을 골라 변수 값이 1이면 보수로 더해 만들고, 이를 AND하면 POS(합의 곱) 형태의 최대항식 F = ΠM(…)이 돼요. 같은 번호의 최소항과 최대항은 서로 보수(mi′ = Mi)라서, 예를 들어 F = Σm(1,2,3,4,5)이면 F = ΠM(0,6,7)이고 F′ = Σm(0,6,7)이에요. 일반적으로는 최소항 표현을 더 많이 써요.</div>
+      <div class="model-answer">드모르간의 정리는 (A + B)′ = A′B′, (AB)′ = A′ + B′로, 연산한 결과를 부정한 것은 각 입력을 먼저 부정하고 AND와 OR를 서로 바꾼 것과 같다는 법칙이에요. 변수가 3개, 4개, n개여도 똑같이 성립해요. 증명은 A, B의 네 가지 조합 00, 01, 10, 11에 대해 좌변 (A + B)′를 계산하면 1, 0, 0, 0이고, 우변 A′B′도 1·1 = 1, 1·0 = 0, 0·1 = 0, 0·0 = 0으로 1, 0, 0, 0이 나와요. 모든 줄에서 같으므로 두 식은 같아요. 회로로는 NOR 게이트가 입력에 각각 NOT을 단 AND 게이트와 같다는 뜻이고, LogicWorks에서 두 회로의 출력 파형이 같은 것으로도 확인할 수 있어요.</div>
     </div>
 
-    <details class="ref"><summary>이 페이지에 대해 <small>참고</small></summary><div class="ref-body">
-      <p>10/8 수업은 녹음 파일이 없어서, 이날 올라온 실습 과제 4(드모르간 법칙) 파일과 10/6에 교수님이 "다음 시간에 할 것"이라고 예고한 제5장 03~06절(자료 p.17~48)로 만들었어요. 실제 수업 진도와 다를 수 있으니, 수업에서 안 한 부분이 있으면 표시해 두세요.</p>
+    <details class="ref"><summary>다음 시간 예고 <small>10/8에는 안 한 부분</small></summary><div class="ref-body">
+      <h4>최대항(maxterm) · POS</h4>
+      <p>출력이 0인 행을 합의 항으로 나타내는 최대항, 최소항과의 보수 관계(mi′ = Mi), ΠM 표기는 자료 p.32~42에 있고 교수님이 "다음 시간에"로 넘겼어요.</p>
+      <h4>불 대수로 간소화 · 카르노 맵</h4>
+      <p>자료 p.43~48의 최소항식 간소화와, 그림으로 줄이는 카르노 맵은 그다음 진도예요.</p>
     </div></details>
   </section>
 </main>
 
-<footer>논리회로 · 10월 8일 (목) · 제5장 03~06절 · 실습 과제 4 (드모르간) · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<footer>논리회로 · 10월 8일 (목) · 제5장 불 대수 · 실습 과제 4 (드모르간) · 진행률은 이 브라우저에만 저장됩니다.</footer>
 <script>
 /* study-html v3 공통 스크립트 */
 (function () {
