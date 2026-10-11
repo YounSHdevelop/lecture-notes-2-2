@@ -1,0 +1,15 @@
+# HTML 학습자료만 추적 (강의 PDF · 녹음 txt · 실습 파일은 올리지 않음)
+*
+!*/
+!*.html
+!.gitignore
+
+# 학습자료가 아닌 HTML
+_시안/
+node_modules/
+고급웹프로그래밍/ex.html
+고급웹프로그래밍/example1/
+고급웹프로그래밍/week+5/
+고급웹프로그래밍/timer/
+고급웹프로그래밍/timer-thoughtstream/
+고급웹프로그래밍/새 폴더/

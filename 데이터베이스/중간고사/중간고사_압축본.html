@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>데이터베이스 중간고사 대비 · CH01~CH05</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+}
+</style>
+</head>
+<body data-course="데이터베이스" data-week="중간고사">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>데이터베이스</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">중간고사 대비 · CH01~CH05(SELECT · LIKE까지) · 9/3~10/8 수업 8회 + 교재</div>
+    <h1>중간고사, 이 한 페이지로 한 바퀴 돌자</h1>
+    <p class="lead">8번의 수업에서 시험에 나올 것만 장(章) 순서로 다시 설명하고, 수업에서 못 다룬 교재 내용(3단계 구조)도 채웠어요. "구조를 그려라" 5종을 빈 종이에 직접 그려 보는 연습과, SQL 문장을 보고 결과를 말하는 연습(장면 7)이 있어요.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
+      <ol>
+        <li>시험 단골 그림 5종을 빈 종이에 보지 않고 그릴 수 있다</li>
+        <li>후보키 판별, 무결성 위반 구분, 집합 연산 크기 계산을 바로 풀 수 있다</li>
+        <li>"왜 그런가"를 묻는 서술형(질의 최적화, 데이터 독립성)에 내 말로 답할 수 있다</li>
+      </ol>
+      <div class="time">1회독 약 100분 · 장면 7개 · 퀴즈 12문항 · 시간 없으면 장면마다 주황 박스만</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것 (모아 보기)</h2>
+      <ul>
+        <li>"<b>구조를 그려라</b>, 이런 것들은 시험에 잘 나온다" → 장면 6의 그리기 5종</li>
+        <li>"용어 정의는 되도록 시험에 안 내려고 한다" → 정의 암기보다 <b>왜 그런지</b></li>
+        <li>"<b>MySQL 문장 해석할 줄 알아야 함</b> — select 이름, 주소 from 학생; 이 구문의 결과를 말하시오" → 장면 7</li>
+        <li>질의 트리는 "어떤 게 성능이 좋고 <b>왜 그런지 설명</b>할 수 있으면" · <b>TCL은 안 나온다</b></li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="공부 순서">
+      <a href="#c1"><b>장면 1</b>CH01 개념</a>
+      <a href="#c2"><b>장면 2</b>CH02 시스템</a>
+      <a href="#c3"><b>장면 3</b>3단계 구조</a>
+      <a href="#c4"><b>장면 4</b>CH03 릴레이션 · 키</a>
+      <a href="#c5"><b>장면 5</b>CH04 관계 대수</a>
+      <a href="#c6"><b>장면 6</b>그리기 5종</a>
+      <a href="#c7"><b>장면 7</b>SELECT 결과 말하기</a>
+      <a href="#review"><b>복습</b>최종 점검</a>
+    </nav>
+  </div>
+
+  <!-- 장면 1 -->
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>CH01 — 데이터가 정보가 되고, 파일이 DB가 되기까지</h2><div class="sub">9/3 · 9/8 수업 · 데이터와 정보 · 파일 시스템의 문제 · DB 정의와 특성</div></div></div>
+
+    <h3>① 데이터와 정보</h3>
+    <p>출석, 중간 80, 기말 90처럼 <b>그대로의 값</b>이 <mark>데이터</mark>, 그걸 합산해서 "A+"라고 판정한 <b>가공 결과</b>가 <mark>정보</mark>예요. 이 흐름을 그림으로 그린 게 정보 시스템 구조 <code>I = P(D)</code>고, 만들어진 정보는 다른 시스템의 입력 데이터가 돼요.</p>
+    <figure class="fig">
+      <svg viewBox="0 0 640 210" role="img" aria-label="현실 세계에서 데이터를 수집해 가공 처리를 거쳐 정보가 되고, 그 정보가 다시 다른 시스템의 입력 데이터가 되는 구조">
+        <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <rect x="5" y="40" width="110" height="60" rx="12" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="60" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">현실 세계</text>
+        <text x="60" y="86" text-anchor="middle" font-size="11.5" fill="var(--ink-3)">관찰 · 수집</text>
+        <rect x="155" y="35" width="120" height="70" rx="12" fill="var(--teal-soft)"/>
+        <text x="215" y="66" text-anchor="middle" font-size="22" font-weight="800" fill="var(--teal-ink)">D</text>
+        <text x="215" y="88" text-anchor="middle" font-size="12" fill="var(--teal-ink)">데이터</text>
+        <rect x="315" y="35" width="130" height="70" rx="12" fill="var(--teal)"/>
+        <text x="380" y="66" text-anchor="middle" font-size="22" font-weight="800" fill="var(--surface)">P</text>
+        <text x="380" y="88" text-anchor="middle" font-size="12" fill="var(--surface)">가공 처리</text>
+        <rect x="485" y="35" width="120" height="70" rx="12" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="2"/>
+        <text x="545" y="66" text-anchor="middle" font-size="22" font-weight="800" fill="var(--exam)">I</text>
+        <text x="545" y="88" text-anchor="middle" font-size="12" fill="var(--exam)">정보 → 의사 결정</text>
+        <g stroke="var(--teal)" stroke-width="2" fill="none" marker-end="url(#a1)">
+          <path d="M115 70H152"/><path d="M275 70H312"/><path d="M445 70H482"/>
+          <path d="M545 105 C545 175, 215 175, 215 108" stroke-dasharray="6 5"/></g>
+        <rect x="320" y="128" width="120" height="26" rx="8" fill="var(--bg)" stroke="var(--line)"/>
+        <text x="380" y="146" text-anchor="middle" font-size="12" fill="var(--ink-2)">DB에 저장 · 제공</text>
+        <text x="380" y="198" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--teal-ink)">정보가 다른 시스템의 입력 데이터가 된다 → I = P(P(P(D)))</text>
+      </svg>
+      <figcaption>시험 답안은 이 그림 그대로: 박스 3개 + 한 방향 화살표 + 되돌아가는 점선</figcaption>
+    </figure>
+
+    <h3>② 파일 시스템이 DB가 된 이유</h3>
+    <p>파일 하나 고치면 프로그램을 다 고쳐야 했고(<mark>종속성</mark>) → 그래서 파일을 나눴더니 같은 데이터가 여기저기 생기고(<mark>중복성</mark>) → 그래서 합쳤더니 여러 명이 동시에 못 쓰고 복구도 안 됐어요(<mark>공유 한계</mark>). 마지막에 파일을 <b>DBMS라는 보호 장치</b>로 감싼 게 DB 시스템이에요.</p>
+    <figure class="fig">
+      <svg viewBox="0 0 640 170" role="img" aria-label="전통 파일 시스템, 개선1, 개선2, 데이터베이스 시스템 네 단계와 각 단계의 문제">
+        <defs><marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <g text-anchor="middle">
+          <rect x="4" y="20" width="138" height="64" rx="12" fill="var(--teal-soft)"/>
+          <text x="73" y="47" font-size="14" font-weight="700" fill="var(--teal-ink)">전통 파일</text><text x="73" y="66" font-size="11.5" fill="var(--ink-2)">프로그램이 직접 접근</text>
+          <rect x="168" y="20" width="138" height="64" rx="12" fill="var(--teal-soft)"/>
+          <text x="237" y="47" font-size="14" font-weight="700" fill="var(--teal-ink)">개선 1</text><text x="237" y="66" font-size="11.5" fill="var(--ink-2)">프로그램별 파일</text>
+          <rect x="332" y="20" width="138" height="64" rx="12" fill="var(--teal-soft)"/>
+          <text x="401" y="47" font-size="14" font-weight="700" fill="var(--teal-ink)">개선 2</text><text x="401" y="66" font-size="11.5" fill="var(--ink-2)">파일 하나로 통합</text>
+          <rect x="496" y="20" width="140" height="64" rx="12" fill="var(--teal)"/>
+          <text x="566" y="47" font-size="14" font-weight="700" fill="var(--surface)">DB 시스템</text><text x="566" y="66" font-size="11.5" fill="var(--surface)">DBMS가 감싼다</text>
+          <g font-size="13" font-weight="700" fill="var(--no)">
+            <text x="73" y="116">종속성</text><text x="237" y="116">중복성</text><text x="401" y="116">공유 한계</text></g>
+          <text x="566" y="116" font-size="13" font-weight="700" fill="var(--ok)">해결</text>
+          <g font-size="11" fill="var(--ink-3)"><text x="73" y="136">하나 바꾸면 다 수정</text><text x="237" y="136">같은 데이터 여러 곳</text><text x="401" y="136">동시 사용·회복 ✗</text><text x="566" y="136">동시성·권한·회복</text></g>
+        </g>
+        <g stroke="var(--teal)" stroke-width="2" marker-end="url(#b1)"><path d="M142 52H165"/><path d="M306 52H329"/><path d="M470 52H493"/></g>
+      </svg>
+      <figcaption>각 단계가 남긴 문제가 다음 단계가 나온 이유. 시험 답안은 이 4칸 + 문제 3개</figcaption>
+    </figure>
+    <p>DB 시스템은 종속성을 <b>공통 데이터 모델 + 표준 데이터 언어</b>로, 중복성을 <b>통합 저장소</b>로 풀었어요. 이 짝을 바꿔 쓰는 실수가 정말 많아요.</p>
+
+    <h3>③ DB의 정의 · 특성 · 단점</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>구분</th><th>내용</th><th>외우는 법</th></tr></thead>
+      <tbody>
+        <tr><td>정의 4</td><td>공용 · 통합(논리적) · 운영 · 저장 데이터의 저장소</td><td>공 · 통 · 운 · 저</td></tr>
+        <tr><td>특성 4</td><td>실시간 접근 · 끊임없는 변화 · <b>동시 공용</b>(제일 중요) · 내용 기반 참조</td><td>실 · 변 · 동 · 내</td></tr>
+        <tr><td>단점 2</td><td>개발·운영·관리 <b>비용</b> · <b>시스템 취약성</b>(한 시스템이라 뚫리면 전체 위험)</td><td>돈 · 한 방</td></tr>
+        <tr><td>의미</td><td>넓은 의미 = 콘텐츠 모음(웹 문서, VOD) / 좁은 의미 = 형식 엄격(뱅킹, 예매) → 수업은 좁은 의미</td><td></td></tr>
+      </tbody></table></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>그대로의 값 = 데이터, 처리해서 얻은 결과 = 정보. 파일 시스템의 문제는 종속성 → 중복성 → 공유 한계 순서로 생겼고, DB 시스템은 모든 접근을 DBMS를 통해서만 하게 해 해결했다.</p>
+      <div class="mn">외우는 법: <b>D · P · I</b> / <b>종 → 중 → 공</b> / <b>공통운저 · 실변동내</b></div></div>
+
+    <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">DB 시스템이 <b>중복성</b>을 해결한 방법은?</div>
+      <div class="opts">
+        <button class="o">공통 데이터 모델 + 표준 데이터 언어</button>
+        <button class="o">통합 저장소</button>
+        <button class="o">프로그램마다 파일 분리</button></div>
+      <div class="fb">중복성 ↔ <b>통합 저장소</b>, 종속성 ↔ 모델·언어. 3번은 오히려 중복성을 만든 개선 1이에요. <a href="../0908/0908_학습자료.html#c3">9/8 장면 3 다시 보기</a></div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 2 -->
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>CH02 — 누가, 어떤 언어로, 무엇을 거쳐 데이터에 닿나</h2><div class="sub">9/10 수업 · DB · DBMS · DBS · 사용자 · 데이터 언어 · DBMS 구성 · 데이터 모델</div></div></div>
+
+    <p><b>DB</b>는 저장소(창고), <b>DBMS</b>는 그걸 관리하는 소프트웨어(창고지기), <b>DBS</b>는 둘을 합친 체계예요. MySQL·Oracle은 엄밀히 DBMS죠. DBMS가 생긴 이유는 데이터의 <mark>신뢰성과 무결성</mark>을 지키기 위해서고, 필수 기능 정의 · 조작 · 제어 중 <mark>제어</mark>(동시성 · 무결성 · 보안 · 회복)가 가장 중요해요.</p>
+    <figure class="fig">
+      <svg viewBox="0 0 640 400" role="img" aria-label="사용자에서 데이터 언어, DBMS 구성 요소를 거쳐 데이터 사전과 데이터 파일까지 가는 구조">
+        <defs><marker id="c1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <g text-anchor="middle" font-size="13" font-weight="700">
+          <rect x="30" y="8" width="170" height="40" rx="10" fill="var(--bg)" stroke="var(--line)"/><text x="115" y="33" fill="var(--ink)">일반 사용자</text>
+          <rect x="235" y="8" width="170" height="40" rx="10" fill="var(--bg)" stroke="var(--line)"/><text x="320" y="33" fill="var(--ink)">응용 프로그래머</text>
+          <rect x="440" y="8" width="170" height="40" rx="10" fill="var(--bg)" stroke="var(--line)"/><text x="525" y="33" fill="var(--ink)">DBA</text>
+        </g>
+        <text x="320" y="76" text-anchor="middle" font-size="13" font-weight="700" fill="var(--exam)">데이터 언어 (SQL: DDL · DML · DCL)</text>
+        <rect x="20" y="90" width="600" height="230" rx="14" fill="var(--teal-soft)"/>
+        <text x="40" y="112" font-size="13" font-weight="800" fill="var(--teal-ink)">DBMS</text>
+        <g text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--teal-ink)">
+          <rect x="70" y="122" width="210" height="36" rx="9" fill="var(--surface)"/><text x="175" y="145">DDL 컴파일러</text>
+          <rect x="360" y="122" width="210" height="36" rx="9" fill="var(--surface)"/><text x="465" y="145">DML 컴파일러 (프리컴파일러)</text>
+          <rect x="215" y="172" width="210" height="30" rx="9" fill="var(--surface)"/><text x="320" y="192">질의 처리기</text>
+          <rect x="215" y="212" width="210" height="30" rx="9" fill="var(--surface)"/><text x="320" y="232">런타임 DB 처리기</text>
+          <rect x="215" y="252" width="210" height="30" rx="9" fill="var(--surface)"/><text x="320" y="272">트랜잭션 관리자</text>
+          <rect x="215" y="288" width="210" height="26" rx="9" fill="var(--teal)"/><text x="320" y="306" fill="var(--surface)">저장 데이터 관리자</text>
+        </g>
+        <g stroke="var(--teal)" stroke-width="2" fill="none" marker-end="url(#c1a)">
+          <path d="M320 84V118"/><path d="M175 158 L280 170"/><path d="M465 158 L360 170"/><path d="M320 314V340"/></g>
+        <g text-anchor="middle" font-size="13" font-weight="700">
+          <rect x="150" y="344" width="160" height="46" rx="10" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="230" y="364" fill="var(--exam)">데이터 사전</text><text x="230" y="381" font-size="11" font-weight="500" fill="var(--ink-2)">데이터에 대한 정보</text>
+          <rect x="330" y="344" width="160" height="46" rx="10" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="410" y="364" fill="var(--exam)">데이터 파일</text><text x="410" y="381" font-size="11" font-weight="500" fill="var(--ink-2)">실제 데이터</text>
+        </g>
+      </svg>
+      <figcaption>위 → 아래 순서로 요청이 흐른다. 맨 아래가 데이터베이스(데이터 사전 + 데이터 파일)</figcaption>
+    </figure>
+
+    <h3>사용자와 언어, 한 표로</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>언어</th><th>하는 일</th><th>명령어</th><th>누가</th></tr></thead>
+      <tbody>
+        <tr><td><b>DDL</b></td><td>구조(틀) 정의</td><td>CREATE · ALTER · DROP</td><td>응용 프로그래머 · DBA</td></tr>
+        <tr><td><b>DML</b></td><td>데이터 값 조작</td><td>SELECT · INSERT · UPDATE · DELETE</td><td>모두 (일반 사용자 포함)</td></tr>
+        <tr><td><b>DCL</b></td><td>권한 · 보안 제어</td><td>GRANT · REVOKE · CREATE USER</td><td class="hl"><b>DBA만</b></td></tr>
+        <tr><td>TCL</td><td>트랜잭션 묶기</td><td>COMMIT · ROLLBACK · SAVEPOINT</td><td>시험 ✗</td></tr>
+      </tbody></table></div>
+    <p>일반 사용자는 초급(DB가 있는지도 모르고 UI만)과 중급(SQL 직접)으로 나뉘고, 응용 프로그래머는 코드 안에 SQL을 넣어 쓰고, DBA는 모든 권한과 최종 책임을 가진 슈퍼 사용자예요.</p>
+
+    <h3>데이터 모델 5종</h3>
+    <p>계층형(트리 1:N, 포인터) → 네트워크형(M:N, 포인터, 복잡) → <mark>관계형</mark>(테이블 + 키, 가장 많이 씀) → 객체 지향형 → 객체 관계형(절충형). 데이터 모델은 <b>DBMS를 분류하는 가장 중요한 기준</b>이에요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>DB = 저장소, DBMS = 관리 SW, DBS = DB + DBMS. DDL = 구조, DML = 데이터, DCL = 권한(DBA만). DBMS 필수 기능 중 가장 중요한 것은 제어.</p>
+      <div class="mn">외우는 법: <b>틀은 DDL · 값은 DML · 권한은 DCL</b> / <b>계 · 네 · 관 · 객 · 객관</b></div></div>
+
+    <div class="vs"><div class="x"><b>✗ 함정</b>CREATE USER는 CREATE로 시작하니까 DDL</div>
+      <div class="o"><b>○ 정답</b>사용자 계정·권한을 다루니까 <b>DCL</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">테이블에 "이메일" 열을 하나 추가했다. 어떤 언어의 어떤 명령?</div>
+      <div class="opts">
+        <button class="o">DDL의 ALTER</button>
+        <button class="o">DML의 UPDATE</button>
+        <button class="o">DML의 INSERT</button></div>
+      <div class="fb">열 추가는 <b>구조(틀)</b>를 바꾸는 거라 DDL의 ALTER. UPDATE는 안에 든 값을 바꿀 때예요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 3 -->
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>같은 DB인데 학생 · 교수 · DB 관리자가 보는 모습이 다르다?</h2><div class="sub">교재 CH02 2절 · 3단계 구조 · 데이터 독립성 · 데이터 사전 (강의 녹음 없음, 교재로 정리)</div></div></div>
+
+    <div class="hook"><p class="q">이 부분은 수업 녹음이 없어서 놓치기 쉬워요. 그런데 "구조를 그려라" 단골 후보예요</p>
+      <p class="h">교재 p.20~29를 그대로 따라가면서 쉽게 풀었어요.</p></div>
+
+    <h3>스키마가 뭐였더라?</h3>
+    <p><mark>스키마</mark>는 DB에 저장되는 <b>데이터 구조와 제약 조건을 정의한 것</b>이에요. 예를 들어 학생(학번, 이름, 학년, 성별)이 구조고, "학번은 문자 4자리, 학년은 정수 1~4" 같은 게 제약 조건이죠. 그런데 같은 DB라도 <b>보는 사람에 따라</b> 필요한 모습이 달라요. 그래서 DB를 보는 관점을 세 단계로 나눴어요. 미국 표준 기관 ANSI가 1978년에 제안한 <b>ANSI/SPARC 3단계 구조</b>예요.</p>
+
+    <figure class="fig">
+      <svg viewBox="0 0 640 330" role="img" aria-label="외부 단계의 외부 스키마 여러 개가 개념 스키마 하나로, 개념 스키마가 내부 스키마 하나로, 내부 스키마가 데이터베이스로 이어지는 3단계 구조">
+        <defs><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <g font-size="12.5" font-weight="700" fill="var(--ink-3)">
+          <text x="10" y="40">외부 단계</text><text x="10" y="56" font-weight="500">개별 뷰</text>
+          <text x="10" y="132">개념 단계</text><text x="10" y="148" font-weight="500">통합 뷰</text>
+          <text x="10" y="222">내부 단계</text><text x="10" y="238" font-weight="500">저장 뷰</text></g>
+        <g text-anchor="middle" font-size="13" font-weight="700">
+          <rect x="110" y="22" width="140" height="40" rx="10" fill="var(--teal-soft)"/><text x="180" y="47" fill="var(--teal-ink)">외부 스키마 1</text>
+          <rect x="270" y="22" width="140" height="40" rx="10" fill="var(--teal-soft)"/><text x="340" y="47" fill="var(--teal-ink)">외부 스키마 2</text>
+          <text x="440" y="47" fill="var(--ink-3)">· · ·</text>
+          <rect x="470" y="22" width="140" height="40" rx="10" fill="var(--teal-soft)"/><text x="540" y="47" fill="var(--teal-ink)">외부 스키마 n</text>
+          <rect x="110" y="114" width="500" height="42" rx="10" fill="var(--teal)"/><text x="360" y="140" fill="var(--surface)">개념 스키마 (DB당 1개 · 보통 "스키마")</text>
+          <rect x="110" y="204" width="500" height="42" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/><text x="360" y="230" fill="var(--ink)">내부 스키마 (DB당 1개 · 저장 방식)</text>
+          <rect x="285" y="282" width="150" height="40" rx="10" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="360" y="307" fill="var(--exam)">데이터베이스</text></g>
+        <g stroke="var(--teal)" stroke-width="2" fill="none" marker-end="url(#m1)">
+          <path d="M180 62L250 110"/><path d="M340 62L350 110"/><path d="M540 62L460 110"/><path d="M360 156V200"/><path d="M360 246V278"/></g>
+        <g font-size="11.5" font-weight="700" fill="var(--exam)">
+          <text x="372" y="84">외부/개념 사상</text><text x="372" y="99">→ 논리적 독립성</text>
+          <text x="372" y="176">개념/내부 사상</text><text x="372" y="191">→ 물리적 독립성</text></g>
+      </svg>
+      <figcaption>여러 개(외부) → 하나(개념) → 하나(내부) → DB. 단계 사이의 연결이 "사상(mapping)"</figcaption>
+    </figure>
+
+    <ul class="plain">
+      <li><mark>외부 스키마</mark> — 사용자 한 명 한 명이 바라보는 <b>일부분</b>. 전체가 아니라 일부라서 <b>서브 스키마</b>라고도 하고, 사용자마다 다르니 <b>여러 개</b>예요. 교재 예: 교수님이 보는 "강의정보", 학생이 보는 "수강정보".</li>
+      <li><mark>개념 스키마</mark> — 모든 사용자의 관점을 합친 <b>조직 전체</b>의 DB 구조. DB당 <b>하나</b>뿐이고, 그냥 "스키마"라고 하면 보통 이걸 말해요. 예: "대학정보" 개념 스키마.</li>
+      <li><mark>내부 스키마</mark> — 저장 장치 관점에서 <b>어떻게 저장하나</b>. 레코드 형식, 배치 방법, 인덱스 같은 걸 정해요. 하드디스크의 물리적 구조 자체는 아니고 그보다 한 단계 위의 표현이에요. 이것도 DB당 <b>하나</b>.</li>
+    </ul>
+
+    <div class="analogy"><b>교재 비유로 보면 (F-35 전투기)</b> — 외부 스키마는 조종석 · 날개 · 꼬리처럼 <b>각자 담당하는 부품 한 조각</b>, 개념 스키마는 그 부품들이 모인 <b>비행기 전체 모습</b>, 내부 스키마는 겉판을 벗긴 <b>속 배선과 기계 구조</b>예요.</div>
+
+    <h3>왜 굳이 셋으로 나눴을까? → 데이터 독립성</h3>
+    <p>CH01에서 파일 시스템의 제일 큰 문제가 <b>종속성</b>(하나 바꾸면 다 고쳐야 함)이었죠. 3단계로 나누고 단계 사이를 DBMS가 연결(사상)해 주면, <b>아래가 바뀌어도 위는 영향을 거의 안 받아요</b>. 이게 <mark>데이터 독립성</mark>이고, 종속성 문제에 대한 DB의 답이에요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>사상</th><th>제공하는 독립성</th><th>무슨 뜻</th></tr></thead>
+      <tbody>
+        <tr><td>외부/개념 사상 (위쪽)</td><td class="hl"><b>논리적</b> 데이터 독립성</td><td>개념 스키마(논리 구조)를 바꿔도 응용 프로그램 영향 최소</td></tr>
+        <tr><td>개념/내부 사상 (아래쪽)</td><td class="hl"><b>물리적</b> 데이터 독립성</td><td>저장 구조(내부 스키마, 예: 인덱스 추가)를 바꿔도 개념 스키마 영향 최소</td></tr>
+      </tbody></table></div>
+    <p>이 사상을 지원하는 게 <b>DBMS의 핵심 역할 중 하나</b>예요.</p>
+
+    <h3>데이터 사전 = 데이터에 관한 데이터</h3>
+    <p>DBMS는 스키마와 사상 정보를 <mark>데이터 사전</mark>이라는 별도 저장소에 관리해요. 테이블 · 열 · 뷰 · 인덱스 · 사용자 권한 같은 정보가 다 들어 있죠. 실제 데이터가 아니라 데이터를 설명하는 데이터라서 <mark>메타 데이터</mark>라고 불러요. DBMS가 스스로 만들고 유지하고, 일반 사용자도 <b>검색은 할 수 있지만 변경은 DBMS만</b> 할 수 있어요.</p>
+    <p>정리하면 DB는 둘로 나뉘어요. 실제 데이터가 든 <b>사용자 데이터베이스</b>, 그리고 메타 데이터가 든 <b>시스템 데이터베이스</b>(= 시스템 카탈로그). 시스템 데이터베이스 안에는 데이터 사전과 <b>데이터 디렉토리</b>(데이터 위치 정보, 사용자 접근 불가)가 있어요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>3단계 구조 = 외부(사용자별, 여러 개) · 개념(조직 전체, 1개) · 내부(저장 방식, 1개). 외부/개념 사상 → 논리적 독립성, 개념/내부 사상 → 물리적 독립성. 데이터 사전 = 메타 데이터 저장소, 변경은 DBMS만.</p>
+      <div class="mn">외우는 법: <b>외 · 개 · 내 = 여럿 · 하나 · 하나</b> / <b>위쪽 사상은 논리, 아래쪽 사상은 물리</b></div></div>
+
+    <div class="vs"><div class="x"><b>✗ 자주 틀리는 것</b>인덱스를 추가해도 앱이 멀쩡한 건 논리적 독립성</div>
+      <div class="o"><b>○ 맞게</b>저장 구조(내부) 변경을 흡수한 거라 <b>물리적</b> 독립성 (개념/내부 사상)</div></div>
+
+    <div class="check" data-id="k3" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">3단계 구조에서 <b>여러 개</b> 존재할 수 있는 스키마는?</div>
+      <div class="opts">
+        <button class="o">개념 스키마</button>
+        <button class="o">내부 스키마</button>
+        <button class="o">외부 스키마</button></div>
+      <div class="fb">사용자마다 보는 부분이 다르니 <b>외부 스키마</b>가 여러 개. 개념 · 내부 스키마는 DB당 하나예요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 4 -->
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>CH03 — 표에 숨은 규칙, 그리고 그 규칙을 지키는 키</h2><div class="sub">9/17 · 9/22 수업 · 릴레이션 용어와 특성 · 키 · 무결성 제약조건</div></div></div>
+
+    <h3>① 용어와 특성</h3>
+    <p>속성 = 열, 투플 = 행, 도메인 = 속성이 가질 수 있는 값의 범위. <mark>차수</mark> = 속성 수(정적), <mark>카디널리티</mark> = 투플 수(동적, 학생이 늘면 바뀜). 그리고 릴레이션은 <b>집합</b>이라서 특성 4가지를 가져요: 투플 유일성 · 투플 무순서성 · 속성 무순서성 · 속성 원자성(한 칸에 값 하나).</p>
+
+    <h3>② 키 — 시험 단골</h3>
+    <p>투플이 유일해야 하니 구별 수단인 키가 필요해요. 후보키는 <mark>유일성</mark>(하나도 안 겹침) + <mark>최소성</mark>(군더더기 없음). 슈퍼키는 유일성만 있으면 되고요.</p>
+    <figure class="fig">
+      <svg viewBox="0 0 640 260" role="img" aria-label="슈퍼키가 가장 바깥, 그 안에 후보키, 후보키 안에 기본키와 대체키가 나뉘는 포함 관계">
+        <rect x="20" y="10" width="600" height="240" rx="20" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/>
+        <text x="40" y="38" font-size="15" font-weight="800" fill="var(--ink)">슈퍼키</text>
+        <text x="40" y="58" font-size="12" fill="var(--ink-3)">유일성만</text>
+        <rect x="130" y="70" width="460" height="160" rx="16" fill="var(--teal-soft)"/>
+        <text x="150" y="96" font-size="15" font-weight="800" fill="var(--teal-ink)">후보키</text>
+        <text x="150" y="115" font-size="12" fill="var(--teal-ink)">유일성 + 최소성</text>
+        <rect x="160" y="130" width="190" height="80" rx="12" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="2"/>
+        <text x="255" y="164" text-anchor="middle" font-size="15" font-weight="800" fill="var(--exam)">기본키 (PK)</text>
+        <text x="255" y="186" text-anchor="middle" font-size="12" fill="var(--ink-2)">골라 뽑은 1개</text>
+        <rect x="370" y="130" width="190" height="80" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="465" y="164" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">대체키</text>
+        <text x="465" y="186" text-anchor="middle" font-size="12" fill="var(--ink-2)">뽑히지 못한 나머지</text>
+      </svg>
+      <figcaption>시험 답안 그대로: 큰 상자(슈퍼키) 안에 후보키, 후보키를 반으로 나눠 기본키 + 대체키</figcaption>
+    </figure>
+    <div class="table-wrap"><table>
+      <caption>학원생(이름, 학교이름, 학년, 반, 번호, 폰번호) 판별 — 겹치나? → 빼도 되나? 순서로</caption>
+      <thead><tr><th>후보</th><th>판정</th><th>이유</th></tr></thead>
+      <tbody>
+        <tr><td>{폰번호}</td><td class="hl"><b>후보키</b></td><td>유일 + 속성 1개</td></tr>
+        <tr><td>{학교이름, 학년, 반, 번호}</td><td class="hl"><b>후보키</b></td><td>유일 + 하나라도 빼면 겹침</td></tr>
+        <tr><td>{이름, 폰번호}</td><td>슈퍼키</td><td>이름 빼도 유일 → 최소성 ✗</td></tr>
+        <tr><td>{이름, 학교이름, 학년, 반}</td><td>키 아님</td><td>같은 반 동명이인 → 유일성 ✗</td></tr>
+      </tbody></table></div>
+    <p>기본키 고르는 기준: <b>안 바뀌고 · 널 없고 · 속성 적고 · 값 작은 것</b>. 지금 데이터만 보지 말고 앞으로 들어올 값까지 봐야 해요. 외래키는 <b>다른 릴레이션의 기본키를 가리키는</b> 연결 고리예요.</p>
+
+    <h3>③ 무결성 제약조건 4가지</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>제약조건</th><th>규칙</th><th>SQL</th><th>위반 예</th></tr></thead>
+      <tbody>
+        <tr><td><b>개체</b></td><td>기본키는 널 ✗ · 중복 ✗</td><td>PRIMARY KEY</td><td>학번 NULL, 같은 학번 두 번</td></tr>
+        <tr><td><b>참조</b></td><td>외래키는 참조하는 기본키 값 <b>또는 널</b></td><td>FOREIGN KEY</td><td>학생에 없는 s999를 수강에</td></tr>
+        <tr><td>도메인</td><td>값이 허용 범위 안</td><td>NOT NULL · DEFAULT · CHECK</td><td>학년 CHECK(1~4)에 5</td></tr>
+        <tr><td>유일성</td><td>키 아닌 속성 중복 금지</td><td>UNIQUE</td><td>이메일 중복</td></tr>
+      </tbody></table></div>
+    <p>널은 0이나 빈칸이 아니라 <mark>아직 모르는 값</mark>이에요. 그래서 외래키는 "아직 안 가리킴(널)"은 괜찮고, 기본키는 비면 구별이 안 되니 안 돼요. 무결성은 코드가 아니라 <b>DBMS에 제약조건을 선언</b>해서 지켜요(자동 검사).</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>슈퍼키(유일성) ⊇ 후보키(유일성 + 최소성) ⊇ 기본키, 남은 후보키 = 대체키. 개체 무결성 = PK 널·중복 ✗, 참조 무결성 = FK는 참조 PK 값이거나 널.</p>
+      <div class="mn">외우는 법: <b>슈 &gt; 후 &gt; 기 + 대</b> / <b>개 · 참 · 도 · 유</b> / PK는 신분증, FK는 손가락</div></div>
+
+    <div class="check" data-id="k4" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">수강 테이블의 학번(외래키)에 NULL을 넣었다. 결과는?</div>
+      <div class="opts">
+        <button class="o">개체 무결성 위반</button>
+        <button class="o">허용된다</button>
+        <button class="o">참조 무결성 위반</button></div>
+      <div class="fb">외래키는 <b>널 허용</b>이에요. 없는 학번(s999)을 넣었다면 참조 무결성 위반이고요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 5 -->
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>CH04 — SQL 뒤에서 돌아가는 수학, 관계 대수</h2><div class="sub">9/22 · 9/29 수업 · 관계 대수 vs 해석 · 집합 연산 · σ π ⋈ ÷ · 질의 최적화</div></div></div>
+
+    <p><b>관계 대수</b>는 "어떻게" 얻을지 순서를 쓰는 <mark>절차적</mark> 언어, <b>관계 해석</b>은 "무엇을" 원하는지만 쓰는 <mark>선언적</mark> 언어예요. 표현력은 같고, 둘 다 DBMS가 직접 실행하는 언어는 아니에요. SQL과 DBMS 내부 처리의 <b>이론적 기반</b>이죠. 입력도 릴레이션, 결과도 릴레이션.</p>
+
+    <h3>① 집합 연산 — 계산 문제</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>연산</th><th>합병 조건</th><th>차수</th><th>카디널리티</th></tr></thead>
+      <tbody>
+        <tr><td>∪ 합집합</td><td>필요</td><td>그대로</td><td>≤ 합 (겹치면 한 번만)</td></tr>
+        <tr><td>∩ 교집합</td><td>필요</td><td>그대로</td><td>≤ 작은 쪽</td></tr>
+        <tr><td>− 차집합</td><td>필요</td><td>그대로</td><td>≤ 왼쪽 (순서 중요)</td></tr>
+        <tr><td class="hl"><b>× 카티션</b></td><td class="hl">불필요</td><td class="hl"><b>더하기</b></td><td class="hl"><b>곱하기</b></td></tr>
+      </tbody></table></div>
+    <p>합병 가능 = 차수가 같고 대응 속성의 도메인이 같은 것. R1 {s001, s002, s003}, R2 {s001, s002, s004, s005}면 ∪ = 5, ∩ = 2, R1−R2 = 1, R2−R1 = 2, × = 12.</p>
+
+    <h3>② 관계 연산 — σ π ⋈ ÷</h3>
+    <ul class="plain">
+      <li><mark>σ</mark> 셀렉트 = 조건에 맞는 <b>행</b> (SQL의 WHERE) · <mark>π</mark> 프로젝트 = 지정한 <b>열</b> (중복 투플 자동 제거). 예: <code>π 이름 (σ 학년=4 (학생))</code> = 4학년의 이름</li>
+      <li><mark>조인 ⋈</mark> = × 후 σ. 세타(비교 연산자) ⊃ 동등('=', 공통 속성 두 번) ⊃ <b>자연</b>(중복 속성 제거, 한 번)</li>
+      <li><b>디비전 ÷</b> = "<b>모든</b> ~을 가진" 투플 찾기</li>
+      <li>기본 연산 5 = ∪ − × σ π / 복합 연산 3 = ∩ ⋈ ÷ (∩ = R − (R − S))</li>
+      <li>확장: <b>세미 조인</b> = 한쪽 속성만(줄이기) · <b>외부 조인</b> = 짝 없는 투플도 널로 채워 포함(늘리기)</li>
+    </ul>
+
+    <h3>③ 질의 최적화 — 서술형 1순위</h3>
+    <figure class="fig">
+      <svg viewBox="0 0 640 300" role="img" aria-label="트리 A는 학생과 수강을 먼저 곱한 뒤 김연아를 고르고, 트리 B는 학생에서 김연아를 먼저 고른 뒤 수강과 조인한다">
+        <defs><marker id="q1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--ink-3)"/></marker></defs>
+        <text x="160" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="var(--no)">A · 먼저 곱하기</text>
+        <text x="480" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ok)">B · 먼저 고르기</text>
+        <line x1="320" y1="10" x2="320" y2="290" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 5"/>
+        <g text-anchor="middle" font-size="12.5" font-weight="700">
+          <rect x="80" y="38" width="160" height="32" rx="8" fill="var(--teal-soft)"/><text x="160" y="59" fill="var(--teal-ink)">π 과목번호, 평가학점</text>
+          <rect x="80" y="90" width="160" height="32" rx="8" fill="var(--teal-soft)"/><text x="160" y="111" fill="var(--teal-ink)">σ 이름='김연아'</text>
+          <rect x="80" y="142" width="160" height="32" rx="8" fill="var(--teal-soft)"/><text x="160" y="163" fill="var(--teal-ink)">σ 학생.학번=수강.학번</text>
+          <rect x="80" y="194" width="160" height="40" rx="8" fill="var(--no-soft)" stroke="var(--no)" stroke-width="1.5"/><text x="160" y="213" fill="var(--no)">× 모든 조합</text><text x="160" y="228" font-size="11" font-weight="500" fill="var(--no)">학생 수 × 수강 수</text>
+          <rect x="40" y="254" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="90" y="274" fill="var(--ink)">학생</text>
+          <rect x="180" y="254" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="230" y="274" fill="var(--ink)">수강</text>
+
+          <rect x="400" y="38" width="160" height="32" rx="8" fill="var(--teal-soft)"/><text x="480" y="59" fill="var(--teal-ink)">π 과목번호, 평가학점</text>
+          <rect x="400" y="110" width="160" height="40" rx="8" fill="var(--teal-soft)"/><text x="480" y="129" fill="var(--teal-ink)">⋈ 학번</text><text x="480" y="144" font-size="11" font-weight="500" fill="var(--teal-ink)">김연아 1명과만 조인</text>
+          <rect x="350" y="186" width="130" height="40" rx="8" fill="var(--ok-soft)" stroke="var(--ok)" stroke-width="1.5"/><text x="415" y="205" fill="var(--ok)">σ 이름='김연아'</text><text x="415" y="220" font-size="11" font-weight="500" fill="var(--ok)">투플 1개로 줄임</text>
+          <rect x="365" y="254" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="415" y="274" fill="var(--ink)">학생</text>
+          <rect x="500" y="254" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="550" y="274" fill="var(--ink)">수강</text>
+        </g>
+        <g stroke="var(--ink-3)" stroke-width="1.5" fill="none" marker-end="url(#q1)">
+          <path d="M90 254L130 236"/><path d="M230 254L190 236"/><path d="M160 194V176"/><path d="M160 142V124"/><path d="M160 90V72"/>
+          <path d="M415 254V228"/><path d="M415 186L460 152"/><path d="M550 254L500 152"/><path d="M480 110V72"/></g>
+      </svg>
+      <figcaption>A는 중간 결과가 "학생 수 × 수강 수"로 폭발, B는 처음부터 1명으로 줄인 채 진행</figcaption>
+    </figure>
+    <p>SQL → 관계 대수식 → 질의 트리 → 최적화 → 실행. 같은 결과라도 순서에 따라 <b>중간 릴레이션 크기</b>가 크게 달라요. 학생 × 수강을 먼저 하면 "학생 수 × 수강 수"줄을 만든 뒤에야 김연아를 찾지만, σ로 김연아를 <b>먼저 고르면</b> 1명으로 줄어든 채 조인해요. 그래서 B가 빨라요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>질의 최적화의 핵심 = 연산 순서를 조정해 중간 릴레이션 크기를 최소화. 셀렉트·프로젝트를 트리 아래로(먼저), × + σ는 조인으로. 그래서 셀렉트를 먼저 하는 트리가 효율적이다.</p>
+      <div class="mn">외우는 법: <b>σ 시(행) · π 파(열)</b> / <b>먼저 고르고 → 줄이고 → 붙인다</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">카디널리티 4인 R1과 5인 R2(합병 가능)에 대해 <b>항상</b> 옳은 것은?</div>
+      <div class="opts">
+        <button class="o">R1 ∩ R2의 카디널리티는 4 이하</button>
+        <button class="o">R1 ∪ R2의 카디널리티는 9</button>
+        <button class="o">R1 × R2의 카디널리티는 9</button></div>
+      <div class="fb">교집합은 <b>작은 쪽 이하</b>. 합집합은 9 "이하"(겹치면 줄어요), 곱은 4 × 5 = 20.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#c6">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 6 -->
+  <section class="ch" id="c6">
+    <div class="ch-head"><span class="ch-num">장면 6</span>
+      <div><h2>"구조를 그려라" 5종, 빈 종이에 그려 보기</h2><div class="sub">교수님이 직접 "잘 나온다"고 한 유형 · 그린 다음 펼쳐서 맞춰 보기</div></div></div>
+
+    <div class="hook"><p class="q">방법: 제목만 보고 종이에 먼저 그린다 → 펼쳐서 비교 → 틀린 곳에 빨간 펜</p>
+      <p class="h">그림 옆에 "왜 이렇게 생겼는지" 한 줄씩 적으면 서술형까지 같이 대비돼요. 시험 전에 두 번 이상.</p></div>
+
+    <details class="ref"><summary>그리기 1 · 정보 시스템의 구조 (D → P → I) <small>9/3</small></summary><div class="ref-body">
+      <figure class="fig">
+      <svg viewBox="0 0 640 210" role="img" aria-label="현실 세계에서 데이터를 수집해 가공 처리를 거쳐 정보가 되고, 그 정보가 다시 다른 시스템의 입력 데이터가 되는 구조">
+        <defs><marker id="a1x2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <rect x="5" y="40" width="110" height="60" rx="12" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="60" y="68" text-anchor="middle" font-size="14" font-weight="700" fill="var(--ink)">현실 세계</text>
+        <text x="60" y="86" text-anchor="middle" font-size="11.5" fill="var(--ink-3)">관찰 · 수집</text>
+        <rect x="155" y="35" width="120" height="70" rx="12" fill="var(--teal-soft)"/>
+        <text x="215" y="66" text-anchor="middle" font-size="22" font-weight="800" fill="var(--teal-ink)">D</text>
+        <text x="215" y="88" text-anchor="middle" font-size="12" fill="var(--teal-ink)">데이터</text>
+        <rect x="315" y="35" width="130" height="70" rx="12" fill="var(--teal)"/>
+        <text x="380" y="66" text-anchor="middle" font-size="22" font-weight="800" fill="var(--surface)">P</text>
+        <text x="380" y="88" text-anchor="middle" font-size="12" fill="var(--surface)">가공 처리</text>
+        <rect x="485" y="35" width="120" height="70" rx="12" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="2"/>
+        <text x="545" y="66" text-anchor="middle" font-size="22" font-weight="800" fill="var(--exam)">I</text>
+        <text x="545" y="88" text-anchor="middle" font-size="12" fill="var(--exam)">정보 → 의사 결정</text>
+        <g stroke="var(--teal)" stroke-width="2" fill="none" marker-end="url(#a1x2)">
+          <path d="M115 70H152"/><path d="M275 70H312"/><path d="M445 70H482"/>
+          <path d="M545 105 C545 175, 215 175, 215 108" stroke-dasharray="6 5"/></g>
+        <rect x="320" y="128" width="120" height="26" rx="8" fill="var(--bg)" stroke="var(--line)"/>
+        <text x="380" y="146" text-anchor="middle" font-size="12" fill="var(--ink-2)">DB에 저장 · 제공</text>
+        <text x="380" y="198" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--teal-ink)">정보가 다른 시스템의 입력 데이터가 된다 → I = P(P(P(D)))</text>
+      </svg>
+      <figcaption>시험 답안은 이 그림 그대로: 박스 3개 + 한 방향 화살표 + 되돌아가는 점선</figcaption>
+    </figure>
+      <p><b>체크</b>: 박스 3개(데이터 · 가공 처리 · 정보) + 한 방향 화살표 + 정보가 다시 입력 데이터로 돌아가는 점선. 식 <code>I = P(D)</code>, 연쇄 <code>I = P(P(P(D)))</code>까지.</p>
+    </div></details>
+
+    <details class="ref"><summary>그리기 2 · 파일 시스템 → DB 시스템 발전 과정 <small>9/8</small></summary><div class="ref-body">
+      <figure class="fig">
+      <svg viewBox="0 0 640 170" role="img" aria-label="전통 파일 시스템, 개선1, 개선2, 데이터베이스 시스템 네 단계와 각 단계의 문제">
+        <defs><marker id="b1x2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <g text-anchor="middle">
+          <rect x="4" y="20" width="138" height="64" rx="12" fill="var(--teal-soft)"/>
+          <text x="73" y="47" font-size="14" font-weight="700" fill="var(--teal-ink)">전통 파일</text><text x="73" y="66" font-size="11.5" fill="var(--ink-2)">프로그램이 직접 접근</text>
+          <rect x="168" y="20" width="138" height="64" rx="12" fill="var(--teal-soft)"/>
+          <text x="237" y="47" font-size="14" font-weight="700" fill="var(--teal-ink)">개선 1</text><text x="237" y="66" font-size="11.5" fill="var(--ink-2)">프로그램별 파일</text>
+          <rect x="332" y="20" width="138" height="64" rx="12" fill="var(--teal-soft)"/>
+          <text x="401" y="47" font-size="14" font-weight="700" fill="var(--teal-ink)">개선 2</text><text x="401" y="66" font-size="11.5" fill="var(--ink-2)">파일 하나로 통합</text>
+          <rect x="496" y="20" width="140" height="64" rx="12" fill="var(--teal)"/>
+          <text x="566" y="47" font-size="14" font-weight="700" fill="var(--surface)">DB 시스템</text><text x="566" y="66" font-size="11.5" fill="var(--surface)">DBMS가 감싼다</text>
+          <g font-size="13" font-weight="700" fill="var(--no)">
+            <text x="73" y="116">종속성</text><text x="237" y="116">중복성</text><text x="401" y="116">공유 한계</text></g>
+          <text x="566" y="116" font-size="13" font-weight="700" fill="var(--ok)">해결</text>
+          <g font-size="11" fill="var(--ink-3)"><text x="73" y="136">하나 바꾸면 다 수정</text><text x="237" y="136">같은 데이터 여러 곳</text><text x="401" y="136">동시 사용·회복 ✗</text><text x="566" y="136">동시성·권한·회복</text></g>
+        </g>
+        <g stroke="var(--teal)" stroke-width="2" marker-end="url(#b1x2)"><path d="M142 52H165"/><path d="M306 52H329"/><path d="M470 52H493"/></g>
+      </svg>
+      <figcaption>각 단계가 남긴 문제가 다음 단계가 나온 이유. 시험 답안은 이 4칸 + 문제 3개</figcaption>
+    </figure>
+      <p><b>체크</b>: 4단계 + 단계별 문제 3개(종속성 · 중복성 · 공유 한계). DB 시스템 칸에 "모든 접근은 DBMS를 통해서만", 해결 짝(종속 ↔ 모델·언어, 중복 ↔ 통합 저장소).</p>
+    </div></details>
+
+    <details class="ref"><summary>그리기 3 · DB 시스템과 DBMS의 구성 요소 <small>9/10</small></summary><div class="ref-body">
+      <figure class="fig">
+      <svg viewBox="0 0 640 400" role="img" aria-label="사용자에서 데이터 언어, DBMS 구성 요소를 거쳐 데이터 사전과 데이터 파일까지 가는 구조">
+        <defs><marker id="c1ax2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <g text-anchor="middle" font-size="13" font-weight="700">
+          <rect x="30" y="8" width="170" height="40" rx="10" fill="var(--bg)" stroke="var(--line)"/><text x="115" y="33" fill="var(--ink)">일반 사용자</text>
+          <rect x="235" y="8" width="170" height="40" rx="10" fill="var(--bg)" stroke="var(--line)"/><text x="320" y="33" fill="var(--ink)">응용 프로그래머</text>
+          <rect x="440" y="8" width="170" height="40" rx="10" fill="var(--bg)" stroke="var(--line)"/><text x="525" y="33" fill="var(--ink)">DBA</text>
+        </g>
+        <text x="320" y="76" text-anchor="middle" font-size="13" font-weight="700" fill="var(--exam)">데이터 언어 (SQL: DDL · DML · DCL)</text>
+        <rect x="20" y="90" width="600" height="230" rx="14" fill="var(--teal-soft)"/>
+        <text x="40" y="112" font-size="13" font-weight="800" fill="var(--teal-ink)">DBMS</text>
+        <g text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--teal-ink)">
+          <rect x="70" y="122" width="210" height="36" rx="9" fill="var(--surface)"/><text x="175" y="145">DDL 컴파일러</text>
+          <rect x="360" y="122" width="210" height="36" rx="9" fill="var(--surface)"/><text x="465" y="145">DML 컴파일러 (프리컴파일러)</text>
+          <rect x="215" y="172" width="210" height="30" rx="9" fill="var(--surface)"/><text x="320" y="192">질의 처리기</text>
+          <rect x="215" y="212" width="210" height="30" rx="9" fill="var(--surface)"/><text x="320" y="232">런타임 DB 처리기</text>
+          <rect x="215" y="252" width="210" height="30" rx="9" fill="var(--surface)"/><text x="320" y="272">트랜잭션 관리자</text>
+          <rect x="215" y="288" width="210" height="26" rx="9" fill="var(--teal)"/><text x="320" y="306" fill="var(--surface)">저장 데이터 관리자</text>
+        </g>
+        <g stroke="var(--teal)" stroke-width="2" fill="none" marker-end="url(#c1ax2)">
+          <path d="M320 84V118"/><path d="M175 158 L280 170"/><path d="M465 158 L360 170"/><path d="M320 314V340"/></g>
+        <g text-anchor="middle" font-size="13" font-weight="700">
+          <rect x="150" y="344" width="160" height="46" rx="10" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="230" y="364" fill="var(--exam)">데이터 사전</text><text x="230" y="381" font-size="11" font-weight="500" fill="var(--ink-2)">데이터에 대한 정보</text>
+          <rect x="330" y="344" width="160" height="46" rx="10" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="410" y="364" fill="var(--exam)">데이터 파일</text><text x="410" y="381" font-size="11" font-weight="500" fill="var(--ink-2)">실제 데이터</text>
+        </g>
+      </svg>
+      <figcaption>위 → 아래 순서로 요청이 흐른다. 맨 아래가 데이터베이스(데이터 사전 + 데이터 파일)</figcaption>
+    </figure>
+      <p><b>체크</b>: 맨 위 사용자 3유형 → 데이터 언어(SQL) → DBMS(컴파일러 → 질의 처리기 → 런타임 처리기 → 트랜잭션 관리자 → 저장 데이터 관리자) → 데이터 사전 + 데이터 파일.</p>
+    </div></details>
+
+    <details class="ref"><summary>그리기 4 · 3단계 데이터베이스 구조와 데이터 독립성 <small>교재 CH02</small></summary><div class="ref-body">
+      <figure class="fig">
+      <svg viewBox="0 0 640 330" role="img" aria-label="외부 단계의 외부 스키마 여러 개가 개념 스키마 하나로, 개념 스키마가 내부 스키마 하나로, 내부 스키마가 데이터베이스로 이어지는 3단계 구조">
+        <defs><marker id="m1x2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <g font-size="12.5" font-weight="700" fill="var(--ink-3)">
+          <text x="10" y="40">외부 단계</text><text x="10" y="56" font-weight="500">개별 뷰</text>
+          <text x="10" y="132">개념 단계</text><text x="10" y="148" font-weight="500">통합 뷰</text>
+          <text x="10" y="222">내부 단계</text><text x="10" y="238" font-weight="500">저장 뷰</text></g>
+        <g text-anchor="middle" font-size="13" font-weight="700">
+          <rect x="110" y="22" width="140" height="40" rx="10" fill="var(--teal-soft)"/><text x="180" y="47" fill="var(--teal-ink)">외부 스키마 1</text>
+          <rect x="270" y="22" width="140" height="40" rx="10" fill="var(--teal-soft)"/><text x="340" y="47" fill="var(--teal-ink)">외부 스키마 2</text>
+          <text x="440" y="47" fill="var(--ink-3)">· · ·</text>
+          <rect x="470" y="22" width="140" height="40" rx="10" fill="var(--teal-soft)"/><text x="540" y="47" fill="var(--teal-ink)">외부 스키마 n</text>
+          <rect x="110" y="114" width="500" height="42" rx="10" fill="var(--teal)"/><text x="360" y="140" fill="var(--surface)">개념 스키마 (DB당 1개 · 보통 "스키마")</text>
+          <rect x="110" y="204" width="500" height="42" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/><text x="360" y="230" fill="var(--ink)">내부 스키마 (DB당 1개 · 저장 방식)</text>
+          <rect x="285" y="282" width="150" height="40" rx="10" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="360" y="307" fill="var(--exam)">데이터베이스</text></g>
+        <g stroke="var(--teal)" stroke-width="2" fill="none" marker-end="url(#m1x2)">
+          <path d="M180 62L250 110"/><path d="M340 62L350 110"/><path d="M540 62L460 110"/><path d="M360 156V200"/><path d="M360 246V278"/></g>
+        <g font-size="11.5" font-weight="700" fill="var(--exam)">
+          <text x="372" y="84">외부/개념 사상</text><text x="372" y="99">→ 논리적 독립성</text>
+          <text x="372" y="176">개념/내부 사상</text><text x="372" y="191">→ 물리적 독립성</text></g>
+      </svg>
+      <figcaption>여러 개(외부) → 하나(개념) → 하나(내부) → DB. 단계 사이의 연결이 "사상(mapping)"</figcaption>
+    </figure>
+      <p><b>체크</b>: 외부 스키마 여러 개 → 개념 스키마 1 → 내부 스키마 1 → DB. 두 사상 옆에 논리적 / 물리적 독립성.</p>
+    </div></details>
+
+    <details class="ref"><summary>그리기 5 · 키의 포함 관계 <small>9/17</small></summary><div class="ref-body">
+      <figure class="fig">
+      <svg viewBox="0 0 640 260" role="img" aria-label="슈퍼키가 가장 바깥, 그 안에 후보키, 후보키 안에 기본키와 대체키가 나뉘는 포함 관계">
+        <rect x="20" y="10" width="600" height="240" rx="20" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/>
+        <text x="40" y="38" font-size="15" font-weight="800" fill="var(--ink)">슈퍼키</text>
+        <text x="40" y="58" font-size="12" fill="var(--ink-3)">유일성만</text>
+        <rect x="130" y="70" width="460" height="160" rx="16" fill="var(--teal-soft)"/>
+        <text x="150" y="96" font-size="15" font-weight="800" fill="var(--teal-ink)">후보키</text>
+        <text x="150" y="115" font-size="12" fill="var(--teal-ink)">유일성 + 최소성</text>
+        <rect x="160" y="130" width="190" height="80" rx="12" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="2"/>
+        <text x="255" y="164" text-anchor="middle" font-size="15" font-weight="800" fill="var(--exam)">기본키 (PK)</text>
+        <text x="255" y="186" text-anchor="middle" font-size="12" fill="var(--ink-2)">골라 뽑은 1개</text>
+        <rect x="370" y="130" width="190" height="80" rx="12" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="465" y="164" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ink)">대체키</text>
+        <text x="465" y="186" text-anchor="middle" font-size="12" fill="var(--ink-2)">뽑히지 못한 나머지</text>
+      </svg>
+      <figcaption>시험 답안 그대로: 큰 상자(슈퍼키) 안에 후보키, 후보키를 반으로 나눠 기본키 + 대체키</figcaption>
+    </figure>
+      <p><b>체크</b>: 바깥 슈퍼키(유일성) ⊇ 후보키(유일성 + 최소성) → 안을 기본키 1개 + 대체키로 나눔. 외래키는 이 그림 밖의 별개 개념.</p>
+    </div></details>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>그림만 그리지 말고 각 칸 이름과 화살표의 뜻(문제 · 해결 · 사상 · 조건)을 같이 쓴다.</p>
+      <div class="mn">외우는 법: <b>DPI · 종중공 · 사언DB · 외개내 · 슈후기대</b></div></div>
+
+    <div class="check" data-id="k6" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">그리기 4에서 "개념/내부 사상" 옆에 써야 할 것은?</div>
+      <div class="opts">
+        <button class="o">논리적 데이터 독립성</button>
+        <button class="o">참조 무결성</button>
+        <button class="o">물리적 데이터 독립성</button></div>
+      <div class="fb">아래쪽(개념/내부) 사상 = <b>물리적</b>, 위쪽(외부/개념) 사상 = 논리적.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c6">이해했어요</label><a href="#c7">다음 장면 →</a></div>
+  </section>
+
+  <!-- 복습 -->
+  <section class="ch" id="c7">
+    <div class="ch-head"><span class="ch-num">장면 7</span>
+      <div><h2>CH05 — SQL 문장을 보고 "결과를 말하시오"</h2><div class="sub">SELECT · WHERE · DISTINCT · ORDER BY · 집계 · GROUP BY · LIKE · 자세히: <a href="../1008/1008_학습자료.html">10/8 페이지</a></div></div></div>
+
+    <p>시험 메모에 그대로 적혀 있어요: "<b>mysql 문장 해석할 줄 알아야 함.</b> 예시로 <code>select 이름, 주소 from 학생;</code> 이 구문의 결과를 말하시오." 그러니 univDB 학생 테이블을 머릿속에 넣고, 문장을 <mark>실행 순서대로</mark> 읽는 연습만 하면 돼요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>학번</th><th>이름</th><th>주소</th><th>학년</th><th>나이</th><th>성별</th><th>휴대폰번호</th><th>소속학과</th></tr></thead>
+      <tbody>
+        <tr><td>s001</td><td>김연아</td><td>서울 서초</td><td>4</td><td>23</td><td>여</td><td>010-1111-2222</td><td>컴퓨터</td></tr>
+        <tr><td>s002</td><td>홍길동</td><td>미정</td><td>1</td><td>26</td><td>남</td><td>NULL</td><td>통계</td></tr>
+        <tr><td>s003</td><td>이승엽</td><td>NULL</td><td>3</td><td>30</td><td>남</td><td>NULL</td><td>정보통신</td></tr>
+        <tr><td>s004</td><td>이영애</td><td>경기 분당</td><td>2</td><td>NULL</td><td>여</td><td>010-4444-5555</td><td>정보통신</td></tr>
+        <tr><td>s005</td><td>송윤아</td><td>경기 분당</td><td>4</td><td>23</td><td>여</td><td>010-6666-7777</td><td>컴퓨터</td></tr>
+        <tr><td>s006</td><td>홍길동</td><td>서울 종로</td><td>2</td><td>26</td><td>남</td><td>010-8888-9999</td><td>컴퓨터</td></tr>
+        <tr><td>s007</td><td>이은진</td><td>경기 과천</td><td>1</td><td>23</td><td>여</td><td>010-2222-3333</td><td>경영</td></tr>
+      </tbody></table></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>문장</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td><code>SELECT 이름, 주소 FROM 학생;</code></td><td>7행 2열 (홍길동 s002 = '미정', 이승엽 = NULL)</td></tr>
+        <tr><td><code>SELECT DISTINCT 소속학과 FROM 학생;</code></td><td>컴퓨터 · 통계 · 정보통신 · 경영 (4행)</td></tr>
+        <tr><td><code>… WHERE 학년 &gt;= 2 AND 소속학과 = '컴퓨터';</code></td><td>김연아 · 송윤아 · 홍길동(s006)</td></tr>
+        <tr><td><code>… ORDER BY 학년 ASC, 이름 DESC;</code></td><td>홍길동 · 이은진 · 홍길동 · 이영애 · 이승엽 · 송윤아 · 김연아</td></tr>
+        <tr><td><code>SELECT COUNT(*), COUNT(주소), COUNT(DISTINCT 주소) FROM 학생;</code></td><td>7 · 6 · 5 (열 이름을 쓰면 NULL 제외)</td></tr>
+        <tr><td><code>… GROUP BY 학년 HAVING COUNT(*) &gt;= 2;</code></td><td>1학년 2 · 2학년 2 · 4학년 2</td></tr>
+        <tr><td><code>… WHERE 이름 LIKE '이__';</code></td><td>이승엽 · 이영애 · 이은진</td></tr>
+        <tr><td><code>… WHERE 주소 LIKE '%서울%' ORDER BY 학년 DESC;</code></td><td>김연아(4) · 홍길동(2)</td></tr>
+      </tbody></table></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>SELECT문은 FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY 순으로 실행된다. 결과는 SELECT에 쓴 열만으로 된 테이블이며, 조건이 없으면 모든 행을 반환한다. DISTINCT는 중복 제거, COUNT(열)은 NULL 제외, HAVING은 그룹 조건, LIKE의 _는 1글자 · %는 0글자 이상.</p>
+      <div class="mn">외우는 법: <b>프 · 웨 · 그 · 해 · 셀 · 오</b> / <b>*은 다 세고, 열은 NULL 빼고</b></div></div>
+
+    <div class="check" data-id="k7" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q"><code>SELECT 이름 FROM 학생 WHERE 나이 &gt; 25 ORDER BY 나이 DESC;</code>의 결과는?</div>
+      <div class="opts">
+        <button class="o">홍길동, 홍길동, 이승엽</button>
+        <button class="o">이승엽, 홍길동, 홍길동</button>
+        <button class="o">이승엽</button></div>
+      <div class="fb">나이 30(이승엽), 26(홍길동 ×2) → 많은 순. NULL(이영애)은 비교에서 빠져요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c7">이해했어요</label><a href="#review">최종 점검하러 가기 →</a></div>
+  </section>
+
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험 전날 최종 점검</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 12 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>인쇄하면 A4 한두 장</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요. 눌러서 하나씩 확인하세요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제 · ✗ 안 됨/시험 안 나옴</p>
+      <div class="grp"><h4>① CH01 개념 <span class="ex-t">★ 그리기</span><span class="mn">DPI · 종중공 · 공통운저 · 실변동내</span></h4><ul>
+        <li>데이터 = 그대로 / 정보 = 가공 · <span class="kw">I = P(D)</span> · 데 → 정 → 지 → 지 → 판</li>
+        <li>파일 → DB: <span class="kw">종속성</span> → <span class="kw">중복성</span> → <span class="kw">공유 한계</span> → DBMS</li>
+        <li>종속 ↔ 모델·언어 / 중복 ↔ <span class="kw">통합 저장소</span> · 단점 = 비용 · 시스템 취약성</li></ul></div>
+      <div class="grp"><h4>② CH02 시스템 <span class="ex-t">★ 그리기</span><span class="mn">틀 · 값 · 권한</span></h4><ul>
+        <li>DB 저장소 · DBMS 관리 SW · DBS 둘 다 · 필수 기능 정의 · 조작 · <span class="kw">제어</span></li>
+        <li>DDL 구조 · DML 데이터 · <span class="kw">DCL</span> 권한(DBA만) · TCL ✗</li>
+        <li>모델: 계층 · 네트워크 · <span class="kw">관계</span> · 객체 · 객체관계</li></ul></div>
+      <div class="grp"><h4>③ 3단계 구조 <span class="ex-t">★ 그리기</span><span class="mn">외 · 개 · 내 = 여럿 · 하나 · 하나</span></h4><ul>
+        <li>외부(서브 스키마, 여러 개) · <span class="kw">개념</span>(조직 전체, 1개) · 내부(저장 방식, 1개) · ANSI/SPARC 1978</li>
+        <li>외부/개념 사상 → <span class="kw">논리적</span> 독립성 / 개념/내부 사상 → <span class="kw">물리적</span> 독립성</li>
+        <li>데이터 사전 = <span class="kw">메타 데이터</span> · 변경은 DBMS만</li></ul></div>
+      <div class="grp"><h4>④ CH03 릴레이션 · 키 · 무결성 <span class="ex-t">★ 판별</span><span class="mn">슈 &gt; 후 &gt; 기 + 대 · 개참도유</span></h4><ul>
+        <li>차수 = 속성 수(정적) · 카디널리티 = 투플 수(동적) · 특성: 투플 유일 · 무순서 ×2 · 속성 원자</li>
+        <li>후보키 = <span class="kw">유일성 + 최소성</span> · 슈퍼키 = 유일만 · PK 기준: 안 변 · 널 X · 적게 · 작게</li>
+        <li>개체 = PK 널 ✗ / 참조 = FK는 PK 값 or <span class="kw">널</span> / 도메인 CHECK · NOT NULL / 유일성 UNIQUE</li></ul></div>
+      <div class="grp"><h4>⑤ CH04 관계 대수 <span class="ex-t">★ 계산 · 서술</span><span class="mn">곱은 곱 · 시행 파열</span></h4><ul>
+        <li>대수 = 절차 / 해석 = 선언 · ∪ ≤ 합 · ∩ ≤ 작은 쪽 · − ≤ 왼쪽 · <span class="kw">× 차수 합 · 카디 곱</span></li>
+        <li>σ 행 · π 열 · 동등(두 번) ⊃ <span class="kw">자연</span>(한 번) · 세미 ↓ 외부 ↑ · 기본 ∪ − × σ π</li>
+        <li>최적화 = <span class="kw">중간 릴레이션 최소화</span> · σ 먼저</li></ul></div>
+      <div class="grp"><h4>⑥ CH05 앞부분</h4><ul>
+        <li>SQL = 표준 언어(IBM SYSTEM R, ANSI · ISO) · univDB 수강(학번 + 과목번호) = PK이자 FK · 학생 1 : N 수강</li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>DB의 정의는 공용 · 통합 · 운영 · 저장 데이터이고, 특성 중 가장 중요한 것은 <span class="cloze">동시 공용</span>이다. 파일 시스템의 문제는 종속성 · <span class="cloze">중복성</span> · 공유 한계다. 3단계 구조에서 여러 개 존재하는 것은 <span class="cloze">외부 스키마</span>이고, 개념/내부 사상은 <span class="cloze">물리적</span> 데이터 독립성을 제공한다. 데이터 사전에 저장된 데이터를 <span class="cloze">메타 데이터</span>라 한다. 후보키는 유일성과 <span class="cloze">최소성</span>을 만족한다. 외래키는 참조하는 기본키 값이나 <span class="cloze">널</span>을 가진다. R1 × R2의 카디널리티는 두 카디널리티의 <span class="cloze">곱</span>이고, 질의 최적화의 핵심은 <span class="cloze">중간 릴레이션</span>의 크기를 줄이는 것이다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">플래시카드 <small>알면 →, 모르면 ←</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">데이터와 정보의 차이, 정보 시스템 구조식은?</div><div class="a">데이터 = 그대로의 값, 정보 = 가공해 의사 결정에 쓰게 한 것. I = P(D)</div></div>
+        <div class="fc-item"><div class="q">파일 시스템 → DB 발전 단계별 문제는?</div><div class="a">전통: 종속성 → 개선1: 중복성 → 개선2: 공유 한계 → DB 시스템(DBMS)</div></div>
+        <div class="fc-item"><div class="q">DB 정의 4가지와 특성 4가지는?</div><div class="a">공용 · 통합 · 운영 · 저장 / 실시간 접근 · 끊임없는 변화 · 동시 공용 · 내용 기반 참조</div></div>
+        <div class="fc-item"><div class="q">DB 시스템의 단점 두 가지는?</div><div class="a">개발·운영·관리 비용, 시스템 취약성</div></div>
+        <div class="fc-item"><div class="q">DB · DBMS · DBS는?</div><div class="a">저장소 · 관리 소프트웨어 · 둘을 합친 체계</div></div>
+        <div class="fc-item"><div class="q">사용자 3유형과 쓰는 언어는?</div><div class="a">일반 사용자(DML) · 응용 프로그래머(DDL · DML) · DBA(DDL · DML · DCL)</div></div>
+        <div class="fc-item"><div class="q">3단계 구조의 세 스키마와 개수는?</div><div class="a">외부(여러 개, 서브 스키마) · 개념(1개, 조직 전체) · 내부(1개, 저장 방식)</div></div>
+        <div class="fc-item"><div class="q">논리적 vs 물리적 데이터 독립성은?</div><div class="a">논리 = 외부/개념 사상, 개념 구조를 바꿔도 앱 영향 최소. 물리 = 개념/내부 사상, 저장 구조를 바꿔도 개념 스키마 영향 최소.</div></div>
+        <div class="fc-item"><div class="q">데이터 사전이란?</div><div class="a">스키마 · 사상 정보 · 제약 조건 등 메타 데이터 저장소. DBMS가 생성 · 유지, 변경은 DBMS만.</div></div>
+        <div class="fc-item"><div class="q">릴레이션 특성 4가지는?</div><div class="a">투플 유일성 · 투플 무순서성 · 속성 무순서성 · 속성 원자성</div></div>
+        <div class="fc-item"><div class="q">슈퍼키 · 후보키 · 기본키 · 대체키는?</div><div class="a">유일성 / 유일 + 최소 / 고른 후보키 1개 / 나머지 후보키</div></div>
+        <div class="fc-item"><div class="q">무결성 4가지와 SQL 키워드는?</div><div class="a">개체 PRIMARY KEY · 참조 FOREIGN KEY · 도메인 CHECK · NOT NULL · DEFAULT · 유일성 UNIQUE</div></div>
+        <div class="fc-item"><div class="q">집합 연산 결과 크기는?</div><div class="a">∪ ≤ 합 · ∩ ≤ 작은 쪽 · − ≤ 왼쪽 (차수 그대로) / × 차수 합 · 카디 곱</div></div>
+        <div class="fc-item"><div class="q">동등 조인 vs 자연 조인은?</div><div class="a">동등 = '=' 조건, 공통 속성 두 번. 자연 = 중복 속성 제거, 한 번.</div></div>
+        <div class="fc-item"><div class="q">질의 최적화의 핵심은?</div><div class="a">연산 순서를 조정해 중간 릴레이션 크기 최소화. σ · π를 먼저(트리 아래로).</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">퀴즈 12문항 <small>다 풀고 채점하기</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="2"><p class="qt"><b>Q1</b>"파일 구조가 바뀌면 그 파일을 쓰는 프로그램을 모두 고쳐야 하는" 문제는?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">중복성</label>
+        <label class="opt"><input type="radio" name="q1" value="1">공유 한계</label>
+        <label class="opt"><input type="radio" name="q1" value="2">종속성</label>
+        <label class="opt"><input type="radio" name="q1" value="3">원자성</label>
+        <div class="explain">프로그램이 파일 구조에 묶인 것 = 종속성. DB는 모델·언어와 3단계 구조의 데이터 독립성으로 해결해요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q2</b>인덱스를 추가하는 등 저장 방식을 바꿔도 개념 스키마와 응용 프로그램이 영향을 받지 않는 성질은?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">물리적 데이터 독립성</label>
+        <label class="opt"><input type="radio" name="q2" value="1">논리적 데이터 독립성</label>
+        <label class="opt"><input type="radio" name="q2" value="2">참조 무결성</label>
+        <label class="opt"><input type="radio" name="q2" value="3">투플 무순서성</label>
+        <div class="explain">저장 구조 = 내부 스키마. 그 변경을 개념/내부 사상이 흡수 → 물리적 독립성.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q3</b>3단계 구조에 대한 설명으로 옳지 않은 것은?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">외부 스키마는 서브 스키마라고도 하며 여러 개일 수 있다</label>
+        <label class="opt"><input type="radio" name="q3" value="1">보통 "스키마"라 하면 개념 스키마를 뜻한다</label>
+        <label class="opt"><input type="radio" name="q3" value="2">내부 스키마는 DB당 하나다</label>
+        <label class="opt"><input type="radio" name="q3" value="3">개념 스키마는 사용자마다 하나씩 있다</label>
+        <div class="explain">사용자마다 다른 건 외부 스키마. 개념 스키마는 조직 전체를 통합한 하나예요.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q4</b>권한을 부여·회수하는 DCL을 쓰는 사용자는?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">초급 일반 사용자</label>
+        <label class="opt"><input type="radio" name="q4" value="1">DBA</label>
+        <label class="opt"><input type="radio" name="q4" value="2">모든 사용자</label>
+        <label class="opt"><input type="radio" name="q4" value="3">응용 프로그래머만</label>
+        <div class="explain">DML은 모두, DDL은 응용 프로그래머 · DBA, DCL은 DBA만.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q5</b>속성 6개, 투플 20개인 릴레이션에 5명을 추가했다. 차수와 카디널리티는?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">11, 20</label>
+        <label class="opt"><input type="radio" name="q5" value="1">25, 6</label>
+        <label class="opt"><input type="radio" name="q5" value="2">6, 25</label>
+        <label class="opt"><input type="radio" name="q5" value="3">6, 20</label>
+        <div class="explain">차수 = 속성 수 6 그대로, 카디널리티 = 투플 수 20 + 5 = 25.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q6</b>폰번호만으로 유일할 때 {이름, 폰번호}가 후보키가 아닌 이유는?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">최소성을 만족하지 않아서 (슈퍼키다)</label>
+        <label class="opt"><input type="radio" name="q6" value="1">유일성을 만족하지 않아서</label>
+        <label class="opt"><input type="radio" name="q6" value="2">속성이 둘이면 키가 될 수 없어서</label>
+        <label class="opt"><input type="radio" name="q6" value="3">이름이 외래키라서</label>
+        <div class="explain">이름을 빼도 유일 → 군더더기 → 최소성 ✗. 복합키도 최소성만 지키면 후보키가 돼요.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q7</b>이메일이 기본키는 아니지만 중복되면 안 될 때 쓰는 제약조건과 키워드는?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">개체 무결성 · PRIMARY KEY</label>
+        <label class="opt"><input type="radio" name="q7" value="1">참조 무결성 · FOREIGN KEY</label>
+        <label class="opt"><input type="radio" name="q7" value="2">도메인 무결성 · CHECK</label>
+        <label class="opt"><input type="radio" name="q7" value="3">유일성 제약조건 · UNIQUE</label>
+        <div class="explain">키가 아닌 속성의 중복 금지 = 유일성 제약조건(UNIQUE).</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q8</b>수강 테이블의 학번(FK)에 허용되는 값은?</p>
+        <label class="opt"><input type="radio" name="q8" value="0">학생 테이블에 없는 아무 학번</label>
+        <label class="opt"><input type="radio" name="q8" value="1">학생 테이블에 있는 학번 또는 NULL</label>
+        <label class="opt"><input type="radio" name="q8" value="2">NULL은 절대 안 됨</label>
+        <label class="opt"><input type="radio" name="q8" value="3">학생 테이블과 무관한 숫자만</label>
+        <div class="explain">참조 무결성: 참조하는 기본키 값 또는 널.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q9</b>학생(학번, 이름, 학년)과 수강(학번, 과목번호, 평가학점, 점수)에 바로 할 수 있는 연산은?</p>
+        <label class="opt"><input type="radio" name="q9" value="0">학생 ∪ 수강</label>
+        <label class="opt"><input type="radio" name="q9" value="1">학생 ∩ 수강</label>
+        <label class="opt"><input type="radio" name="q9" value="2">학생 × 수강</label>
+        <label class="opt"><input type="radio" name="q9" value="3">학생 − 수강</label>
+        <div class="explain">차수가 3과 4로 달라 합병 불가 → ∪ ∩ − 불가. ×는 조건이 필요 없어요(결과 차수 7).</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q10</b>학생(학번, 이름)과 수강(학번, 과목번호)을 자연 조인한 결과의 속성은?</p>
+        <label class="opt"><input type="radio" name="q10" value="0">학번, 이름, 과목번호</label>
+        <label class="opt"><input type="radio" name="q10" value="1">학번, 이름, 학번, 과목번호</label>
+        <label class="opt"><input type="radio" name="q10" value="2">이름, 과목번호</label>
+        <label class="opt"><input type="radio" name="q10" value="3">학번, 이름</label>
+        <div class="explain">자연 조인은 중복 속성(학번)을 하나만. 두 번이면 동등 조인, 학생 속성만이면 세미 조인.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q11</b>기본 연산이 아닌 것은?</p>
+        <label class="opt"><input type="radio" name="q11" value="0">프로젝트 π</label>
+        <label class="opt"><input type="radio" name="q11" value="1">차집합 −</label>
+        <label class="opt"><input type="radio" name="q11" value="2">카티션 프로덕트 ×</label>
+        <label class="opt"><input type="radio" name="q11" value="3">조인 ⋈</label>
+        <div class="explain">조인 = σ(×)로 표현되는 복합 연산. 복합은 ∩ ⋈ ÷.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q12</b>질의 트리 최적화 규칙으로 옳은 것은?</p>
+        <label class="opt"><input type="radio" name="q12" value="0">카티션 프로덕트를 가장 먼저 실행한다</label>
+        <label class="opt"><input type="radio" name="q12" value="1">셀렉트는 가능한 한 트리 아래쪽으로 옮겨 먼저 실행한다</label>
+        <label class="opt"><input type="radio" name="q12" value="2">AND로 연결된 셀렉트는 하나로 합친다</label>
+        <label class="opt"><input type="radio" name="q12" value="3">AND 조건식은 OR로 바꾼다</label>
+        <div class="explain">σ · π는 먼저, AND 셀렉트는 분리, OR는 AND로, × + σ는 조인으로. 목적은 중간 릴레이션 최소화.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>서술형 연습 2개</small></h3>
+    <div class="box explain-box">
+      <p class="eq">① 파일 시스템의 종속성 문제를 DB 시스템은 어떻게 해결하나요? (3단계 구조 · 데이터 독립성이라는 말을 써서)</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">파일 시스템에서는 프로그램이 파일을 직접 접근해서, 파일 구조가 바뀌면 그 파일을 쓰는 프로그램을 모두 고쳐야 했어요(종속성). DB 시스템에서는 모든 접근이 DBMS를 거치고, DB를 외부 · 개념 · 내부 세 단계 스키마로 나눠 관리해요. DBMS가 외부/개념 사상을 관리하니까 개념 스키마가 바뀌어도 응용 프로그램은 영향을 거의 안 받고(논리적 데이터 독립성), 개념/내부 사상을 관리하니까 저장 구조가 바뀌어도 개념 스키마는 그대로예요(물리적 데이터 독립성). 이 사상 정보는 데이터 사전에 메타 데이터로 저장돼요.</div>
+    </div>
+    <div class="box explain-box" style="margin-top:12px">
+      <p class="eq">② 같은 결과를 내는 두 질의 트리 중 셀렉트를 먼저 하는 쪽이 왜 효율적인가요?</p>
+      <textarea data-save="explain2" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">질의 최적화의 핵심은 연산 순서를 조정해서 중간 릴레이션의 크기를 최소화하는 거예요. 카티션 프로덕트를 먼저 하면 두 릴레이션 카디널리티의 곱만큼 투플이 생긴 다음에야 조건으로 골라요. 셀렉트를 트리 아래쪽(먼저)으로 내리면 처음부터 투플 수가 줄어든 상태에서 조인하니까 처리할 양이 훨씬 적어요. 그래서 셀렉트를 먼저 하는 트리가 효율적이에요.</div>
+    </div>
+
+    <details class="ref"><summary>범위 메모 · 이 페이지에서 뺀 것 <small>확인용</small></summary><div class="ref-body">
+      <h4>출처</h4>
+      <p>장면 1 · 2 · 4 · 5는 9/3~10/1 수업 페이지에서, 장면 3(3단계 구조 · 데이터 독립성 · 데이터 사전)은 수업 녹음이 없어 교재 CH02 p.20~29로 정리했어요.</p>
+      <h4>뺀 것</h4>
+      <p>MySQL 설치 방법, ex01.sql 전체, 정보 시스템 종류(TPS · MIS…), DB 서버, 강의 여담. 필요하면 각 수업 페이지의 "더 알아두면 좋은 것"을 보세요.</p>
+      <h4>범위 확인할 것</h4>
+      <p>CH05 3절(SELECT · WHERE · GROUP BY · INSERT/UPDATE/DELETE 실습)은 아직 수업 전이라 넣지 않았어요. 시험 범위에 들어가는지 공지를 확인하세요.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>데이터베이스 · 중간고사 대비 · CH01~CH05 · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

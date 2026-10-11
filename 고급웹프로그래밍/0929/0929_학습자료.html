@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>고급웹프로그래밍 9월 29일 · React 핵심 개념</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+}
+</style>
+</head>
+<body data-course="고급웹프로그래밍" data-week="0929">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>고급웹프로그래밍</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">9월 29일 (화) · 5주차 ① · SH327 5주차 자료 p.2~18</div>
+    <h1>React는 왜 쓰고, 버튼을 누르면 속에서 무슨 일이 일어날까?</h1>
+    <p class="lead">React 첫 시간이에요. 교수님 말로 "Component, Props, State 세 가지만 알면 대부분 안다"고 했어요. 거기에 화면을 빠르게 다시 그리는 비밀인 Virtual DOM까지 보면 오늘 끝이에요.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
+      <ol>
+        <li>바닐라 JS 대신 React를 쓰는 이유를 명령형 / 선언형으로 설명할 수 있다</li>
+        <li>Component · Props · State를 붕어빵 비유로 구분하고, useState 한 줄을 쓸 수 있다</li>
+        <li>클릭 → 리렌더링 → DOM 업데이트 흐름과 Virtual DOM 원리를 설명할 수 있다</li>
+      </ol>
+      <div class="time">약 30분 · 장면 5개 · 장면마다 확인 문제 1개</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 · 면접 얘기한 것</h2>
+      <ul>
+        <li>중간고사 <b>10/20(화) 9:30</b> · 객관식 + 주관식 필기 · 2~7주차 자료 <b>Summary 중심</b> · 코드 <b>실행 결과 쓰기</b> (10/8 공지)</li>
+        <li>Virtual DOM — "프론트엔드 <b>면접 질문에서 엄청난 단골</b>. 구조랑 리렌더링이 어떻게 일어나는지 설명해 봐요"</li>
+        <li>React는 <b>Component · Props · State</b> 세 가지만 알면 대부분 안다</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="오늘의 흐름">
+      <a href="#c1"><b>장면 1</b>왜 React?</a>
+      <a href="#c2"><b>장면 2</b>Component · JSX</a>
+      <a href="#c3"><b>장면 3</b>Props · State</a>
+      <a href="#c4"><b>장면 4</b>useState · 리렌더링</a>
+      <a href="#c5"><b>장면 5</b>Virtual DOM</a>
+      <a href="#review"><b>복습</b>시험 직전 정리</a>
+    </nav>
+  </div>
+
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>숫자 하나 바뀔 때마다 직접 찾아가서 고쳐야 한다면?</h2><div class="sub">React 소개 · 바닐라 JS의 Pain point · Imperative vs Declarative</div></div></div>
+
+    <p><mark>React</mark>는 UI를 만드는 JavaScript <b>라이브러리</b>예요. Facebook(지금의 Meta)이 2013년에 공개했고, 2015년 ES6를 만나 2016~17년쯤 주류가 됐어요. 화면을 <b>컴포넌트</b>로 나누고, 데이터가 바뀌면 UI를 자동으로 다시 그려 줘요. 페이지 하나에서 화면이 바뀌는 SPA(Single Page Application) 개발에 널리 쓰여요.</p>
+    <div class="prof"><span class="av">교수</span><div class="bubble">프론트엔드 개발자로 취업하고 싶으면 React 없으면 개발을 못 합니다. 프론트엔드를 꿈꾼다면 무조건 React. 우리나라뿐 아니라 해외도 똑같아요.<small>9/29 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <h3>바닐라 JS는 뭐가 힘들었나</h3>
+    <p>바닐라 JS(순수 JS)로 짜면 상태가 바뀔 때마다 <b>내가 직접</b> DOM을 찾아가서 바꿔야 해요. 값이 바뀌면 querySelector로 요소 찾고, textContent 바꾸고, classList 바꾸고… 화면이 커질수록 DOM 바꾸는 코드가 늘고, 데이터와 화면을 맞추는 게 복잡해져요. 이게 <b>Pain point</b>예요.</p>
+    <pre class="code"><span class="file">명령형 (Imperative) — 바닐라 JS: "어떻게 바꿀지" 하나하나 명령</span>title.textContent = "Hello";
+title.classList.add("active");
+
+<span class="file">선언형 (Declarative) — React: "지금 상태면 화면이 이래야 해"</span>&lt;h1 className={active ? "active" : ""}&gt;{title}&lt;/h1&gt;</pre>
+    <p>선언형에선 나는 <b>상태(active, title)</b>만 바꾸고, DOM을 실제로 고치는 건 React가 해요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>명령형 UI는 DOM을 어떻게 바꿀지 직접 명령하는 방식(바닐라 JS)이고, 선언형 UI는 현재 상태에서 UI가 무엇이어야 하는지 선언하면 React가 DOM 변경을 처리하는 방식이다.</p>
+      <div class="mn">외우는 법: <b>명령형 = 어떻게 · 선언형 = 무엇</b></div></div>
+
+    <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">다음 중 선언형(Declarative) 코드는?</div>
+      <div class="opts">
+        <button class="o">document.querySelector("#n").textContent = n;</button>
+        <button class="o">&lt;p&gt;{n}&lt;/p&gt;</button>
+        <button class="o">el.classList.add("on");</button></div>
+      <div class="fb">상태 n에 따라 화면이 무엇인지 <b>선언</b>만 했어요. 나머지는 DOM을 직접 고치는 명령형.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>붕어빵 틀 하나로 팥 붕어빵, 슈크림 붕어빵을 다 찍는다</h2><div class="sub">Component · Element · JSX · Function Component</div></div></div>
+
+    <p><mark>Component</mark>는 화면을 이루는 <b>독립적인 UI 단위</b>예요. 버튼, 카드, 헤더 같은 걸 하나씩 컴포넌트로 만들어 두고, 필요한 곳에서 불러 써요. 똑같은 게 여러 번 나오면 컴포넌트 하나만 고치면 되니까 재사용성과 유지보수성이 확 올라가요. HTML로 깡으로 짜면 반복이 어려워서 코드가 점점 길어지는데, React는 그걸 해소해요.</p>
+    <div class="analogy"><b>교수님 비유 — 붕어빵</b><br>컴포넌트 = <b>붕어빵 틀</b>. 원하는 위치에서 호출하면 찍혀 나오는 붕어빵 = <b>Element</b>. 어떤 사람은 팥, 어떤 사람은 슈크림을 좋아하니까, 틀은 똑같이 쓰되 안의 내용(다음 장면의 Props)만 바꿔 주자는 거예요.</div>
+
+    <h3>JSX — JS 안에서 HTML처럼 쓰기</h3>
+    <p>React는 HTML 파일을 직접 짜지 않아요. 그걸 가능하게 하는 게 <mark>JSX</mark>(JavaScript Syntax Extension)예요. HTML처럼 생겼지만 <b>HTML이 아니라 JS 문법 확장</b>이고, 교수님 말로 JS의 "DLC(확장팩)"예요. 빌드 과정에서 JS 코드로 바뀌어요.</p>
+    <pre class="code"><span class="file">JSX와 실제 변환 결과</span>const element = &lt;h1&gt;Hello React&lt;/h1&gt;;
+<span class="c">// 빌드하면 ↓</span>
+const element = React.createElement("h1", null, "Hello React");
+
+<span class="file">Function Component</span>function <span class="hl">Welcome</span>() {      <span class="c">// 이름은 대문자로 시작</span>
+  return &lt;h1&gt;Hello React&lt;/h1&gt;;  <span class="c">// JSX를 반환</span>
+}
+&lt;Welcome /&gt;                    <span class="c">// 내가 만든 HTML 태그처럼 사용</span></pre>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>Component는 독립적인 UI 단위로 조합 · 재사용이 가능하다. JSX는 HTML이 아닌 JavaScript Syntax Extension이며 빌드 시 React.createElement 등 JS 코드로 변환된다. Function Component는 이름을 대문자로 시작하고 JSX를 반환한다.</p>
+      <div class="mn">외우는 법: <b>틀 = Component · 붕어빵 = Element</b> / <b>JSX = JS의 DLC</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">JSX에 대한 설명으로 <b>틀린</b> 것은?</div>
+      <div class="opts">
+        <button class="o">JavaScript 문법 확장이다</button>
+        <button class="o">빌드 과정에서 JS 코드로 바뀐다</button>
+        <button class="o">브라우저가 그대로 읽는 HTML이다</button></div>
+      <div class="fb">JSX는 <b>HTML이 아니에요</b>. React.createElement 같은 JS로 변환된 뒤 실행돼요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>팥이냐 슈크림이냐는 누가 정하고, 지금 상태는 누가 들고 있을까?</h2><div class="sub">Props · State · Event Handling · Component Tree</div></div></div>
+
+    <p>틀(컴포넌트)은 같아도 내용은 달라야 하잖아요. 그 내용을 <b>부모가 자식에게 넘겨주는 데이터</b>가 <mark>Props</mark>예요. 반면 컴포넌트가 <b>스스로 들고 있으면서 바뀔 수 있는 값</b>은 <mark>State</mark>예요.</p>
+    <pre class="code"><span class="file">Props와 State</span>&lt;StudentCard <span class="hl">name="김민수" major="컴퓨터공학과" grade={2}</span> /&gt;
+<span class="c">// ↑ 부모가 자식 StudentCard에게 넘기는 Props</span>
+
+const [likes, setLikes] = useState(0);
+<span class="c">// ↑ 컴포넌트 안에서 바뀌는 State (좋아요 수)</span></pre>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th>Props</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td>누가 정하나</td><td>부모 (Parent → Child)</td><td>컴포넌트 자신</td></tr>
+        <tr><td>붕어빵으로</td><td>팥 · 슈크림 (속재료)</td><td>지금 상태 (따끈한지 식었는지)</td></tr>
+        <tr><td>바뀌면</td><td>—</td><td>React가 감지해서 다시 그림 (Re-render)</td></tr>
+      </tbody></table></div>
+    <p>이벤트는 DOM의 addEventListener를 직접 쓰지 않고 <b>JSX 속성</b>으로 붙여요: <code>onClick</code>, <code>onChange</code>, <code>onSubmit</code>. 예) <code>&lt;button onClick={handleClick}&gt;Click&lt;/button&gt;</code></p>
+
+    <h3>컴포넌트는 나무처럼 쌓인다</h3>
+    <figure class="fig">
+      <svg viewBox="0 0 640 200" role="img" aria-label="최상위 App 아래 Header, UserProfile, PostList가 있고 UserProfile 아래 Avatar와 UserInfo, PostList 아래 Post 세 개가 있는 컴포넌트 트리. Props는 위에서 아래로 흐른다">
+        <defs><marker id="ct1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <g stroke="var(--line)" stroke-width="1.5" fill="none">
+          <path d="M320 46 L110 90"/><path d="M320 46 L320 90"/><path d="M320 46 L530 90"/>
+          <path d="M320 122 L255 158"/><path d="M320 122 L385 158"/>
+          <path d="M530 122 L470 158"/><path d="M530 122 L530 158"/><path d="M530 122 L590 158"/></g>
+        <rect x="270" y="12" width="100" height="34" rx="10" fill="var(--teal)"/><text x="320" y="34" text-anchor="middle" font-size="13.5" font-weight="700" fill="var(--surface)">App</text>
+        <g font-size="12.5" font-weight="700" text-anchor="middle">
+          <rect x="60" y="90" width="100" height="32" rx="9" fill="var(--teal-soft)"/><text x="110" y="111" fill="var(--teal-ink)">Header</text>
+          <rect x="262" y="90" width="116" height="32" rx="9" fill="var(--teal-soft)"/><text x="320" y="111" fill="var(--teal-ink)">UserProfile</text>
+          <rect x="480" y="90" width="100" height="32" rx="9" fill="var(--teal-soft)"/><text x="530" y="111" fill="var(--teal-ink)">PostList</text></g>
+        <g font-size="11.5" text-anchor="middle" fill="var(--ink)">
+          <rect x="215" y="158" width="80" height="28" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="255" y="177">Avatar</text>
+          <rect x="345" y="158" width="80" height="28" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="385" y="177">UserInfo</text>
+          <rect x="445" y="158" width="50" height="28" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="470" y="177">Post</text>
+          <rect x="505" y="158" width="50" height="28" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="530" y="177">Post</text>
+          <rect x="565" y="158" width="50" height="28" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="590" y="177">Post</text></g>
+        <path d="M30 30 L30 175" stroke="var(--teal)" stroke-width="2.5" fill="none" marker-end="url(#ct1)"/>
+        <text x="40" y="60" font-size="12" font-weight="700" fill="var(--teal-ink)">Props</text>
+        <text x="40" y="76" font-size="11" fill="var(--ink-3)">위 → 아래</text>
+      </svg>
+      <figcaption>최상위는 보통 App(프로그램의 main 같은 진입점). 같은 틀 Post가 세 번 재사용됐어요</figcaption>
+    </figure>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>Props는 Parent Component가 Child Component에 전달하는 데이터로 위에서 아래로 흐르며 재사용성을 높인다. State는 Component 내부에서 관리하는 변경 가능한 데이터로, 바뀌면 React가 감지해 리렌더링한다. 이벤트는 onClick 등 JSX Attribute로 연결한다.</p>
+      <div class="mn">외우는 법: <b>붕어빵 — 틀(Component) · 속재료(Props) · 지금 상태(State)</b></div></div>
+
+    <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q"><code>&lt;StudentCard name="김민수" /&gt;</code>에서 name="김민수"는?</div>
+      <div class="opts">
+        <button class="o">부모가 자식에게 넘기는 Props</button>
+        <button class="o">StudentCard 내부의 State</button>
+        <button class="o">Virtual DOM</button></div>
+      <div class="fb">태그 속성처럼 부모가 넘기는 값 = <b>Props</b>.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>count = count + 1 했는데 왜 화면 숫자가 그대로지?</h2><div class="sub">useState · setState · State 변경 → 리렌더링 흐름</div></div></div>
+
+    <p>바뀌는 값을 만들려면 React가 주는 기능(<b>Hook</b>)을 써요. 그중 하나가 <mark>useState</mark>예요. 이름부터 "상태를 쓰고 싶어"죠.</p>
+    <pre class="code"><span class="file">useState 문법</span>import { useState } from 'react';
+const [<span class="hl">state</span>, <span class="hl">setState</span>] = useState(<span class="hl">initialState</span>);</pre>
+    <div class="anno">
+      <p><b>state</b> — 현재 값. 처음엔 initialState가 들어가요. 숫자 · 문자열 · 객체 뭐든 돼요.</p>
+      <p><b>setState</b> — 값을 바꾸는 함수. 이걸 불러야 값이 바뀌고 <mark>자동으로 리렌더링</mark>돼요. 둘은 짝꿍이에요.</p>
+      <p><b>initialState</b> — 초깃값.</p>
+    </div>
+    <p>그럼 그냥 <code>count = count + 1</code> 하면 안 되냐고요? 선언이 <b>const</b>라 재할당이 안 되고, 무엇보다 React는 <mark>setState를 불러야만</mark> 값이 바뀐 걸 알아요. 그래서 setCount를 써야 해요.</p>
+    <pre class="code"><span class="file">Counter 컴포넌트</span>function Counter() {
+  const [count, setCount] = useState(0);
+  return &lt;button <span class="hl">onClick</span>={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;;
+}
+<span class="c">// 처음 버튼엔 0 → 클릭 → 1 → 클릭 → 2</span></pre>
+
+    <h3>클릭 한 번에 일어나는 일</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>①</th><th>②</th><th>③</th><th>④</th><th>⑤</th><th>⑥</th></tr></thead>
+      <tbody><tr><td>User Click</td><td>setCount()</td><td>State 변경</td><td>Component Re-render</td><td>새 UI 계산</td><td>DOM Update</td></tr></tbody></table></div>
+    <p>너무 빨라서 우리는 못 느껴요. 핵심은 <b>개발자는 State만 바꾸고, UI 업데이트는 React가</b> 한다는 거예요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>const [state, setState] = useState(initialState). state는 현재 값, setState는 상태를 갱신하고 리렌더링을 트리거하는 함수다. 흐름: User Click → setState → State 변경 → Re-render → 새 UI 계산 → DOM Update.</p>
+      <div class="mn">외우는 법: <b>값 · set값 · 초깃값</b> / 흐름 <b>클 · 셋 · 바 · 리 · 계 · 돔</b></div></div>
+
+    <div class="check" data-id="k4" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q"><code>const [count, setCount] = useState(5);</code>에서 5는?</div>
+      <div class="opts">
+        <button class="o">최대 클릭 횟수</button>
+        <button class="o">count의 초깃값</button>
+        <button class="o">리렌더링 간격(ms)</button></div>
+      <div class="fb">useState(initialState)의 인자 = <b>초깃값</b>. 처음 화면에 5가 보여요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>버튼 하나 바뀌었는데 페이지 전체를 다시 그려야 할까? (면접 단골)</h2><div class="sub">Virtual DOM · flickering · 비교 · 메모리</div></div></div>
+
+    <p>실제 DOM은 브라우저가 들고 있는 단 하나의 객체예요. 이걸 업데이트할 때마다 화면이 깜빡깜빡할 수밖에 없는데, 이걸 <b>flickering</b>이라고 해요. 실제 서비스 페이지는 컴포넌트가 엄청 많은데, 하나 바뀌었다고 전체를 다시 그리면 오래 걸리고 손해가 막심하죠.</p>
+    <p>그래서 React가 낸 아이디어가 <mark>Virtual DOM</mark>이에요. DOM의 <b>복사본을 메모리에</b> 하나 더 들고 있는 거예요.</p>
+    <ol class="steps">
+      <li>UI 구조를 JS 객체 형태로 메모리에 들고 있어요 (Virtual DOM)</li>
+      <li>State가 바뀌면 <b>새 Virtual DOM</b>(새 UI 결과)을 계산해요</li>
+      <li>이전 결과와 새 결과를 <mark>비교</mark>해요</li>
+      <li><mark>필요한 실제 DOM 변경만</mark> 수행해요</li>
+    </ol>
+    <p>조금만 교체하고도 전체 페이지가 바뀐 효과를 내는 거죠. 교수님 말로 "React의 엄청난 아이디어"예요. 대신 공짜는 아니에요. UI 상태를 메모리가 들고 있으니 <b>메모리를 더 써요</b>. React로 만든 페이지를 띄우면 크롬이 메모리를 꽤 먹는 이유예요.</p>
+    <div class="vs"><div class="x"><b>틀린 생각</b>State가 바뀌면 실제 DOM 전체를 새로 만든다</div>
+      <div class="o"><b>맞는 생각</b>새 Virtual DOM과 이전 것을 비교해 필요한 실제 DOM만 바꾼다</div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>Virtual DOM은 실제 DOM을 매번 직접 바꾸는 대신 UI 구조를 JS 객체로 메모리에 관리하는 방식으로, State 변경 시 새 결과를 계산해 이전 결과와 비교한 뒤 필요한 실제 DOM 변경만 수행한다. 깜빡임이 줄고 빨라지지만 메모리를 더 사용한다.</p>
+      <div class="mn">외우는 법: <b>복사본 · 새로 계산 · 비교 · 바뀐 곳만</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">Virtual DOM의 단점으로 교수님이 든 것은?</div>
+      <div class="opts">
+        <button class="o">화면이 더 자주 깜빡인다</button>
+        <button class="o">State를 쓸 수 없다</button>
+        <button class="o">메모리를 더 많이 쓴다</button></div>
+      <div class="fb">UI 복사본을 메모리에 들고 있으니 <b>메모리↑</b>. 깜빡임은 오히려 줄어요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
+  </section>
+
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험 직전 복습</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>공책에 옮겨 적기</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요. 눌러서 하나씩 확인하세요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 중요 · ✗ 피하기</p>
+      <div class="grp"><h4>① React <span class="mn">어떻게 vs 무엇</span></h4><ul>
+        <li>UI <span class="kw">Library</span> · Meta 2013 · SPA · 프론트 취업 필수</li>
+        <li>명령형(바닐라) "어떻게" / <span class="kw">선언형</span>(React) "무엇"</li></ul></div>
+      <div class="grp"><h4>② Component · JSX <span class="mn">틀 · 붕어빵 · DLC</span></h4><ul>
+        <li>Component = 독립 UI 단위 · <span class="kw">대문자</span> · JSX 반환 · 찍힌 것 = Element</li>
+        <li>JSX = JS <span class="kw">Syntax Extension</span> → <span class="kw">React.createElement</span></li></ul></div>
+      <div class="grp"><h4>③ Props · State <span class="ex-t">★</span><span class="mn">속재료 · 지금 상태</span></h4><ul>
+        <li><span class="kw">Props</span> = Parent → Child 데이터 · <span class="kw">State</span> = 내부 변경 가능 데이터</li>
+        <li>이벤트 = JSX 속성 <span class="kw">onClick</span> · Component Tree, 최상위 = App</li></ul></div>
+      <div class="grp"><h4>④ useState <span class="ex-t">★</span><span class="mn">클 · 셋 · 바 · 리 · 계 · 돔</span></h4><ul>
+        <li>const [ state, <span class="kw">setState</span> ] = useState( <span class="kw">initialState</span> )</li>
+        <li>직접 대입 ✗ · 개발자는 State만, UI는 React가</li></ul></div>
+      <div class="grp"><h4>⑤ Virtual DOM <span class="ex-t">★ 면접</span><span class="mn">복사본 · 비교 · 바뀐 곳만</span></h4><ul>
+        <li>UI = JS 객체로 <span class="kw">메모리</span>에 → 새 결과 계산 → <span class="kw">비교</span> → 필요한 DOM만</li>
+        <li>깜빡임(flickering)↓ 속도↑ · 메모리↑</li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>React는 UI를 작은 <span class="cloze">Component</span>로 나눈다. 부모가 자식에게 전달하는 데이터는 <span class="cloze">Props</span>, 컴포넌트 내부의 변경 가능한 데이터는 <span class="cloze">State</span>다. <code>const [count, setCount] = useState(0)</code>에서 상태를 바꾸려면 <span class="cloze">setCount</span>를 호출하고, 그러면 <span class="cloze">리렌더링</span>이 일어난다. React는 메모리의 <span class="cloze">Virtual DOM</span>을 비교해 바뀐 부분만 반영한다. JSX는 빌드 시 <span class="cloze">React.createElement</span> 코드로 변환된다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">플래시카드 <small>알면 →, 모르면 ←</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">React란?</div><div class="a">UI 구축용 JavaScript 라이브러리. Facebook(Meta) 2013 공개. 컴포넌트 단위, 데이터가 바뀌면 UI 자동 갱신, SPA 개발에 사용.</div></div>
+        <div class="fc-item"><div class="q">바닐라 JS로 UI를 관리할 때의 Pain point는?</div><div class="a">State 관리 어려움, DOM 변경 코드 증가, 데이터-UI 동기화 복잡, 유지보수 어려움.</div></div>
+        <div class="fc-item"><div class="q">Imperative UI vs Declarative UI는?</div><div class="a">명령형: 어떻게 바꿀지 직접 명령 / 선언형: 현재 상태에서 UI가 무엇이어야 하는지 선언 → React가 DOM 처리.</div></div>
+        <div class="fc-item"><div class="q">Component의 특징은?</div><div class="a">독립적인 UI 단위, 조합해 화면 구성, 재사용 가능 → 유지보수 · 재사용성↑.</div></div>
+        <div class="fc-item"><div class="q">JSX란?</div><div class="a">JS 안에서 HTML과 비슷하게 UI를 쓰는 JavaScript Syntax Extension. HTML 아님, 빌드 시 JS로 변환.</div></div>
+        <div class="fc-item"><div class="q">Function Component 규칙은?</div><div class="a">JSX를 반환, 이름은 대문자로 시작, 사용자 정의 태그처럼 사용(&lt;Welcome /&gt;).</div></div>
+        <div class="fc-item"><div class="q">Props란?</div><div class="a">Parent Component가 Child에게 전달하는 데이터. 위 → 아래로 흐른다.</div></div>
+        <div class="fc-item"><div class="q">State란?</div><div class="a">Component 내부에서 관리하는 변경 가능한 데이터. 변경 시 React가 감지해 Re-render.</div></div>
+        <div class="fc-item"><div class="q">useState 문법의 세 요소는?</div><div class="a">const [state, setState] = useState(initialState) — 현재 값, 갱신 + 리렌더링 트리거 함수, 초깃값.</div></div>
+        <div class="fc-item"><div class="q">State 변경 후 렌더링 흐름은?</div><div class="a">User Click → setState → State 변경 → Component Re-render → 새 UI 계산 → DOM Update.</div></div>
+        <div class="fc-item"><div class="q">Virtual DOM 동작 원리는?</div><div class="a">UI를 JS 객체로 메모리에 표현 → State 변경 시 새 결과 계산 → 이전과 비교 → 필요한 실제 DOM만 변경. 대신 메모리↑.</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">퀴즈 <small>다 풀고 채점하기</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="3"><p class="qt"><b>Q1</b>버튼을 눌러도 화면 숫자가 안 바뀐다. 원인으로 가장 그럴듯한 것은?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">setCount를 사용했다</label>
+        <label class="opt"><input type="radio" name="q1" value="1">onClick에 함수를 넣었다</label>
+        <label class="opt"><input type="radio" name="q1" value="2">useState를 import했다</label>
+        <label class="opt"><input type="radio" name="q1" value="3">상태를 count = count + 1처럼 직접 바꿨다</label>
+        <div class="explain">React는 setState 호출로만 변경을 알아채요. 직접 바꾸면 리렌더링이 안 일어나요(const라 재할당도 안 됨).</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q2</b>Props에 대한 설명으로 옳은 것은?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">부모 컴포넌트가 자식 컴포넌트에 전달하는 데이터다</label>
+        <label class="opt"><input type="radio" name="q2" value="1">자식이 부모의 State를 직접 바꾸는 함수다</label>
+        <label class="opt"><input type="radio" name="q2" value="2">Virtual DOM의 다른 이름이다</label>
+        <label class="opt"><input type="radio" name="q2" value="3">컴포넌트 내부에서만 바뀌는 데이터다</label>
+        <div class="explain">Parent → Child. 내부에서 바뀌는 데이터는 State.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q3</b>Virtual DOM이 성능을 높이는 방식은?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">State가 바뀌면 실제 DOM을 전부 다시 만든다</label>
+        <label class="opt"><input type="radio" name="q3" value="1">HTML 파일을 캐시해 둔다</label>
+        <label class="opt"><input type="radio" name="q3" value="2">새 Virtual DOM과 이전 것을 비교해 바뀐 부분만 실제 DOM에 반영한다</label>
+        <label class="opt"><input type="radio" name="q3" value="3">메모리를 전혀 쓰지 않는다</label>
+        <div class="explain">메모리에 UI 사본을 두고 비교해 필요한 곳만 바꿔요. 대신 메모리를 더 써요.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q4</b>다음 중 선언형(Declarative) UI 코드는?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">document.querySelector("#count").textContent = count;</label>
+        <label class="opt"><input type="radio" name="q4" value="1">&lt;h1 className={active ? "active" : ""}&gt;{title}&lt;/h1&gt;</label>
+        <label class="opt"><input type="radio" name="q4" value="2">title.classList.add("active");</label>
+        <label class="opt"><input type="radio" name="q4" value="3">el.addEventListener("click", fn);</label>
+        <div class="explain">상태(active, title)에 따라 UI가 무엇인지 선언. 나머지는 DOM 직접 조작(명령형).</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q5</b>JSX에 대한 설명으로 옳지 <b>않은</b> 것은?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">JavaScript Syntax Extension이다</label>
+        <label class="opt"><input type="radio" name="q5" value="1">빌드 과정에서 JS 코드로 변환된다</label>
+        <label class="opt"><input type="radio" name="q5" value="2">UI 구조를 직관적으로 표현할 수 있다</label>
+        <label class="opt"><input type="radio" name="q5" value="3">브라우저가 그대로 읽는 HTML 파일이다</label>
+        <div class="explain">JSX는 HTML 자체가 아니에요. JS로 변환된 뒤 실행돼요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q6</b>State 변경 후 일어나는 순서로 옳은 것은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">setState → State 변경 → Re-render → 새 UI 계산 → DOM Update</label>
+        <label class="opt"><input type="radio" name="q6" value="1">DOM Update → setState → Re-render</label>
+        <label class="opt"><input type="radio" name="q6" value="2">Re-render → setState → State 변경</label>
+        <label class="opt"><input type="radio" name="q6" value="3">새 UI 계산 → 클릭 → setState</label>
+        <div class="explain">개발자는 State만 바꾸고, UI 계산과 DOM 업데이트는 React가 해요.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q7</b>버튼(초깃값 0)을 2번 클릭한 뒤 <code>&lt;button onClick={() =&gt; setCount(count + 1)}&gt;{count}&lt;/button&gt;</code>의 화면은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">0</label>
+        <label class="opt"><input type="radio" name="q7" value="1">1</label>
+        <label class="opt"><input type="radio" name="q7" value="2">2</label>
+        <label class="opt"><input type="radio" name="q7" value="3">{count}</label>
+        <div class="explain">클릭마다 State +1 → 리렌더링 → 0 → 1 → 2.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>면접 대비</small></h3>
+    <div class="box explain-box">
+      <p class="eq">"Virtual DOM의 구조와, 그걸로 리렌더링이 어떻게 일어나는지 설명해 보세요."</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">실제 DOM은 브라우저가 가진 하나의 객체라, 바뀔 때마다 전체를 다시 그리면 느리고 화면이 깜빡여요(flickering). React는 UI를 JS 객체 형태로 메모리에 복사해 둔 Virtual DOM을 들고 있어요. 사용자가 버튼을 눌러 setState가 호출되면 State가 바뀌고, React는 새 Virtual DOM을 계산해서 이전 Virtual DOM과 비교해요. 그리고 달라진 부분만 실제 DOM에 반영해요. 그래서 조금만 교체해도 전체 페이지가 바뀐 효과를 내고 리렌더링이 빨라져요. 대신 UI 상태를 메모리에 들고 있어서 메모리를 더 사용해요.</div>
+    </div>
+
+    <details class="ref"><summary>더 알아두면 좋은 것 <small>시험 비중 낮음</small></summary><div class="ref-body">
+      <h4>React 셋업 (자료 p.16~18)</h4>
+      <p>React는 Node.js 위에서 돌아가서 Node를 먼저 설치해요. LTS(Long Term Support) 버전을 권장(수업은 24). PowerShell에서 <code>node -v</code>, <code>npm -v</code>로 확인하고, <code>npm create vite@latest my-react-app -- --template react</code>로 뼈대를 만든 뒤 <code>npm run dev</code>로 개발 서버를 띄워요. 폴더 구조는 10/1 페이지에.</p>
+      <h4>상태 관리 도구</h4>
+      <p>현업에선 State를 전역으로 관리해 주는 도구(예: Zustand)를 많이 써요. 10/6에 다시 나와요.</p>
+      <h4>수업 운영</h4>
+      <p>이번 주부터 실습 위주. 코드를 따라 치기보다 AI로 만든 코드를 분석하는 데 집중.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>고급웹프로그래밍 · 9월 29일 (화) · SH327 5주차 React · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

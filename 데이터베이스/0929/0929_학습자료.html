@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>데이터베이스 9월 29일 · 관계 연산 · 조인 · 질의 최적화</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+}
+</style>
+</head>
+<body data-course="데이터베이스" data-week="0929">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>데이터베이스</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">9월 29일 (화) · 5주차 ① · CH04 관계 연산 · 확장 연산 · 관계 대수의 활용</div>
+    <h1>같은 결과인데, 왜 어떤 방법은 훨씬 빠를까?</h1>
+    <p class="lead">행을 고르는 σ, 열을 고르는 π, 표를 잇는 ⋈를 배우고, DBMS가 같은 질의를 더 빠르게 바꾸는 "질의 최적화"까지 가는 날이에요. 마지막 장면이 시험 포인트예요.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
+      <ol>
+        <li>"4학년의 이름"처럼 주어진 요구를 σ와 π로 식으로 쓸 수 있다</li>
+        <li>동등 조인 · 자연 조인 · 외부 조인 결과를 표로 그릴 수 있다</li>
+        <li>두 질의 트리 중 어느 쪽이 효율적인지, 왜 그런지 설명할 수 있다</li>
+      </ol>
+      <div class="time">약 35분 · 장면 5개 · 장면마다 확인 문제 1개</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것</h2>
+      <ul>
+        <li>두 질의 트리 중 "어떤 게 더 성능이 좋고 <b>왜 그런지 설명할 수 있으면</b>" → 장면 5</li>
+        <li>세타 조인은 "잊어버려도 된다", 외부 조인 좌우는 "헷갈려도 상관없다". 대신 <b>동등 vs 자연</b>은 확실히</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="오늘의 흐름">
+      <a href="#c1"><b>장면 1</b>σ는 행, π는 열</a>
+      <a href="#c2"><b>장면 2</b>조인 3형제</a>
+      <a href="#c3"><b>장면 3</b>디비전 · 기본 연산</a>
+      <a href="#c4"><b>장면 4</b>세미 vs 외부</a>
+      <a href="#c5"><b>장면 5</b>질의 최적화</a>
+      <a href="#review"><b>복습</b>시험 직전 정리</a>
+    </nav>
+  </div>
+
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>"4학년 학생의 이름만 보여 줘"를 식으로 쓰면?</h2><div class="sub">셀렉트 σ · 프로젝트 π</div></div></div>
+
+    <p>지난 시간의 집합 연산(∪ ∩ − ×)은 릴레이션을 <b>통째로</b> 다뤘어요. 오늘의 <mark>관계 연산</mark>은 릴레이션 안의 <b>행과 열을 하나하나</b> 골라낼 수 있어요. 그중 제일 많이 쓰는 게 이 두 개고, 거의 항상 짝으로 움직여요.</p>
+
+    <ul class="plain">
+      <li><mark>셀렉트 σ (시그마)</mark> — 조건에 맞는 <b>행(투플)</b>만 고른다. 표를 가로로 자르는 "수평 분할". 조건식에는 =, ≠, &lt;, &gt; 같은 비교 연산자와 ∧(AND), ∨(OR), ¬(NOT)이 들어가요.</li>
+      <li><mark>프로젝트 π (파이)</mark> — 지정한 <b>열(속성)</b>만 고른다. 세로로 자르는 "수직 분할". 조건이 아니라 속성 이름 목록을 줘요.</li>
+    </ul>
+
+    <pre class="code"><span class="file">"4학년 학생의 이름"</span><span class="hl">σ</span> 학년=4 (학생)              <span class="c">-- ① 4학년 행만 남기고</span>
+<span class="hl">π</span> 이름 ( σ 학년=4 (학생) )    <span class="c">-- ② 그중 이름 열만</span></pre>
+    <p>안쪽에서 σ로 행을 줄이고, 바깥에서 π로 열을 고르는 모양이에요. 안에서 밖으로 읽으면 돼요.</p>
+
+    <h3>π의 숨은 성질: 중복 제거</h3>
+    <p>학생 7명 표에서 <code>π 학년 (학생)</code>을 하면 몇 줄이 나올까요? 7줄이 아니에요. 학년 값은 1~4뿐이고, 릴레이션은 집합이라 <b>똑같은 투플은 자동으로 하나만</b> 남아요. 그래서 많아야 4줄. π 결과의 카디널리티는 원본보다 <b>작거나 같아요</b>.</p>
+
+    <div class="vs"><div class="x"><b>✗ 이름 때문에 헷갈림</b>σ(셀렉트) = SQL의 SELECT 절</div>
+      <div class="o"><b>○ 실제 대응</b>σ는 SQL의 <b>WHERE</b>(행 조건). SELECT 뒤의 열 목록이 <b>π</b></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>σ = 조건에 맞는 투플(수평 분할). π = 지정한 속성(수직 분할, 중복 투플 자동 제거).</p>
+      <div class="mn">외우는 법: <b>σ 시그마 = 시(행) · π 파이 = 파(열)</b> — "시행 파열"</div></div>
+
+    <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">학생 릴레이션에서 3학년 여학생의 이름과 학과를 구하는 식은?</div>
+      <div class="opts">
+        <button class="o">σ 이름, 학과 (π 학년=3 ∧ 성별='여' (학생))</button>
+        <button class="o">π 이름, 학과 (σ 학년=3 ∧ 성별='여' (학생))</button>
+        <button class="o">π 학년=3 (학생) × 이름</button></div>
+      <div class="fb">행 조건(학년·성별)은 <b>σ</b>, 열 선택(이름·학과)은 <b>π</b>. 안쪽 σ로 줄이고 바깥 π로 골라요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>학생 표와 수강 표를 학번으로 붙였더니, 학번이 두 번 나온다?</h2><div class="sub">조인 ⋈ · 세타 ⊃ 동등 ⊃ 자연</div></div></div>
+
+    <p><mark>조인 ⋈</mark>은 두 릴레이션에서 <b>조건에 맞는 투플끼리 옆으로 붙여</b> 하나로 만드는 연산이에요. 수학적으로는 <b>× 한 다음 σ</b> 한 것과 같아요. 모든 조합을 만든 뒤 조건에 맞는 것만 남기는 거죠. 그런데 ×는 결과가 너무 커서, 처음부터 조건에 맞는 것만 붙이는 조인이 훨씬 효율적이에요.</p>
+
+    <div class="table-wrap"><table>
+      <caption>학생 ⋈ 학생.학번 = 수강.학번 수강 (동등 조인) — 학번 열이 두 번</caption>
+      <thead><tr><th>학생.학번</th><th>이름</th><th>수강.학번</th><th>과목번호</th></tr></thead>
+      <tbody>
+        <tr><td>s001</td><td>김연아</td><td class="hl">s001</td><td>c002</td></tr>
+        <tr><td>s002</td><td>홍길동</td><td class="hl">s002</td><td>c001</td></tr>
+      </tbody></table></div>
+
+    <ol class="plain">
+      <li><b>세타 조인</b> — 조건에 비교 연산자 6개(=, ≠, &lt;, ≤, &gt;, ≥) 중 아무거나. 교수님: "잊어버려도 된다."</li>
+      <li><mark>동등 조인</mark> — 그중 <b>=</b>만 쓰는 조인. 보통 "조인"이라고 하면 이거예요. 단점: 위 표처럼 <b>같은 학번 열이 두 번</b> 나와요.</li>
+      <li><mark>자연 조인 (⋈N)</mark> — 동등 조인 결과에서 <b>중복 속성을 자동으로 제거</b>. 학번이 한 번만 나와요. 가장 많이 쓰는 방식이에요.</li>
+    </ol>
+
+    <div class="prof"><span class="av">교수</span><div class="bubble">여기서 학번이 똑같이 나오잖아요. 내가 봤을 때 얘나 얘나 똑같은데 얘는 필요 없는 데이터야. 그때 자연 조인을 쓰면 이 녀석이 자동으로 없어집니다. 기본은 동등 조인, 그다음 필요 없는 중복을 빼는 자연 조인. 이 두 가지를 이해하시면 됩니다.<small>9/29 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>조인 = × 후 σ. 세타(비교 연산자) ⊃ 동등(=, 공통 속성 두 번) ⊃ 자연(동등 결과에서 중복 속성 제거, 한 번).</p>
+      <div class="mn">외우는 법: <b>세 · 동 · 자 = 크고 · 같고 · 깔끔하게</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">학생(학번, 이름)과 수강(학번, 과목번호)을 <b>자연 조인</b>한 결과의 속성은?</div>
+      <div class="opts">
+        <button class="o">학번, 이름, 학번, 과목번호</button>
+        <button class="o">이름, 과목번호</button>
+        <button class="o">학번, 이름, 과목번호</button></div>
+      <div class="fb">자연 조인은 중복 속성(학번)을 <b>하나만</b> 남겨요. 학번이 두 번이면 동등 조인이에요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>"137호에서 열리는 모든 과목을 수강한 학생"은 어떻게 찾을까?</h2><div class="sub">디비전 ÷ · 기본 연산 5 · 복합 연산 3</div></div></div>
+
+    <p>문제에 <mark>"모든 ~을"</mark>이 보이면 <b>디비전 ÷</b>을 떠올리면 돼요. <code>R1 ÷ R2</code>는 R2의 <b>모든</b> 투플과 연관된 R1 투플을 찾아서, R2의 속성을 뺀 나머지만 돌려줘요. 나눗셈이랑 개념이 비슷해요.</p>
+    <pre class="code"><span class="file">c001과 c002를 둘 다 수강한 학생</span>수강(학번, 과목번호) <span class="hl">÷</span> 과목(과목번호 = {c001, c002})
+<span class="c">-- 결과: 두 과목을 모두 들은 학번만 남는다</span></pre>
+
+    <h3>기본 연산과 복합 연산</h3>
+    <p>지금까지 나온 연산 8개를 둘로 나눌 수 있어요.</p>
+    <ul class="plain">
+      <li><mark>기본 연산 5개</mark> — ∪ 합집합 · − 차집합 · × 카티션 프로덕트 · σ 셀렉트 · π 프로젝트. 다른 연산으로 <b>대체할 수 없어요</b>.</li>
+      <li><mark>복합 연산 3개</mark> — ∩ 교집합 · ⋈ 조인 · ÷ 디비전. 기본 연산을 조합해서 만들 수 있어요.</li>
+    </ul>
+    <pre class="code"><span class="file">복합 연산을 기본 연산으로 바꾸면</span>R ∩ S  =  R <span class="hl">−</span> (R <span class="hl">−</span> S)      <span class="c">-- 차집합 두 번</span>
+R ⋈ S  =  <span class="hl">σ</span> 조건 (R <span class="hl">×</span> S)    <span class="c">-- 곱한 뒤 고르기</span></pre>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>기본 연산 = ∪ − × σ π (대체 불가). 복합 연산 = ∩ ⋈ ÷ (기본 연산으로 표현 가능). 디비전 = "모든 ~을 가진" 투플 찾기.</p>
+      <div class="mn">외우는 법: <b>합 · 차 · 곱 · 셀 · 프</b>가 기본, <b>교 · 조 · 디</b>는 복합</div></div>
+
+    <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">다음 중 기본 연산이 <b>아닌</b> 것은?</div>
+      <div class="opts">
+        <button class="o">교집합 ∩</button>
+        <button class="o">차집합 −</button>
+        <button class="o">프로젝트 π</button></div>
+      <div class="fb">교집합은 R − (R − S)로 만들 수 있는 <b>복합 연산</b>이에요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>수강 기록이 없는 학생도 명단에서 빠지면 안 된다면?</h2><div class="sub">확장 연산: 세미 조인 · 외부 조인 · 외부 합집합</div></div></div>
+
+    <p>자연 조인은 깔끔하지만 두 가지 아쉬움이 있어요. ① 필요 없는 열까지 다 붙어 온다 ② 짝이 없는 투플은 <b>빠져 버린다</b>. 이걸 해결하려고 나온 게 확장 연산이에요. 방향이 정반대인 두 개를 기억하세요.</p>
+
+    <ul class="plain">
+      <li><mark>세미 조인 (⋉ ⋊)</mark> — 자연 조인 결과에서 <b>한쪽 릴레이션의 속성만</b> 돌려줘요. 보내는 데이터 양이 줄어서 연산이 가벼워져요. → <b>줄이기</b></li>
+      <li><mark>외부 조인 (⟗ ⟕ ⟖)</mark> — 조인에 <b>실패한 투플도 버리지 않고</b>, 비는 칸은 널로 채워 포함해요. → <b>늘리기</b>. 실무에서는 데이터를 빠뜨리지 않으려고 이걸 많이 써요.</li>
+    </ul>
+
+    <div class="hook"><p class="q">학생 {s001 김연아, s002 홍길동, s003 이승엽}, 수강 {s001 c002, s002 c001, s004 c003}</p>
+      <p class="h">학번이 짝이 맞는 건 s001, s002뿐이에요. s003은 수강 기록이 없고, s004는 학생 명단에 없어요.</p></div>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>연산</th><th>결과</th><th>투플 수</th></tr></thead>
+      <tbody>
+        <tr><td>자연 조인</td><td>s001 김연아 c002 / s002 홍길동 c001</td><td>2</td></tr>
+        <tr><td>왼쪽 외부 조인 ⟕</td><td>위 2개 + <b>s003 이승엽 NULL</b></td><td>3</td></tr>
+        <tr><td>완전 외부 조인 ⟗</td><td>위 3개 + <b>s004 NULL c003</b></td><td>4</td></tr>
+        <tr><td>왼쪽 세미 조인 ⋉</td><td>s001 김연아 / s002 홍길동 (학생 속성만)</td><td>2</td></tr>
+      </tbody></table></div>
+
+    <p>외부 조인은 왼쪽(⟕, 왼쪽 릴레이션 전부) · 오른쪽(⟖, 오른쪽 전부) · 완전(⟗, 양쪽 전부) 세 종류예요. 좌우는 교수님 말대로 "헷갈려도 괜찮아요". 핵심은 <b>"빠짐없이, 없으면 널"</b>이에요.</p>
+    <p>하나 더, <b>외부 합집합</b>은 모양이 일부만 같은 두 릴레이션을 널로 채워 합쳐요. 학부생 표와 지도교수 칸이 있는 대학원생 표를 한 표로 합치는 경우처럼요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>세미 조인 = 자연 조인 결과 중 한쪽 속성만(양 줄임). 외부 조인 = 조인 실패 투플도 널로 채워 포함(완전·왼쪽·오른쪽).</p>
+      <div class="mn">외우는 법: <b>세미는 반만(줄이기) · 외부는 바깥까지(늘리기)</b></div></div>
+
+    <div class="check" data-id="k4" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">"모든 학생을 보여 주되, 수강 기록이 없는 학생도 빠짐없이" (학생이 왼쪽)</div>
+      <div class="opts">
+        <button class="o">자연 조인</button>
+        <button class="o">왼쪽 외부 조인</button>
+        <button class="o">왼쪽 세미 조인</button></div>
+      <div class="fb">왼쪽(학생) 전부를 포함하고 짝이 없으면 널로 채우는 <b>왼쪽 외부 조인</b>. 자연·세미 조인은 짝 없는 학생을 빼 버려요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>시험 문제: 두 질의 트리 중 어느 쪽이 빠르고, 왜?</h2><div class="sub">질의 트리 · 질의 최적화</div></div></div>
+
+    <p>우리가 SQL을 쓰면 DBMS는 그걸 <b>관계 대수식으로 바꾸고 → 질의 트리로 그린 뒤 → 가장 빠른 순서를 골라 → 실행</b>해요. SQL은 "무엇을"만 말하니까, "어떤 순서로"는 DBMS가 정하는 거죠. 같은 결과라도 순서에 따라 속도가 크게 달라요. Oracle과 MySQL의 성능 차이도 여기서 나요.</p>
+
+    <div class="hook"><p class="q">질의: "김연아 학생이 수강한 과목번호와 평가학점"</p>
+      <p class="h">교수님이 수업에서 그려 준 두 트리예요. 트리는 아래에서 위로 실행돼요.</p></div>
+
+    <figure class="fig">
+      <svg viewBox="0 0 640 300" role="img" aria-label="트리 A는 학생과 수강을 먼저 곱한 뒤 김연아를 고르고, 트리 B는 학생에서 김연아를 먼저 고른 뒤 수강과 조인한다">
+        <defs><marker id="q1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--ink-3)"/></marker></defs>
+        <text x="160" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="var(--no)">A · 먼저 곱하기</text>
+        <text x="480" y="22" text-anchor="middle" font-size="15" font-weight="800" fill="var(--ok)">B · 먼저 고르기</text>
+        <line x1="320" y1="10" x2="320" y2="290" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="5 5"/>
+        <g text-anchor="middle" font-size="12.5" font-weight="700">
+          <rect x="80" y="38" width="160" height="32" rx="8" fill="var(--teal-soft)"/><text x="160" y="59" fill="var(--teal-ink)">π 과목번호, 평가학점</text>
+          <rect x="80" y="90" width="160" height="32" rx="8" fill="var(--teal-soft)"/><text x="160" y="111" fill="var(--teal-ink)">σ 이름='김연아'</text>
+          <rect x="80" y="142" width="160" height="32" rx="8" fill="var(--teal-soft)"/><text x="160" y="163" fill="var(--teal-ink)">σ 학생.학번=수강.학번</text>
+          <rect x="80" y="194" width="160" height="40" rx="8" fill="var(--no-soft)" stroke="var(--no)" stroke-width="1.5"/><text x="160" y="213" fill="var(--no)">× 모든 조합</text><text x="160" y="228" font-size="11" font-weight="500" fill="var(--no)">학생 수 × 수강 수</text>
+          <rect x="40" y="254" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="90" y="274" fill="var(--ink)">학생</text>
+          <rect x="180" y="254" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="230" y="274" fill="var(--ink)">수강</text>
+
+          <rect x="400" y="38" width="160" height="32" rx="8" fill="var(--teal-soft)"/><text x="480" y="59" fill="var(--teal-ink)">π 과목번호, 평가학점</text>
+          <rect x="400" y="110" width="160" height="40" rx="8" fill="var(--teal-soft)"/><text x="480" y="129" fill="var(--teal-ink)">⋈ 학번</text><text x="480" y="144" font-size="11" font-weight="500" fill="var(--teal-ink)">김연아 1명과만 조인</text>
+          <rect x="350" y="186" width="130" height="40" rx="8" fill="var(--ok-soft)" stroke="var(--ok)" stroke-width="1.5"/><text x="415" y="205" fill="var(--ok)">σ 이름='김연아'</text><text x="415" y="220" font-size="11" font-weight="500" fill="var(--ok)">투플 1개로 줄임</text>
+          <rect x="365" y="254" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="415" y="274" fill="var(--ink)">학생</text>
+          <rect x="500" y="254" width="100" height="30" rx="8" fill="var(--bg)" stroke="var(--line)"/><text x="550" y="274" fill="var(--ink)">수강</text>
+        </g>
+        <g stroke="var(--ink-3)" stroke-width="1.5" fill="none" marker-end="url(#q1)">
+          <path d="M90 254L130 236"/><path d="M230 254L190 236"/><path d="M160 194V176"/><path d="M160 142V124"/><path d="M160 90V72"/>
+          <path d="M415 254V228"/><path d="M415 186L460 152"/><path d="M550 254L500 152"/><path d="M480 110V72"/></g>
+      </svg>
+      <figcaption>A는 중간 결과가 "학생 수 × 수강 수"로 폭발, B는 처음부터 1명으로 줄인 채 진행</figcaption>
+    </figure>
+
+    <p><b>답은 B</b>예요. A는 학생과 수강의 모든 조합을 먼저 만들어요. 학생 1,000명, 수강 기록 10,000건이면 1,000만 줄을 만든 다음에야 김연아를 찾죠. B는 학생 표에서 김연아 <b>1명을 먼저 고른 뒤</b> 조인하니까 처음부터 다룰 양이 아주 적어요.</p>
+
+    <div class="prof"><span class="av">교수</span><div class="bubble">모든 데이터를 가져와서 우선 둘러보고 그중에 원하는 걸 찾는 것, 그리고 원하는 데이터만 먼저 뽑아서 그중에 다시 선택하는 것. 어떤 게 빠를까요? 셀렉트를 먼저 적용하면 처음에 다룰 투플 수가 줄어들기 때문에 훨씬 빠르죠. 어떤 녀석이 성능이 뛰어나고 왜 그런지를 설명할 수 있으면 됩니다.<small>9/29 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <h3>최적화 규칙 (DBMS가 트리를 바꾸는 방법)</h3>
+    <ul class="plain">
+      <li><mark>σ와 π는 트리 아래쪽으로</mark> 내려서 먼저 실행 (가장 중요)</li>
+      <li>결과가 작아지는 σ부터 먼저</li>
+      <li>× 와 바로 위 σ는 <b>조인 하나로</b> 합치기</li>
+      <li>AND로 묶인 σ는 따로따로 쪼개기, OR는 AND로 바꾸기</li>
+    </ul>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>질의 최적화의 핵심 = 연산 순서를 조정해 중간 릴레이션의 크기를 최소화. 셀렉트를 먼저 하는 트리가 효율적이다(처음부터 투플 수가 줄어서).</p>
+      <div class="mn">외우는 법: <b>먼저 고르고 → 줄이고 → 붙인다</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">질의 트리 최적화 규칙으로 <b>옳지 않은</b> 것은?</div>
+      <div class="opts">
+        <button class="o">셀렉트는 트리 아래쪽으로 옮겨 먼저 실행한다</button>
+        <button class="o">× 와 바로 위 셀렉트는 조인 하나로 합친다</button>
+        <button class="o">카티션 프로덕트를 가능한 한 먼저 실행한다</button></div>
+      <div class="fb">×는 중간 결과를 <b>가장 크게</b> 만들어요. 먼저 하는 건 σ·π예요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
+  </section>
+
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험 직전 복습</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>공책에 옮겨 적기</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요. 눌러서 하나씩 확인하세요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제 · ✗ 안 됨</p>
+      <div class="grp"><h4>① σ · π <span class="mn">시행 · 파열</span></h4><ul>
+        <li><span class="kw">σ</span> = 조건 맞는 투플 → 수평 분할 (SQL의 WHERE)</li>
+        <li><span class="kw">π</span> = 지정 속성 → 수직 분할 · <span class="kw">중복 투플 제거</span> (카디널리티 ≤ 원본)</li></ul></div>
+      <div class="grp"><h4>② 조인 <span class="ex-t">★</span><span class="mn">세 ⊃ 동 ⊃ 자</span></h4><ul>
+        <li>⋈ = <span class="kw">× 후 σ</span></li>
+        <li><span class="kw">동등</span> = '=' (공통 속성 두 번) / <span class="kw">자연</span> = 중복 속성 제거 (한 번)</li></ul></div>
+      <div class="grp"><h4>③ 디비전 · 기본/복합</h4><ul>
+        <li>÷ = "<span class="kw">모든</span> ~을 가진" 투플</li>
+        <li>기본 5 = ∪ − × σ π / 복합 3 = ∩ ⋈ ÷ · R ∩ S = R − (R − S)</li></ul></div>
+      <div class="grp"><h4>④ 확장 연산 <span class="mn">세미 ↓ 외부 ↑</span></h4><ul>
+        <li><span class="kw">세미</span> = 자연 조인 결과 중 한쪽 속성만 → 줄이기</li>
+        <li><span class="kw">외부</span> = 실패 투플도 <span class="kw">널</span>로 채워 포함 · 완전 ⟗ 왼 ⟕ 오 ⟖ (실무 多)</li>
+        <li>외부 합집합 = 일부만 합병 가능 → 널 채움</li></ul></div>
+      <div class="grp"><h4>⑤ 질의 최적화 <span class="ex-t">★ 비교 서술</span></h4><ul>
+        <li>SQL → 관계 대수식 → 질의 트리 → 최적화 → 실행 계획</li>
+        <li>핵심 = <span class="kw">중간 릴레이션 최소화</span> · σ·π <span class="kw">아래로(먼저)</span> · × + σ → ⋈</li>
+        <li>김연아 예: σ 이름='김연아'(학생) 먼저 → 조인 → π</li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>셀렉트 연산자는 <span class="cloze">σ</span>로 릴레이션을 수평 분할하고, 프로젝트 연산자는 <span class="cloze">π</span>로 수직 분할한다. 비교 연산자 '='를 쓰는 조인은 <span class="cloze">동등 조인</span>, 그 결과에서 중복 속성을 제거하면 <span class="cloze">자연 조인</span>이다. 조인에 실패한 투플까지 널로 채워 포함하는 것은 <span class="cloze">외부 조인</span>이다. 질의 최적화의 핵심은 <span class="cloze">중간 릴레이션</span>의 크기를 최소화하는 것이며, 이를 위해 <span class="cloze">셀렉트</span>를 먼저 실행한다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">플래시카드 <small>알면 →, 모르면 ←</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">집합 연산과 관계 연산의 차이는?</div><div class="a">집합 연산은 릴레이션을 통째로 다룸. 관계 연산은 행과 열을 개별적으로 조작.</div></div>
+        <div class="fc-item"><div class="q">셀렉트 σ는?</div><div class="a">조건식을 만족하는 투플만 추출. 수평 분할. SQL의 WHERE.</div></div>
+        <div class="fc-item"><div class="q">프로젝트 π는?</div><div class="a">지정한 속성만 추출. 수직 분할. 중복 투플 자동 제거.</div></div>
+        <div class="fc-item"><div class="q">조인을 기본 연산으로 표현하면?</div><div class="a">× 한 뒤 σ. R ⋈ S = σ 조건 (R × S)</div></div>
+        <div class="fc-item"><div class="q">동등 조인과 자연 조인의 차이는?</div><div class="a">동등 = '=' 조건, 공통 속성이 두 번. 자연 = 동등 결과에서 중복 속성 제거, 한 번.</div></div>
+        <div class="fc-item"><div class="q">디비전 R1 ÷ R2는?</div><div class="a">R2의 모든 투플과 연관된 R1 투플에서 R2 속성을 뺀 나머지. "모든 ~을 가진".</div></div>
+        <div class="fc-item"><div class="q">기본 연산 5개와 복합 연산 3개는?</div><div class="a">기본: ∪ − × σ π / 복합: ∩ ⋈ ÷</div></div>
+        <div class="fc-item"><div class="q">세미 조인은?</div><div class="a">자연 조인 결과 중 한쪽 릴레이션 속성만 반환. 데이터 양을 줄인다.</div></div>
+        <div class="fc-item"><div class="q">외부 조인 3종류는?</div><div class="a">완전 ⟗(양쪽 전부) · 왼쪽 ⟕(왼쪽 전부) · 오른쪽 ⟖(오른쪽 전부). 짝 없으면 널.</div></div>
+        <div class="fc-item"><div class="q">DBMS가 SQL을 처리하는 흐름은?</div><div class="a">SQL → 관계 대수식 → 질의 트리 → 최적화 → 질의 실행 계획 → 실행</div></div>
+        <div class="fc-item"><div class="q">질의 최적화의 핵심은?</div><div class="a">연산 순서를 조정해 중간 릴레이션의 크기를 최소화. σ·π를 먼저(트리 아래로).</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">퀴즈 <small>다 풀고 채점하기</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="1"><p class="qt"><b>Q1</b>학생 릴레이션에서 4학년 학생의 이름만 구하는 식은?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">σ 이름 (π 학년=4 (학생))</label>
+        <label class="opt"><input type="radio" name="q1" value="1">π 이름 (σ 학년=4 (학생))</label>
+        <label class="opt"><input type="radio" name="q1" value="2">학생 ÷ 학년</label>
+        <label class="opt"><input type="radio" name="q1" value="3">σ 학년=4 (학생) × 이름</label>
+        <div class="explain">행 조건은 σ, 열 선택은 π. 안쪽 σ로 줄이고 바깥 π로 골라요.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>학생 7명, 학년 값이 1~4인 학생 릴레이션에서 π 학년(학생)의 카디널리티는?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">항상 7</label>
+        <label class="opt"><input type="radio" name="q2" value="1">항상 1</label>
+        <label class="opt"><input type="radio" name="q2" value="2">항상 3</label>
+        <label class="opt"><input type="radio" name="q2" value="3">최대 4</label>
+        <div class="explain">π는 중복 투플을 제거해요. 학년 값이 1~4뿐이라 많아야 4줄.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q3</b>질의 트리 최적화 규칙으로 옳지 않은 것은?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">카티션 프로덕트를 가능한 한 먼저 실행한다</label>
+        <label class="opt"><input type="radio" name="q3" value="1">셀렉트는 트리 아래쪽으로 옮겨 먼저 실행한다</label>
+        <label class="opt"><input type="radio" name="q3" value="2">× 와 바로 위 셀렉트는 조인으로 합친다</label>
+        <label class="opt"><input type="radio" name="q3" value="3">AND로 묶인 셀렉트는 따로 쪼갠다</label>
+        <div class="explain">×는 중간 결과를 가장 크게 만들어요. 먼저 하는 건 σ·π.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q4</b>학생 {s001, s002, s003}과 수강 {s001, s002, s004}를 학번으로 완전 외부 조인하면 투플 수는?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">2</label>
+        <label class="opt"><input type="radio" name="q4" value="1">3</label>
+        <label class="opt"><input type="radio" name="q4" value="2">4</label>
+        <label class="opt"><input type="radio" name="q4" value="3">9</label>
+        <div class="explain">짝 맞는 s001, s002 + 학생에만 있는 s003 + 수강에만 있는 s004 = 4. 비는 칸은 널.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q5</b>"과목 릴레이션의 모든 과목을 수강한 학생"을 찾는 연산은?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">합집합</label>
+        <label class="opt"><input type="radio" name="q5" value="1">디비전</label>
+        <label class="opt"><input type="radio" name="q5" value="2">세타 조인</label>
+        <label class="opt"><input type="radio" name="q5" value="3">프로젝트</label>
+        <div class="explain">"모든 ~을 가진" = 디비전. 수강(학번, 과목번호) ÷ 과목(과목번호).</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q6</b>세미 조인을 쓰는 이점으로 가장 알맞은 것은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">조인에 실패한 투플까지 모두 보존한다</label>
+        <label class="opt"><input type="radio" name="q6" value="1">합병 불가능한 릴레이션을 합친다</label>
+        <label class="opt"><input type="radio" name="q6" value="2">모든 조합을 만든다</label>
+        <label class="opt"><input type="radio" name="q6" value="3">한쪽 속성만 남겨 전달·연산하는 데이터 양을 줄인다</label>
+        <div class="explain">보존 = 외부 조인, 합병 불가 결합 = 외부 합집합, 모든 조합 = ×. 세미는 줄이기.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q7</b>"김연아가 수강한 과목번호와 평가학점"에서 더 효율적인 트리와 이유는?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">학생에서 김연아를 먼저 고른 뒤 조인 — 중간 릴레이션이 처음부터 작아서</label>
+        <label class="opt"><input type="radio" name="q7" value="1">학생 × 수강을 먼저 — 모든 경우를 다 봐서 정확해서</label>
+        <label class="opt"><input type="radio" name="q7" value="2">두 트리는 결과가 같으니 속도도 같다</label>
+        <label class="opt"><input type="radio" name="q7" value="3">π를 맨 먼저 — 열이 줄어서</label>
+        <div class="explain">결과는 같아도 순서에 따라 중간 크기가 달라요. 셀렉트를 먼저 하면 처음부터 투플 수가 줄어요.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>시험 서술형 연습</small></h3>
+    <div class="box explain-box">
+      <p class="eq">같은 결과를 내는 두 질의 트리 중, 셀렉트를 먼저 하는 쪽이 왜 빠른지 설명해 보세요.</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">SQL은 무엇을 원하는지만 쓰고 순서는 쓰지 않아서, DBMS가 관계 대수식과 질의 트리로 바꿔 순서를 정해요. 같은 결과라도 순서에 따라 중간 릴레이션의 크기가 크게 달라요. 학생과 수강을 먼저 곱하면 학생 수 × 수강 수만큼의 투플을 만든 뒤에야 김연아를 골라요. 반면 학생에서 김연아를 먼저 고르면(셀렉트를 트리 아래로) 투플이 1개로 줄어든 상태에서 조인하니까 처리할 양이 훨씬 적어요. 그래서 질의 최적화의 핵심은 연산 순서를 조정해 중간 결과를 최소화하는 거예요.</div>
+    </div>
+
+    <details class="ref"><summary>더 알아두면 좋은 것 <small>시험 비중 낮음</small></summary><div class="ref-body">
+      <h4>관계 대수와 SQL 대응</h4>
+      <div class="table-wrap"><table>
+        <thead><tr><th>연산</th><th>기호</th><th>SQL</th></tr></thead>
+        <tbody>
+          <tr><td>셀렉트</td><td>σ</td><td>WHERE</td></tr>
+          <tr><td>프로젝트</td><td>π</td><td>SELECT 열 목록</td></tr>
+          <tr><td>조인</td><td>⋈</td><td>JOIN … ON</td></tr>
+          <tr><td>외부 조인</td><td>⟗ ⟕ ⟖</td><td>FULL / LEFT / RIGHT OUTER JOIN</td></tr>
+        </tbody></table></div>
+      <h4>AI 시대에 왜 DB를 배우나 (강의 서두)</h4>
+      <p>AI가 SQL을 써 주는 시대에도 엔터프라이즈급 시스템을 쓰는 회사에 가면 DB는 반드시 다뤄요. AI 서비스는 결국 데이터 중심으로 갈 수밖에 없고, 데이터 안에는 개인정보 같은 이상한 정보가 섞여 있어서 최종 검증은 사람이 해야 해요. 그래서 데이터 구조를 이해하고 설계·검증할 수 있어야 한다는 얘기였어요.</p>
+      <h4>다음 시간</h4>
+      <p>CH05 SQL 기초, MySQL 실습 환경 구축.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>데이터베이스 · 9월 29일 (화) · CH04 관계 대수 · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

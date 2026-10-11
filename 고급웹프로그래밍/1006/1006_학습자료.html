@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>고급웹프로그래밍 10월 6일 · State와 Rendering</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+}
+</style>
+</head>
+<body data-course="고급웹프로그래밍" data-week="1006">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>고급웹프로그래밍</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">10월 6일 (화) · 6주차 ① · SH327 6주차 자료 p.2~35</div>
+    <h1>setCount를 3번 불렀는데 왜 1만 올라갈까?</h1>
+    <p class="lead">State를 제대로 파는 날이에요. 그냥 변수로는 왜 화면이 안 바뀌는지, setter를 부르면 속에서 무슨 일이 일어나는지, 그리고 시험에 딱 나오기 좋은 "State는 스냅샷"과 객체 State 복사(얕은 복사)까지 봐요.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
+      <ol>
+        <li>setter 연속 호출 코드의 실행 결과를 맞히고 Functional Update로 고칠 수 있다</li>
+        <li>객체 · 배열 State를 Spread로 불변 업데이트하는 코드를 쓸 수 있다</li>
+        <li>Lifting State Up, Controlled Component, Props vs State를 설명할 수 있다</li>
+      </ol>
+      <div class="time">약 40분 · 장면 6개 · 장면마다 확인 문제 1개</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 · 면접 얘기한 것</h2>
+      <ul>
+        <li>중간고사 <b>10/20(화) 9:30</b> · 객관식 + 주관식 필기 · 2~7주차 자료 <b>Summary 중심</b> · 코드 <b>실행 결과 쓰기</b></li>
+        <li>객체 State 복사 — "<b>면접에서 나오기 좋은 질문</b>. 불변성, Spread Operator, 얕은 복사가 다 나와야 된다"</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="오늘의 흐름">
+      <a href="#c1"><b>장면 1</b>왜 State?</a>
+      <a href="#c2"><b>장면 2</b>Re-render 과정</a>
+      <a href="#c3"><b>장면 3</b>Snapshot · prev</a>
+      <a href="#c4"><b>장면 4</b>객체 State · 불변성</a>
+      <a href="#c5"><b>장면 5</b>State는 어디에?</a>
+      <a href="#c6"><b>장면 6</b>Lifecycle 맛보기</a>
+      <a href="#review"><b>복습</b>시험 직전 정리</a>
+    </nav>
+  </div>
+
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>콘솔엔 값이 바뀌었는데 화면은 그대로다</h2><div class="sub">State 정의 · 일반 변수 vs State · 이벤트가 시작점</div></div></div>
+
+    <pre class="code"><span class="file">일반 변수로 하면</span>let count = 0;
+count++;     <span class="c">// 콘솔로 찍으면 1. 그런데 화면은 0 그대로!</span></pre>
+    <p>값은 바뀌었어요. 그런데 React가 <b>그걸 감지하지 못해서</b> 렌더링이 안 일어나요. 교수님 말로 "이게 제일 큰 문제"예요. 그래서 화면에 영향을 주는 값은 <mark>State</mark>로 만들어요. State가 바뀌면 그게 React한테 "UI를 다시 계산해야 해"라는 <b>신호</b>가 되거든요. 화면과 상관없이 내부적으로만 들고 있는 값은 일반 변수로 둬도 돼요.</p>
+    <p>그리고 State는 보통 <mark>사용자 행동</mark>에서 바뀌어요. 웹페이지는 한번 뜨고 나면 내가 클릭 · 입력 · 제출을 해야 화면이 바뀌잖아요. 그래서 이벤트 핸들러(onClick, onChange, onSubmit) 안에서 setter를 불러요.</p>
+    <pre class="code"><span class="file">복습 — useState</span>const [count, setCount] = useState(0);
+<span class="c">// count: 현재 State · setCount: 변경 함수(setter) · 0: 초깃값</span>
+<span class="c">// useState는 둘을 배열로 돌려주고, 배열 구조 분해 할당으로 받는다</span>
+
+setCount(count + 1);   <span class="c">// ○ Correct</span>
+count = count + 1;     <span class="c">// ✗ Incorrect — React가 모름</span></pre>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>State = UI를 결정하는 변경 가능한 데이터. 일반 변수는 값이 바뀌어도 React가 감지하지 못해 리렌더링되지 않으므로, 화면에 영향을 주는 값은 State로 관리하고 반드시 Setter로 변경한다.</p>
+      <div class="mn">외우는 법: <b>변수는 조용히 바뀌고, State는 React에 신호를 보낸다</b></div></div>
+
+    <div class="check" data-id="k1" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">버튼 클릭마다 <code>let n = 0;</code>의 n을 <code>n++</code> 한다. 화면의 <code>{n}</code>은?</div>
+      <div class="opts">
+        <button class="o">계속 0으로 보인다</button>
+        <button class="o">1, 2, 3으로 올라간다</button>
+        <button class="o">오류가 난다</button></div>
+      <div class="fb">일반 변수는 React가 감지 못 해서 <b>리렌더링이 없어요</b>. 화면은 그대로.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>setter를 부르면 컴포넌트 함수가 처음부터 다시 돈다</h2><div class="sub">Re-render · Render 단계 · Commit 단계 · Layout / Paint</div></div></div>
+
+    <p><mark>Re-render</mark>는 결국 <b>컴포넌트 함수가 다시 실행되는 것</b>이에요. 컴포넌트는 JSX를 return하는 함수니까, 다시 실행되면 새 JSX가 나오죠.</p>
+    <pre class="code"><span class="file">클릭할 때마다 콘솔엔?</span>function Counter() {
+  console.log("render");               <span class="c">// 리렌더링마다 매번 찍힌다</span>
+  const [count, setCount] = useState(0);  <span class="c">// 그렇다고 0으로 초기화되진 않는다</span>
+  return &lt;h1&gt;{count}&lt;/h1&gt;;
+}</pre>
+    <p>"함수가 처음부터 다시 실행되면 useState(0)도 다시 0이 되는 거 아냐?" 싶죠. 아니에요. 컴포넌트가 한번 State를 들고 있으면 <b>React가 그 값을 기억</b>하고 있다가 돌려줘요.</p>
+
+    <h3>렌더링은 두 단계</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>단계</th><th>하는 일</th></tr></thead>
+      <tbody>
+        <tr><td><b>Render</b></td><td>컴포넌트를 실행해 새 UI 구조 계산 → 이전 결과(Virtual DOM)와 비교 → 바꿀 곳 결정</td></tr>
+        <tr><td><b>Commit</b></td><td>필요한 DOM 변경만 실제 브라우저에 반영 → 브라우저가 <b>Layout · Paint</b>로 화면 표시</td></tr>
+      </tbody></table></div>
+    <p>그래서 Re-render가 일어났다고 <mark>실제 DOM 전체가 다시 만들어지는 게 아니에요</mark>. 바뀐 부분만. 대신 메모리를 좀 더 먹는 게 단점이라고 했죠.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>Setter 호출 → React가 새 State 반영 준비 → 컴포넌트 함수 재실행(Re-render) → 새 JSX 계산 → 이전 결과와 비교 → 필요한 DOM만 반영. 렌더링은 Render 단계(계산 · 비교)와 Commit 단계(실제 DOM 반영)로 나뉜다.</p>
+      <div class="mn">외우는 법: <b>Render = 계산 · Commit = 반영(그리기)</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">위 Counter에서 버튼으로 setCount를 3번(클릭 3번) 실행했다. 처음 렌더링 포함 "render"는 콘솔에 몇 번?</div>
+      <div class="opts">
+        <button class="o">1번</button>
+        <button class="o">3번</button>
+        <button class="o">4번</button></div>
+      <div class="fb">처음 1번 + 클릭마다 리렌더링 3번 = <b>4번</b>. (개발 모드 StrictMode에선 더 찍힐 수 있어요 — 10/8 참고)</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>count가 1일 때 setCount(count + 1)을 3번 부르면? (실행 결과 문제)</h2><div class="sub">State == Snapshot · Multiple Updates · Functional Update</div></div></div>
+
+    <p>교수님이 강의실에서 물어봤어요. 다들 "4"라고 했죠. <mark>정답은 2</mark>예요.</p>
+    <pre class="code"><span class="file">count가 1일 때</span>function update_count() {
+  setCount(count + 1);   <span class="c">// 1 + 1 → "2로 해 줘"</span>
+  setCount(count + 1);   <span class="c">// count는 여전히 1 → 또 "2로 해 줘"</span>
+  setCount(count + 1);   <span class="c">// 또 "2로 해 줘"</span>
+}                        <span class="c">// 결과: <span class="hl">2</span></span></pre>
+    <p>왜냐면 State는 <mark>스냅샷(사진)</mark>이에요. 한 번의 렌더링 안에서 State 값은 그 시점에 찍힌 사진처럼 <b>고정</b>돼 있어요. setter를 불러도 지금 실행 중인 코드의 count가 즉시 바뀌지 않고, 새 값은 <b>다음 렌더링</b>에서 쓸 수 있어요.</p>
+    <pre class="code"><span class="file">그래서 이것도</span>console.log(count);   <span class="c">// 0</span>
+setCount(count + 1);
+console.log(count);   <span class="c">// 여전히 <span class="hl">0</span></span></pre>
+
+    <h3>4로 만들려면 — Functional Update</h3>
+    <pre class="code"><span class="file">setter에 함수를 넘긴다</span>setCount(<span class="hl">prev =&gt; prev + 1</span>);   <span class="c">// 1 → 2</span>
+setCount(<span class="hl">prev =&gt; prev + 1</span>);   <span class="c">// 2 → 3 (prev = 이전 업데이트 결과)</span>
+setCount(<span class="hl">prev =&gt; prev + 1</span>);   <span class="c">// 3 → 4  결과: <span class="hl">4</span></span></pre>
+    <p><code>prev</code>는 <b>이전 업데이트의 결과</b>를 받아요. 그래서 순서대로 쌓여요. 10/1 실습에서 AI가 써 준 <code>prev =&gt; prev + 1</code>이 바로 이거예요. 이전 State에 기대서 새 State를 계산할 때(카운터, 토글, 큐 처리) 권장되는 방식이에요.</p>
+    <div class="vs"><div class="x"><b>틀린 생각</b>setCount를 부른 다음 줄에서 count는 이미 바뀌어 있다</div>
+      <div class="o"><b>맞는 생각</b>State는 스냅샷. 새 값은 다음 렌더링에서 보인다</div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>State는 각 렌더링 시점의 Snapshot이라 Setter를 호출해도 현재 코드의 값은 즉시 바뀌지 않는다. 같은 렌더에서 setCount(count + 1)을 여러 번 호출하면 모두 같은 count를 참조하므로, 이전 값에 의존하는 연속 업데이트는 setCount(prev =&gt; prev + 1) 형태의 Functional Update를 쓴다.</p>
+      <div class="mn">외우는 법: <b>count는 사진 · prev는 릴레이</b> (1 → +1 ×3: 사진이면 2, 릴레이면 4)</div></div>
+
+    <div class="check" data-id="k3" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">count가 0일 때 <code>setCount(prev =&gt; prev + 1); setCount(count + 1);</code>을 실행하면 최종 count는?</div>
+      <div class="opts">
+        <button class="o">2</button>
+        <button class="o">1</button>
+        <button class="o">0</button></div>
+      <div class="fb">첫 줄로 1이 되지만, 두 번째 줄의 count는 스냅샷 0 → "1로 해 줘". 최종 <b>1</b>.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>user.age = 21 하면 왜 안 되고, 새 객체를 만들어야 할까? (면접 단골)</h2><div class="sub">여러 State · Object State · Spread · 얕은 복사 · Immutability · Derived State</div></div></div>
+
+    <p>컴포넌트 하나에 State가 하나일 수는 없어요. 이름 · 나이 · 활성화 여부처럼 <b>의미가 다르면 각각의 State</b>로 나누고, 각자 자기 setter로 바꿔요. 관련 없는 값을 억지로 한 객체에 묶을 필요는 없어요. "여기서부터 갑자기 설계가 나온다"고, 단순하고 명확하게 짜는 게 제일 중요하대요.</p>
+    <p>State엔 객체도 넣을 수 있어요. 대신 <mark>속성을 직접 바꾸면 안 돼요</mark>. 기존 객체를 바탕으로 <b>새 객체를 만들어 바꿔치기</b>해요.</p>
+    <pre class="code"><span class="file">Object State — Immutable Update</span>const [user, setUser] = useState({ name: "Kim", age: 20 });
+
+user.age = 21;                       <span class="c">// ✗ 직접 수정</span>
+setUser({ <span class="hl">...user</span>, age: 21 });       <span class="c">// ○ 펼쳐서 복사 + age만 덮어쓰기</span>
+
+<span class="file">Array State도 같다</span>const [items, setItems] = useState([]);
+setItems([<span class="hl">...items</span>, newItem]);      <span class="c">// push 대신 새 배열</span></pre>
+
+    <h3>Spread와 얕은 복사 — 주소로 보기</h3>
+    <figure class="fig">
+      <svg viewBox="0 0 640 190" role="img" aria-label="user는 0x100 주소의 객체를 가리키고, 스프레드로 복사한 newUser는 0x200 주소의 새 객체를 가리킨다. 값은 같지만 주소가 달라 user === newUser는 false">
+        <rect x="20" y="30" width="120" height="44" rx="10" fill="var(--teal-soft)"/><text x="80" y="57" text-anchor="middle" font-size="14" font-weight="700" fill="var(--teal-ink)">user</text>
+        <rect x="20" y="116" width="120" height="44" rx="10" fill="var(--teal-soft)"/><text x="80" y="143" text-anchor="middle" font-size="14" font-weight="700" fill="var(--teal-ink)">newUser</text>
+        <defs><marker id="sp1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+        <path d="M140 52 L300 52" stroke="var(--teal)" stroke-width="2" marker-end="url(#sp1)"/>
+        <path d="M140 138 L300 138" stroke="var(--teal)" stroke-width="2" marker-end="url(#sp1)"/>
+        <text x="220" y="100" text-anchor="middle" font-size="12" fill="var(--ink-3)">{ ...user } 로 펼쳐 복사</text>
+        <rect x="305" y="22" width="200" height="60" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="405" y="46" text-anchor="middle" font-size="12.5" fill="var(--ink)">{ name: "Kim", age: 20 }</text><text x="405" y="68" text-anchor="middle" font-size="11.5" fill="var(--ink-3)">주소 0x100</text>
+        <rect x="305" y="108" width="200" height="60" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="405" y="132" text-anchor="middle" font-size="12.5" fill="var(--ink)">{ name: "Kim", age: 20 }</text><text x="405" y="154" text-anchor="middle" font-size="11.5" fill="var(--ink-3)">주소 0x200 (새 객체)</text>
+        <rect x="520" y="70" width="112" height="54" rx="10" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="2"/>
+        <text x="576" y="93" text-anchor="middle" font-size="12" font-weight="700" fill="var(--exam)">user === newUser</text>
+        <text x="576" y="113" text-anchor="middle" font-size="12.5" font-weight="800" fill="var(--exam)">false</text>
+      </svg>
+      <figcaption>값은 같지만 주소가 다르다 → 객체 비교 false, user.name === newUser.name은 true</figcaption>
+    </figure>
+    <p>3주차에 배운 "객체 ===는 주소 비교"가 여기서 그대로 쓰여요. Spread는 <mark>얕은 복사(Shallow Copy)</mark>라 새 객체를 만들지만 <b>한 단계만</b> 복사해요. 객체 안에 객체가 또 있는(중첩) State라면 바뀌는 안쪽 객체까지 각각 펼쳐 복사해야 해요.</p>
+    <div class="analogy"><b>교수님 예시 — 불변 객체(Immutable)</b> — 대부분 언어의 String은 불변 객체예요. a = "a" 다음에 a += "b" 하면 결과는 "ab"지만, 메모리로 보면 원래 0x001의 "a"를 고친 게 아니라 0x002에 "ab"가 새로 생긴 거예요. React의 객체 State도 이렇게 "고치지 말고 새로 만들어" 써요.</div>
+    <p><b>왜 굳이?</b> setter로만 바꾸면 어디서 바꿨는지 <b>추적이 쉽고</b>, 새 객체를 만들면 이전 값과 새 값이 명확히 구분돼서 React의 변경 감지와 <b>예측 가능한 렌더링</b>에 유리해요.</p>
+
+    <h3>계산할 수 있으면 State로 만들지 마 — Derived State</h3>
+    <pre class="code"><span class="file">Derived State</span>const [price, setPrice] = useState(10000);
+const [quantity, setQuantity] = useState(2);
+const total = price * quantity;   <span class="c">// State 아님! 리렌더링 때마다 자동 재계산</span></pre>
+    <p>total까지 State로 두면 같은 데이터를 중복 저장해서 <b>동기화 문제</b>가 생길 수 있어요. 원본 State만 저장하고 나머지는 계산하면 데이터 흐름이 단순해져요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>Object · Array State는 직접 수정하지 않고 Spread Operator(...)로 복사한 새 객체 · 배열을 만들어 Setter로 교체한다(Immutable Update). Spread는 얕은 복사라 중첩 객체는 각 계층을 따로 복사해야 한다. 다른 State로 계산 가능한 값은 State로 만들지 않는다(Derived State).</p>
+      <div class="mn">외우는 법: <b>고치지 말고 펼쳐서 새로</b> / <b>계산되면 State 아님</b></div></div>
+
+    <div class="check" data-id="k4" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q"><code>const newUser = { ...user };</code> 후 <code>user === newUser</code>와 <code>user.name === newUser.name</code>의 결과는?</div>
+      <div class="opts">
+        <button class="o">false, true</button>
+        <button class="o">true, true</button>
+        <button class="o">false, false</button></div>
+      <div class="fb">새 객체라 <b>주소가 달라 false</b>, name은 같은 값이 복사돼서 true.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>두 자식이 같은 값을 써야 하면 State는 누가 들고 있어야 할까?</h2><div class="sub">Lifting State Up · Callback Props · Prop Drilling · Controlled Component · Props vs State</div></div></div>
+
+    <p>기본은 <b>그 데이터를 필요로 하는 컴포넌트</b>가 State를 들고 있는 거예요. 그런데 Child A와 Child B가 같은 State를 필요로 하면? <mark>공통 부모</mark>가 들고 있다가 Props로 내려 주는 게 좋아요. 이걸 <mark>Lifting State Up(상태 끌어올리기)</mark>이라고 해요. 교수님은 자바 상속에서 공통 정보를 부모 클래스에 모으는 것과 비슷하다고 했어요.</p>
+    <figure class="fig">
+      <svg viewBox="0 0 640 170" role="img" aria-label="Parent가 State A를 들고 Child A와 Child B에 Props로 내려주고, Child에서 일어난 이벤트는 Callback Props로 Parent에 올라간다">
+        <defs><marker id="ls1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker>
+          <marker id="ls2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--exam)"/></marker></defs>
+        <rect x="245" y="12" width="150" height="52" rx="12" fill="var(--teal)"/><text x="320" y="35" text-anchor="middle" font-size="14" font-weight="700" fill="var(--surface)">Parent</text><text x="320" y="54" text-anchor="middle" font-size="11.5" fill="var(--surface)">State A</text>
+        <rect x="110" y="110" width="130" height="44" rx="10" fill="var(--teal-soft)"/><text x="175" y="137" text-anchor="middle" font-size="13" font-weight="700" fill="var(--teal-ink)">Child A</text>
+        <rect x="400" y="110" width="130" height="44" rx="10" fill="var(--teal-soft)"/><text x="465" y="137" text-anchor="middle" font-size="13" font-weight="700" fill="var(--teal-ink)">Child B</text>
+        <path d="M270 64 L190 106" stroke="var(--teal)" stroke-width="2" marker-end="url(#ls1)"/>
+        <path d="M370 64 L450 106" stroke="var(--teal)" stroke-width="2" marker-end="url(#ls1)"/>
+        <text x="200" y="80" text-anchor="end" font-size="12" fill="var(--teal-ink)">Props ↓</text>
+        <text x="440" y="80" font-size="12" fill="var(--teal-ink)">Props ↓</text>
+        <path d="M500 108 Q560 60 400 40" stroke="var(--exam)" stroke-width="2" fill="none" stroke-dasharray="5 4" marker-end="url(#ls2)"/>
+        <text x="590" y="70" text-anchor="middle" font-size="11.5" fill="var(--exam)">Callback</text><text x="590" y="86" text-anchor="middle" font-size="11.5" fill="var(--exam)">Props ↑</text>
+      </svg>
+      <figcaption>데이터는 위에서 아래로(단방향), 자식의 이벤트는 Callback Props로 부모에게</figcaption>
+    </figure>
+    <p>깊이가 깊어지면 A가 가진 name을 I까지 C → G → I로 줄줄이 넘겨야 해요. 이걸 <mark>Prop Drilling</mark>이라고 해요. 너무 번거로워서 상태 관리 라이브러리가 나왔어요. 예전엔 Recoil, 지금은 <b>Zustand</b>(가볍고 쉬움)를 많이 쓰고, Redux도 많이 써요. 기말 프로젝트에 Zustand를 쓰면 "공부 좀 했네" 소리 듣는대요.</p>
+
+    <h3>Controlled Component — 폼 입력도 State로</h3>
+    <pre class="code"><span class="file">input을 State와 연결</span>const [name, setName] = useState("");
+
+&lt;input
+  value={name}                               <span class="c">// 입력칸 값 = State</span>
+  onChange={(e) =&gt; setName(e.target.value)}  <span class="c">// 칠 때마다 State 갱신 → 리렌더링</span>
+/&gt;</pre>
+    <p>한 글자 칠 때마다 onChange → setName → 리렌더링 → value에 반영이 반복돼요. 값을 브라우저가 아니라 <mark>React가 관리</mark>하니까, 제출 전에 프론트에서 <b>Validation(유효성 검사)</b>을 하기 쉬워요.</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>구분</th><th>Props</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td>위치</td><td>Parent → Child 전달</td><td>Component 내부</td></tr>
+        <tr><td>변경</td><td>자식이 <b>직접 변경하지 않음</b></td><td>Setter로 변경</td></tr>
+        <tr><td>목적</td><td>데이터 전달</td><td>동적 상태 관리</td></tr>
+      </tbody></table></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>여러 컴포넌트가 같은 데이터를 공유하면 State를 공통 Parent로 올리고(Lifting State Up) Props로 전달하며, Child의 이벤트는 Callback Props로 Parent에 전달한다. Controlled Component는 input의 value를 State에 연결하고 onChange에서 Setter로 갱신하는 방식이다. Props는 자식이 직접 변경하지 않고, State는 Setter로 변경한다.</p>
+      <div class="mn">외우는 법: <b>같이 쓰면 위로 올려라</b> / <b>value는 State, onChange는 setter</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">형제 컴포넌트 SearchBox와 ResultList가 같은 검색어를 써야 한다. State는 어디에?</div>
+      <div class="opts">
+        <button class="o">SearchBox와 ResultList에 각각 하나씩</button>
+        <button class="o">둘의 공통 부모에 두고 Props로 내려준다</button>
+        <button class="o">일반 전역 변수로 둔다</button></div>
+      <div class="fb"><b>Lifting State Up</b>. 따로 들면 동기화가 깨지고, 일반 변수는 리렌더링이 안 돼요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#c6">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c6">
+    <div class="ch-head"><span class="ch-num">장면 6</span>
+      <div><h2>컴포넌트에도 태어나고 사라지는 순간이 있다</h2><div class="sub">Lifecycle · Mount · Update · Unmount · Side Effect · useEffect 소개</div></div></div>
+
+    <p>수업 끝에 다음 시간 예고로 본 부분이에요. 컴포넌트의 일생은 세 단계뿐이에요. 교수님이 "Unity 라이프사이클은 엄청 복잡한데 얘는 되게 심플하다"고 했죠.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>단계</th><th>언제</th><th>보통 하는 일</th></tr></thead>
+      <tbody>
+        <tr><td><b>Mount</b></td><td>처음 화면(DOM)에 추가될 때 (객체의 new)</td><td>API 요청, 이벤트 리스너 등록</td></tr>
+        <tr><td><b>Update</b></td><td>Props / State가 바뀌어 리렌더링될 때</td><td>특정 State 변화 감지</td></tr>
+        <tr><td><b>Unmount</b></td><td>화면에서 제거될 때 (객체의 delete)</td><td>타이머 · 이벤트 리스너 정리</td></tr>
+      </tbody></table></div>
+    <p>API 요청 · 타이머 · 이벤트 리스너는 <b>렌더링과 별개의 작업</b>이에요. 이렇게 렌더링 자체와 직접 관계없는 외부 작업을 <mark>Side Effect</mark>라고 하고, React에선 <mark>useEffect</mark>로 관리해요. 렌더링이 끝난 <b>뒤에</b> 실행돼요. 잘 보면 4주차의 Web API(fetch, setInterval, addEventListener, localStorage, document.title)들이죠. 자세한 건 10/8에.</p>
+    <div class="prof"><span class="av">교수</span><div class="bubble">React 코드 깊게 가서 보면 useEffect 떡칠돼 있고 useState 엄청 많이 나와요. 그냥 그 두 개로 이루어져 있다고 봐도 될 것 같아요.<small>10/6 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>Component Lifecycle은 Mount → Update → Unmount. Side Effect는 렌더링과 직접 관계없는 외부 작업(Network 요청, Timer, Event Listener 등)이며 useEffect로 Render 이후에 처리한다.</p>
+      <div class="mn">외우는 법: <b>태어나고(Mount) · 변하고(Update) · 사라진다(Unmount)</b></div></div>
+
+    <div class="check" data-id="k6" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">컴포넌트가 화면에서 사라질 때 setInterval 타이머를 정리하는 단계는?</div>
+      <div class="opts">
+        <button class="o">Mount</button>
+        <button class="o">Update</button>
+        <button class="o">Unmount</button></div>
+      <div class="fb">사라질 때 = <b>Unmount</b>. 정리 안 하면 없는 컴포넌트를 위해 타이머가 계속 돌아요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c6">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
+  </section>
+
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험 직전 복습</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>6주차 Summary 그대로 + α</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요. 눌러서 하나씩 확인하세요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제 · ✗ 피하기</p>
+      <div class="grp"><h4>① State <span class="mn">변수는 조용, State는 신호</span></h4><ul>
+        <li>State = <span class="kw">UI를 결정하는 변경 가능한 데이터</span> · 일반 변수 ✗(감지 안 됨)</li>
+        <li>useState → [값, <span class="kw">Setter</span>] · count = count + 1 ✗</li></ul></div>
+      <div class="grp"><h4>② Re-render <span class="mn">Render 계산 · Commit 반영</span></h4><ul>
+        <li>Setter → <span class="kw">컴포넌트 함수 재실행</span> → 새 JSX → 비교 → 필요한 DOM만</li>
+        <li><span class="kw">Render</span>(계산 · 비교) → <span class="kw">Commit</span>(DOM 반영) → Layout · Paint</li></ul></div>
+      <div class="grp"><h4>③ Snapshot <span class="ex-t">★ 실행 결과</span><span class="mn">사진이면 2, 릴레이면 4</span></h4><ul>
+        <li>한 렌더 안 State = <span class="kw">고정(Snapshot)</span> · set 직후 log → 이전 값</li>
+        <li>count 1, setCount(count+1)×3 → <span class="kw">2</span> / setCount(prev =&gt; prev+1)×3 → <span class="kw">4</span> (<span class="kw">Functional Update</span>)</li></ul></div>
+      <div class="grp"><h4>④ 객체 · 배열 State <span class="ex-t">★ 면접</span><span class="mn">펼쳐서 새로</span></h4><ul>
+        <li>setUser({ <span class="kw">...user</span>, age: 21 }) · setItems([...items, x]) = <span class="kw">Immutable Update</span></li>
+        <li>Spread = <span class="kw">얕은 복사</span> · 중첩은 계층마다 · user === newUser → false</li>
+        <li><span class="kw">Derived State</span>: total = price * quantity (State ✗)</li></ul></div>
+      <div class="grp"><h4>⑤ State 위치 · 폼 <span class="mn">같이 쓰면 위로</span></h4><ul>
+        <li><span class="kw">Lifting State Up</span> → Props ↓ · Callback Props ↑ · Prop Drilling → Zustand · Redux</li>
+        <li><span class="kw">Controlled Component</span>: value={name} · onChange → setName</li>
+        <li>Props = 직접 변경 ✗ / State = Setter로 변경</li></ul></div>
+      <div class="grp"><h4>⑥ Lifecycle <span class="mn">태어나고 · 변하고 · 사라진다</span></h4><ul>
+        <li><span class="kw">Mount → Update → Unmount</span> · Side Effect → <span class="kw">useEffect</span>(Render 이후)</li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>일반 변수는 값이 바뀌어도 React가 <span class="cloze">감지하지 못해</span> 화면이 바뀌지 않는다. State는 반드시 <span class="cloze">Setter</span>로 변경한다. Re-render는 <span class="cloze">컴포넌트 함수</span>가 다시 실행되는 과정이다. State는 렌더링 시점의 <span class="cloze">Snapshot</span>이라 이전 값에 의존하는 연속 업데이트는 <span class="cloze">Functional Update</span>를 쓴다. 객체 State는 <span class="cloze">Spread Operator</span>로 복사해 바꾸며 이를 <span class="cloze">Immutable</span> Update라 한다. 여러 컴포넌트가 State를 공유하면 <span class="cloze">Lifting State Up</span>을 고려한다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">플래시카드 <small>알면 →, 모르면 ←</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">State가 필요한 이유는?</div><div class="a">일반 변수는 값이 바뀌어도 React가 감지 못 해 리렌더링이 안 된다. State 변경은 UI를 다시 계산하라는 신호.</div></div>
+        <div class="fc-item"><div class="q">Re-render란?</div><div class="a">컴포넌트 함수가 다시 실행되어 새 JSX를 계산하는 과정. 실제 DOM 전체를 다시 만드는 건 아님.</div></div>
+        <div class="fc-item"><div class="q">Render 단계와 Commit 단계는?</div><div class="a">Render: 컴포넌트 실행 → 새 UI 계산 → 이전과 비교. Commit: 필요한 DOM 변경을 실제 브라우저에 반영(이후 Layout · Paint).</div></div>
+        <div class="fc-item"><div class="q">State == Snapshot의 뜻은?</div><div class="a">한 렌더 안에서 State는 고정값. Setter를 불러도 현재 코드의 값은 즉시 안 바뀌고 다음 렌더에서 새 값.</div></div>
+        <div class="fc-item"><div class="q">count 1에서 setCount(count+1)을 3번 → 결과와 이유는?</div><div class="a">2. 세 호출 모두 같은 스냅샷 count(1)를 참조해서 모두 "2로" 요청.</div></div>
+        <div class="fc-item"><div class="q">Functional Update란?</div><div class="a">setCount(prev =&gt; prev + 1)처럼 Setter에 함수를 넘김. prev는 이전 업데이트 결과 → 연속 업데이트가 순서대로 적용.</div></div>
+        <div class="fc-item"><div class="q">Object State를 바꾸는 올바른 방법은?</div><div class="a">직접 속성 수정 ✗. setUser({ ...user, age: 21 })처럼 Spread로 새 객체를 만들어 교체(Immutable Update).</div></div>
+        <div class="fc-item"><div class="q">Spread Operator의 복사 방식과 주의점은?</div><div class="a">얕은 복사. 새 객체를 만들지만 한 단계만 복사하므로 중첩 State는 바뀌는 계층마다 복사해야 한다.</div></div>
+        <div class="fc-item"><div class="q">Immutability가 React에 유리한 이유는?</div><div class="a">이전 값과 새 값이 명확히 구분되어 변경 추적이 쉽고 렌더링이 예측 가능해진다.</div></div>
+        <div class="fc-item"><div class="q">Derived State란?</div><div class="a">다른 State로 계산 가능한 값(total = price * quantity)은 State로 만들지 않고 계산해서 쓴다. 중복 저장 → 동기화 문제 방지.</div></div>
+        <div class="fc-item"><div class="q">Lifting State Up이란?</div><div class="a">여러 컴포넌트가 공유하는 State를 공통 Parent로 올려 Props로 전달. Child 이벤트는 Callback Props로 올림.</div></div>
+        <div class="fc-item"><div class="q">Controlled Component란?</div><div class="a">input의 value를 State에 연결하고 onChange에서 Setter로 갱신. React가 입력값을 관리 → Validation 쉬움.</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">퀴즈 <small>실행 결과 문제 위주</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="1"><p class="qt"><b>Q1</b>count가 0일 때 <code>console.log(count); setCount(count + 1); console.log(count);</code>의 두 출력은?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">0, 1</label>
+        <label class="opt"><input type="radio" name="q1" value="1">0, 0</label>
+        <label class="opt"><input type="radio" name="q1" value="2">1, 1</label>
+        <label class="opt"><input type="radio" name="q1" value="3">0, undefined</label>
+        <div class="explain">State는 스냅샷. 같은 렌더 안에서 count는 계속 0.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>count가 1일 때 <code>setCount(prev =&gt; prev + 1)</code>을 3번 호출하면 다음 렌더의 count는?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">2</label>
+        <label class="opt"><input type="radio" name="q2" value="1">3</label>
+        <label class="opt"><input type="radio" name="q2" value="2">1</label>
+        <label class="opt"><input type="radio" name="q2" value="3">4</label>
+        <div class="explain">prev는 이전 업데이트 결과 → 2 → 3 → 4.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q3</b>count가 1일 때 <code>setCount(count + 1)</code>을 3번 호출하면 다음 렌더의 count는?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">2</label>
+        <label class="opt"><input type="radio" name="q3" value="1">4</label>
+        <label class="opt"><input type="radio" name="q3" value="2">3</label>
+        <label class="opt"><input type="radio" name="q3" value="3">1</label>
+        <div class="explain">셋 다 스냅샷 count(1)를 참조 → 셋 다 "2로". 교수님이 강의실에서 낸 문제.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q4</b><code>user</code> State가 {name:"Kim", age:20}일 때 나이를 21로 올바르게 바꾸는 코드는?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">user.age = 21;</label>
+        <label class="opt"><input type="radio" name="q4" value="1">setUser(user.age = 21);</label>
+        <label class="opt"><input type="radio" name="q4" value="2">setUser({ ...user, age: 21 });</label>
+        <label class="opt"><input type="radio" name="q4" value="3">setUser(21);</label>
+        <div class="explain">펼쳐서 새 객체 + age만 덮어쓰기. 4번은 user가 숫자 21이 돼 버려요.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q5</b>items State에 새 항목을 추가하는 올바른 코드는?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">items.push(newItem);</label>
+        <label class="opt"><input type="radio" name="q5" value="1">setItems([...items, newItem]);</label>
+        <label class="opt"><input type="radio" name="q5" value="2">setItems(items.push(newItem));</label>
+        <label class="opt"><input type="radio" name="q5" value="3">items = [...items, newItem];</label>
+        <div class="explain">기존 배열을 고치지 않고 새 배열로 교체(Immutable).</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q6</b>price · quantity가 State일 때 total을 다루는 가장 적절한 방법은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">const total = price * quantity; 로 렌더 중 계산</label>
+        <label class="opt"><input type="radio" name="q6" value="1">total도 State로 만들고 함께 갱신</label>
+        <label class="opt"><input type="radio" name="q6" value="2">전역 변수로 둔다</label>
+        <label class="opt"><input type="radio" name="q6" value="3">Props로 자기 자신에게 넘긴다</label>
+        <div class="explain">Derived State. 계산 가능한 값은 State로 중복 저장하지 않아요.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q7</b>Props와 State에 대한 설명으로 옳지 <b>않은</b> 것은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">Props는 Parent가 Child에 전달하는 외부 데이터다</label>
+        <label class="opt"><input type="radio" name="q7" value="1">State는 Setter로 변경한다</label>
+        <label class="opt"><input type="radio" name="q7" value="2">둘 다 Component의 UI를 결정한다</label>
+        <label class="opt"><input type="radio" name="q7" value="3">Child는 받은 Props를 직접 바꿔 Parent에 반영한다</label>
+        <div class="explain">Props는 자식이 직접 변경하지 않는 게 원칙. 부모에 알리려면 Callback Props.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q8</b><code>&lt;input value={name} onChange={(e) =&gt; setName(e.target.value)} /&gt;</code>에서 사용자가 "ab"를 입력했다. 일어나는 일로 옳은 것은?</p>
+        <label class="opt"><input type="radio" name="q8" value="0">입력이 끝난 뒤 한 번만 리렌더링된다</label>
+        <label class="opt"><input type="radio" name="q8" value="1">name은 바뀌지 않고 브라우저만 값을 가진다</label>
+        <label class="opt"><input type="radio" name="q8" value="2">글자마다 onChange → setName → 리렌더링이 일어나 name이 "a", "ab"가 된다</label>
+        <label class="opt"><input type="radio" name="q8" value="3">오류가 난다</label>
+        <div class="explain">Controlled Component. 입력할 때마다 리렌더링이 계속 일어나요.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>면접 대비</small></h3>
+    <div class="box explain-box">
+      <p class="eq">"React에서 객체를 State로 넣고 값을 바꿀 때 어떻게 하는지, 왜 그렇게 하는지 설명해 보세요." (교수님 예시 면접 질문)</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">객체 State는 user.age = 21처럼 직접 속성을 고치지 않고, Spread Operator로 기존 값을 펼쳐 복사한 새 객체를 만들어 Setter로 교체해요. 예: setUser({ ...user, age: 21 }). 이걸 Immutable Update라고 해요. 이렇게 하면 이전 객체와 새 객체의 주소가 달라져서 이전 값과 새 값이 명확히 구분되고, React가 변경을 추적하고 예측 가능하게 렌더링하기 쉬워요. 직접 고치면 어디서 바뀌었는지 추적하기도 어려워요. 단, Spread는 얕은 복사라 한 단계만 복사하므로, 객체 안에 객체가 있는 중첩 State는 바뀌는 안쪽 객체까지 각각 펼쳐서 복사해야 해요.</div>
+    </div>
+
+    <details class="ref"><summary>더 알아두면 좋은 것 <small>시험 비중 낮음</small></summary><div class="ref-body">
+      <h4>Hook이라는 이름</h4>
+      <p>교수님 설명으로는 "무언가 끝났을 때 돌려받는 것". setter로 업데이트하면 React한테 "얘 바뀌었어"라는 신호를 날려 준다는 의미로 이해하면 편하대요. use○○ 훅은 "무언가 끝나면 무언가를 하는 애".</p>
+      <h4>상태 관리 라이브러리 근황</h4>
+      <p>Recoil(예전), Zustand(요즘 많이 씀, 가장 쉬움), Redux(많이 씀). 기말 프로젝트에서 활용해 볼 만해요.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>고급웹프로그래밍 · 10월 6일 (화) · SH327 6주차 State &amp; Rendering · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

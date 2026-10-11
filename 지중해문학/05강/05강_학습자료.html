@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>지중해문명 5강 · 고대 그리스의 문명과 학문</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+}
+</style>
+</head>
+<body data-course="지중해문명" data-week="05강">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>지중해문명</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">5강 · 고대 그리스의 문명과 학문 · 5강.pdf (강의 녹음 없음 · 자료 기준)</div>
+    <h1>질투하고 사랑하는 신들, 그리고 "지혜에 대한 사랑"</h1>
+    <p class="lead">그리스 신들은 오리엔트 신들처럼 멀리 있는 절대자가 아니라 사람처럼 웃고 질투했어요. 그런 신화와 아고라의 토론 문화 위에서 철학 · 문학 · 역사학이 자랐죠. 자료의 질문은 "그리스에서 신화와 학문이 발달한 배경은?" 마지막의 "오리엔트 vs 그리스" 비교표로 1~5강이 하나로 이어져요.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
+      <ol>
+        <li>올림푸스 12신의 역할과 그리스 신의 성격을 말할 수 있다</li>
+        <li>자연철학 → 소피스트 → 고전철학의 흐름과 대표 인물을 짝지을 수 있다</li>
+        <li>호메로스의 두 서사시, 헤로도토스와 투키디데스를 비교할 수 있다</li>
+      </ol>
+      <div class="time">약 35분 · 장면 5개 · 장면마다 확인 문제 1개</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>퀴즈에서 헷갈리기 쉬운 것 (자료 기준)</h2>
+      <ul>
+        <li>"인간이 만물의 척도다" = <b>프로타고라스</b>(소피스트) · Academy = <b>플라톤</b> · Lyceum = <b>아리스토텔레스</b></li>
+        <li>『일리아스』 = 트로이 전쟁 <b>51일</b> · 신에 가까운 영웅 / 『오디세이』 = <b>10년</b> 귀향 · 평범한 인간</li>
+        <li>헤로도토스 = <b>페르시아 전쟁</b> · 주관적 · 역사학의 아버지 / 투키디데스 = <b>펠로폰네소스 전쟁</b> · 객관적</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="오늘의 흐름">
+      <a href="#c1"><b>장면 1</b>신화의 배경 · 12신</a>
+      <a href="#c2"><b>장면 2</b>신화 비교 · 신의 성격</a>
+      <a href="#c3"><b>장면 3</b>학문의 토양 · 철학</a>
+      <a href="#c4"><b>장면 4</b>문학 · 역사학</a>
+      <a href="#c5"><b>장면 5</b>역할과 기여 · 비교표</a>
+      <a href="#review"><b>복습</b>퀴즈 직전 정리</a>
+    </nav>
+  </div>
+
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>폴리스마다 신이 있었고, 신들끼리도 경쟁했다</h2><div class="sub">신화 발생의 사회적 배경 · 올림푸스 12신</div></div></div>
+
+    <p>그리스에서 신화가 풍성해진 <b>사회적 배경</b>은 다섯 가지예요.</p>
+    <ol class="steps">
+      <li><b>다신교</b> 신앙</li>
+      <li><b>폴리스 단위 개별 신</b>의 존재(경쟁)</li>
+      <li><b>오리엔트 문명의 영향</b></li>
+      <li><b>자유에 기반한 철학적 상상력</b></li>
+      <li><b>문학과 예술의 발전</b></li>
+    </ol>
+    <div class="table-wrap"><table>
+      <thead><tr><th>신</th><th>역할</th><th>신</th><th>역할</th></tr></thead>
+      <tbody>
+        <tr><td><b>제우스</b></td><td>올림푸스 산의 主神</td><td><b>아르테미스</b></td><td>달 · 사냥의 여신</td></tr>
+        <tr><td><b>헤라</b></td><td>제우스의 아내, 결혼 · 출산</td><td><b>헤르메스</b></td><td>상업의 신</td></tr>
+        <tr><td><b>포세이돈</b></td><td>바다 · 물, 제우스의 동생</td><td><b>아레스</b></td><td>전쟁의 신</td></tr>
+        <tr><td><b>아테나</b></td><td>지혜 · 평화, 방직(아라크네)</td><td><b>헤파이스토스</b></td><td>火山 · 대장간</td></tr>
+        <tr><td><b>아프로디테</b></td><td>사랑과 美</td><td><b>디오니소스</b></td><td>술 · 포도주</td></tr>
+        <tr><td><b>아폴론</b></td><td>태양 · 예언 · 음악</td><td><b>데메테르</b></td><td>농업의 여신</td></tr>
+      </tbody></table></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>그리스 신화는 다신교 신앙, 폴리스 단위 개별 신의 경쟁, 오리엔트 문명의 영향, 자유에 기반한 철학적 상상력, 문학 · 예술의 발전을 배경으로 발생했다. 올림푸스 12신의 주신은 제우스다.</p>
+      <div class="mn">외우는 법: <b>다 · 폴 · 오 · 자 · 문</b> / 해는 <b>아폴론</b>, 달은 <b>아르테미스</b></div></div>
+
+    <div class="check" data-id="k1" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">올림푸스 12신 중 "상업의 신"은?</div>
+      <div class="opts">
+        <button class="o">헤파이스토스</button>
+        <button class="o">아레스</button>
+        <button class="o">헤르메스</button></div>
+      <div class="fb"><b>헤르메스</b>. 헤파이스토스 = 화산 · 대장간, 아레스 = 전쟁.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>제우스와 마르둑은 닮았다 — 그리고 그리스 신은 사람을 닮았다</h2><div class="sub">Marduk vs Zeus · 이집트 신화 vs 그리스 신화 · 그리스 신의 성격</div></div></div>
+
+    <p>"오리엔트의 영향"이 진짜인지 신화로 보면 보여요. 메소포타미아의 <b>마르둑 vs 티아마트</b>(신 대 괴물)와 그리스의 <b>제우스 &amp; 티폰</b>은 <mark>신과 괴물의 싸움 모티프</mark>가 비슷해요. 이집트 신과도 짝이 맞아요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>이집트 신화</th><th>그리스 신화</th></tr></thead>
+      <tbody>
+        <tr><td>아문, 아몬</td><td><mark>제우스</mark></td></tr>
+        <tr><td>오시리스</td><td>디오니소스</td></tr>
+        <tr><td>이시스</td><td>데메테르</td></tr>
+        <tr><td>호루스</td><td>아폴론</td></tr>
+        <tr><td>세트</td><td>포세이돈</td></tr>
+      </tbody></table></div>
+    <h3>그리스 신의 성격</h3>
+    <ul class="plain">
+      <li><mark>초월적인 능력 + 인간의 감정(희로애락) + 인간과의 교감(경쟁 · 질투)</mark></li>
+      <li><b>신탁(oracle)</b> — 예언과 신의 의지 · 계시 (제우스 신전, 아폴론 신전)</li>
+      <li>인간과 같은 신, 인간을 닮은 신 · 심미적 · 희열적 존재 · 그리스인 삶의 한 부분</li>
+    </ul>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>그리스 신은 초월적 능력과 함께 인간의 감정을 지니고 인간과 교감하는 인간을 닮은 신이며, 신탁을 통해 의지를 전했다. 그리스 신화는 메소포타미아(마르둑 vs 티아마트 ↔ 제우스 &amp; 티폰)와 이집트(아몬 ↔ 제우스, 오시리스 ↔ 디오니소스 등) 신화의 영향을 받았다.</p>
+      <div class="mn">외우는 법: <b>힘은 신, 마음은 사람</b> / 이집트 ↔ 그리스 = <b>아몬제 · 오디 · 이데 · 호아 · 세포</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">자료의 이집트 ↔ 그리스 신 대응으로 옳은 것은?</div>
+      <div class="opts">
+        <button class="o">호루스 ↔ 아폴론</button>
+        <button class="o">세트 ↔ 제우스</button>
+        <button class="o">이시스 ↔ 아테나</button></div>
+      <div class="fb"><b>호루스 ↔ 아폴론</b>. 세트 ↔ 포세이돈, 이시스 ↔ 데메테르.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>자연에서 인간으로, 그리고 이성으로 — 철학의 세 걸음</h2><div class="sub">학문 발전의 토양 · philosophy · 자연철학 · 소피스트 · 고전철학</div></div></div>
+
+    <p>그리스 학문이 자란 <b>토양</b>은 다섯 가지예요: ① 개인의 자유와 시민의 정치 참여(아고라) ② 해양 진출 → 오리엔트 문명 학습 · 수용 ③ 토론 문화(아고라)와 교육 시스템 ④ 자연 철학의 발전 ⑤ 융합학(철학 = 인문학 + 자연과학). 학문의 중심은 <mark>인간 · 이성 · 지혜</mark>, 그리고 신의 존귀함과 함께 <b>인간의 존엄성</b>을 인정했어요.</p>
+    <p><mark>철학(philosophy, φιλοσοφία)</mark> = <b>지혜에 대한 사랑</b>. 특정 학문이 아니라 모든 학문에 필요한 기본 자세이자 실천 방법이에요. 지혜는 "인간 자신과 그를 둘러싼 세계에 대한 관조적 지식".</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>단계</th><th>관심</th><th>인물 · 핵심</th></tr></thead>
+      <tbody>
+        <tr><td><b>자연철학</b></td><td>자연 · 만물의 본질(물 · 공기 · 불 등)</td><td>탈레스, 피타고라스</td></tr>
+        <tr><td><b>소피스트</b><br>(지혜로운 사람들)</td><td>사고의 중심이 <mark>자연 → 인간</mark></td><td><b>프로타고라스</b>: <mark>"인간이 만물의 척도다"</mark>, 개인적 이기주의</td></tr>
+        <tr><td rowspan="3"><b>고전철학</b></td><td rowspan="3">이성과 지혜 강조</td><td><b>소크라테스</b>: 지혜(sophia) 추구가 이성(logos)의 기능, 공리주의</td></tr>
+        <tr><td><b>플라톤</b>: <mark>이데아(idea)</mark> 추구, 정신 강조, 조화 · 효율성, 공산주의(재산 · 가족), <mark>Academy</mark> 설립</td></tr>
+        <tr><td><b>아리스토텔레스</b>: 정신과 육체의 조화(건강한 신체에 건강한 정신), 사유재산, <mark>Lyceum</mark> 설립</td></tr>
+      </tbody></table></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>그리스 철학은 자연철학(탈레스, 피타고라스: 만물의 본질) → 소피스트철학(프로타고라스 "인간이 만물의 척도다": 자연에서 인간으로) → 고전철학(소크라테스 · 플라톤 · 아리스토텔레스: 이성과 지혜)으로 발전했다. 플라톤은 이데아와 Academy, 아리스토텔레스는 정신 · 육체의 조화와 Lyceum으로 대표된다.</p>
+      <div class="mn">외우는 법: <b>자연 → 인간 → 이성</b> / <b>플라톤 = 이데아 · 아카데미 · 공유</b>, <b>아리스토텔레스 = 몸마음 · 리케이온 · 사유</b></div></div>
+
+    <div class="check" data-id="k3" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">"인간이 만물의 척도다"라고 한 사람과 그 학파는?</div>
+      <div class="opts">
+        <button class="o">탈레스 · 자연철학</button>
+        <button class="o">프로타고라스 · 소피스트</button>
+        <button class="o">플라톤 · 고전철학</button></div>
+      <div class="fb"><b>프로타고라스</b> — 사고의 중심을 자연에서 인간으로 옮긴 소피스트.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>영웅의 51일, 평범한 사람의 10년 — 그리고 "역사"라는 말의 탄생</h2><div class="sub">호메로스 『일리아스』 · 『오디세이』 · 헤로도토스 · 투키디데스</div></div></div>
+
+    <p>그리스 신화가 그리스 문학의 발원이에요. 그 대표가 <mark>호메로스</mark>의 두 서사시, <b>서양 문학의 양대 원류</b>예요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th>『일리아스(Ilias)』</th><th>『오디세이(Odyssey)』</th></tr></thead>
+      <tbody>
+        <tr><td>분량</td><td>24편 · 15,700행</td><td>24편 · 12,000행</td></tr>
+        <tr><td>내용</td><td><mark>트로이 전쟁</mark>을 배경으로 <mark>51일간</mark>의 사건</td><td>오디세우스가 고향으로 가는 <mark>10년</mark>간의 여정</td></tr>
+        <tr><td>인간상</td><td>어떤 위험에도 용맹하게 뛰어드는 <b>신에 가까운 영웅</b></td><td>인내 · 임기응변 · 속임수 · 불신 · 불안 — <b>평범한 인간</b>이 고난을 헤쳐 나감</td></tr>
+        <tr><td>기타</td><td>현존 고대 그리스 문학의 <b>가장 오래된 서사시</b></td><td>(그림: 트로이 목마, 세이렌)</td></tr>
+      </tbody></table></div>
+    <h3>역사학</h3>
+    <p><b>Istoria → History</b> = "과거 사실을 조사하여 유용한 지식을 얻는 것". 그리스인의 뿌리와 이민족에 대한 관심에서 나왔어요.</p>
+    <div class="vs"><div class="x"><b>헤로도토스</b> (BC 480-425) · <b>역사학의 아버지</b><br>『Istoria』 — <mark>페르시아 전쟁</mark> · 지중해 국가 서술 · 문화사 · 그리스인의 위대함 · <b>주관적 · 선택적 사료</b> · 신의 의지 반영</div>
+      <div class="o"><b>투키디데스</b> (BC 465-400)<br>『Historia』 — <mark>펠로폰네소스 전쟁</mark> · 정확한 서술 · <b>객관적 기술</b> · 전쟁과 정치사 중심 · 인간의 본성 반영</div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>호메로스의 『일리아스』(트로이 전쟁 51일, 신에 가까운 영웅)와 『오디세이』(오디세우스의 10년 귀향, 평범한 인간)는 서양 문학의 양대 원류다. 역사학의 아버지 헤로도토스는 페르시아 전쟁을 주관적으로, 투키디데스는 펠로폰네소스 전쟁을 객관적으로 기술했다.</p>
+      <div class="mn">외우는 법: <b>일리아스 = 전쟁 51일 · 영웅</b> / <b>오디세이 = 귀향 10년 · 보통 사람</b> / <b>헤로 = 페르시아 · 주관 · 아버지</b>, <b>투키 = 펠로폰네소스 · 객관</b></div></div>
+
+    <div class="check" data-id="k4" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">펠로폰네소스 전쟁을 객관적으로 기술한 역사가는?</div>
+      <div class="opts">
+        <button class="o">헤로도토스</button>
+        <button class="o">호메로스</button>
+        <button class="o">투키디데스</button></div>
+      <div class="fb"><b>투키디데스</b>. 헤로도토스는 페르시아 전쟁 · 주관적.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>뮤지엄, 가스, 파노라마 — 그리스가 남긴 것들</h2><div class="sub">문명사 · 정치사 · 종교문화적 기여 · 오리엔트 vs 그리스 비교표</div></div></div>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>측면</th><th>기여</th></tr></thead>
+      <tbody>
+        <tr><td><b>문명사</b></td><td>오리엔트 문명의 계승 · 발전 · 서구 중심 지중해 문명의 창조자 · 동서 문명의 만남(페르시아 전쟁) · <mark>오리엔트 → 그리스 → 유럽</mark> · 로마 문명의 바탕 · 단어로 남음: <b>Muse → music, museum / Chaos → gas / Pan → panorama, panpipe</b></td></tr>
+        <tr><td><b>정치사</b></td><td>폴리스 실험(신과 인간의 공존 공동체) · 서양식 국가의 틀 · <mark>서구 민주주의(참여정치, 아고라)</mark>의 기틀 · 민주주의 · 전제주의 · 제국주의 · 패권주의 실험 · 교훈 "욕심과 야욕은 파멸을 부른다" · 동지중해 패권: 그리스 → 마케도니아 → 로마</td></tr>
+        <tr><td><b>종교 · 문화</b></td><td>서양 문화의 성격 · 방향 결정(헬레니즘) · <mark>세상의 중심을 신 → 인간으로</mark> · 신화의 세계 → 현실 세계 · <b>그리스 신들이 종교로 발전하는 것은 실패</b> · 서양 철학의 토대, 시민 개념 · 노예제와 여성 차별의 전통</td></tr>
+      </tbody></table></div>
+    <h3>오리엔트 vs 그리스 — 1~5강 총정리 표</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>구분</th><th>오리엔트 문명</th><th>그리스 문명</th></tr></thead>
+      <tbody>
+        <tr><td>연대기</td><td>BCE 3,000-BCE 300</td><td>BCE 1,000-BCE 300</td></tr>
+        <tr><td>정치 체제</td><td>전제 군주제, 신정</td><td>민주제, 군국적 독재</td></tr>
+        <tr><td>주체</td><td>신과 국왕</td><td>신과 인간</td></tr>
+        <tr><td>신의 의미</td><td>절대자</td><td>절대자 + 인간과 교감</td></tr>
+        <tr><td>왕</td><td>신의 대리인</td><td><mark>인간의 대표</mark></td></tr>
+        <tr><td>신전</td><td>신성한 곳, 의식</td><td>의식, 집회, 금고</td></tr>
+        <tr><td>민족성</td><td>적극적, 창의적</td><td>개방적, 진취적</td></tr>
+        <tr><td>가치</td><td>순종</td><td><mark>조화와 균형</mark></td></tr>
+        <tr><td>학문</td><td><mark>자연과학</mark>(천문, 건축, 수학)</td><td><mark>인문학</mark>(철학, 역사학)</td></tr>
+      </tbody></table></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>그리스 문명은 오리엔트 문명을 계승 · 발전시켜 오리엔트 → 그리스 → 유럽으로 이어지는 서양 문명의 토대를 쌓았고, 서구 민주주의의 기틀을 마련했으며, 세상의 중심을 신에서 인간으로 전환했다. 오리엔트가 신과 국왕 중심 · 순종 · 자연과학이라면, 그리스는 신과 인간 · 조화와 균형 · 인문학 중심이다.</p>
+      <div class="mn">외우는 법: <b>오리엔트 = 신 · 왕 · 순종 · 자연과학</b> / <b>그리스 = 신 + 인간 · 조화 · 인문학</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">오리엔트 vs 그리스 비교로 옳은 것은?</div>
+      <div class="opts">
+        <button class="o">오리엔트 학문 = 자연과학, 그리스 학문 = 인문학</button>
+        <button class="o">오리엔트의 왕 = 인간의 대표</button>
+        <button class="o">그리스의 가치 = 순종</button></div>
+      <div class="fb">왕: 오리엔트 = 신의 대리인 / 그리스 = 인간의 대표. 가치: 순종 / 조화와 균형.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
+  </section>
+
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>퀴즈 직전 복습</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>공책에 옮겨 적기</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">= 정의 · → 흐름 · / 대비</p>
+      <div class="grp"><h4>① 신화 <span class="mn">다 · 폴 · 오 · 자 · 문</span></h4><ul>
+        <li>배경: 다신교 · <span class="kw">폴리스별 신의 경쟁</span> · 오리엔트 영향 · 자유 · 문학예술</li>
+        <li>12신: 제우스(主神) · 아테나(지혜 · 방직) · 아폴론(태양) · 아르테미스(달) · <span class="kw">헤르메스(상업)</span> · 데메테르(농업)</li></ul></div>
+      <div class="grp"><h4>② 신의 성격 · 비교 <span class="mn">힘은 신, 마음은 사람</span></h4><ul>
+        <li>초월 능력 + <span class="kw">인간의 감정</span> + 교감 · <span class="kw">신탁</span></li>
+        <li>마르둑 vs 티아마트 ↔ 제우스 &amp; 티폰 · 아몬 ↔ 제우스 · 호루스 ↔ 아폴론</li></ul></div>
+      <div class="grp"><h4>③ 철학 <span class="mn">자연 → 인간 → 이성</span></h4><ul>
+        <li>philosophy = <span class="kw">지혜에 대한 사랑</span> · 자연철학(탈레스, 피타고라스)</li>
+        <li>소피스트 <span class="kw">프로타고라스</span>(인간이 만물의 척도) · 플라톤(이데아 · <span class="kw">Academy</span>) · 아리스토텔레스(조화 · <span class="kw">Lyceum</span>)</li></ul></div>
+      <div class="grp"><h4>④ 문학 · 역사 <span class="mn">51일 영웅 · 10년 보통 사람</span></h4><ul>
+        <li><span class="kw">호메로스</span>: 일리아스(트로이 51일) · 오디세이(10년 귀향) = 서양 문학 양대 원류</li>
+        <li><span class="kw">헤로도토스</span>(페르시아 · 주관 · 아버지) / <span class="kw">투키디데스</span>(펠로폰네소스 · 객관)</li></ul></div>
+      <div class="grp"><h4>⑤ 기여 · 비교 <span class="mn">신 → 인간</span></h4><ul>
+        <li>오리엔트 → 그리스 → 유럽 · Muse → museum · Chaos → gas · Pan → panorama · 신들의 종교화는 <span class="kw">실패</span></li>
+        <li>오리엔트: 신 · 왕 · 순종 · <span class="kw">자연과학</span> / 그리스: 신 + 인간 · 조화 · <span class="kw">인문학</span></li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>올림푸스 12신의 주신은 <span class="cloze">제우스</span>다. 그리스 신은 예언과 신의 의지를 <span class="cloze">신탁</span>으로 전했다. 철학(philosophy)은 '<span class="cloze">지혜에 대한 사랑</span>'이라는 뜻이다. 소피스트 <span class="cloze">프로타고라스</span>는 "인간이 만물의 척도다"라고 했다. 플라톤은 <span class="cloze">Academy</span>를, 아리스토텔레스는 Lyceum을 세웠다. 『일리아스』와 『오디세이』의 작가는 <span class="cloze">호메로스</span>다. 역사학의 아버지는 <span class="cloze">헤로도토스</span>다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">플래시카드 <small>알면 →, 모르면 ←</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">그리스 신화 발생의 사회적 배경 5가지는?</div><div class="a">다신교 신앙, 폴리스 단위 개별 신(경쟁), 오리엔트 문명의 영향, 자유에 기반한 철학적 상상력, 문학 · 예술의 발전.</div></div>
+        <div class="fc-item"><div class="q">아테나와 아폴론의 역할은?</div><div class="a">아테나 = 지혜와 평화, 방직(아라크네). 아폴론 = 태양, 예언과 음악.</div></div>
+        <div class="fc-item"><div class="q">그리스 신의 성격은?</div><div class="a">초월적 능력 + 인간의 감정(희로애락) + 인간과의 교감(경쟁 · 질투). 인간을 닮은 신, 신탁.</div></div>
+        <div class="fc-item"><div class="q">이집트 ↔ 그리스 신 대응 5쌍은?</div><div class="a">아몬 ↔ 제우스, 오시리스 ↔ 디오니소스, 이시스 ↔ 데메테르, 호루스 ↔ 아폴론, 세트 ↔ 포세이돈.</div></div>
+        <div class="fc-item"><div class="q">그리스 학문 발전의 토양 5가지는?</div><div class="a">개인의 자유와 정치 참여(아고라), 해양 진출로 오리엔트 수용, 토론 문화와 교육, 자연철학, 융합학.</div></div>
+        <div class="fc-item"><div class="q">그리스 철학의 발전 단계는?</div><div class="a">자연철학(탈레스 · 피타고라스) → 소피스트(프로타고라스) → 고전철학(소크라테스 · 플라톤 · 아리스토텔레스).</div></div>
+        <div class="fc-item"><div class="q">플라톤의 특징은?</div><div class="a">이데아 추구, 정신 강조, 조화와 효율성, 공산주의(재산 · 가족), Academy 설립.</div></div>
+        <div class="fc-item"><div class="q">아리스토텔레스의 특징은?</div><div class="a">정신과 육체의 조화(건강한 신체에 건강한 정신), 사유재산, Lyceum 설립.</div></div>
+        <div class="fc-item"><div class="q">『일리아스』와 『오디세이』의 차이는?</div><div class="a">일리아스 = 트로이 전쟁 51일, 신에 가까운 영웅(15,700행). 오디세이 = 10년 귀향, 평범한 인간(12,000행).</div></div>
+        <div class="fc-item"><div class="q">헤로도토스와 투키디데스의 차이는?</div><div class="a">헤로도토스 = 페르시아 전쟁, 주관적 · 선택적, 신의 의지, 역사학의 아버지. 투키디데스 = 펠로폰네소스 전쟁, 객관적, 정치사 중심.</div></div>
+        <div class="fc-item"><div class="q">그리스 신에서 나온 영어 단어는?</div><div class="a">Muse → music, museum / Chaos → gas / Pan → panorama, panpipe.</div></div>
+        <div class="fc-item"><div class="q">오리엔트와 그리스의 학문 · 가치 차이는?</div><div class="a">오리엔트 = 자연과학 · 순종, 그리스 = 인문학 · 조화와 균형.</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">퀴즈 <small>다 풀고 채점하기</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="1"><p class="qt"><b>Q1</b>그리스 신화 발생의 사회적 배경으로 자료에 없는 것은?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">폴리스 단위 개별 신의 경쟁</label>
+        <label class="opt"><input type="radio" name="q1" value="1">유일신 신앙</label>
+        <label class="opt"><input type="radio" name="q1" value="2">오리엔트 문명의 영향</label>
+        <label class="opt"><input type="radio" name="q1" value="3">자유에 기반한 철학적 상상력</label>
+        <div class="explain">배경은 다신교.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>"화산과 대장간의 신"은?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">아레스</label>
+        <label class="opt"><input type="radio" name="q2" value="1">포세이돈</label>
+        <label class="opt"><input type="radio" name="q2" value="2">디오니소스</label>
+        <label class="opt"><input type="radio" name="q2" value="3">헤파이스토스</label>
+        <div class="explain">헤파이스토스.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q3</b>메소포타미아의 "마르둑 vs 티아마트"와 유사한 그리스 신화 모티프는?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">제우스 &amp; 티폰</label>
+        <label class="opt"><input type="radio" name="q3" value="1">아폴론 &amp; 아르테미스</label>
+        <label class="opt"><input type="radio" name="q3" value="2">아테나 &amp; 아라크네</label>
+        <label class="opt"><input type="radio" name="q3" value="3">아프로디테 &amp; 에로스</label>
+        <div class="explain">신과 괴물의 싸움.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q4</b>사고의 중심을 자연에서 인간으로 옮긴 학파는?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">자연철학</label>
+        <label class="opt"><input type="radio" name="q4" value="1">고전철학</label>
+        <label class="opt"><input type="radio" name="q4" value="2">소피스트</label>
+        <label class="opt"><input type="radio" name="q4" value="3">스토아학파</label>
+        <div class="explain">소피스트(지혜로운 사람들).</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q5</b>"정신과 육체의 조화, 사유재산, Lyceum 설립"은 누구?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">플라톤</label>
+        <label class="opt"><input type="radio" name="q5" value="1">아리스토텔레스</label>
+        <label class="opt"><input type="radio" name="q5" value="2">소크라테스</label>
+        <label class="opt"><input type="radio" name="q5" value="3">피타고라스</label>
+        <div class="explain">플라톤은 공산주의(재산 · 가족) · Academy.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q6</b>『오디세이』에 대한 설명으로 옳은 것은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">트로이 전쟁의 51일을 그렸다</label>
+        <label class="opt"><input type="radio" name="q6" value="1">신에 가까운 영웅상을 제시한다</label>
+        <label class="opt"><input type="radio" name="q6" value="2">현존 가장 오래된 그리스 서사시다</label>
+        <label class="opt"><input type="radio" name="q6" value="3">오디세우스의 10년 귀향 여정으로 평범한 인간을 그렸다</label>
+        <div class="explain">1 · 2 · 3은 『일리아스』.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q7</b>헤로도토스의 『Istoria』 특징으로 옳은 것은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">페르시아 전쟁 묘사 · 주관적 · 선택적 사료 · 신의 의지 반영</label>
+        <label class="opt"><input type="radio" name="q7" value="1">펠로폰네소스 전쟁 묘사 · 객관적 기술</label>
+        <label class="opt"><input type="radio" name="q7" value="2">트로이 전쟁 묘사 · 서사시</label>
+        <label class="opt"><input type="radio" name="q7" value="3">이집트 왕조 연대기</label>
+        <div class="explain">2 = 투키디데스, 3 = 호메로스, 4 = 마네토.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q8</b>그리스 문명의 종교 · 문화적 기여로 자료와 <b>다른</b> 것은?</p>
+        <label class="opt"><input type="radio" name="q8" value="0">세상의 중심을 신에서 인간으로 전환</label>
+        <label class="opt"><input type="radio" name="q8" value="1">서양 철학의 토대, 시민 개념 형성</label>
+        <label class="opt"><input type="radio" name="q8" value="2">그리스 신들이 세계 종교로 발전했다</label>
+        <label class="opt"><input type="radio" name="q8" value="3">노예제와 여성 차별의 전통</label>
+        <div class="explain">자료: 그리스 신들이 종교로 발전하는 것은 실패.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>자료의 질문 그대로</small></h3>
+    <div class="box explain-box">
+      <p class="eq">"그리스에서 신화와 학문이 발달한 배경은?" (5강 학습 질문)</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">신화는 다신교 신앙 위에서 폴리스마다 개별 신을 섬기며 서로 경쟁했고, 오리엔트 신화(마르둑과 티아마트, 이집트 신들)의 영향을 받았으며, 자유에 기반한 철학적 상상력과 문학 · 예술의 발전이 더해져 풍성해졌어요. 학문은 개인의 자유와 시민의 정치 참여, 아고라의 토론 문화와 교육 시스템, 해양 진출을 통한 오리엔트 문명의 학습 · 수용, 자연철학의 발전, 철학이 인문학과 자연과학을 아우르는 융합학이라는 점이 토양이 됐어요. 그래서 그리스 학문은 인간 · 이성 · 지혜를 중심에 두고, 자연철학 → 소피스트 → 고전철학으로 발전했어요.</div>
+    </div>
+
+    <details class="ref"><summary>이 페이지에 대해 <small>참고</small></summary><div class="ref-body">
+      <p>이 과목은 강의 녹음이 없어서 5강.pdf와 전체 텍스트(지중해문명_1-5강_전체텍스트.md)만으로 만들었어요. 보기에 쓴 오답(예: 스토아학파)은 자료에 없는 걸 일부러 넣은 거예요.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>지중해문명 · 5강 고대 그리스의 문명과 학문 · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

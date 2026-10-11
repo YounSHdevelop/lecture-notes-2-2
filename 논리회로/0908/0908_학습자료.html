@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>논리회로 9월 8일 · 펄스 파형, 논리회로의 종류, ADC와 DAC</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+}
+</style>
+</head>
+<body data-course="논리회로" data-week="0908">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>논리회로</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">9월 8일 (화) · 2주차 ① · 제1장 들어가기 ②</div>
+    <h1>회로에도 심장이 있다? 펄스와 클록</h1>
+    <p class="lead">회로를 박자에 맞춰 움직이게 하는 펄스(주기·주파수·듀티 사이클), 리모컨 속 두 종류의 논리회로, 그리고 소리를 0과 1로 바꾸는 ADC 3단계를 배워요. 펄스 계산은 <b>"무조건 출제"</b>예요.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
+      <ol>
+        <li>펄스 폭과 주기로 주파수 · 듀티 사이클을 계산할 수 있다 (예제 1-4)</li>
+        <li>리모컨 버튼을 보고 조합논리 · 순서논리를 구분할 수 있다</li>
+        <li>ADC 3단계와 "2배로 샘플링" 규칙을 설명하고, DAC 비례 계산을 할 수 있다</li>
+      </ol>
+      <div class="time">약 25분 · 장면 5개 · 장면마다 확인 문제 1개</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것</h2>
+      <ul>
+        <li>예제 1-4 (펄스 폭 50μs · 주기 250μs → 주파수 · 듀티) — 필기 "시험문제 무조건 나옴"</li>
+        <li>"다 알면 이런 문제 <b>10문제 낼게</b>" → 숫자 바꾼 변형 대비</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="오늘의 흐름">
+      <a href="#c1"><b>장면 1</b>주기 = 뒤집은 주파수</a>
+      <a href="#c2"><b>장면 2</b>듀티 사이클 계산</a>
+      <a href="#c3"><b>장면 3</b>에지와 상승 시간</a>
+      <a href="#c4"><b>장면 4</b>조합 vs 순서</a>
+      <a href="#c5"><b>장면 5</b>ADC · DAC</a>
+      <a href="#review"><b>복습</b>시험 직전 정리</a>
+    </nav>
+  </div>
+
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>한국 TV를 폴란드에 가져가면 왜 못 쓸까?</h2><div class="sub">펄스 · 클록 · 주기 T와 주파수 f</div></div></div>
+
+    <p>숫자가 1, 2, 3 바뀌는 카운터를 만들려면 뭔가 "쿵, 쿵" 박자를 쳐 줘야 해요. 사람이 살려면 심장이 뛰어야 하듯, 회로도 심장이 필요해요. 0V → 5V → 0V를 일정하게 반복하는 신호, 이게 <mark>펄스</mark>이고 회로의 심장 역할을 하는 펄스를 <b>클록</b>이라고 해요.</p>
+    <p>같은 모양이 반복되니 두 가지로 말할 수 있어요.</p>
+    <ul class="plain">
+      <li><mark>주기 T</mark> — 한 번 반복하는 데 <b>몇 초</b> 걸리나 (단위: 초)</li>
+      <li><mark>주파수 f</mark> — 1초에 <b>몇 번</b> 반복하나 (단위: Hz)</li>
+    </ul>
+    <p>주기가 0.1초면 1초에 10번이니까 주파수는 10Hz. <b>같은 걸 뒤집어서 말한 것</b>뿐이에요. 그래서 공식도 그냥 뒤집기예요: <code>T = 1/f</code>, <code>f = 1/T</code>.</p>
+
+    <div class="prof"><span class="av">교수</span><div class="bubble">우리나라 콘센트는 220V에 60Hz예요. 그런데 폴란드로 이민을 가면 TV, 냉장고를 다 버려야 돼. 거긴 50Hz를 쓰거든. 그래서 삼성도 나라별로 다르게 만들어 팔아요. 50Hz면 주기는 1/50, 0.02초겠죠.<small>9/8 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>주기와 주파수는 역수 관계다. T = 1/f, f = 1/T.</p>
+      <div class="mn">외우는 법: <b>주기 · 주파수는 뒤집기</b> (μs를 뒤집으면 MHz)</div></div>
+
+    <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">주기가 0.5초인 펄스의 주파수는?</div>
+      <div class="opts">
+        <button class="o">0.5Hz</button>
+        <button class="o">2Hz</button>
+        <button class="o">5Hz</button></div>
+      <div class="fb">f = 1/T = 1/0.5 = <b>2Hz</b>. 1초에 두 번 반복해요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>시험 무조건 나오는 그 문제: 펄스 폭 50μs, 주기 250μs</h2><div class="sub">펄스 폭 t<sub>w</sub> · 듀티 사이클 · 예제 1-4 · 1-5</div></div></div>
+
+    <p>한 주기 안에서 신호가 High(1)로 떠 있는 시간이 <mark>펄스 폭 t<sub>w</sub></mark>예요. 그리고 한 주기 중 High인 비율을 퍼센트로 나타낸 게 <mark>듀티 사이클</mark>이에요. 주기 1초에 0.5초 동안 High면 듀티는 50%, 딱 반반이죠.</p>
+    <pre class="code"><span class="file">듀티 사이클 공식</span>듀티 사이클 = <span class="hl">t<sub>w</sub> / T × 100</span> (%)</pre>
+
+    <h3>예제 1-4 — 같이 풀어 봐요</h3>
+    <div class="hook"><p class="q">펄스 폭이 50μs이고 주기가 250μs인 주기 파형의 주파수와 듀티 사이클을 구하라</p>
+      <p class="h">μs(마이크로초) = 10⁻⁶초. 교수님 팁: 단위는 잠깐 떼고 숫자만 계산한 다음 붙이세요.</p></div>
+    <pre class="code"><span class="file">① 주파수</span>f = 1 / T = 1 / 250μs
+1/250 = 0.004,  μs를 뒤집으면 × 10⁶
+0.004 × 10⁶ = 4000Hz = <span class="hl">4kHz</span>
+
+<span class="file">② 듀티 사이클</span>50 / 250 × 100 = <span class="hl">20%</span>      <span class="c">-- 250은 50의 5배 → 1/5 = 20%</span></pre>
+
+    <div class="prof"><span class="av">교수</span><div class="bubble">쉽죠? 엄청 쉽다. 이해했지? 다 알면 10문제 낼게. 여러분들 점수 주려고 10문제 나오면 틀리면 안 된다.<small>9/8 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <h3>예제 1-5 — 반대로 주파수에서 시작</h3>
+    <p>주파수 250Hz면 주기 T = 1/250 = 0.004초 = <b>4ms</b>. 여기서 듀티가 25%면 4ms 중 <b>1ms</b>만 High, 50%면 2ms, 75%면 3ms예요. 0%는 내내 Low, 100%는 내내 High.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>t<sub>w</sub> = 50μs, T = 250μs → f = 1/T = 4kHz, 듀티 사이클 = t<sub>w</sub>/T × 100 = 20%.</p>
+      <div class="mn">외우는 법: <b>주파수는 뒤집기, 듀티는 폭 ÷ 주기</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인 (변형 문제)</div>
+      <div class="q">펄스 폭 20μs, 주기 100μs인 파형의 주파수와 듀티 사이클은?</div>
+      <div class="opts">
+        <button class="o">100Hz, 20%</button>
+        <button class="o">10kHz, 5%</button>
+        <button class="o">10kHz, 20%</button></div>
+      <div class="fb">f = 1/100μs = 0.01 × 10⁶ = <b>10kHz</b>. 듀티 = 20/100 × 100 = <b>20%</b>.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>펄스를 일부러 살짝 기울이는 이유는? 자동차 점프 케이블의 번개</h2><div class="sub">상승 에지 · 하강 에지 · 상승 시간</div></div></div>
+
+    <p>펄스에서 <b>위로 올라가는 순간</b>과 <b>아래로 내려가는 순간</b>에 이름이 있어요. 같은 뜻의 이름이 세 개씩이라 헷갈리니 묶어서 외워요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>올라가는 순간</th><th>내려가는 순간</th></tr></thead>
+      <tbody>
+        <tr><td><b>상승</b> 에지 = <b>리딩</b>(leading) = <b>포지티브</b>(positive) = 라이징</td><td><b>하강</b> 에지 = <b>트레일링</b>(trailing) = <b>네거티브</b>(negative) = 폴링</td></tr>
+      </tbody></table></div>
+    <p>왜 이런 걸 따로 부를까요? High "레벨"을 기준으로 동작하면 "언제" 동작해야 할지 애매해요. 그래서 올라가는/내려가는 <b>순간(에지)</b>을 기준으로 동작하는 회로를 많이 써요.</p>
+
+    <h3>실제 펄스는 수직이 아니다</h3>
+    <p>이상적인 펄스는 0에서 5V로 순식간에 수직으로 올라가요. 그런데 실제로 그렇게 만들면 회로가 오동작해요. 아주 짧은 시간에 전압이 확 변하면(dv/dt가 무한대) 커패시터에 <b>번개 같은 전류</b>가 흐르거든요. 그래서 일부러 10%쯤 기울여서 올려요. 이 시간이 <b>상승 시간 t<sub>r</sub></b>, 내려가는 시간이 하강 시간 t<sub>f</sub>예요.</p>
+    <div class="analogy"><b>교수님 비유</b> — 방전된 차에 옆 차 배터리(12V)를 점프 케이블로 연결하는 순간 "팍!" 하고 불꽃이 튀죠. 0V가 순식간에 12V로 바뀌어서 전류가 확 흐르는 거예요. 번개가 하늘에서만 치는 게 아니에요.</div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>이상적인 펄스는 두 개의 에지로 구성된다: 리딩 에지 = 상승 에지, 트레일링 에지 = 하강 에지.</p>
+      <div class="mn">외우는 법: <b>리 · 라 · 포 = 위로</b> / <b>트 · 폴 · 네 = 아래로</b></div></div>
+
+    <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">트레일링 에지와 같은 말은?</div>
+      <div class="opts">
+        <button class="o">하강 에지 (네거티브 에지)</button>
+        <button class="o">상승 에지 (포지티브 에지)</button>
+        <button class="o">펄스 폭</button></div>
+      <div class="fb">트레일링 = <b>하강</b> = 네거티브 = 폴링. 리딩이 상승이에요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>리모컨 "1번" 버튼과 "채널 업" 버튼은 속이 다르다</h2><div class="sub">조합논리회로 · 순서논리회로</div></div></div>
+
+    <p>리모컨 안에는 논리회로가 잔뜩 들어 있어요. 버튼 두 종류를 비교해 봐요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th>숫자 버튼 "1번"</th><th>"채널 업" 버튼</th></tr></thead>
+      <tbody>
+        <tr><td>누르면</td><td>지금 몇 번이든 <b>무조건 1번</b></td><td>지금 5번이면 6번, 8번이면 9번</td></tr>
+        <tr><td>성격</td><td><b>절대적</b> — 과거를 몰라도 됨</td><td><b>상대적</b> — 지금 상태를 기억해야 함</td></tr>
+        <tr><td>회로</td><td class="hl"><b>조합논리회로</b></td><td class="hl"><b>순서논리회로</b></td></tr>
+      </tbody></table></div>
+    <p><mark>조합논리회로</mark>는 기본 게이트(AND, OR, NOT…)를 조합해서 만든 회로예요. 입력이 들어오면 출력이 바로 정해지고 <b>기억이 없어요</b>. 예: 덧셈하는 가산기.</p>
+    <p><mark>순서논리회로</mark>는 조합논리회로에 <b>기억하는 부품(플립플롭, 메모리)</b>을 더한 회로예요. 현재 상태를 기억했다가 그걸 바탕으로 다음 상태로 넘어가요. 예: 카운터, 타이머, 채널 업·다운, 볼륨 업·다운.</p>
+
+    <div class="prof"><span class="av">교수</span><div class="bubble">조합논리는 기억이 없어. 과거가 없어. 난 몰라, 지금 태어났어. 그런데 저장 요소가 한 개라도 개입하면, 전체를 순서논리라고 해요.<small>9/8 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>조합논리회로 = 기본 게이트의 조합(기억 없음). 순서논리회로 = 조합논리회로 + 플립플롭·메모리(저장 요소). 저장 요소가 하나라도 있으면 전체가 순서논리회로.</p>
+      <div class="mn">외우는 법: <b>숫자 버튼 = 조합, 업다운 = 순서</b> / 기억 있으면 순서</div></div>
+
+    <div class="vs"><div class="x"><b>✗ 헷갈리는 생각</b>조합논리회로가 들어 있으면 조합논리회로다</div>
+      <div class="o"><b>○ 맞는 생각</b>저장 요소가 <b>하나라도</b> 섞이면 전체가 순서논리회로</div></div>
+
+    <div class="check" data-id="k4" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">전자레인지 타이머(1분 → 59초 → 58초…)는 어떤 회로일까?</div>
+      <div class="opts">
+        <button class="o">조합논리회로 (게이트만 있으니까)</button>
+        <button class="o">아날로그 회로</button>
+        <button class="o">순서논리회로 (지금 남은 시간을 기억하니까)</button></div>
+      <div class="fb">지금 상태(남은 시간)를 기억해서 다음 상태로 가니까 <b>순서논리회로</b>예요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>내 목소리를 0과 1로 바꾸려면 1초에 몇 번 찍어야 할까?</h2><div class="sub">ADC 3단계 · 샤논 정리 · DAC 계산 (예제 1-6)</div></div></div>
+
+    <h3>ADC: 아날로그 → 디지털, 3단계</h3>
+    <ol class="plain">
+      <li><mark>표본화</mark>(샘플링) — 매끈한 곡선 위에 일정 간격으로 <b>점을 찍어요</b>.</li>
+      <li><mark>양자화</mark> — 찍은 점의 값을 정수로 맞춰요. 0.9 → 1. 여기서 <b>양자화 오차</b>(0.1)가 생겨요.</li>
+      <li><mark>부호화</mark> — 정수를 2진 부호로 바꿔요. 1 → 0001, 3 → 0011.</li>
+    </ol>
+    <p>점을 더 자주 찍으면 곡선에 더 가까워지지만, 데이터가 너무 많아지면 메모리도 많이 먹고 통신도 힘들어요. 그럼 얼마나 자주 찍어야 할까요?</p>
+
+    <div class="hook"><p class="q">샤논(Shannon)의 답: 최고 주파수의 2배 이상으로만 찍으면 된다</p>
+      <p class="h">사람 목소리는 대략 4kHz까지 나와요. 그 2배인 <b>8kHz</b>, 즉 1초에 8000번만 찍으면 원래 소리로 완벽하게 되돌릴 수 있어요. 그보다 더 찍어도 데이터만 늘지 이득이 없어요.</p></div>
+
+    <h3>DAC: 디지털 → 아날로그, 비례 계산 (예제 1-6)</h3>
+    <pre class="code"><span class="file">8bit DAC에 0011 0010을 넣었더니 1.0V. 최대 입력이면?</span>0011 0010 = 32 + 16 + 2 = <span class="hl">50</span>          <span class="c">-- 자리값 128 64 32 16 8 4 2 1</span>
+8bit 최대  = 1111 1111 = <span class="hl">255</span>
+50 : 1V = 255 : x   →   x = 255 / 50 = <span class="hl">5.1V</span></pre>
+    <p>DAC 출력은 입력 값에 <b>비례</b>하니까 비례식 하나면 끝이에요. 마이크 → 앰프 → ADC → CD 제작 → CD 플레이어 DAC → 앰프 → 스피커가 대표적인 흐름이에요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>ADC = 표본화 → 양자화 → 부호화. 샤논 정리: 최고 주파수의 2배 이상으로 샘플링하면 원신호 복구 가능. DAC 출력은 디지털 값에 비례.</p>
+      <div class="mn">외우는 법: <b>표 · 양 · 부</b> / <b>두 배면 충분</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">최고 주파수가 10kHz인 신호를 디지털로 바꿀 때, 샤논 정리에 따른 최소 샘플링 주파수는?</div>
+      <div class="opts">
+        <button class="o">5kHz</button>
+        <button class="o">20kHz</button>
+        <button class="o">100kHz</button></div>
+      <div class="fb">최고 주파수의 <b>2배</b> = 20kHz. 그 이상은 데이터만 늘어요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
+  </section>
+
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험 직전 복습</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>공책에 옮겨 적기</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요. 눌러서 하나씩 확인하세요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제</p>
+      <div class="grp"><h4>① 주기 · 주파수 · 듀티 <span class="ex-t">★ 무조건 출제</span></h4><ul>
+        <li><span class="kw">T = 1/f</span> · f = 1/T · 듀티 = <span class="kw">t<sub>w</sub>/T × 100</span></li>
+        <li>예제 1-4: 50μs / 250μs → <span class="kw">4kHz</span>, <span class="kw">20%</span></li>
+        <li>예제 1-5: 250Hz → 4ms, 듀티 25% = 1ms High</li></ul></div>
+      <div class="grp"><h4>② 에지 <span class="mn">리라포 위 · 트폴네 아래</span></h4><ul>
+        <li>상승 = <span class="kw">리딩</span> = 포지티브 / 하강 = <span class="kw">트레일링</span> = 네거티브</li>
+        <li>수직이면 dv/dt = ∞ → 번개 전류 → 상승 시간 t<sub>r</sub>을 일부러 둠</li></ul></div>
+      <div class="grp"><h4>③ 조합 / 순서 <span class="ex-t">★</span></h4><ul>
+        <li><span class="kw">조합</span> = 게이트 조합, 기억 없음 (숫자 버튼, 가산기)</li>
+        <li><span class="kw">순서</span> = 조합 + <span class="kw">플립플롭·메모리</span> (업다운, 카운터, 타이머)</li></ul></div>
+      <div class="grp"><h4>④ ADC · DAC <span class="mn">표 · 양 · 부</span></h4><ul>
+        <li>ADC = <span class="kw">표본화</span> → <span class="kw">양자화</span>(오차) → <span class="kw">부호화</span></li>
+        <li>샤논: 최고 주파수의 <span class="kw">2배</span> 이상 (목소리 4kHz → 8kHz)</li>
+        <li>예제 1-6: 50 → 1V면 255 → <span class="kw">5.1V</span></li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>이상적인 주기 펄스는 두 개의 에지로 구성되며, 리딩 에지는 <span class="cloze">상승</span> 에지, 트레일링 에지는 <span class="cloze">하강</span> 에지다. 주기와 주파수의 관계는 <span class="cloze">T = 1/f</span>이고, 듀티 사이클은 <span class="cloze">펄스 폭 ÷ 주기</span> × 100%다. 펄스 폭 50μs, 주기 250μs인 파형의 주파수는 <span class="cloze">4kHz</span>, 듀티 사이클은 <span class="cloze">20%</span>다. 순서논리회로는 조합논리회로에 <span class="cloze">플립플롭</span> 또는 메모리를 더한 것이다. 샤논 정리에 따르면 최고 주파수의 <span class="cloze">2배</span> 이상으로 샘플링한다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">플래시카드 <small>알면 →, 모르면 ←</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">예제 1-4: 펄스 폭 50μs, 주기 250μs → 주파수와 듀티는?</div><div class="a">f = 1/250μs = 4kHz, 듀티 = 50/250 × 100 = 20%</div></div>
+        <div class="fc-item"><div class="q">예제 1-5: 250Hz 펄스의 주기와, 듀티 75%일 때 High 시간은?</div><div class="a">T = 4ms. 75%면 3ms High.</div></div>
+        <div class="fc-item"><div class="q">예제 1-6: 8bit DAC에서 0011 0010이 1.0V면 255는?</div><div class="a">0011 0010 = 50. 50 : 1V = 255 : x → 5.1V</div></div>
+        <div class="fc-item"><div class="q">상승 에지와 하강 에지의 다른 이름은?</div><div class="a">상승 = 리딩 = 포지티브(라이징). 하강 = 트레일링 = 네거티브(폴링).</div></div>
+        <div class="fc-item"><div class="q">실제 펄스에 상승 시간을 두는 이유는?</div><div class="a">수직이면 dv/dt가 무한대가 되어 커패시터에 번개 같은 전류가 흘러 오동작하기 때문.</div></div>
+        <div class="fc-item"><div class="q">주기 0.02초의 주파수는?</div><div class="a">50Hz (폴란드 등 유럽). 한국은 60Hz.</div></div>
+        <div class="fc-item"><div class="q">리모컨 숫자 버튼과 채널 업 버튼은 각각?</div><div class="a">숫자 버튼 = 조합논리(절대적, 기억 없음). 업다운 = 순서논리(현재 상태 기억).</div></div>
+        <div class="fc-item"><div class="q">순서논리회로의 정의는?</div><div class="a">조합논리회로 + 플립플롭·메모리 같은 저장 요소. 하나라도 있으면 전체가 순서논리.</div></div>
+        <div class="fc-item"><div class="q">ADC 3단계는?</div><div class="a">표본화(점 찍기) → 양자화(정수화, 오차 발생) → 부호화(2진 부호)</div></div>
+        <div class="fc-item"><div class="q">샤논 정리(샘플링 정리)는?</div><div class="a">최고 주파수의 2배 이상으로 샘플링하면 원신호를 복구할 수 있다.</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">퀴즈 <small>다 풀고 채점하기</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="1"><p class="qt"><b>Q1</b>펄스 폭 50μs, 주기 250μs인 주기 파형의 주파수는? (예제 1-4)</p>
+        <label class="opt"><input type="radio" name="q1" value="0">250Hz</label>
+        <label class="opt"><input type="radio" name="q1" value="1">4kHz</label>
+        <label class="opt"><input type="radio" name="q1" value="2">20kHz</label>
+        <label class="opt"><input type="radio" name="q1" value="3">4MHz</label>
+        <div class="explain">1/250μs = 0.004 × 10⁶ = 4000Hz = 4kHz.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>같은 파형의 듀티 사이클은?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">5%</label>
+        <label class="opt"><input type="radio" name="q2" value="1">50%</label>
+        <label class="opt"><input type="radio" name="q2" value="2">80%</label>
+        <label class="opt"><input type="radio" name="q2" value="3">20%</label>
+        <div class="explain">50/250 × 100 = 20%. 250이 50의 5배라 1/5.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q3</b>주파수 250Hz, 듀티 사이클 25%인 펄스에서 한 주기 중 High 시간은?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">1ms</label>
+        <label class="opt"><input type="radio" name="q3" value="1">4ms</label>
+        <label class="opt"><input type="radio" name="q3" value="2">2.5ms</label>
+        <label class="opt"><input type="radio" name="q3" value="3">25ms</label>
+        <div class="explain">T = 1/250 = 4ms. 그중 25% = 1ms (예제 1-5).</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q4</b>리모컨의 채널 업 버튼을 구현하는 회로와 그 이유는?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">조합논리회로 · 게이트만으로 충분해서</label>
+        <label class="opt"><input type="radio" name="q4" value="1">아날로그 회로 · 채널이 연속적이라서</label>
+        <label class="opt"><input type="radio" name="q4" value="2">순서논리회로 · 현재 채널을 기억해야 다음 채널을 정할 수 있어서</label>
+        <label class="opt"><input type="radio" name="q4" value="3">조합논리회로 · 누를 때마다 같은 결과라서</label>
+        <div class="explain">현재 상태에 의존 → 저장 요소(플립플롭) 필요 → 순서논리.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q5</b>ADC의 단계 순서로 옳은 것은?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">양자화 → 표본화 → 부호화</label>
+        <label class="opt"><input type="radio" name="q5" value="1">표본화 → 양자화 → 부호화</label>
+        <label class="opt"><input type="radio" name="q5" value="2">부호화 → 표본화 → 양자화</label>
+        <label class="opt"><input type="radio" name="q5" value="3">표본화 → 부호화 → 양자화</label>
+        <div class="explain">점 찍기 → 정수화 → 2진 부호 (표 · 양 · 부).</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q6</b>8bit DAC에서 입력 50일 때 출력 1.0V였다. 입력 255(최대)일 때 출력은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">2.55V</label>
+        <label class="opt"><input type="radio" name="q6" value="1">5.0V</label>
+        <label class="opt"><input type="radio" name="q6" value="2">50V</label>
+        <label class="opt"><input type="radio" name="q6" value="3">5.1V</label>
+        <div class="explain">비례식 50 : 1 = 255 : x → x = 5.1V (예제 1-6).</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q7</b>리딩 에지와 같은 뜻이 <b>아닌</b> 것은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">네거티브 에지</label>
+        <label class="opt"><input type="radio" name="q7" value="1">상승 에지</label>
+        <label class="opt"><input type="radio" name="q7" value="2">포지티브 에지</label>
+        <label class="opt"><input type="radio" name="q7" value="3">라이징 에지</label>
+        <div class="explain">네거티브는 하강(트레일링) 쪽이에요.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>친구한테 말하듯이</small></h3>
+    <div class="box explain-box">
+      <p class="eq">조합논리회로와 순서논리회로의 차이를 리모컨 버튼으로 설명해 보세요.</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">리모컨 숫자 1번 버튼은 지금 몇 번 채널을 보고 있든 무조건 1번으로 가요. 과거를 기억할 필요가 없으니 기본 게이트만 조합한 조합논리회로로 충분해요. 채널 업 버튼은 지금 5번이면 6번, 8번이면 9번으로 가니까 현재 채널을 기억해야 해요. 그래서 플립플롭 같은 저장 요소가 필요하고, 저장 요소가 하나라도 들어가면 순서논리회로예요.</div>
+    </div>
+
+    <details class="ref"><summary>더 알아두면 좋은 것 <small>시험 비중 낮음</small></summary><div class="ref-body">
+      <h4>부논리가 실제로 쓰이는 예: 풀업 저항 스위치</h4>
+      <p>스위치 위쪽은 저항을 거쳐 5V, 아래쪽은 접지(0V)예요. 평소엔 저항을 통해 5V가 들어와 논리 1, 스위치를 누르면 접지로 연결돼 0V가 들어와 논리 0이에요. "누른다"는 동작이 0으로 표현되는 부논리죠. 저항이 없으면 누르는 순간 5V와 0V가 바로 이어져 합선돼요. 0을 받을 때 잡음에 덜 민감해서 입력 쪽엔 지금도 부논리를 많이 써요.</p>
+      <h4>IC 패키지: DIP와 SMD</h4>
+      <p>DIP(듀얼 인라인 패키지)는 기판에 구멍을 뚫어 다리를 꽂는 삽입 장착형, SMD는 기판 표면에 나비처럼 살짝 얹는 표면 실장형이에요. SMD가 훨씬 작고 가벼워서 스마트폰처럼 작게 만들 땐 무조건 SMD. 반면 전기차 모터 드라이브처럼 열이 많이 나는 전력전자 분야는 튼튼하고 방열이 좋은 DIP를 지금도 써요. SMD 종류로 SOIC(SOP), QFP, PLCC가 있어요.</p>
+      <h4>집적도</h4>
+      <p>칩 하나에 든 소자 수로 SSI(100개 이하) → MSI(~1,000) → LSI(~10,000) → VLSI(~1,000,000) → ULSI(1,000,000개 이상).</p>
+      <h4>트랜스듀서 · 센서 · 액추에이터</h4>
+      <p>트랜스듀서는 한 에너지를 다른 형태의 에너지로 바꾸는 장치 전반이에요. 그중 물리량을 전기 신호로 바꾸는 게 센서(마이크, 압력 센서), 전기 신호를 운동으로 바꾸는 게 액추에이터(자동 트렁크)예요.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>논리회로 · 9월 8일 (화) · 제1장 들어가기 ② · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>
