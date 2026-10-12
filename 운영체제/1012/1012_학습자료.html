@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>운영체제 10월 12일 · CPU 스케줄링과 FCFS</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+}
+</style>
+</head>
+<body data-course="운영체제" data-week="1012">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>운영체제</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">10월 12일 (월) · 7주차 ① · 5장 CPU 스케줄링 ①</div>
+    <h1>줄 서 있는 프로세스 100개, CPU는 누구부터 줄까?</h1>
+    <p class="lead">준비 상태에 줄 선 프로세스 중 누구에게 CPU를 줄지 정하는 게 CPU 스케줄링이에요. 교수님이 "<b>시험이 일주일 앞이고, 이 장의 대부분이 시험에 나온다</b>"고 한 장이라 이 페이지는 통째로 시험 범위예요. 오늘은 기준과 첫 번째 알고리즘 FCFS까지.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
+      <ol>
+        <li>선점형과 비선점형 스케줄링을 구분할 수 있다</li>
+        <li>우선순위를 누구에게 더 줘야 하는지(I/O 집중 vs CPU 집중 등) 이유와 함께 말할 수 있다</li>
+        <li>FCFS의 평균 대기 시간을 간트 차트로 계산할 수 있다</li>
+      </ol>
+      <div class="time">약 25분 · 장면 5개 · 장면마다 확인 문제 1개</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것</h2>
+      <ul>
+        <li><b>중간고사 10/21(수) 예정</b> — 10/7 말씀: "10/19 수업까지가 범위" · 이날: "시험이 일주일 전이니 그 안에 있는 것의 대부분이 시험에 나올 것"</li>
+        <li><b>선점형 / 비선점형 스케줄링</b> — "별표를 5개 하도록 하겠습니다"</li>
+        <li><b>평균 대기 시간 계산 문제가 나온다</b> — "나 분명히 얘기했어요." FCFS는 웜업, 뒤의 선점형(라운드 로빈 등)은 훨씬 복잡</li>
+        <li>스케줄링의 목표(공평성·효율성·안정성…)는 <b>"그런 시험 문제는 내지 않아요"</b></li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="오늘의 흐름">
+      <a href="#c1"><b>장면 1</b>스케줄링 3단계</a>
+      <a href="#c2"><b>장면 2</b>선점 vs 비선점 ★</a>
+      <a href="#c3"><b>장면 3</b>우선순위</a>
+      <a href="#c4"><b>장면 4</b>준비 큐 · 대기 큐</a>
+      <a href="#c5"><b>장면 5</b>FCFS 계산 ★</a>
+      <a href="#review"><b>복습</b>시험 직전 정리</a>
+    </nav>
+  </div>
+
+  <!-- 장면 1 -->
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>잘되는 식당은 손님을 언제, 몇 명, 누구부터 받을까?</h2><div class="sub">고수준 · 중간 수준 · 저수준 스케줄링</div></div></div>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>단계</th><th>식당이라면</th><th>컴퓨터에서</th></tr></thead>
+      <tbody>
+        <tr><td><b>고수준</b></td><td>오늘 손님을 몇 명 받을지(재료 준비)</td><td>시스템 전체 프로세스 수를 보고 새 프로세스를 <b>받을지 말지</b> 결정</td></tr>
+        <tr><td><b>중간 수준</b></td><td>점심 몇 명, 저녁 몇 명 나눠 예약</td><td>지금 넣으면 문제가 생기는 프로세스를 <b>보류</b>시켰다가 나중에 활성화</td></tr>
+        <tr><td><b>저수준</b></td><td>와서 줄 선 손님에게 순서대로 음식 내기</td><td>지금 활성화된 프로세스 중 <b>누구에게 CPU를 줄지</b> 결정</td></tr>
+      </tbody></table></div>
+    <p>교수님 말: "이번 장에서는 <mark>저수준 스케줄링</mark>만 살펴볼 거예요. 나머지는 별로 중요하지 않으니까." 앞으로 나오는 알고리즘은 전부 저수준 얘기예요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>저수준 스케줄링은 준비 상태(활성화된)의 프로세스 중 어떤 프로세스에게 CPU를 할당할지 결정하며, CPU 스케줄링 알고리즘이 이 단계에 해당한다.</p>
+      <div class="mn">외우는 법: <b>고 = 받을까, 중 = 보류할까, 저 = 누구 먼저</b></div></div>
+
+    <div class="check" data-id="k1" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">준비 큐에 있는 프로세스 중 다음에 CPU를 줄 하나를 고르는 것은?</div>
+      <div class="opts">
+        <button class="o">고수준 스케줄링</button>
+        <button class="o">중간 수준 스케줄링</button>
+        <button class="o">저수준 스케줄링</button></div>
+      <div class="fb">지금 줄 선 것 중 <b>누구에게 CPU를</b> 줄지 = 저수준. 전체 개수 조절은 고수준, 보류·활성화는 중간 수준이에요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 2 -->
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>작업 중인 프로세스한테서 CPU를 뺏을 수 있을까, 없을까?</h2><div class="sub">선점형(preemptive) · 비선점형(non-preemptive) ★★★★★</div></div></div>
+
+    <p>스케줄링에서 가장 중요한 단어 두 개예요.</p>
+    <ul class="plain">
+      <li><mark>선점형 스케줄링</mark> — 실행 중인 프로세스에게서 CPU를 <b>뺏을 수 있어요.</b> 지금 시스템처럼 타임 슬라이스를 다 쓰면 작업이 안 끝났어도 타임아웃으로 나와야 하죠. 이게 선점형이에요. <b>시분할 시스템</b>에서 쓰여요.</li>
+      <li><mark>비선점형 스케줄링</mark> — 한 번 CPU를 잡으면 <b>끝날 때까지</b> 계속 써요. 뺏을 수 없어요. 9/9에 "꼭 기억하라"던 <b>일괄 작업(배치) 시스템</b>의 방식이에요.</li>
+    </ul>
+    <p>"요즘 일괄 작업 시스템은 거의 없다던데요?" — 거의 없다는 거지 안 쓴다는 건 아니에요. 필요에 따라 쓸 수 있어요.</p>
+    <p>그래서 알고리즘도 이 순서로 나와요. <b>비선점형이 먼저(옛날, 배치 시절)</b>, 선점형이 나중(시분할 시절). 앞의 것의 단점을 뒤의 것이 고치는 흐름이라, 교수님은 "<b>하나의 이야기로 엮어서 외우라</b>"고 했어요.</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>비선점형 (먼저 배움)</th><th>선점형 (나중에 배움)</th></tr></thead>
+      <tbody>
+        <tr><td>FCFS · SJF · HRN</td><td>라운드 로빈 · SRT · 다단계 큐 · 다단계 피드백 큐</td></tr>
+      </tbody></table></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>선점형 스케줄링은 실행 중인 프로세스의 CPU를 빼앗을 수 있는 방식(시분할, 타임아웃)이고, 비선점형 스케줄링은 프로세스가 작업을 마칠 때까지 CPU를 빼앗을 수 없는 방식(일괄 작업 시스템)이다.</p>
+      <div class="mn">외우는 법: <b>선점 = 뺏을 수 있다</b>(먼저 점령) · <b>비선점 = 못 뺏는다</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">타임 슬라이스를 다 쓴 프로세스를 강제로 준비 상태로 돌려보내는 방식은?</div>
+      <div class="opts">
+        <button class="o">비선점형 스케줄링</button>
+        <button class="o">선점형 스케줄링</button>
+        <button class="o">고수준 스케줄링</button></div>
+      <div class="fb">작업이 안 끝났는데도 CPU를 <b>뺏으니까</b> 선점형이에요. 시분할 시스템의 타임아웃이 대표적이죠.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 3 -->
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>수학 계산만 하는 프로그램과 파일 복사만 하는 프로그램, 누구를 먼저?</h2><div class="sub">우선순위 · CPU 집중 vs I/O 집중 · 전면 vs 후면 · 변동 우선순위</div></div></div>
+
+    <p>모든 프로세스는 <mark>우선순위</mark>를 가지고, 우선순위가 높은 게 CPU를 먼저 잡아요. 커널 프로세스가 일반 프로세스보다 높고, 일반 프로세스끼리도 달라요. 비디오 플레이어 우선순위를 "매우 높음"으로 올리면 영상은 안 끊기지만 카톡·한글은 반응이 느려지죠. CPU를 비디오가 몰빵해서요.</p>
+
+    <h3>CPU 집중 vs I/O 집중 — 누구에게 줄까?</h3>
+    <p>계산만 하는 <b>CPU 집중 프로세스</b>(CPU bound)와 C 드라이브 → D 드라이브로 큰 파일을 옮기는 <b>I/O 집중 프로세스</b>(I/O bound)가 있어요.</p>
+    <ul class="plain">
+      <li><b>CPU 집중을 먼저</b> 주면 → 타임아웃까지 CPU만 쭉 써요. I/O 집중은 그게 끝날 때까지 기다려야 해요.</li>
+      <li><b>I/O 집중을 먼저</b> 주면 → CPU를 잡자마자 I/O를 요청하고 <b>대기 상태로 빠져요.</b> 그럼 CPU 집중이 거의 바로 이어서 CPU를 써요. I/O와 계산이 <b>겹쳐서</b> 진행되니 효율이 올라가요.</li>
+    </ul>
+    <p>그래서 <mark>I/O 집중 프로세스에 우선순위를 더 주는 게</mark> 시스템 효율에 좋아요.</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>비교</th><th>우선순위를 더 받는 쪽</th></tr></thead>
+      <tbody>
+        <tr><td>커널 프로세스 vs 일반 프로세스</td><td><b>커널</b></td></tr>
+        <tr><td>전면 프로세스 vs 후면 프로세스</td><td><b>전면</b> (화면 앞에서 키보드·마우스를 받는 것)</td></tr>
+        <tr><td>대화형 프로세스 vs 일괄 작업 프로세스</td><td><b>대화형</b></td></tr>
+        <tr><td>I/O 집중 vs CPU 집중</td><td><b>I/O 집중</b></td></tr>
+      </tbody></table></div>
+    <p>한 번 정한 우선순위를 끝까지 가져가는 방식도 있지만, 요즘 시스템은 상황에 따라 우선순위를 살짝씩 바꿔요. 이걸 <mark>변동 우선순위</mark>라고 해요. 그리고 이 수업에서는 <b>0번이 가장 높은 우선순위</b>이고 숫자가 커질수록 낮아요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>I/O 집중 프로세스에 높은 우선순위를 주면, I/O를 요청해 대기 상태로 간 사이 CPU 집중 프로세스가 CPU를 사용하므로 시스템 효율이 향상된다. 커널 &gt; 일반, 전면 &gt; 후면, 대화형 &gt; 일괄 작업, I/O 집중 &gt; CPU 집중 순으로 우선순위를 준다.</p>
+      <div class="mn">외우는 법: <b>I/O는 금방 비켜 주니까 먼저 보내라</b></div></div>
+
+    <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">I/O 집중 프로세스에게 우선순위를 더 주면 효율이 좋아지는 이유는?</div>
+      <div class="opts">
+        <button class="o">CPU를 잡자마자 I/O를 요청해 대기로 빠지니, 그동안 CPU 집중 프로세스가 CPU를 쓸 수 있어서</button>
+        <button class="o">I/O 집중 프로세스가 CPU를 더 오래 써서</button>
+        <button class="o">I/O 집중 프로세스는 문맥 교환을 안 해서</button></div>
+      <div class="fb">I/O 집중은 CPU를 <b>금방 비켜 줘요</b>(I/O 요청 → 대기). 그 사이 CPU 집중이 CPU를 써서 I/O와 계산이 겹쳐 진행돼요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 4 -->
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>준비 상태의 PCB들은 그냥 한 줄로 서 있을까?</h2><div class="sub">우선순위별 준비 큐 · 장치별 대기 큐 · 링크드 리스트</div></div></div>
+
+    <p>9/28엔 준비 상태를 그냥 "기다리는 곳"이라고만 했죠. 실제로는 커널·일반, 높고 낮은 우선순위가 뒤섞여 있어서 한 줄로 서 있으면 매번 누가 제일 높은지 찾아야 해요. 그래서 <b>우선순위별로 줄을 따로</b> 세워요. 0번 줄에 PCB들을 엮고, 1번 줄에 엮고… 0번 줄부터 하나씩 꺼내 CPU를 주고, 다 처리되면 1번 줄로 내려가요. 작업이 안 끝나면 자기 줄 맨 뒤로 다시 가고요. 이게 <mark>준비 큐</mark>(우선순위 큐)예요.</p>
+    <p><mark>대기 큐</mark>도 마찬가지예요. I/O는 하드디스크·네트워크·키보드·사운드카드처럼 종류가 많죠. 뒤섞여 있으면 "네트워크 I/O가 끝났다"는 신호가 왔을 때 누구 건지 일일이 찾아야 해요. 그래서 <b>장치(디바이스)별로 요청한 순서대로</b> 줄을 서요. 하드디스크가 끝나면 하드디스크 줄만 보면 되죠.</p>
+    <p>이 줄들은 전부 <b>포인터로 엮은 링크드 리스트</b>예요. OS 자료구조는 거의 다 링크드 리스트라, C에서 포인터를 그렇게 강조한 거예요. (배열은 파일 시스템 쪽에서나 보여요.)</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>준비 상태의 PCB는 우선순위별 준비 큐에, 대기 상태의 PCB는 I/O 장치별 대기 큐에 링크드 리스트로 연결되어 관리된다.</p>
+      <div class="mn">외우는 법: <b>준비는 우선순위별, 대기는 장치별</b></div></div>
+
+    <div class="check" data-id="k4" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">대기 상태의 PCB를 장치(HDD·네트워크 등)별로 줄 세우는 이유는?</div>
+      <div class="opts">
+        <button class="o">장치마다 우선순위가 0번으로 고정이라서</button>
+        <button class="o">대기 상태에선 문맥 교환을 안 해서</button>
+        <button class="o">어떤 장치의 I/O가 끝났을 때 그 장치 줄만 보면 바로 찾을 수 있어서</button></div>
+      <div class="fb">뒤섞여 있으면 끝난 I/O의 주인을 일일이 찾아야 해요. <b>장치별 줄</b>이면 그 줄만 보면 돼요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 5 -->
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>알고리즘 A가 B보다 좋다는 건 어떻게 증명할까? 그리고 첫 번째 알고리즘 FCFS</h2><div class="sub">대기 시간 · 응답 시간 · 반환 시간 · 평균 대기 시간 · FCFS · 콘보이 효과 ★</div></div></div>
+
+    <p>비교하려면 기준이 있어야겠죠. 교재에 CPU 사용률, 처리량, 대기 시간, 응답 시간, 반환 시간이 나와요.</p>
+    <ul class="plain">
+      <li><mark>대기 시간</mark> — 프로세스가 도착해서 CPU를 처음 잡기까지 기다린 시간. 식당 밖에서 줄 선 시간이에요.</li>
+      <li><b>응답 시간</b> — 실행돼서 첫 결과(첫 printf)가 나오기까지. 프로그램마다 달라서 좀 애매해요.</li>
+      <li><mark>반환 시간</mark> — 도착부터 작업이 다 끝날 때까지 전부. <b>대기 시간 + 실행 시간</b>.</li>
+    </ul>
+    <p>이 수업에서는 <mark>평균 대기 시간</mark>으로 비교해요. 모든 프로세스의 대기 시간을 더해 개수로 나눈 값이고, <b>짧을수록 좋은 알고리즘</b>이에요.</p>
+
+    <h3>FCFS — 먼저 온 놈이 먼저 먹고 간다</h3>
+    <p><mark>FCFS(First Come First Served, 선입선처리)</mark>는 준비 큐에 도착한 순서대로 CPU를 줘요. 비선점형이라 타임아웃도 없이 끝날 때까지 쭉 실행하고 다음으로 넘어가요. 가장 단순하고 가장 옛날 방식이에요.</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>프로세스</th><th>도착 시간</th><th>실행 시간</th></tr></thead>
+      <tbody>
+        <tr><td>P1</td><td>0</td><td>30</td></tr>
+        <tr><td>P2</td><td>3</td><td>18</td></tr>
+        <tr><td>P3</td><td>6</td><td>9</td></tr>
+      </tbody></table></div>
+
+    <figure class="fig">
+      <svg viewBox="0 0 640 130" role="img" aria-label="FCFS 간트 차트: P1이 0부터 30, P2가 30부터 48, P3가 48부터 57까지 실행">
+        <g font-size="14" font-weight="800" text-anchor="middle">
+          <rect x="30" y="34" width="300" height="44" fill="var(--teal)"/><text x="180" y="61" fill="var(--surface)">P1 (30)</text>
+          <rect x="330" y="34" width="180" height="44" fill="var(--teal-soft)" stroke="var(--line)"/><text x="420" y="61" fill="var(--teal-ink)">P2 (18)</text>
+          <rect x="510" y="34" width="90" height="44" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="555" y="61" fill="var(--exam)">P3 (9)</text></g>
+        <g font-size="12.5" text-anchor="middle" fill="var(--ink-2)">
+          <text x="30" y="98">0</text><text x="330" y="98">30</text><text x="510" y="98">48</text><text x="600" y="98">57</text></g>
+        <g font-size="11.5" fill="var(--exam)" text-anchor="middle">
+          <path d="M60 14 L54 26 L66 26 Z" fill="var(--exam)"/><text x="60" y="10">P2 도착 3</text>
+          <path d="M120 14 L114 26 L126 26 Z" fill="var(--exam)"/><text x="138" y="10">P3 도착 6</text></g>
+        <text x="30" y="122" font-size="12.5" font-weight="600" fill="var(--teal-ink)">대기 시간 = 시작 시각 − 도착 시각</text>
+      </svg>
+      <figcaption>간트 차트를 먼저 그리고, 각자 "언제 시작했나 − 언제 왔나"를 뺀다</figcaption>
+    </figure>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>프로세스</th><th>시작</th><th>대기 시간 (시작 − 도착)</th><th>반환 시간 (끝 − 도착)</th></tr></thead>
+      <tbody>
+        <tr><td>P1</td><td>0</td><td>0 − 0 = <b>0</b></td><td>30 − 0 = 30</td></tr>
+        <tr><td>P2</td><td>30</td><td>30 − 3 = <b>27</b></td><td>48 − 3 = 45</td></tr>
+        <tr><td>P3</td><td>48</td><td>48 − 6 = <b>42</b></td><td>57 − 6 = 51</td></tr>
+        <tr><td colspan="2"><b>평균</b></td><td>(0 + 27 + 42) ÷ 3 = <mark>23</mark></td><td>(30 + 45 + 51) ÷ 3 = 42</td></tr>
+      </tbody></table></div>
+
+    <div class="prof"><span class="av">교수</span><div class="bubble">이거랑 똑같은 건 아니겠지만 시험 문제 중에 이 평균 대기 시간 계산하는 문제가 있을 겁니다. 나 분명히 얘기했어요. FCFS는 간단한데 뒤로 가면 갈수록 굉장히 간단하지 않습니다. 집중해서 들어 달라는 얘기입니다.<small>10/12 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <h3>FCFS의 약점 — 콘보이 효과</h3>
+    <p>P3는 실행 시간이 9밖에 안 되는데 42나 기다렸어요. 앞에 긴 P1·P2가 있어서죠. 이렇게 <b>처리 시간이 긴 프로세스 때문에 뒤의 짧은 프로세스들이 줄줄이 오래 기다리는</b> 현상을 <mark>콘보이 효과(호위 효과)</mark>라고 해요. 컨베이어 벨트처럼 앞이 막히면 뒤가 다 밀리는 거예요. 그래서 FCFS는 지금은 거의 안 써요.</p>
+    <p>같은 세 작업(24, 3, 3)이 동시에 도착했을 때 순서만 바꿔 봐도 차이가 커요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>도착 순서</th><th>각 대기 시간</th><th>평균 대기 시간</th></tr></thead>
+      <tbody>
+        <tr><td>24 → 3 → 3 (긴 게 먼저)</td><td>0, 24, 27</td><td>51 ÷ 3 = <b>17</b></td></tr>
+        <tr><td>3 → 3 → 24 (짧은 게 먼저)</td><td>0, 3, 6</td><td>9 ÷ 3 = <b>3</b></td></tr>
+      </tbody></table></div>
+    <p>"짧은 걸 먼저 하면 평균이 확 줄어드네?" — 이 생각이 다음 알고리즘(SJF)으로 이어져요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>FCFS는 준비 큐에 도착한 순서대로 CPU를 할당하는 비선점형 알고리즘이다. 대기 시간 = 시작 시각 − 도착 시각, 평균 대기 시간 = 대기 시간의 합 ÷ 프로세스 수. 처리 시간이 긴 프로세스 때문에 짧은 프로세스가 오래 기다리는 콘보이 효과가 생긴다.</p>
+      <div class="mn">외우는 법: <b>간트 차트 → 시작 − 도착 → 더하고 나누기</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">P1(도착 0, 실행 8), P2(도착 2, 실행 4), P3(도착 3, 실행 5)를 FCFS로 처리한다. 평균 대기 시간은?</div>
+      <div class="opts">
+        <button class="o">5</button>
+        <button class="o">6</button>
+        <button class="o">7</button></div>
+      <div class="fb">간트 차트: P1 0~8, P2 8~12, P3 12~17. 대기 = 시작 − 도착: P1 0, P2 8 − 2 = 6, P3 12 − 3 = 9. 평균 = (0 + 6 + 9) ÷ 3 = <b>5</b>. 도착 시각을 빼는 걸 잊으면 (0 + 8 + 12) ÷ 3 ≈ 6.67로 틀려요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
+  </section>
+
+  <!-- 복습 -->
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험 직전 복습</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>공책에 옮겨 적기</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제</p>
+      <div class="grp"><h4>① 스케줄링 단계 <span class="mn">받을까·보류할까·누구 먼저</span></h4><ul>
+        <li>고수준 / 중간 수준 / <span class="kw">저수준</span>(누구에게 CPU를) ← 이 장은 저수준만</li></ul></div>
+      <div class="grp"><h4>② 선점 / 비선점 <span class="ex-t">★★★★★</span></h4><ul>
+        <li><span class="kw">선점형</span> = CPU 뺏을 수 있음(시분할·타임아웃)</li>
+        <li><span class="kw">비선점형</span> = 끝날 때까지 못 뺏음(일괄 작업) · FCFS·SJF·HRN</li></ul></div>
+      <div class="grp"><h4>③ 우선순위 <span class="mn">I/O는 금방 비켜 줌</span></h4><ul>
+        <li>커널 &gt; 일반 · 전면 &gt; 후면 · 대화형 &gt; 일괄 · <span class="kw">I/O 집중 &gt; CPU 집중</span></li>
+        <li><span class="kw">변동 우선순위</span> · 이 수업은 0번이 최고</li></ul></div>
+      <div class="grp"><h4>④ 큐</h4><ul>
+        <li>준비 큐 = <span class="kw">우선순위별</span> / 대기 큐 = <span class="kw">장치별</span> · 링크드 리스트</li></ul></div>
+      <div class="grp"><h4>⑤ 평가 · FCFS <span class="ex-t">★ 계산</span></h4><ul>
+        <li><span class="kw">대기 시간</span> = 시작 − 도착 · <span class="kw">반환 시간</span> = 끝 − 도착 = 대기 + 실행</li>
+        <li><span class="kw">평균 대기 시간</span> 짧을수록 좋음 · 예제 (0+27+42)/3 = 23</li>
+        <li><span class="kw">FCFS</span> = 도착 순서, 비선점 · 약점 = <span class="kw">콘보이 효과</span></li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>준비 상태의 프로세스 중 CPU를 줄 프로세스를 고르는 것은 <span class="cloze">저수준</span> 스케줄링이다. 실행 중인 프로세스의 CPU를 빼앗을 수 있으면 <span class="cloze">선점형</span>, 빼앗을 수 없으면 <span class="cloze">비선점형</span> 스케줄링이다. 시스템 효율을 위해 <span class="cloze">I/O 집중</span> 프로세스에 더 높은 우선순위를 준다. 대기 상태의 PCB는 <span class="cloze">장치별</span> 대기 큐에 연결된다. 도착한 순서대로 CPU를 주는 알고리즘은 <span class="cloze">FCFS</span>이며, 긴 프로세스 때문에 짧은 프로세스가 오래 기다리는 현상을 <span class="cloze">콘보이 효과</span>라 한다. 알고리즘 비교에는 <span class="cloze">평균 대기 시간</span>을 쓴다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">플래시카드 <small>알면 →, 모르면 ←</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">스케줄링 3단계와 이 장에서 다루는 것은?</div><div class="a">고수준, 중간 수준, 저수준. 이 장은 저수준(누구에게 CPU를 줄지)만.</div></div>
+        <div class="fc-item"><div class="q">선점형 스케줄링이란?</div><div class="a">실행 중인 프로세스의 CPU를 빼앗을 수 있는 방식. 시분할 시스템(타임아웃).</div></div>
+        <div class="fc-item"><div class="q">비선점형 스케줄링이란?</div><div class="a">프로세스가 끝날 때까지 CPU를 빼앗을 수 없는 방식. 일괄 작업 시스템.</div></div>
+        <div class="fc-item"><div class="q">비선점형 알고리즘 3개, 선점형 4개는?</div><div class="a">비선점형: FCFS, SJF, HRN. 선점형: 라운드 로빈, SRT, 다단계 큐, 다단계 피드백 큐.</div></div>
+        <div class="fc-item"><div class="q">I/O 집중 프로세스에 우선순위를 더 주는 이유는?</div><div class="a">I/O 요청 후 바로 대기로 빠져 CPU를 비켜 주므로 CPU 집중 프로세스와 겹쳐 진행돼 효율이 올라간다.</div></div>
+        <div class="fc-item"><div class="q">우선순위를 더 받는 쪽 4쌍은?</div><div class="a">커널 &gt; 일반, 전면 &gt; 후면, 대화형 &gt; 일괄 작업, I/O 집중 &gt; CPU 집중.</div></div>
+        <div class="fc-item"><div class="q">준비 큐와 대기 큐는 어떻게 줄 서나?</div><div class="a">준비 큐 = 우선순위별, 대기 큐 = I/O 장치별. 모두 링크드 리스트.</div></div>
+        <div class="fc-item"><div class="q">대기 시간과 반환 시간은?</div><div class="a">대기 = CPU를 처음 받기까지 기다린 시간(시작 − 도착). 반환 = 도착부터 끝까지(대기 + 실행).</div></div>
+        <div class="fc-item"><div class="q">FCFS란?</div><div class="a">준비 큐에 도착한 순서대로 CPU를 주는 비선점형 알고리즘(선입선처리).</div></div>
+        <div class="fc-item"><div class="q">콘보이 효과란?</div><div class="a">처리 시간이 긴 프로세스 때문에 뒤의 짧은 프로세스들이 오래 기다리는 현상(FCFS의 약점).</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">퀴즈 <small>다 풀고 채점하기</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="2"><p class="qt"><b>Q1</b>다음 중 비선점형 스케줄링에 대한 설명으로 옳은 것은?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">타임 슬라이스가 끝나면 CPU를 반납한다</label>
+        <label class="opt"><input type="radio" name="q1" value="1">우선순위가 높은 프로세스가 오면 즉시 CPU를 빼앗긴다</label>
+        <label class="opt"><input type="radio" name="q1" value="2">한 번 CPU를 잡으면 작업이 끝날 때까지 사용한다</label>
+        <label class="opt"><input type="radio" name="q1" value="3">시분할 시스템에서 주로 쓴다</label>
+        <div class="explain">비선점 = 못 뺏는다. 1·2·4번은 모두 선점형의 특징이에요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q2</b>P1(도착 0, 실행 10), P2(도착 1, 실행 5), P3(도착 3, 실행 4)를 FCFS로 처리할 때 평균 대기 시간은?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">7</label>
+        <label class="opt"><input type="radio" name="q2" value="1">6</label>
+        <label class="opt"><input type="radio" name="q2" value="2">8</label>
+        <label class="opt"><input type="radio" name="q2" value="3">9</label>
+        <div class="explain">간트 차트: P1 0~10, P2 10~15, P3 15~19. 대기: P1 0, P2 10 − 1 = 9, P3 15 − 3 = 12. (0 + 9 + 12) ÷ 3 = 7.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q3</b>Q2에서 P2의 반환 시간은?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">5</label>
+        <label class="opt"><input type="radio" name="q3" value="1">9</label>
+        <label class="opt"><input type="radio" name="q3" value="2">15</label>
+        <label class="opt"><input type="radio" name="q3" value="3">14</label>
+        <div class="explain">반환 시간 = 끝 − 도착 = 15 − 1 = 14. (대기 9 + 실행 5 = 14로도 확인. 15는 도착을 안 뺀 값, 9는 대기 시간)</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q4</b>CPU 집중 프로세스 A와 I/O 집중 프로세스 B가 있다. 시스템 효율을 높이려면?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">A에게 우선순위를 더 준다</label>
+        <label class="opt"><input type="radio" name="q4" value="1">B에게 우선순위를 더 준다</label>
+        <label class="opt"><input type="radio" name="q4" value="2">둘 다 같은 우선순위로 고정한다</label>
+        <label class="opt"><input type="radio" name="q4" value="3">B를 보류 상태로 보낸다</label>
+        <div class="explain">B가 먼저 CPU를 잡아도 금방 I/O 요청 → 대기로 빠지고, 그 사이 A가 CPU를 써서 둘이 겹쳐 진행돼요.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q5</b>FCFS에서 실행 시간이 짧은 프로세스가 긴 프로세스 뒤에서 오래 기다리는 현상은?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">문맥 교환</label>
+        <label class="opt"><input type="radio" name="q5" value="1">좀비 현상</label>
+        <label class="opt"><input type="radio" name="q5" value="2">콘보이 효과</label>
+        <label class="opt"><input type="radio" name="q5" value="3">변동 우선순위</label>
+        <div class="explain">앞이 막히면 뒤가 줄줄이 밀리는 콘보이(호위) 효과. FCFS의 대표 약점이에요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q6</b>교수님이 "그런 시험 문제는 내지 않는다"고 한 것은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">스케줄링의 목표(공평성·효율성·안정성 등)</label>
+        <label class="opt"><input type="radio" name="q6" value="1">평균 대기 시간 계산</label>
+        <label class="opt"><input type="radio" name="q6" value="2">선점형과 비선점형</label>
+        <label class="opt"><input type="radio" name="q6" value="3">스케줄링 알고리즘의 특징</label>
+        <div class="explain">"치사하게 공평성·효율성 이런 짧고 쉬운 문제는 안 낸다, 중요한 게 얼마나 많은데." 나머지 셋은 시험 대비 1순위예요.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>친구한테 말하듯이</small></h3>
+    <div class="box explain-box">
+      <p class="eq">FCFS로 P1(0, 30) · P2(3, 18) · P3(6, 9)의 평균 대기 시간을 구하는 과정을 말로 설명하고, 콘보이 효과까지 짚어 보세요.</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">FCFS는 도착 순서대로 끝까지 실행하니까 간트 차트는 P1 0~30, P2 30~48, P3 48~57이에요. 대기 시간은 시작 시각에서 도착 시각을 빼서 P1 0, P2 30 − 3 = 27, P3 48 − 6 = 42. 평균은 (0 + 27 + 42) ÷ 3 = 23이에요. P3는 9만 실행하면 되는데 앞의 긴 작업 때문에 42나 기다렸어요. 이렇게 긴 프로세스 때문에 짧은 프로세스가 오래 기다리는 게 콘보이 효과예요.</div>
+    </div>
+
+    <details class="ref"><summary>더 알아두면 좋은 것 <small>다음 수업 예고</small></summary><div class="ref-body">
+      <h4>다음에 나올 알고리즘 (교재 210~221쪽)</h4>
+      <p>SJF → HRN(여기까지 비선점) → 라운드 로빈(10ms마다 타임아웃, 계산이 훨씬 복잡) → SRT → 다단계 큐 → 다단계 피드백 큐. 맨 앞이 제일 옛날·제일 후진 것이고, 다음 것이 앞의 단점을 고치는 순서예요. 정보처리기사에도 자주 나와요.</p>
+      <h4>스케줄링의 목표 (교재 200쪽)</h4>
+      <p>공평성, 효율성, 안정성, 확장성 등. 시험에 내지 않는다고 했으니 읽어만 보세요.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>운영체제 · 10월 12일 (월) · 5장 CPU 스케줄링 ① · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>
