@@ -487,17 +487,23 @@ AB + BC + A′C = <span class="hl">AB + A′C</span>   (합의)
     <h3 class="rv-h">한 장 정리 <small>시험장 가기 전 마지막으로</small></h3>
     <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요.</p>
     <div class="box sheet" id="sheet">
-      <p class="legend">= 정의 · → 흐름 · ★ 출제 확정</p>
-      <div class="grp"><h4>① 제1장 <span class="ex-t">★ 예제 1-4</span><span class="mn">뒤집기 · 폭 ÷ 주기</span></h4><ul>
-        <li>장점 잡음에 강함 / 단점 <span class="kw">양자화 오차</span> · <span class="kw">f = 1/T</span> · <span class="kw">듀티 = tw/T × 100</span></li></ul></div>
-      <div class="grp"><h4>② 제2장 <span class="ex-t">★ 예제 2-1</span><span class="mn">나거 · 곱순</span></h4><ul>
-        <li>110010.011 = <span class="kw">50.375</span> · 2의 보수 = <span class="kw">1의 보수 + 1</span>(0이 하나, 정확)</li></ul></div>
-      <div class="grp"><h4>③ 제4장 <span class="ex-t">★ 예제 4-8</span><span class="mn">나만 1 · 0은 그대로 1은 뒤집기</span></h4><ul>
-        <li>XOR = <span class="kw">홀수</span>면 1 · 3상태 = <span class="kw">Hi-Z</span> · 지연 tPHL + tPLH · 팬아웃 = <span class="kw">작은 쪽</span></li></ul></div>
-      <div class="grp"><h4>④ 제3장 <span class="ex-t">★ 그레이 · BCD</span><span class="mn">위끼리 · 결과와 / 9 넘으면 6</span></h4><ul>
-        <li>BCD = 자리별 <span class="kw">4비트</span> · 1011 ↔ <span class="kw">1110</span>(그레이) · 패리티 = <span class="kw">검출만</span> · 해밍 = <span class="kw">정정</span>(1·2·4·8)</li></ul></div>
-      <div class="grp"><h4>⑤ 제5장 <span class="ex-t">★ 드모르간</span><span class="mn">끊고 · 바꾸고</span></h4><ul>
-        <li><span class="kw">(A + B)′ = A′B′</span> · <span class="kw">(AB)′ = A′ + B′</span> · 흡수 A + AB = A · 최소항 Σm(1인 줄) · 최대항 ΠM(0인 줄)</li></ul></div>
+      <p class="legend">★ = 교수님이 시험에 낸다고 한 예제 · 오른쪽 작은 글씨 = 외우는 법</p>
+      <div class="grp"><h4>① 제1장 <span class="ex-t">★ 예제 1-4</span><span class="mn">주파수는 주기를 뒤집기 · 듀티는 폭 ÷ 주기</span></h4><ul>
+        <li>디지털의 장점은 잡음에 강하다는 것, 단점은 연속된 값을 계단처럼 끊어 표현하면서 생기는 <span class="kw">양자화 오차</span>예요.</li>
+        <li>주파수는 주기를 뒤집은 값이라 <span class="kw">f = 1/T</span>, 듀티 사이클은 한 주기 중 High인 비율이라 <span class="kw">듀티 = tw/T × 100</span>(%). 예제 1-4: 폭 50μs, 주기 250μs → f = 1/250μs = 4kHz, 듀티 = 50/250 × 100 = 20%.</li></ul></div>
+      <div class="grp"><h4>② 제2장 <span class="ex-t">★ 예제 2-1</span><span class="mn">나거 · 곱순 = 정수는 나눠서 거꾸로, 소수는 곱해서 순서대로</span></h4><ul>
+        <li>2진수 110010.011을 10진수로 바꾸면 정수 부분 32 + 16 + 2 = 50, 소수 부분 0.25 + 0.125 = 0.375 → <span class="kw">50.375</span>.</li>
+        <li>2의 보수는 <span class="kw">1의 보수(0↔1 뒤집기)에 1을 더한 것</span>이에요. 1의 보수는 0이 두 개(0000, 1111) 생기지만, 2의 보수는 0이 하나라 계산이 정확해요.</li></ul></div>
+      <div class="grp"><h4>③ 제4장 <span class="ex-t">★ 예제 4-8</span><span class="mn">XOR = 둘이 다를 때만 1 · 0과 하면 그대로, 1과 하면 뒤집기</span></h4><ul>
+        <li>XOR은 입력 중 1의 개수가 <span class="kw">홀수</span>일 때 1이 나와요. 3상태 버퍼는 0, 1 말고 선이 끊긴 것 같은 세 번째 상태 <span class="kw">Hi-Z</span>(high impedance)를 가져요.</li>
+        <li>전파 지연은 tPHL + tPLH로 구하고, 최대 동작 주파수는 1 / 전파 지연이에요. 팬아웃(게이트 하나가 몇 개를 먹여 살릴 수 있나)은 IOH/IIH와 IOL/IIL을 둘 다 계산해서 <span class="kw">작은 쪽</span>을 답으로 써요(예: 50과 33이면 33).</li></ul></div>
+      <div class="grp"><h4>④ 제3장 <span class="ex-t">★ 그레이 · BCD</span><span class="mn">2진→그레이는 위끼리 XOR · 그레이→2진은 결과와 XOR / BCD 덧셈은 9 넘으면 6 더하기</span></h4><ul>
+        <li>BCD는 10진수 한 자리를 <span class="kw">4비트</span> 2진수로 따로따로 적는 코드예요. BCD끼리 더해서 9를 넘으면 6(0110)을 더해 보정해요.</li>
+        <li>2진 1011을 그레이 코드로 바꾸면: 첫 비트 1은 그대로, 나머지는 바로 위(왼쪽) 비트끼리 XOR → 1, 1⊕0 = 1, 0⊕1 = 1, 1⊕1 = 0 → <span class="kw">1110</span>.</li>
+        <li>패리티 비트는 오류가 났는지 <span class="kw">검출만</span> 하고, 해밍 코드는 어느 비트가 틀렸는지 찾아서 <span class="kw">정정</span>까지 해요(패리티 비트 자리는 1 · 2 · 4 · 8번).</li></ul></div>
+      <div class="grp"><h4>⑤ 제5장 <span class="ex-t">★ 드모르간</span><span class="mn">끊고 · 바꾸고 = 위에 그은 바를 끊고, +와 ·을 바꾼다</span></h4><ul>
+        <li>드모르간: <span class="kw">(A + B)′ = A′B′</span>, <span class="kw">(AB)′ = A′ + B′</span>. 흡수 법칙 A + AB = A(A가 1이면 어차피 1).</li>
+        <li>진리표에서 출력이 1인 줄을 모으면 최소항의 합 Σm, 출력이 0인 줄을 모으면 최대항의 곱 ΠM이에요.</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
