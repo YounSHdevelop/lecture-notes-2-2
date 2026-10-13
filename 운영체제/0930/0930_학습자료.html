@@ -294,7 +294,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">9월 30일 (수) · 5주차 ② · 3장 프로세스와 스레드 ② (3장 끝)</div>
+    <div class="eyebrow">9월 30일 (수) · 5주차 ② · 3장 프로세스와 스레드 ② (3장 끝) · 교재 3장 사진 기준</div>
     <h1>크롬 새 창은 왜 처음 켤 때보다 빨리 뜰까?</h1>
     <p class="lead">프로세스는 혼자 생기지 않고 <b>부모가 자식을 낳으며</b> 생겨요. 그 "낳는" 시스템 콜이 <code>fork</code>, 남의 집에 들어가 내 코드로 바꿔치기하는 게 <code>exec</code>예요. 짧은 C 코드가 실제로 몇 번, 어떤 순서로 출력되는지 따라가 보는 날이에요.</p>
     <div class="goal">
@@ -329,12 +329,37 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 1</span>
       <div><h2>컴퓨터를 껐다 켜면 왜 빨라질까?</h2><div class="sub">가비지 컬렉션 · 부모-자식 관계 · init(PID 1)</div></div></div>
 
-    <p>프로세스가 끝나면 그 자리를 누가 치워 줘야 해요. 식당에서 손님이 나가면 그릇을 치워야 다음 손님이 앉는 것처럼요. 이걸 <mark>가비지 컬렉션</mark>(쓰레기 치우기)이라고 해요. 그런데 프로세스가 수백 개씩 생겼다 사라지니까 OS가 다 못 치우면 <b>메모리 여유 공간이 줄어서 느려져요.</b> 껐다 켜면 메모리가 리셋되니까 다시 빨라지는 거예요.</p>
-    <p>그래서 모든 프로세스는 혼자 생기지 않고 <mark>부모-자식 관계</mark>를 가져요. 자식이 끝날 때 부모에게 "저 이제 갈게요" 하고 알리면, 부모가 자식이 쓰던 자원을 치우거나 OS에게 치워 달라고 알릴 수 있죠. OS가 전부 지켜보지 않아도 뒷정리가 잘 돼요.</p>
-    <p>계속 거슬러 올라가면 모든 프로세스의 조상이 나와요. 유닉스에서는 <mark>init</mark>, PID가 <b>1번</b>이에요. 컴퓨터를 켜면 init부터 생기고, 끌 때는 <b>맨 아래 자식부터</b> 차례로 죽어 올라가서 마지막에 init이 끝나면 전원이 꺼져요.</p>
+    <p>프로세스가 끝나면 그 자리를 누가 치워 줘야 해요. 식당에서 손님이 나가면 그릇을 치워야 다음 손님이 앉는 것처럼요. 교재 정의로는 운영체제의 역할 중 <b>프로세스를 종료시키고 자원을 회수하는 일</b>을 <mark>가비지 컬렉션</mark>이라고 해요. 그런데 프로세스가 수백 개씩 생겼다 사라지니까 OS가 다 못 치우면 <b>메모리 여유 공간이 줄어서 느려져요.</b> 껐다 켜면 메모리가 리셋되니까 다시 빨라지는 거예요.</p>
+    <p>그래서 운영체제는 효율적으로 자원을 회수하려고 서로 관련 있는 프로세스를 <mark>부모-자식 관계</mark>로 묶어서 관리해요. 부모 프로세스가 자식 프로세스를 만들고, 자식이 끝나면 <b>부모가 자식의 자원을 회수</b>해요. OS가 전부 지켜보지 않아도 뒷정리가 잘 돼요. 이렇게 관계가 계속 이어지면 <b>트리 모양의 계층구조</b>가 만들어져요.</p>
+    <p>계속 거슬러 올라가면 모든 프로세스의 조상이 나와요. 유닉스에서는 부팅 중에 커널 프로세스가 메모리로 올라오는데, 그중 PID <b>1번</b>이 <mark>init</mark> 프로세스예요(교재 별표). init은 모든 프로세스 위에 있는 <b>최상위 부모</b>이고, 이후 만들어지는 모든 커널 프로세스와 사용자 프로세스는 init의 자식이에요. 끌 때는 <b>맨 아래 자식부터</b> 차례로 죽어 올라가서 마지막에 init이 끝나면 전원이 꺼져요.</p>
+
+    <figure class="fig">
+      <svg viewBox="0 0 640 250" role="img" aria-label="swapper 아래 init, init 아래 사용자 세 명의 login, 각 login 아래 shell, shell 아래 web, mplayer, chatting, C edit가 달린 유닉스 프로세스 계층구조">
+        <g stroke="var(--teal)" stroke-width="1.6" fill="none">
+          <path d="M320 38 V56"/><path d="M320 84 V96 M120 96 H520 M120 96 V112 M320 96 V112 M520 96 V112"/>
+          <path d="M120 140 V160 M320 140 V160 M520 140 V160"/>
+          <path d="M120 188 V208 M520 188 V208 M320 188 V198 M250 198 H390 M250 198 V208 M390 198 V208"/></g>
+        <g font-size="13" font-weight="700" text-anchor="middle">
+          <rect x="270" y="10" width="100" height="28" rx="14" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/><text x="320" y="29" fill="var(--ink-2)">swapper</text>
+          <rect x="270" y="56" width="100" height="28" rx="14" fill="var(--teal)"/><text x="320" y="75" fill="var(--surface)">init (PID 1)</text>
+          <rect x="75" y="112" width="90" height="28" rx="14" fill="var(--teal-soft)"/><text x="120" y="131" fill="var(--teal-ink)">login</text>
+          <rect x="275" y="112" width="90" height="28" rx="14" fill="var(--teal-soft)"/><text x="320" y="131" fill="var(--teal-ink)">login</text>
+          <rect x="475" y="112" width="90" height="28" rx="14" fill="var(--teal-soft)"/><text x="520" y="131" fill="var(--teal-ink)">login</text>
+          <rect x="75" y="160" width="90" height="28" rx="14" fill="var(--exam-soft)"/><text x="120" y="179" fill="var(--exam)">shell</text>
+          <rect x="275" y="160" width="90" height="28" rx="14" fill="var(--exam-soft)"/><text x="320" y="179" fill="var(--exam)">shell</text>
+          <rect x="475" y="160" width="90" height="28" rx="14" fill="var(--exam-soft)"/><text x="520" y="179" fill="var(--exam)">shell</text>
+          <rect x="75" y="208" width="90" height="28" rx="6" fill="var(--bg)" stroke="var(--line)"/><text x="120" y="227" fill="var(--ink)">web</text>
+          <rect x="205" y="208" width="90" height="28" rx="6" fill="var(--bg)" stroke="var(--line)"/><text x="250" y="227" fill="var(--ink)">mplayer</text>
+          <rect x="345" y="208" width="90" height="28" rx="6" fill="var(--bg)" stroke="var(--line)"/><text x="390" y="227" fill="var(--ink)">chatting</text>
+          <rect x="475" y="208" width="90" height="28" rx="6" fill="var(--bg)" stroke="var(--line)"/><text x="520" y="227" fill="var(--ink)">C edit</text></g>
+        <g font-size="12" fill="var(--ink-3)"><text x="170" y="108">사용자 1</text><text x="370" y="108">사용자 2</text><text x="570" y="108">사용자 3</text></g>
+      </svg>
+      <figcaption>교재 그림 3-14 유닉스 운영체제의 프로세스 계층구조 — PID 1번 init이 최상위 프로세스</figcaption>
+    </figure>
+    <p>그림 위의 <b>swapper</b>는 PID 0번으로, 커널의 메모리를 관리하는 프로세스예요. 교재는 "운영체제 그 자체라고 생각하면 된다"고 해요. <code>ps -ef</code>로 보면 init(PID 1)의 PPID가 0으로 나와요. login이 끝나면 shell이 생기는데, 셸은 사용자와 커널을 잇는 인터페이스 역할을 해요. (리눅스에서는 init을 기능을 늘린 <b>systemd</b>로 대체했어요.)</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>모든 프로세스는 부모-자식 관계를 가지며, 자식이 종료를 부모에게 알려 부모가 자원을 정리(가비지 컬렉션)할 수 있게 한다. 유닉스의 최상위 프로세스는 PID 1인 init이다.</p>
+      <p>가비지 컬렉션은 프로세스를 종료시키고 자원을 회수하는 일이다. 운영체제는 효율적인 자원 회수를 위해 관련 있는 프로세스를 부모-자식 관계로 묶어 관리하며, 자식이 종료되면 부모가 자식의 자원을 회수한다. 유닉스에서 PID 1번인 init 프로세스가 모든 프로세스의 최상위 부모다.</p>
       <div class="mn">외우는 법: <b>init = 1번 할아버지</b> · 켤 땐 위부터, 끌 땐 아래부터</div></div>
 
     <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
@@ -353,6 +378,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 2</span>
       <div><h2>손님 100명이 동시에 로그인하면, 로그인 프로그램은 어떻게 다 받을까?</h2><div class="sub">fork 시스템 콜 · 메모리 안에서 복사 · PID · PPID · CPID</div></div></div>
 
+    <p>먼저 규칙 하나. 프로세스는 <b>시스템 호출을 통해서만</b> 커널에 작업을 요청할 수 있어요(1장). 그래서 새 프로세스를 만들거나 기존 프로세스를 바꾸려면 반드시 시스템 호출을 써야 해요. <b>자식 프로세스를 만드는</b> 시스템 호출이 <mark>fork()</mark>, <b>프로세스 내용을 바꾸는</b> 시스템 호출이 <mark>exec()</mark>예요(교재 밑줄). 보통은 fork()로 자식을 만든 다음 exec()로 자식의 내용을 바꿔요.</p>
     <p>크롬을 처음 켤 땐 하드디스크에서 코드와 데이터를 가져오고 PCB도 만들어야 해서 살짝 느려요. 그런데 <b>새 창</b>은 하드디스크에서 안 가져오고 <b>메모리 안에서 그대로 복사</b>해요. 그래서 빨라요. 이때 쓰는 시스템 콜이 <mark>fork</mark>예요.</p>
     <div class="analogy"><b>교수님 비유</b> — 손님이 너무 많은 중국집 주방장이 꾀를 부려요. 짜장면 하나를 만들어 놓고 "포크!" 하면 똑같은 짜장면이 하나 더 생겨요. 안 만들어도 되니 빨라요. 원본은 <b>부모</b>, 새로 생긴 건 <b>자식</b>. fork는 아이를 낳는 것과 같아요.</div>
     <p>왜 중요할까요? 로그인 프로그램을 생각해 봐요. 우리가 짠 코드는 위에서 아래로 한 줄씩 돌아서, 한 명 처리가 끝나야 다음 사람을 받아요. 네이버에 100명이 동시에 로그인하는데 "줄 서세요" 할 순 없죠. 그래서 새 사람이 올 때마다 <b>fork로 로그인 자식을 하나씩 낳아서</b> 맡겨요. 100명이면 자식 100개가 동시에 처리하죠. 그래서 fork가 <mark>병렬 처리의 핵심</mark>이에요.</p>
@@ -363,11 +389,21 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <thead><tr><th>교재 그림 예</th><th>PID</th><th>PPID (내 부모)</th><th>CPID (내 자식)</th></tr></thead>
       <tbody>
         <tr><td>부모</td><td>326</td><td>123</td><td>368</td></tr>
-        <tr><td>자식</td><td>368</td><td>326</td><td>음수 = 아직 자식 없음</td></tr>
+        <tr><td>자식</td><td>368</td><td>326</td><td><b>−1</b> = 새로 만들어져 아직 자식이 없음</td></tr>
+      </tbody></table></div>
+
+    <h3>fork() 시스템 호출의 장점 4가지 (교재)</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>장점</th><th>무슨 뜻?</th></tr></thead>
+      <tbody>
+        <tr><td><b>병렬 처리 구현</b> ★</td><td>여러 프로세스를 동시에 실행해 안정적인 병렬 처리 환경을 제공 (로그인 100명)</td></tr>
+        <tr><td><b>빠른 프로세스 생성</b></td><td>실행 중인 프로세스를 복제하므로 복잡한 초기화 과정 없이 빠르게 만든다 (크롬 새 창)</td></tr>
+        <tr><td><b>손쉬운 자원 상속</b></td><td>부모의 메모리, 열린 파일, 환경 변수 등 대부분의 자원이 자식에게 그대로 상속된다</td></tr>
+        <tr><td><b>편리한 자원 회수</b></td><td>자식이 끝나면 부모가 감지하고 OS가 자동으로 자원을 회수 → 시스템 자원 누수 방지</td></tr>
       </tbody></table></div>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>fork는 실행 중인 프로세스를 메모리 안에서 그대로 복사해 자식 프로세스를 만드는 시스템 콜이다. 하드디스크에서 가져오지 않아 빠르고, 코드·데이터·PCB가 복사되지만 PID는 다르며 PPID·CPID로 부모-자식 관계가 기록된다. 병렬 처리의 핵심이다.</p>
+      <p>fork()는 기존의 프로세스로부터 자식 프로세스를 생성하는 시스템 호출이다(내용을 변경하는 시스템 호출은 exec()). fork는 실행 중인 프로세스를 메모리 안에서 그대로 복사해 자식 프로세스를 만드는 시스템 콜이다. 하드디스크에서 가져오지 않아 빠르고, 코드·데이터·PCB가 복사되지만 PID는 다르며 PPID·CPID로 부모-자식 관계가 기록된다. 장점은 병렬 처리 구현, 빠른 프로세스 생성, 손쉬운 자원 상속, 편리한 자원 회수다.</p>
       <div class="mn">외우는 법: <b>포크 = 짜장면 복사 = 아이 낳기</b>, 다른 건 <b>PID</b> 하나</div></div>
 
     <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
@@ -465,7 +501,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 5</span>
       <div><h2>짜장면만 복사하던 주방에 "짬뽕 주세요"가 들어오면?</h2><div class="sub">exec 시스템 콜 · 코드 교체 · 셸 · fork + exec</div></div></div>
 
-    <div class="analogy"><b>교수님 비유</b> — 짜장면을 포크로 하나 복사해 놓고, 그 짜장면한테 "넌 짬뽕이야, 넌 짬뽕이야" 하고 우기는 거예요. 그러면 짬뽕이 돼요. 이렇게 <b>원래 있던 코드를 새 코드로 바꿔치기</b>하는 시스템 콜이 <mark>exec</mark>예요.</div>
+    <div class="analogy"><b>교수님 비유</b> — 짜장면을 포크로 하나 복사해 놓고, 그 짜장면한테 "넌 짬뽕이야, 넌 짬뽕이야" 하고 우기는 거예요. 그러면 짬뽕이 돼요. 이렇게 <b>원래 있던 코드를 새 코드로 바꿔치기</b>하는 시스템 콜이 <mark>exec</mark>예요. 교재 정의(별표): 기존 프로세스를 완전히 종료하고 새 프로세스를 실행하는 <b>대신</b>, 기존 프로세스에서 <b>코드만</b> 새로운 프로그램으로 변경하는 시스템 호출.</div>
 
     <p>왜 필요할까요? 로그인에 성공하면 이제 명령어를 받아 처리할 <mark>셸</mark>이 필요해요. 원래대로라면 ① 로그인 프로세스를 종료하고 메모리·PCB를 치운 뒤 ② 셸을 하드디스크에서 가져와 새 PCB를 만들어야 해요. 두 번 일이죠. 대신 <b>로그인이 쓰던 메모리 영역과 PCB를 그대로 두고 코드만 셸로 바꿔치기</b>하면, 남이 살던 집에 그대로 들어가 사는 셈이에요. 메모리 관리도 편하고 <b>부모-자식 관계도 그대로 유지</b>돼요.</p>
 
@@ -493,7 +529,7 @@ printf("After exec\n");       <span class="c">// <span class="hl">찍히지 않�
     <p>fork와 exec를 섞은 교재 마지막 코드도 같은 원리예요. 자식은 exec로 ls가 되어 파일 목록을 찍고, 부모는 wait로 기다렸다가 자식이 끝난 <b>뒤에</b> 마지막 줄을 찍어요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>exec는 기존 프로세스의 코드 영역을 새 프로그램으로 교체하는 시스템 콜이다. PCB(PID)는 그대로 유지되고 코드는 교체, 데이터 영역은 초기화되며, 새 프로세스를 만들지 않으므로 부모-자식 관계가 유지된다. exec 이후의 원래 코드는 실행되지 않는다.</p>
+      <p>exec()는 기존 프로세스를 완전히 종료하고 새로운 프로세스를 실행하는 대신, 기존 프로세스에서 코드만 새로운 프로그램으로 변경하는 시스템 호출이다. PCB(PID)는 그대로 유지되고 코드는 교체, 데이터 영역은 초기화되며, 새 프로세스를 만들지 않으므로 부모-자식 관계가 유지된다. exec 이후의 원래 코드는 실행되지 않는다.</p>
       <div class="mn">외우는 법: <b>fork는 복사, exec는 바꿔치기</b> · 셸은 fork 하고 exec</div></div>
 
     <div class="check" data-id="k5" data-answer="2"><div class="lbl">바로 확인</div>
@@ -517,10 +553,11 @@ printf("After exec\n");       <span class="c">// <span class="hl">찍히지 않�
     <div class="box sheet" id="sheet">
       <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제</p>
       <div class="grp"><h4>① 부모-자식 <span class="mn">init = 1번</span></h4><ul>
-        <li>안 치우면 느려짐 = <span class="kw">가비지 컬렉션</span> 부족</li>
-        <li>자식 종료 → 부모가 뒷정리 · 최상위 = <span class="kw">init(PID 1)</span></li></ul></div>
+        <li>프로세스를 종료시키고 자원을 회수하는 일 = <span class="kw">가비지 컬렉션</span>. 안 치우면 느려져요.</li>
+        <li>OS는 관련 프로세스를 부모-자식으로 묶고, 자식이 끝나면 부모가 자원을 회수해요. 최상위 부모 = <span class="kw">init(PID 1)</span>, 그 위 swapper(PID 0)는 OS 그 자체.</li></ul></div>
       <div class="grp"><h4>② fork <span class="ex-t">★ 꼭 기억</span><span class="mn">짜장면 복사</span></h4><ul>
-        <li>메모리 안에서 <span class="kw">복사</span> → 빠름 · 병렬 처리의 핵심</li>
+        <li>자식 생성 = <span class="kw">fork()</span>, 내용 변경 = <span class="kw">exec()</span>. fork는 메모리 안에서 <span class="kw">복사</span>해서 빨라요.</li>
+        <li>장점 4: <span class="kw">병렬 처리 구현</span> · 빠른 생성 · 자원 상속 · 자원 회수</li>
         <li>다른 것 = <span class="kw">PID</span> · 부모 기록 PPID / 자식 기록 CPID</li></ul></div>
       <div class="grp"><h4>③ fork 코드 <span class="ex-t">★ 출력</span></h4><ul>
         <li>반환값: 자식 <span class="kw">0</span> · 부모 <span class="kw">양수</span>(자식 PID) · 실패 −1</li>
@@ -529,7 +566,7 @@ printf("After exec\n");       <span class="c">// <span class="hl">찍히지 않�
         <li><span class="kw">return 0</span> = 정상 종료를 부모에게 알림</li>
         <li>부모 먼저 종료 → <span class="kw">고아</span> → 정리 안 되면 <span class="kw">좀비</span> → 느려짐</li></ul></div>
       <div class="grp"><h4>⑤ exec <span class="mn">짬뽕 우기기</span></h4><ul>
-        <li>코드 <span class="kw">교체</span> · PCB 그대로 · 데이터 리셋</li>
+        <li>기존 프로세스를 종료하는 대신 <b>코드만</b> 새 프로그램으로 <span class="kw">교체</span>해요. PCB 그대로 · 데이터 리셋.</li>
         <li>exec 뒤 원래 코드는 실행 X · 셸 = <span class="kw">fork + exec</span></li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
@@ -548,15 +585,17 @@ printf("After exec\n");       <span class="c">// <span class="hl">찍히지 않�
       <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
       <div class="fc-items">
         <div class="fc-item"><div class="q">컴퓨터를 껐다 켜면 빨라지는 이유는?</div><div class="a">끝난 프로세스 자리를 다 못 치워(가비지 컬렉션 부족) 줄었던 메모리 여유 공간이 리셋되기 때문.</div></div>
-        <div class="fc-item"><div class="q">부모-자식 관계를 만드는 이유는?</div><div class="a">자식이 끝날 때 부모에게 알려 부모가 자원을 정리(또는 OS에 요청)할 수 있게 하려고.</div></div>
+        <div class="fc-item"><div class="q">가비지 컬렉션이란? (교재 정의)</div><div class="a">운영체제의 역할 중 프로세스를 종료시키고 자원을 회수하는 일.</div></div>
+        <div class="fc-item"><div class="q">부모-자식 관계를 만드는 이유는?</div><div class="a">효율적인 자원 회수를 위해. 부모가 자식을 생성하고, 자식이 종료되면 부모가 자식의 자원을 회수한다.</div></div>
         <div class="fc-item"><div class="q">유닉스 최상위 프로세스와 PID는?</div><div class="a">init, PID 1.</div></div>
-        <div class="fc-item"><div class="q">fork란?</div><div class="a">실행 중인 프로세스를 메모리 안에서 복사해 자식 프로세스를 만드는 시스템 콜. 병렬 처리의 핵심.</div></div>
+        <div class="fc-item"><div class="q">fork란?</div><div class="a">기존 프로세스로부터 자식 프로세스를 생성하는 시스템 호출. 메모리 안에서 복사하므로 빠르다.</div></div>
+        <div class="fc-item"><div class="q">fork()의 장점 4가지는?</div><div class="a">병렬 처리 구현, 빠른 프로세스 생성, 손쉬운 자원 상속, 편리한 자원 회수.</div></div>
         <div class="fc-item"><div class="q">fork의 반환값은?</div><div class="a">자식에게 0, 부모에게 자식의 PID(양수), 실패하면 −1.</div></div>
         <div class="fc-item"><div class="q">fork 후 부모와 자식이 다른 것은?</div><div class="a">PID. (PCB에 PPID·CPID로 서로 기록)</div></div>
         <div class="fc-item"><div class="q">wait의 역할은?</div><div class="a">부모가 자식이 종료(return)할 때까지 기다리게 한다. 그래서 자식 출력이 먼저 나온다.</div></div>
         <div class="fc-item"><div class="q">고아 프로세스와 좀비 프로세스는?</div><div class="a">고아 = 부모가 먼저 종료된 자식. 좀비 = 정리되지 못하고 시스템에 남은 프로세스.</div></div>
         <div class="fc-item"><div class="q">return 0의 의미는?</div><div class="a">부모에게 정상 종료를 알리는 것.</div></div>
-        <div class="fc-item"><div class="q">exec란?</div><div class="a">프로세스의 코드를 새 프로그램으로 교체하는 시스템 콜. PCB 그대로, 코드 교체, 데이터 리셋.</div></div>
+        <div class="fc-item"><div class="q">exec란?</div><div class="a">기존 프로세스를 완전히 종료하고 새 프로세스를 실행하는 대신, 기존 프로세스에서 코드만 새로운 프로그램으로 변경하는 시스템 호출. PCB 그대로, 데이터 리셋.</div></div>
         <div class="fc-item"><div class="q">exec를 쓰는 이점은?</div><div class="a">프로세스를 종료·새로 생성하지 않아 메모리 관리가 편하고 부모-자식 관계가 유지된다.</div></div>
       </div>
       <ol class="fc-print"></ol>

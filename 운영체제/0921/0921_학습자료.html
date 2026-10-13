@@ -294,7 +294,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">9월 21일 (월) · 4주차 ① · 2장 컴퓨터의 구조 ② (CPU와 메모리)</div>
+    <div class="eyebrow">9월 21일 (월) · 4주차 ① · 2장 컴퓨터의 구조 ② (CPU와 메모리) · 교재 2장 사진 기준</div>
     <h1>2 + 3 하나 계산하는데, CPU 안에서는 무슨 일이 벌어질까?</h1>
     <p class="lead">간단한 덧셈 한 줄을 따라가며 CPU 안의 레지스터들이 어떻게 움직이는지 보는 날이에요. 교수님이 <b>"레지스터는 꼭 외우셔야 돼요"</b>라고 한 날이라, 이 페이지는 표 하나를 확실히 외우는 게 목표예요.</p>
     <div class="goal">
@@ -329,8 +329,15 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 1</span>
       <div><h2><code>sum = D2 + D3;</code> 한 줄이 CPU에서는 몇 단계일까?</h2><div class="sub">ALU · 제어장치(CU) · 레지스터 · LOAD / ADD / MOVE</div></div></div>
 
-    <p>CPU는 세 부분이에요. 덧셈·뺄셈 같은 <b>연산</b>을 하는 <mark>산술논리 연산장치(ALU)</mark>, "메모리에서 가져와", "저장해" 같은 <b>명령</b>을 내리는 <mark>제어장치(CU)</mark>, 그리고 데이터를 <b>임시로 보관</b>하는 <mark>레지스터</mark>.</p>
-    <div class="analogy"><b>교수님 비유</b> — 짜장면을 만들려고 양파를 썰었어요. 고기를 썰려면 썬 양파를 잠깐 <b>종지</b>에 덜어 둬야죠. 볶기 전까지 재료를 잠깐 두는 그 종지가 레지스터예요.</div>
+    <p>CPU는 명령어를 해석하고 실행하는 핵심 장치, 컴퓨터의 <b>두뇌</b>예요. 세 장치가 협업해서 일해요. 교재는 9/16의 요리사 모형으로 설명해요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>장치</th><th>요리사로 치면</th><th>하는 일</th></tr></thead>
+      <tbody>
+        <tr><td><mark>산술논리 연산장치(ALU)</mark> ★</td><td>요리사가 재료를 조리하듯</td><td>덧셈·뺄셈·곱셈·나눗셈 같은 <b>산술 연산</b>과 AND·OR 같은 <b>논리 연산</b>을 한다</td></tr>
+        <tr><td><mark>제어장치(CU)</mark> ★</td><td>요리사가 보조에게 작업을 지시하듯</td><td><b>명령어를 해석</b>하고 다른 장치에 작업을 <b>지시</b>한다</td></tr>
+        <tr><td><mark>레지스터</mark> ★</td><td>미리 손질한 재료를 작은 그릇에 담아 두듯</td><td>연산에 필요한 데이터나 중간 결과를 <b>임시로 저장</b>하는 <b>CPU 내부 메모리</b></td></tr>
+      </tbody></table></div>
+    <div class="analogy"><b>교수님 비유</b> — 짜장면을 만들려고 양파를 썰었어요. 고기를 썰려면 썬 양파를 잠깐 <b>종지</b>에 덜어 둬야죠. 볶기 전까지 재료를 잠깐 두는 그 종지가 레지스터예요. 교재 그림 속 말풍선도 "토마토 1개와 양파 1개를 슬라이스하고 대파 1개는 다져주세요" — 요리사(제어장치)가 지시하는 장면이에요.</div>
 
     <p>이제 <code>D2 = 2, D3 = 3, sum = D2 + D3</code>을 따라가 볼게요. 사실 <b>D2, D3이라는 변수 이름은 사람을 위한 별명</b>일 뿐이고, 기계는 <b>메모리 주소</b>만 알아요. 전화번호를 못 외우니까 이름을 붙여 두는 것과 같죠. (이게 C에 포인터가 있는 근본 이유예요.)</p>
 
@@ -341,7 +348,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <p>CU가 LOAD·ADD·MOVE 명령을 내리고, ALU가 더하고, 레지스터가 중간값을 들고 있어요. 덧셈 한 줄에 이만큼이니, 조금만 복잡한 코드를 짜도 CPU는 정신없이 바쁜 거예요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>CPU = 산술논리 연산장치(ALU, 연산) + 제어장치(CU, 명령) + 레지스터(데이터 임시 보관). 메모리의 값은 레지스터로 가져와(LOAD) 연산(ADD)한 뒤 다시 메모리로 옮긴다(MOVE).</p>
+      <p>CPU는 산술논리 연산장치, 제어장치, 레지스터로 구성된다. 산술논리 연산장치(ALU)는 산술 연산과 논리 연산을, 제어장치는 명령어를 해석하고 다른 장치에 작업을 지시하며, 레지스터는 연산에 필요한 데이터나 중간 결과를 임시로 저장하는 CPU 내부 메모리다. 메모리의 값은 레지스터로 가져와(LOAD) 연산(ADD)한 뒤 다시 메모리로 옮긴다(MOVE).</p>
       <div class="mn">외우는 법: <b>ALU 계산, CU 지시, 레지스터 종지</b></div></div>
 
     <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
@@ -360,15 +367,15 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 2</span>
       <div><h2>CPU가 메모리 100번지 값을 직접 들고 오지 못한다면, 어떻게 가져올까?</h2><div class="sub">레지스터 7종 ★ · PC · IR · MAR · MBR</div></div></div>
 
-    <p>레지스터는 종류가 많아요. 교수님이 "꼭 외우셔야 된다"고 한 표예요.</p>
+    <p>레지스터는 종류가 많아요. 교수님이 "꼭 외우셔야 된다"고 한 표예요. 이 중 PC·IR·MAR처럼 특수한 용도로 쓰여서 <b>사용자가 임의로 바꿀 수 없는</b> 레지스터를 특수 레지스터, 또는 <b>사용자 불가시 레지스터</b>라고 불러요.</p>
     <div class="table-wrap"><table>
       <thead><tr><th>레지스터</th><th>하는 일</th></tr></thead>
       <tbody>
-        <tr><td><b>데이터 레지스터 (DR)</b></td><td>데이터(2, 3 같은 값)를 임시로 보관</td></tr>
-        <tr><td><b>주소 레지스터 (AR)</b></td><td>처리할 데이터가 저장된 메모리 주소를 보관</td></tr>
-        <tr><td><b>프로그램 카운터 (PC)</b> ★</td><td><mark>다음에 실행할 명령어의 위치(줄 번호)</mark>. 한 줄 끝나면 1 증가</td></tr>
-        <tr><td><b>명령어 레지스터 (IR)</b></td><td>지금 실행할 명령어(LOAD · ADD · MOVE)</td></tr>
-        <tr><td><b>메모리 주소 레지스터 (MAR)</b> ★</td><td>메모리에서 읽거나 쓸 <b>주소</b></td></tr>
+        <tr><td><b>데이터 레지스터 (DR)</b></td><td>메모리에서 가져온 데이터(2, 3 같은 값)를 보관하거나 작업 결과를 임시 저장. CPU 레지스터 대부분이 이거라 <b>범용 레지스터</b>라고도 함</td></tr>
+        <tr><td><b>주소 레지스터 (AR)</b></td><td>처리할 데이터가 저장된 <b>메모리 주소</b>를 저장. 데이터 접근에 필요한 주소를 관리</td></tr>
+        <tr><td><b>프로그램 카운터 (PC)</b> ★</td><td><mark>다음에 실행할 명령어의 위치</mark>를 저장(코드 2-2의 1행·2행·3행 같은 행 번호). 명령어 위치를 가리키므로 <b>명령어 포인터(IP)</b>라고도 함</td></tr>
+        <tr><td><b>명령어 레지스터 (IR)</b></td><td><b>현재 실행 중인 명령어</b>(LOAD · ADD · MOVE)를 저장. 제어장치는 IR의 명령어를 해석한 뒤 외부 장치에 제어 신호를 보냄</td></tr>
+        <tr><td><b>메모리 주소 레지스터 (MAR)</b> ★</td><td>메모리에서 CPU로 데이터를 가져오거나 CPU에서 메모리로 보낼 때 그 <b>메모리 주소</b>를 저장</td></tr>
         <tr><td><b>메모리 버퍼 레지스터 (MBR)</b> ★</td><td>메모리에서 가져온 / 메모리에 쓸 <b>값</b></td></tr>
         <tr><td><b>프로그램 상태 레지스터 (PSR)</b></td><td>연산 결과 상태 → if 같은 <b>분기</b>를 할지 결정</td></tr>
       </tbody></table></div>
@@ -385,7 +392,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="analogy"><b>교수님 비유</b> — 은행 번호표 같아요. CPU가 MAR에 "100번 손님!" 하고 띄우면, 메모리가 그 손님(값)을 MBR이라는 <b>창구</b>까지 보내 줘요. 그래서 MAR과 MBR은 <b>CPU와 메모리 사이의 인터페이스</b>예요.</div>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>PC는 다음에 실행할 명령어의 위치, IR은 현재 명령어를 가진다. MAR은 메모리에서 읽거나 쓸 주소를, MBR은 메모리와 주고받는 데이터를 저장하며, 두 레지스터는 CPU와 메모리 사이의 인터페이스다. PSR은 분기 여부를 결정할 때 쓰인다.</p>
+      <p>PC(명령어 포인터)는 다음에 실행할 명령어의 위치를 저장하고, IR은 현재 실행 중인 명령어를 저장하며 제어장치가 이를 해석한다. MAR은 메모리에서 읽거나 쓸 주소를, MBR은 메모리와 주고받는 데이터를 저장하며, 두 레지스터는 CPU와 메모리 사이의 인터페이스다. PSR은 분기 여부를 결정할 때 쓰인다.</p>
       <div class="mn">외우는 법: <b>MAR = Address(주소), MBR = Buffer(값)</b> · <b>PC = 다음 줄</b></div></div>
 
     <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
@@ -485,15 +492,16 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <tr><td>예</td><td>DRAM, SDRAM, <b>DDR</b>(PC 메인 메모리), HBM</td><td><b>플래시 메모리</b>(USB, SD카드, SSD)</td></tr>
         <tr><td>용도</td><td><mark>메인 메모리</mark></td><td>저장장치</td></tr>
       </tbody></table></div>
-    <p>메모리는 읽고 쓸 수 있는 <mark>RAM</mark>과 한 번 쓰면 바꿀 수 없는 <mark>ROM</mark>(읽기 전용)으로 나눠요. 우리가 "메모리"라 부르는 건 거의 RAM이고, ROM은 BIOS 프로그램 같은 데 쓰였지만 요즘은 거의 안 써요.</p>
-    <p>전원이 꺼져도 남으면 편할 텐데 왜 메인 메모리는 휘발성일까요? 전원 없이 기억하려면 내부 구조가 훨씬 복잡해져서 <b>플래시 메모리가 느리기</b> 때문이에요. 작업 공간은 빨라야 하니까 휘발성 메모리를 써요.</p>
+    <p>먼저 메인 메모리의 생김새. 메인 메모리는 데이터를 <b>1바이트 단위</b>로 저장하고, 각 바이트는 <b>주소</b>로 구분해요. 주소는 보통 <b>0번지부터</b> 시작하고, 이 주소로 CPU와 데이터를 주고받아요(100번지 값을 CPU로 보내고, CPU 결과를 120번지에 저장하는 식).</p>
+    <p>메모리는 크게 <mark>램(RAM)</mark>과 <mark>롬(ROM)</mark>으로 나눠요. 램은 데이터를 <b>읽고 쓸 수 있는</b> 메모리예요. 이름의 Random Access는 저장된 위치와 관계없이 <b>같은 속도로</b> 읽을 수 있다는 뜻이고요. 롬은 데이터를 <b>쓸 수 없고 읽기만</b> 할 수 있어요. 일반적으로 "메모리"라고 하면 램을 말해요.</p>
+    <p>또 하나의 기준이 휘발성이에요. <mark>휘발성 메모리</mark>는 전원이 없으면 데이터가 사라지는 반도체 메모리, <mark>비휘발성 메모리</mark>는 전원이 없어도 데이터를 보관하지만 <b>내부 구조가 복잡하고 동작이 느려요.</b> 그래서 작업 공간인 메인 메모리에는 <b>동작이 빠른 휘발성 메모리</b>를 쓰고, SSD나 USB 같은 저장장치에는 비휘발성 메모리를 써요. 휘발성 메모리는 SRAM과 DRAM으로 나뉘고, DRAM에서 SDRAM → DDR SDRAM으로 발전했어요.</p>
 
     <h3>CPU보다 GPU가 더 팔리는 이유</h3>
     <p>속도를 올리는 첫 방법은 클럭인데 열 때문에 한계가 있죠(9/16). 두 번째 방법은 ALU·CU·레지스터 묶음인 <b>코어</b>를 여러 개 넣는 거예요. CPU 코어엔 명령을 내리는 CU가 붙어 있어서 작게 만들기 어려워 보통 8~64개 정도예요. <b>GPU는 계산만 하도록</b> 만들어서 CU가 거의 없고, 코어를 작게 수천 개 넣을 수 있어요. 그래서 대량 계산(AI)에선 GPU가 이겨요.</p>
     <p>문제는 수천 개 코어에 데이터를 동시에 넣고 빼야 한다는 것. 평면 DDR로는 못 따라가니까, DDR을 <b>위로 여러 장 쌓아</b> 동시에 돌리는 <mark>HBM</mark>이 나왔어요. 층 사이 아주 가는 선을 다 연결해야 해서 삼성·SK하이닉스만 잘 만든다는 얘기였어요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>메인 메모리는 휘발성 RAM(DRAM 계열, DDR)이고, 플래시 메모리는 비휘발성이지만 느려서 저장장치로 쓴다. GPU는 CU가 거의 없어 코어를 수천 개 넣을 수 있고, 그 속도를 메모리가 따라가도록 DDR을 수직으로 쌓은 것이 HBM이다.</p>
+      <p>램(RAM)은 읽고 쓸 수 있고 위치와 관계없이 같은 속도로 읽을 수 있는 메모리, 롬(ROM)은 읽기만 할 수 있는 메모리다. 휘발성 메모리는 전원이 없으면 데이터가 사라지고, 비휘발성 메모리는 데이터를 보관하지만 구조가 복잡하고 느리므로 메인 메모리에는 빠른 휘발성 메모리(DRAM 계열, DDR)를, SSD·USB에는 비휘발성 메모리를 쓴다. GPU는 CU가 거의 없어 코어를 수천 개 넣을 수 있고, 그 속도를 메모리가 따라가도록 DDR을 수직으로 쌓은 것이 HBM이다.</p>
       <div class="mn">외우는 법: <b>메인은 휘발성(빨라서), 저장은 플래시(남아서)</b></div></div>
 
     <div class="check" data-id="k5" data-answer="1"><div class="lbl">바로 확인</div>
@@ -517,10 +525,10 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="box sheet" id="sheet">
       <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제</p>
       <div class="grp"><h4>① CPU 구성 <span class="mn">계산·지시·종지</span></h4><ul>
-        <li><span class="kw">ALU</span> 연산 · <span class="kw">CU</span> 명령 · <span class="kw">레지스터</span> 임시 보관</li>
+        <li><span class="kw">ALU</span>는 산술·논리 연산(요리사가 조리), <span class="kw">제어장치</span>는 명령어 해석·지시(보조에게 지시), <span class="kw">레지스터</span>는 데이터·중간 결과를 임시 저장하는 CPU 내부 메모리(작은 그릇)예요.</li>
         <li>LOAD(메모리→레지스터) → ADD → MOVE(레지스터→메모리) · 변수 이름 = 주소의 별명</li></ul></div>
       <div class="grp"><h4>② 레지스터 <span class="ex-t">★ 꼭 외움</span></h4><ul>
-        <li><span class="kw">PC</span> = 다음 실행할 명령어 위치 · <span class="kw">IR</span> = 현재 명령어</li>
+        <li><span class="kw">PC</span>는 다음에 실행할 명령어의 위치(명령어 포인터 IP라고도 해요), <span class="kw">IR</span>은 현재 실행 중인 명령어를 저장해요.</li>
         <li><span class="kw">MAR</span> = 메모리 주소 / <span class="kw">MBR</span> = 주고받는 값 → CPU↔메모리 인터페이스</li>
         <li>DR 데이터 · AR 데이터의 주소 · <span class="kw">PSR</span> = 분기 결정</li></ul></div>
       <div class="grp"><h4>③ 버스 <span class="mn">주소만 일방통행</span></h4><ul>
@@ -530,8 +538,8 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li>64비트 = 레지스터 크기 · 버스 대역폭</li>
         <li>32비트 → 2³² = <span class="kw">4GB</span>까지 · x86 = 32비트</li></ul></div>
       <div class="grp"><h4>⑤ 메모리</h4><ul>
-        <li><span class="kw">RAM</span> 읽기·쓰기 / <span class="kw">ROM</span> 읽기 전용</li>
-        <li>메인 = <span class="kw">휘발성</span>(DDR) / 플래시 = 비휘발성·느림(SSD·USB)</li>
+        <li><span class="kw">램</span>은 읽고 쓸 수 있고 위치와 상관없이 같은 속도로 읽어요. <span class="kw">롬</span>은 읽기만 돼요. 보통 "메모리" = 램.</li>
+        <li>메인 메모리는 빠른 <span class="kw">휘발성</span>(DDR), SSD·USB는 구조가 복잡하고 느린 <span class="kw">비휘발성</span>이에요. 메모리는 1바이트마다 주소가 붙고 0번지부터 시작해요.</li>
         <li>GPU = CU 없어 코어 수천 개 → <span class="kw">HBM</span>(DDR 수직 적층)</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
@@ -550,7 +558,9 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
       <div class="fc-items">
         <div class="fc-item"><div class="q">CPU의 세 구성 요소는?</div><div class="a">산술논리 연산장치(ALU), 제어장치(CU), 레지스터.</div></div>
-        <div class="fc-item"><div class="q">프로그램 카운터(PC)는?</div><div class="a">다음에 실행할 명령어의 위치(줄 번호)를 가진 레지스터. 한 줄 실행 후 1 증가.</div></div>
+        <div class="fc-item"><div class="q">프로그램 카운터(PC)는?</div><div class="a">다음에 실행할 명령어의 위치(행 번호)를 저장하는 레지스터. 명령어 위치를 가리키므로 명령어 포인터(IP)라고도 한다.</div></div>
+        <div class="fc-item"><div class="q">레지스터란? (교재 정의)</div><div class="a">연산에 필요한 데이터나 중간 결과를 임시로 저장하는 CPU 내부 메모리.</div></div>
+        <div class="fc-item"><div class="q">램(RAM)과 롬(ROM)의 차이는?</div><div class="a">램 = 읽고 쓸 수 있고, 저장 위치와 관계없이 같은 속도로 읽을 수 있음. 롬 = 쓸 수 없고 읽기만 가능.</div></div>
         <div class="fc-item"><div class="q">명령어 레지스터(IR)는?</div><div class="a">현재 실행할 명령어(LOAD, ADD, MOVE 등)를 가진 레지스터.</div></div>
         <div class="fc-item"><div class="q">MAR은?</div><div class="a">메모리 주소 레지스터. 메모리에서 읽거나 쓸 주소를 저장.</div></div>
         <div class="fc-item"><div class="q">MBR은?</div><div class="a">메모리 버퍼 레지스터. 메모리에서 가져온 값이나 메모리에 쓸 값을 저장.</div></div>

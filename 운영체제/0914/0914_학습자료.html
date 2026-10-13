@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>운영체제 9월 14일 · 컴퓨팅 환경, 커널과 시스템 콜</title>
+<title>운영체제 9월 14일 · 커널 · 시스템 호출 · 이중 모드</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 /* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
@@ -285,6 +285,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 </style>
 </head>
 <body data-course="운영체제" data-week="0914">
+<body data-course="운영체제" data-week="0914">
 <header class="topbar"><div class="wrap">
   <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>운영체제</a>
   <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
@@ -294,14 +295,14 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">9월 14일 (월) · 3주차 ① · 1장 운영체제 개요 ②</div>
+    <div class="eyebrow">9월 14일 (월) · 3주차 ① · 1장 운영체제 개요 ② · 교재 그림 1-17 ~ 1-21 기준</div>
     <h1>프로그램은 왜 하드디스크에 직접 못 쓸까?</h1>
-    <p class="lead">컴퓨팅 환경의 변화를 짧게 마무리하고, 본격적으로 운영체제의 속을 들여다보는 날이에요. 교수님이 "이 그림이 흐리면 위에 탑을 못 쌓는다"며 일부러 천천히 나간 부분이라 <b>오늘 그림이 이 과목 전체의 바닥</b>이에요.</p>
+    <p class="lead">컴퓨팅 환경의 변화를 짧게 마무리하고, 운영체제의 속을 들여다보는 날이에요. 교수님이 "이 그림이 흐리면 위에 탑을 못 쌓는다"며 일부러 천천히 나간 부분이라 <b>오늘 그림(사용자 → UI → 커널 → 하드웨어)이 이 과목 전체의 바닥</b>이에요.</p>
     <div class="goal">
       <h2>이 페이지를 다 보면 할 수 있는 것</h2>
       <ol>
-        <li>사용자 → UI → 커널 → 드라이버 → 하드웨어 구조를 그릴 수 있다</li>
-        <li>시스템 콜이 왜 필요한지, 듀얼 모드와 어떻게 연결되는지 설명할 수 있다</li>
+        <li>운영체제 = 사용자 인터페이스 + 커널 구조를 그리고, 커널의 4가지 기능을 말할 수 있다</li>
+        <li>시스템 호출이 왜 필요한지, 이중 모드 연산과 어떻게 연결되는지 설명할 수 있다</li>
         <li>디바이스 드라이버, API, SDK를 구분할 수 있다</li>
       </ol>
       <div class="time">약 20분 · 장면 5개 · 장면마다 확인 문제 1개</div>
@@ -310,16 +311,17 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것</h2>
       <ul>
         <li><b>중간고사 10/21(수) 예정</b> — 10/7 수업 말씀: "10/19 수업까지가 범위". 시간·장소는 공지 확인</li>
-        <li><b>시스템 콜</b> "별표. 이게 제일 중요하죠" · <b>자발적으로 커널 모드에 들어가는 유일한 방법 = 시스템 콜</b> (교재에 색깔로 표시해 둔 문장)</li>
+        <li><b>시스템 호출</b> "별표. 이게 제일 중요하죠" · <b>일반 프로세스가 자발적으로 커널 모드에 진입하는 유일한 방법 = 시스템 호출</b> (교재에 색깔로 표시해 둔 문장, 별표 여러 개)</li>
+        <li>교재 별표: 커널 · CLI/GUI · 디바이스 드라이버 = 커널과 하드웨어 사이의 인터페이스 · API</li>
         <li>API와 SDK는 "사람들이 되게 헷갈려 한다" → 구분 문제 대비</li>
         <li>커널 구조(단일형·계층형·마이크로)는 "그냥 읽어 보세요" → 설명 안 함</li>
       </ul>
     </div>
     <nav class="flow" aria-label="오늘의 흐름">
-      <a href="#c1"><b>장면 1</b>서버가 터지면?</a>
+      <a href="#c1"><b>장면 1</b>P2P와 클라우드</a>
       <a href="#c2"><b>장면 2</b>커널과 UI</a>
-      <a href="#c3"><b>장면 3</b>시스템 콜</a>
-      <a href="#c4"><b>장면 4</b>듀얼 모드</a>
+      <a href="#c3"><b>장면 3</b>시스템 호출</a>
+      <a href="#c4"><b>장면 4</b>이중 모드 연산</a>
       <a href="#c5"><b>장면 5</b>드라이버·API·SDK</a>
       <a href="#review"><b>복습</b>시험 직전 정리</a>
     </nav>
@@ -328,28 +330,23 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 1 -->
   <section class="ch" id="c1">
     <div class="ch-head"><span class="ch-num">장면 1</span>
-      <div><h2>MP3를 서버 한 대에 다 모으면 서버가 터진다. 그럼 어떻게?</h2><div class="sub">클라이언트-서버 · P2P · 클라우드 · 사물인터넷</div></div></div>
+      <div><h2>MP3를 서버 한 대에 다 모으면 서버가 터진다. 그럼 어떻게?</h2><div class="sub">클라이언트-서버 · P2P · 클라우드 컴퓨팅</div></div></div>
 
-    <p>시분할 이후 컴퓨팅 환경은 이렇게 흘러가요. 짧게 정리할게요.</p>
-    <ul class="plain">
-      <li><b>분산 시스템</b> — 작은 컴퓨터들을 네트워크로 묶어 큰 컴퓨터처럼 쓰려 했지만, 한 대가 고장 나면 복구가 어려워 잘 안 쓰였어요.</li>
-      <li><mark>클라이언트-서버</mark> — 서비스를 요청하는 클라이언트와 응답하는 서버. 웹이 이 구조라 엄청 퍼졌어요. 문제는 <b>모든 부하가 서버에 몰린다</b>는 것.</li>
-      <li><mark>P2P</mark> — 미국의 한 대학생이 MP3 공유 서비스를 만들면서 꾀를 냈어요. 서버엔 "누가 어떤 파일을 가졌는지" <b>목록만</b> 두고, 파일은 <b>가진 사람에게서 직접</b> 받는 거죠. <b>서버 과부하를 줄이려고</b> 만든 구조예요. 지금 메신저(데이터는 직접 전송)와 블록체인으로 이어졌어요.</li>
-      <li><mark>클라우드 컴퓨팅</mark> — 하드웨어·소프트웨어를 사지 않고 빌려 쓰고 돈만 내요(AWS). 뒤에서 어떤 컴퓨터가 도는지 구름에 가려 안 보인다고 클라우드. 포토샵·AI처럼 소프트웨어를 빌려 쓰는 걸 <b>SaaS</b>라고 해요.</li>
-      <li><mark>사물인터넷(IoT)</mark> — 버스·지하철·CCTV·가전까지 인터넷에 연결되는 것. 정류장의 "몇 분 뒤 도착"이 이 덕분이에요.</li>
-    </ul>
+    <p>웹처럼 <b>클라이언트가 요청하고 서버가 응답하는</b> 구조를 클라이언트-서버라고 해요. 엄청 퍼졌지만 문제가 있었죠. 모든 사람이 서버에서 파일을 받으니까 <b>부하가 서버에 몰려요.</b></p>
+    <p>그래서 나온 게 <mark>P2P</mark>(Peer-to-Peer)예요. 서버는 "누가 어떤 파일을 가졌는지" <b>중재만</b> 하고, 파일은 그 파일을 가진 다른 사용자(peer)에게서 <b>직접</b> 받아요. 서버 과부하를 줄이는 효과적인 대안으로 자리 잡았고, 지금은 <b>메신저, 블록체인, 파일 공유</b> 시스템이 P2P 구조를 써요.</p>
+    <p>한편 초고속 통신망과 5G 같은 무선 기술이 발달하면서, 데이터와 소프트웨어를 직접 갖고 있지 않아도 인터넷으로 언제 어디서나 쓸 수 있게 됐어요. 이게 <mark>클라우드 컴퓨팅</mark>이에요. 하드웨어와 소프트웨어는 <b>중앙에</b> 두고, 사용자는 인터넷으로 <b>필요한 기능만</b> 제공받는 구조죠(AWS, 구글 드라이브). 뒤에서 어떤 컴퓨터가 도는지 구름에 가려 안 보인다고 클라우드예요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>P2P는 클라이언트-서버 구조의 서버 과부하를 줄이기 위해, 서버는 연결 정보(목록)만 관리하고 데이터는 사용자끼리 직접 주고받는 구조다.</p>
-      <div class="mn">외우는 법: <b>서버는 목록만, 파일은 직접</b></div></div>
+      <p>P2P 시스템은 서버는 중재만 하고 파일은 그 파일을 가진 사용자(peer)로부터 직접 받는 구조로, 서버 과부하를 줄이기 위해 등장했다. 클라우드 컴퓨팅은 하드웨어와 소프트웨어를 중앙에 두고 사용자는 인터넷을 통해 필요한 기능만 제공받는 구조다.</p>
+      <div class="mn">외우는 법: <b>P2P = 서버는 중재만, 파일은 직접</b> · 클라우드 = <b>중앙에 두고 빌려 쓰기</b></div></div>
 
     <div class="check" data-id="k1" data-answer="2"><div class="lbl">바로 확인</div>
       <div class="q">P2P가 만들어진 가장 직접적인 이유는?</div>
       <div class="opts">
-        <button class="o">하드웨어를 빌려 쓰기 위해</button>
+        <button class="o">하드웨어와 소프트웨어를 중앙에 두고 빌려 쓰기 위해</button>
         <button class="o">작은 컴퓨터를 묶어 슈퍼컴퓨터처럼 쓰기 위해</button>
         <button class="o">서버에 몰리는 부하(과부하)를 줄이기 위해</button></div>
-      <div class="fb">P2P = <b>서버 과부하 줄이기</b>. 하드웨어를 빌려 쓰는 건 클라우드, 작은 컴퓨터를 묶는 건 분산 시스템이에요.</div></div>
+      <div class="fb">P2P = <b>서버 과부하 줄이기</b>. 중앙에 두고 빌려 쓰는 건 클라우드 컴퓨팅이에요.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
   </section>
@@ -357,47 +354,56 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 2 -->
   <section class="ch" id="c2">
     <div class="ch-head"><span class="ch-num">장면 2</span>
-      <div><h2>운영체제를 열어 보면 무엇과 무엇으로 되어 있을까?</h2><div class="sub">커널 · 사용자 인터페이스 · CLI와 GUI · 커널의 4가지 기능</div></div></div>
+      <div><h2>운영체제를 열어 보면 무엇과 무엇으로 되어 있을까?</h2><div class="sub">사용자 인터페이스 · 커널 ★ · 커널의 4가지 기능 · CLI와 GUI ★</div></div></div>
 
     <figure class="fig">
-      <svg viewBox="0 0 640 250" role="img" aria-label="사용자와 응용 프로그램, 사용자 인터페이스, 커널, 디바이스 드라이버, 하드웨어가 위에서 아래로 쌓인 운영체제 구조">
+      <svg viewBox="0 0 640 260" role="img" aria-label="응용 프로그램과 유틸리티 아래에 사용자 인터페이스, 그 아래 커널, 맨 아래 하드웨어가 쌓인 운영체제 관점의 컴퓨터 구조">
         <g font-size="14" font-weight="700" text-anchor="middle">
-          <rect x="120" y="10" width="400" height="38" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/><text x="320" y="34" fill="var(--ink)">사용자 · 응용 프로그램</text>
-          <rect x="120" y="58" width="400" height="38" rx="8" fill="var(--teal-soft)"/><text x="320" y="82" fill="var(--teal-ink)">사용자 인터페이스 (UI)</text>
-          <rect x="120" y="106" width="400" height="48" rx="8" fill="var(--teal)"/><text x="320" y="136" fill="var(--surface)">커널 — 운영체제의 핵심</text>
-          <rect x="120" y="164" width="400" height="38" rx="8" fill="var(--teal-soft)"/><text x="320" y="188" fill="var(--teal-ink)">디바이스 드라이버</text>
-          <rect x="120" y="212" width="400" height="34" rx="8" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="320" y="234" fill="var(--exam)">하드웨어</text></g>
-        <g font-size="12" fill="var(--ink-3)">
-          <text x="530" y="82">명령 · 결과</text>
-          <text x="530" y="136">시스템 콜로만</text>
-          <text x="530" y="188">표준 규격 연결</text></g>
-        <path d="M20 106 V202" stroke="var(--teal)" stroke-width="2"/>
-        <text x="28" y="160" font-size="12" font-weight="700" fill="var(--teal-ink)">운영체제</text>
+          <rect x="130" y="12" width="250" height="38" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/><text x="255" y="36" fill="var(--ink)">응용 프로그램</text>
+          <rect x="390" y="12" width="120" height="38" rx="8" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/><text x="450" y="36" fill="var(--ink)">유틸리티</text>
+          <rect x="130" y="60" width="380" height="40" rx="8" fill="var(--teal-soft)"/><text x="320" y="85" fill="var(--teal-ink)">사용자 인터페이스 (UI)</text>
+          <rect x="130" y="110" width="380" height="54" rx="8" fill="var(--teal)"/><text x="320" y="142" fill="var(--surface)">커널 — 운영체제의 핵심</text>
+          <rect x="130" y="174" width="380" height="50" rx="8" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/><text x="320" y="196" fill="var(--exam)">하드웨어</text></g>
+        <text x="320" y="214" font-size="12" text-anchor="middle" fill="var(--exam)">CPU, 메모리, 마우스, 모니터, 하드디스크</text>
+        <path d="M110 60 V164" stroke="var(--teal)" stroke-width="2"/><path d="M104 60 H116 M104 164 H116" stroke="var(--teal)" stroke-width="2"/>
+        <text x="100" y="117" font-size="12.5" font-weight="700" text-anchor="end" fill="var(--teal-ink)">운영</text>
+        <text x="100" y="133" font-size="12.5" font-weight="700" text-anchor="end" fill="var(--teal-ink)">체제</text>
+        <path d="M530 12 V164" stroke="var(--ink-3)" stroke-width="1.5"/><text x="540" y="92" font-size="12.5" fill="var(--ink-3)">소프트웨어</text>
+        <text x="540" y="204" font-size="12.5" fill="var(--ink-3)">하드웨어</text>
+        <text x="320" y="250" font-size="12.5" text-anchor="middle" font-weight="600" fill="var(--teal-ink)">위에서는 커널이 제공하는 인터페이스를 통해서만 아래로 내려갈 수 있다</text>
       </svg>
-      <figcaption>어떤 사용자·프로그램도 커널을 거치지 않고는 하드웨어에 닿을 수 없다</figcaption>
+      <figcaption>교재 그림 1-17 운영체제 관점에서의 컴퓨터 구조를 다시 그림</figcaption>
     </figure>
 
-    <p>운영체제의 <b>핵심 기능만 담당하는 부분</b>을 <mark>커널</mark>이라고 해요. 첫 번째로 기억할 것: <b>어떤 사용자나 프로그램도 커널을 거치지 않고는 하드웨어에 접근할 수 없어요.</b> 9/9의 바리스타가 바로 커널이에요.</p>
-    <p>그런데 커널만 있으면 명령을 내리고 결과를 받아 볼 창구가 없죠. 그래서 사용자와 커널 사이에 <mark>사용자 인터페이스(UI)</mark>가 있어요.</p>
+    <p>운영체제는 <mark>사용자 인터페이스</mark>와 <mark>커널</mark>, 두 가지 핵심 구성 요소로 되어 있어요. 사용자 인터페이스는 사용자가 운영체제와 <b>직접 소통하는 수단</b>이고, 커널은 컴퓨터 자원을 <b>관리하는</b> 운영체제의 핵심이에요. 그리고 가장 중요한 규칙 하나. <b>사용자나 응용 프로그램은 커널이 제공하는 인터페이스를 통해서만 컴퓨터 자원에 접근할 수 있어요.</b> 9/9의 바리스타가 바로 커널이에요.</p>
 
-    <div class="analogy"><b>교수님 비유</b> — 커널이 자동차 <b>엔진</b>이라면, 엔진만 있다고 차가 가나요? 핸들·액셀·브레이크·계기판이 있어야죠. 내 명령을 기계에 전하고 결과를 알려 주는 그 부분이 인터페이스예요.</div>
+    <div class="analogy"><b>교수님 비유 (교재도 같은 비유)</b> — 커널은 자동차의 <b>엔진</b>이에요. 엔진이 차의 성능을 정하듯 커널이 전체 시스템의 성능과 안정성을 좌우하죠. 그런데 엔진만 있다고 차를 몰 수 있나요? 운전자가 쓰는 <b>핸들·브레이크·계기판</b>이 있어야죠. 그게 사용자 인터페이스예요. 사용자는 인터페이스로 커널에 명령을 내리고, 커널의 작업 결과를 다시 인터페이스로 확인해요.</div>
 
-    <p>초기 유닉스나 MS-DOS는 글자를 쳐서 명령하는 <b>CLI(문자 인터페이스)</b>였어요. 생성형 AI에 글로 명령하는 것과 비슷하죠. 지금은 마우스로 클릭하는 <mark>GUI(그래픽 사용자 인터페이스)</mark>가 대부분이고, 스마트폰은 터치로 발전했어요.</p>
-    <p>여기서 교수님이 짚은 착각 하나. "유닉스는 어렵고 윈도우는 쉽다"는 건 <b>인터페이스</b> 얘기지 커널 얘기가 아니에요. 스마트폰 OS도 유닉스 계열인데 쓰기 어렵지 않잖아요. <b>쉽다/어렵다는 UI가 결정하고, 커널의 좋고 나쁨과는 다른 문제</b>예요.</p>
+    <h3>커널이 하는 일 4가지</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>기능</th><th>무슨 일?</th></tr></thead>
+      <tbody>
+        <tr><td><b>프로세스 관리</b></td><td>프로그램을 실행하면 프로세스가 되고, 커널은 프로세스에 CPU 시간을 배정하고 실행 환경을 만든다</td></tr>
+        <tr><td><b>메모리 관리</b></td><td>메인 메모리는 여러 프로세스가 함께 쓰는 자원이라, 각 프로세스를 적절한 위치에 배치해 충돌 없이 돌게 한다</td></tr>
+        <tr><td><b>저장장치 관리</b></td><td>메인 메모리는 전원이 꺼지면 데이터가 사라지는 휘발성 장치라, 데이터를 하드디스크·SSD·USB에 파일 시스템 형태로 안전하게 저장한다</td></tr>
+        <tr><td><b>입출력 관리</b></td><td>키보드·마우스·모니터 같은 입출력 장치를 관리한다</td></tr>
+      </tbody></table></div>
+    <p>앞으로 배울 목차(프로세스 → 스케줄링 → 메모리 → 파일 시스템 → 입출력)가 바로 이 순서예요.</p>
 
-    <p>커널의 핵심 기능은 <mark>프로세스 관리 · 메모리 관리 · 저장장치 관리 · 입출력 관리</mark> 4가지예요. 앞으로 배울 목차(프로세스 → 스케줄링 → 메모리 → 파일 시스템 → 입출력)가 바로 이 순서고, 기말까지 이걸 다 배워요.</p>
+    <h3>CLI와 GUI</h3>
+    <p>사용자 인터페이스는 크게 둘이에요. 사용자가 명령어를 <b>글자로 직접 입력</b>하는 <mark>CLI</mark>(문자 기반, 유닉스의 셸, MS-DOS 명령 프롬프트)와, 마우스로 아이콘을 클릭하는 <mark>GUI</mark>(그래픽 사용자 인터페이스)죠. 교수님이 짚은 착각 하나: "유닉스는 어렵고 윈도우는 쉽다"는 건 <b>인터페이스</b> 얘기지 커널 얘기가 아니에요. 스마트폰 OS도 유닉스 계열인데 쓰기 어렵지 않잖아요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>운영체제 = 사용자 인터페이스 + 커널. 커널은 프로세스·메모리·저장장치·입출력 관리를 담당하며, 하드웨어는 커널을 통해서만 접근할 수 있다.</p>
+      <p>운영체제는 사용자 인터페이스와 커널로 이루어진다. 커널은 운영체제의 핵심 기능을 수행하는 중앙 제어 소프트웨어로 프로세스 관리, 메모리 관리, 저장장치 관리, 입출력 관리를 수행하며, 사용자나 응용 프로그램은 커널이 제공하는 인터페이스를 통해서만 컴퓨터 자원에 접근할 수 있다. 사용자 인터페이스는 CLI(문자 기반)와 GUI(그래픽)로 나뉜다.</p>
       <div class="mn">외우는 법: <b>엔진(커널) + 핸들(UI)</b> · 커널 기능 <b>프·메·저·입</b></div></div>
 
     <div class="check" data-id="k2" data-answer="0"><div class="lbl">바로 확인</div>
       <div class="q">"리눅스 터미널은 어렵고 윈도우는 쉽다"는 느낌은 무엇의 차이일까?</div>
       <div class="opts">
-        <button class="o">사용자 인터페이스</button>
+        <button class="o">사용자 인터페이스(CLI냐 GUI냐)</button>
         <button class="o">커널의 성능</button>
         <button class="o">하드웨어</button></div>
-      <div class="fb">쉽고 어려운 건 <b>인터페이스</b>(CLI냐 GUI냐)의 차이예요. 커널이 좋고 나쁜 것과는 다른 문제라는 게 교수님 포인트.</div></div>
+      <div class="fb">쉽고 어려운 건 <b>인터페이스</b>의 차이예요. 터미널은 명령어를 직접 치는 CLI, 윈도우는 클릭하는 GUI. 커널이 좋고 나쁜 것과는 다른 문제예요.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
   </section>
@@ -405,32 +411,55 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 3 -->
   <section class="ch" id="c3">
     <div class="ch-head"><span class="ch-num">장면 3</span>
-      <div><h2>내가 10을 써 둔 자리에 남이 10을 또 쓰면?</h2><div class="sub">시스템 콜 ★ · write / read · printf</div></div></div>
+      <div><h2>내가 14를 써 둔 자리에 남이 21을 또 쓰면?</h2><div class="sub">시스템 호출 ★ · 시스템 함수 read() / write()</div></div></div>
 
-    <div class="hook"><p class="q">OS 없이 모두가 하드디스크에 직접 쓸 수 있다면</p>
-      <p class="h">누군가 써 둔 자리에 다른 프로그램이 또 쓰면 원래 데이터가 날아가요. 비행기에서 "아무 데나 앉으세요" 하면 다들 다리 뻗을 수 있는 앞자리로 몰리는 것처럼요.</p></div>
+    <div class="hook"><p class="q">모두가 하드디스크에 직접 쓸 수 있다면</p>
+      <p class="h">한 사람이 14를 써 둔 자리에 다른 사람이 21을 덮어써 버려요. 비행기에서 "아무 데나 앉으세요" 하면 다들 앞자리로 몰리는 것처럼요.</p></div>
 
-    <p>그래서 OS는 하드디스크를 <b>자기 뒤에 숨기고</b>, 앞에 "저장해 주세요" 하고 부를 수 있는 <b>함수</b>만 내놓아요. 프로그램은 <code>write(10)</code>처럼 <b>값을 맡길 수는 있지만 위치는 정할 수 없어요.</b> OS가 알아서 빈 곳에 넣었다가, <code>read</code>를 부르면 돌려줘요.</p>
-    <p>이렇게 <b>OS가 제공하는 함수를 불러서만</b> 하드웨어를 쓸 수 있게 한 것, 이 함수를 <mark>시스템 콜(시스템 호출)</mark>이라고 해요. 교수님이 "별표, 이게 제일 중요하다"고 한 개념이에요. 시스템 콜은 <b>OS가 자신과 하드웨어를 보호하는 방법</b>이에요.</p>
+    <figure class="fig">
+      <svg viewBox="0 0 640 252" role="img" aria-label="직접 접근하면 14와 21이 하드디스크의 같은 위치에 덮어써지고, 시스템 호출을 쓰면 write 함수를 거쳐 커널이 서로 다른 위치에 저장한다">
+        <text x="160" y="22" font-size="14" font-weight="700" text-anchor="middle" fill="var(--exam)">(a) 직접 접근</text>
+        <text x="480" y="22" font-size="14" font-weight="700" text-anchor="middle" fill="var(--teal-ink)">(b) 시스템 호출을 통한 접근</text>
+        <g font-size="14" font-weight="700" text-anchor="middle">
+          <rect x="70" y="38" width="50" height="30" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/><text x="95" y="58" fill="var(--ink)">14</text>
+          <rect x="200" y="38" width="50" height="30" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/><text x="225" y="58" fill="var(--ink)">21</text>
+          <rect x="400" y="38" width="50" height="30" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/><text x="425" y="58" fill="var(--ink)">14</text>
+          <rect x="510" y="38" width="50" height="30" rx="6" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/><text x="535" y="58" fill="var(--ink)">21</text>
+          <rect x="430" y="96" width="100" height="32" rx="6" fill="var(--teal)"/><text x="480" y="117" fill="var(--surface)">write()</text></g>
+        <circle cx="160" cy="170" r="46" fill="var(--exam-soft)" stroke="var(--exam-line)" stroke-width="1.5"/>
+        <rect x="152" y="162" width="16" height="16" fill="var(--exam)"/>
+        <path d="M100 70 L152 160 M220 70 L168 160" stroke="var(--exam)" stroke-width="2"/>
+        <text x="160" y="244" font-size="12.5" text-anchor="middle" fill="var(--ink-2)">같은 위치에 덮어쓸 수 있다</text>
+        <circle cx="480" cy="178" r="40" fill="var(--teal-soft)"/>
+        <rect x="458" y="170" width="14" height="14" fill="var(--teal-ink)"/><rect x="488" y="170" width="14" height="14" fill="var(--teal-ink)"/>
+        <path d="M425 70 L450 94 M535 70 L510 94 M465 130 L465 168 M495 130 L495 168" stroke="var(--teal)" stroke-width="2"/>
+        <path d="M370 86 H630" stroke="var(--ink-3)" stroke-dasharray="4 4"/>
+        <text x="630" y="80" font-size="11.5" text-anchor="end" fill="var(--ink-3)">사용자 모드</text>
+        <text x="630" y="100" font-size="11.5" text-anchor="end" fill="var(--ink-3)">커널 모드</text>
+        <text x="480" y="244" font-size="12.5" text-anchor="middle" fill="var(--ink-2)">커널이 자원을 관리한다</text>
+      </svg>
+      <figcaption>교재 그림 1-19 사용자나 응용 프로그램이 하드디스크에 접근하는 방법</figcaption>
+    </figure>
+
+    <p>그래서 OS는 하드디스크를 <b>자기 뒤에 숨기고</b>, 앞에 "저장해 주세요" 하고 부를 수 있는 함수만 내놓아요. 응용 프로그램은 자원에 <b>직접 접근하지 않고</b>, 커널이 제공하는 <code>read()</code>나 <code>write()</code> 같은 <mark>시스템 함수</mark>를 통해 요청을 보내요. 커널은 그 요청을 받아 자원을 <b>안전하게</b> 처리한 뒤, <b>결과만</b> 돌려줘요. 프로그램은 값을 맡길 수는 있지만 위치는 정할 수 없어요.</p>
+    <p>이렇게 <b>커널이 제공하는 시스템 함수를 불러서 쓰는 것</b>을 <mark>시스템 호출</mark>(system call, 시스템 콜)이라고 해요. 교수님이 "별표, 이게 제일 중요하다"고 한 개념이에요. 시스템 호출은 <b>OS가 자원과 자기 자신을 보호하는 방법</b>이에요.</p>
 
     <div class="prof"><span class="av">교수</span><div class="bubble">나는 하드디스크의 몇 번째 위치에 저장할 수 있는 권한이 없어요. 대신 저장을 하려면 OS가 제공해 주는 함수를 불러서만 쓸 수 있다. 이게 제일 중요하죠.<small>9/14 강의 중 (말을 조금 다듬음)</small></div></div>
 
-    <p>C에서 쓰던 <code>printf</code>도 같아요. printf로 "화면 위에서 7칸, 왼쪽에서 10칸 위치"에 글자를 박을 수 있나요? 못 해요. 그냥 부탁하면 OS가 적당한 위치에 써 주죠. <code>printf</code>, <code>scanf</code>가 우리가 이미 써 온 시스템 콜 계열 함수예요.</p>
-
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>시스템 콜 = 커널이 제공하는 하드웨어 접근용 함수. 응용 프로그램은 하드웨어에 직접 접근할 수 없고 시스템 콜을 통해서만 커널의 기능을 사용할 수 있다. 이를 통해 OS는 자원을 보호한다.</p>
-      <div class="mn">외우는 법: <b>값은 맡기되 자리는 OS가</b></div></div>
+      <p>시스템 호출이란 커널이 제공하는 시스템 함수를 호출하여 사용하는 것이다. 응용 프로그램은 직접 자원에 접근하지 않고 커널이 제공하는 read()나 write() 같은 시스템 함수를 통해 요청을 보내며, 커널은 요청을 받아 자원을 안전하게 처리한 후 결과만 사용자에게 전달한다.</p>
+      <div class="mn">외우는 법: <b>값은 맡기되 자리는 커널이</b></div></div>
 
-    <div class="vs"><div class="x"><b>✗ 틀린 생각</b>시스템 콜을 쓰면 하드디스크의 원하는 위치에 직접 저장할 수 있다</div>
-      <div class="o"><b>○ 맞는 생각</b>시스템 콜로 <b>요청만</b> 하고, 위치는 <b>OS가</b> 정한다</div></div>
+    <div class="vs"><div class="x"><b>✗ 틀린 생각</b>시스템 호출을 쓰면 하드디스크의 원하는 위치에 직접 저장할 수 있다</div>
+      <div class="o"><b>○ 맞는 생각</b>시스템 호출로 <b>요청만</b> 하고, 처리와 위치는 <b>커널이</b> 정한다</div></div>
 
     <div class="check" data-id="k3" data-answer="1"><div class="lbl">바로 확인</div>
       <div class="q">응용 프로그램이 파일을 저장하려 할 때 실제로 일어나는 일은?</div>
       <div class="opts">
         <button class="o">프로그램이 하드디스크의 빈 위치를 찾아 직접 쓴다</button>
-        <button class="o">프로그램이 시스템 콜(write)을 부르면 OS가 적당한 위치에 저장한다</button>
+        <button class="o">프로그램이 write() 시스템 함수를 부르면 커널이 안전하게 처리하고 결과만 돌려준다</button>
         <button class="o">디바이스 드라이버를 직접 호출해 위치를 지정한다</button></div>
-      <div class="fb">프로그램은 <b>시스템 콜</b>로 부탁만 하고, 위치 결정과 실제 저장은 OS가 해요.</div></div>
+      <div class="fb">프로그램은 <b>시스템 호출</b>로 부탁만 하고, 실제 저장은 커널이 해요. 그래야 남의 데이터를 덮어쓰는 일이 없어요.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
   </section>
@@ -438,24 +467,46 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 4 -->
   <section class="ch" id="c4">
     <div class="ch-head"><span class="ch-num">장면 4</span>
-      <div><h2>내 프로그램은 실행되는 동안 몇 번이나 커널에 들어갔다 나올까?</h2><div class="sub">사용자 모드 · 커널 모드 · 듀얼 모드 ★</div></div></div>
+      <div><h2>printf 한 줄 쓸 때마다 내 프로그램은 커널에 들어갔다 나온다?</h2><div class="sub">사용자 모드 · 커널 모드 · 이중 모드 연산 ★ · 비자발적 전환</div></div></div>
 
-    <p>덧셈·나눗셈 같은 일반 연산은 <mark>사용자 모드</mark>에서 돌아요. 그러다 <code>write</code> 같은 시스템 콜을 부르면 <mark>커널 모드</mark>로 들어가요. 커널 모드란 내 연산이 커널 안에서 돌아간다는 뜻인데, 내가 직접 들어가는 건 아니고 OS가 <b>나 대신</b> 작업해 줘요. 결과를 돌려받으면 다시 사용자 모드로 나와요.</p>
-    <p>이렇게 사용자 모드와 커널 모드를 번갈아 오가는 것을 <mark>이중 모드(듀얼 모드)</mark>라고 해요. C 코드에서 printf를 만날 때마다 커널 모드에 들어갔다 나오는 걸 우리는 모르고 있었던 거죠.</p>
+    <p>프로세스는 기본적으로 <mark>사용자 모드</mark>에서 실행돼요. 덧셈 같은 간단한 계산은 사용자 모드에서 끝나죠. 그런데 파일을 저장하거나 네트워크로 데이터를 보내는 것처럼 <b>자원에 접근해야 하는 작업</b>은 <code>read()</code>나 <code>write()</code> 같은 시스템 호출을 통해 <mark>커널 모드</mark>로 전환돼서 처리돼요. 커널 모드는 운영체제의 핵심 기능이 실행되는 환경이라 자원을 직접 관리하고 보호할 수 있어요. 커널 모드 작업이 끝나면 프로세스는 결과를 받아 <b>다시 사용자 모드로</b> 돌아와요.</p>
+
+    <figure class="fig">
+      <svg viewBox="0 0 640 170" role="img" aria-label="사용자 모드에서 실행하다가 시스템 호출로 커널 모드로 내려가 실행하고 결과를 반환받아 다시 사용자 모드로 올라오는 이중 모드 연산">
+        <rect x="10" y="10" width="620" height="66" rx="8" fill="var(--teal-soft)"/>
+        <rect x="10" y="86" width="620" height="74" rx="8" fill="var(--exam-soft)"/>
+        <text x="20" y="30" font-size="12" font-weight="700" fill="var(--teal-ink)">사용자 모드</text>
+        <text x="20" y="152" font-size="12" font-weight="700" fill="var(--exam)">커널 모드</text>
+        <g font-size="13.5" font-weight="700" text-anchor="middle">
+          <rect x="40" y="38" width="150" height="30" rx="6" fill="var(--teal)"/><text x="115" y="58" fill="var(--surface)">사용자 모드 실행</text>
+          <rect x="245" y="102" width="150" height="30" rx="6" fill="var(--exam)"/><text x="320" y="122" fill="var(--surface)">커널 모드 실행</text>
+          <rect x="450" y="38" width="150" height="30" rx="6" fill="var(--teal)"/><text x="525" y="58" fill="var(--surface)">사용자 모드 실행</text></g>
+        <path d="M190 58 C220 58 220 117 240 117" fill="none" stroke="var(--ink-2)" stroke-width="2"/><path d="M232 111 L242 117 L232 123" fill="none" stroke="var(--ink-2)" stroke-width="2"/>
+        <path d="M395 117 C420 117 420 58 445 58" fill="none" stroke="var(--ink-2)" stroke-width="2"/><path d="M437 52 L447 58 L437 64" fill="none" stroke="var(--ink-2)" stroke-width="2"/>
+        <text x="200" y="96" font-size="12.5" font-weight="700" text-anchor="end" fill="var(--ink)">시스템 호출</text>
+        <text x="440" y="96" font-size="12.5" font-weight="700" fill="var(--ink)">결과 반환</text>
+      </svg>
+      <figcaption>교재의 이중 모드 연산 그림을 다시 그림 — 두 모드를 오가는 작업 방식</figcaption>
+    </figure>
+
+    <p>이렇게 사용자 모드와 커널 모드를 오가는 작업 방식을 <mark>이중 모드 연산</mark>(dual mode operation, 듀얼 모드)이라고 해요. C에서 쓰던 <code>printf()</code>, <code>scanf()</code>도 마찬가지예요. 이건 프로그래머가 쉽게 쓰라고 만든 <b>고수준 함수</b>인데, 화면에 글자를 찍거나 키보드 입력을 받으려면 내부적으로 <code>write()</code>, <code>read()</code> 같은 시스템 함수를 불러요. 사용자 모드에서 시작해서, 자원을 쓰는 순간 커널 모드로 바뀌어 시스템 호출을 실행하는 거죠. 우리는 모르고 있었지만 printf 한 줄마다 커널에 들어갔다 나왔던 거예요.</p>
+    <p>정리하면 컴퓨터에는 <b>사용자 함수</b>(사용자 모드에서 실행)와 <b>커널 함수</b>(커널 모드에서 실행)가 함께 있어요. 사용자 모드에서는 커널 자원에 직접 접근할 수 없고, <b>시스템 호출을 통해서만</b> 커널 함수에 접근할 수 있어요.</p>
 
     <div class="prof"><span class="av">교수</span><div class="bubble">사용자가 자발적으로 커널 모드에 들어갈 수 있는 유일한 방법은 시스템 콜밖에 없어요. 그래서 거기다 색깔로 표시를 해 놨지.<small>9/14 강의 중 (말을 조금 다듬음)</small></div></div>
 
+    <p>"자발적으로"라는 말에 주목하세요. <b>비자발적으로</b> 커널 모드에 가는 경우도 있거든요. 사용자가 의도하지 않았어도 프로그램 실행 중 <b>오류</b>가 나면 커널 모드로 바뀌어요. 예를 들어 <b>0으로 나누려고 하거나</b>, <b>배열 범위를 벗어나 데이터를 저장하려 하면</b>, 커널이 그 오류를 처리하려고 자동으로 커널 모드로 전환해서 예외 처리를 해요.</p>
+
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>이중 모드 = 사용자 모드와 커널 모드를 오가며 작업하는 방식. 사용자가 자발적으로 커널 모드에 진입할 수 있는 유일한 방법은 시스템 콜이다.</p>
-      <div class="mn">외우는 법: <b>커널 문은 하나, 시스템 콜</b></div></div>
+      <p>이중 모드 연산은 사용자 모드와 커널 모드를 오가는 작업 방식이다. 사용자 모드에서는 커널 자원에 직접 접근할 수 없고 시스템 호출을 통해서만 커널 함수에 접근할 수 있으며, 일반 프로세스가 자발적으로 커널 모드에 진입할 수 있는 유일한 방법은 시스템 호출뿐이다. 0으로 나누기나 배열 범위 초과 같은 오류가 나면 비자발적으로 커널 모드로 전환된다.</p>
+      <div class="mn">외우는 법: <b>자발적 문은 하나, 시스템 호출</b> · 비자발 = <b>오류(0 나누기, 배열 초과)</b></div></div>
 
     <div class="check" data-id="k4" data-answer="2"><div class="lbl">바로 확인</div>
       <div class="q">C 프로그램에서 <code>a = b + c;</code> 다음 줄에 <code>printf("%d", a);</code>가 있다. 각각 어느 모드에서 처리될까?</div>
       <div class="opts">
         <button class="o">둘 다 커널 모드</button>
         <button class="o">덧셈은 커널 모드, printf는 사용자 모드</button>
-        <button class="o">덧셈은 사용자 모드, printf는 시스템 콜을 통해 커널 모드</button></div>
-      <div class="fb">일반 연산은 <b>사용자 모드</b>, 화면 출력은 하드웨어를 쓰니까 <b>시스템 콜 → 커널 모드</b>. 끝나면 다시 사용자 모드로 돌아와요.</div></div>
+        <button class="o">덧셈은 사용자 모드, printf는 내부의 write() 시스템 호출로 커널 모드</button></div>
+      <div class="fb">간단한 계산은 <b>사용자 모드</b>, 화면 출력은 자원을 쓰니까 printf 안의 <b>write() 시스템 호출 → 커널 모드</b>. 끝나면 다시 사용자 모드로 돌아와요.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
   </section>
@@ -463,33 +514,51 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 5 -->
   <section class="ch" id="c5">
     <div class="ch-head"><span class="ch-num">장면 5</span>
-      <div><h2>35만 원짜리 마우스도, 만 원짜리 마우스도 꽂으면 되는 이유는?</h2><div class="sub">디바이스 드라이버 · 플러그 앤 플레이 · API · SDK</div></div></div>
+      <div><h2>새 프린터를 꽂으면 왜 "드라이버를 설치하세요"가 뜰까?</h2><div class="sub">디바이스 드라이버 ★ · API ★ · SDK</div></div></div>
 
-    <p>마우스·키보드·그래픽카드는 종류가 엄청 많죠. OS가 그걸 다 알 수는 없어요. 그래서 커널과 하드웨어 사이를 <b>표준 규격으로 연결</b>해 주는 <mark>디바이스 드라이버</mark>를 설치해요. 하드웨어 쪽 인터페이스가 바로 이거예요.</p>
-    <p>요즘은 커널이 좋아져서 마우스·키보드는 꽂으면 바로 돼요. 이걸 <mark>플러그 앤 플레이</mark>라고 해요. 하지만 기능이 복잡한 <b>그래픽카드</b>와 <b>프린터</b>는 지금도 드라이버를 따로 설치해야 해요.</p>
+    <p>마우스·키보드·그래픽카드·프린터는 규격이 제각각이에요. 운영체제가 세상 모든 하드웨어에 맞는 인터페이스를 다 갖추는 건 현실적으로 불가능하죠. 그런데 그 하드웨어를 <b>가장 잘 아는 건 만든 회사</b>잖아요? 그래서 <b>하드웨어 제작자가 인터페이스를 설계해서 제공</b>하는 편이 훨씬 효율적이에요. 이게 <mark>디바이스 드라이버</mark>예요. 교재 그림 속 캐릭터의 말 그대로, <b>디바이스 드라이버는 커널과 하드웨어 사이의 인터페이스</b>예요.</p>
+
+    <figure class="fig">
+      <svg viewBox="0 0 640 210" role="img" aria-label="응용 프로그램과 유틸리티, 사용자 인터페이스, 시스템 호출, 커널, 디바이스 드라이버, 하드웨어 순서로 쌓인 구조">
+        <g font-size="13.5" font-weight="700" text-anchor="middle">
+          <rect x="140" y="8" width="230" height="30" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/><text x="255" y="28" fill="var(--ink)">응용 프로그램</text>
+          <rect x="380" y="8" width="120" height="30" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/><text x="440" y="28" fill="var(--ink)">유틸리티</text>
+          <rect x="140" y="46" width="360" height="30" rx="6" fill="var(--teal-soft)"/><text x="320" y="66" fill="var(--teal-ink)">사용자 인터페이스</text>
+          <rect x="140" y="84" width="360" height="30" rx="6" fill="var(--teal-soft)" stroke="var(--teal)" stroke-dasharray="4 3"/><text x="320" y="104" fill="var(--teal-ink)">시스템 호출</text>
+          <rect x="140" y="118" width="360" height="30" rx="6" fill="var(--teal)"/><text x="320" y="138" fill="var(--surface)">커널</text>
+          <rect x="140" y="152" width="360" height="22" rx="6" fill="var(--exam-soft)" stroke="var(--exam)" stroke-width="1.5"/><text x="320" y="168" font-size="12.5" fill="var(--exam)">디바이스 드라이버</text>
+          <rect x="140" y="180" width="360" height="26" rx="6" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/><text x="320" y="198" fill="var(--ink-2)">하드웨어</text></g>
+        <text x="512" y="166" font-size="12" fill="var(--exam)">← 커널과 하드웨어</text>
+        <text x="526" y="182" font-size="12" fill="var(--exam)">사이의 인터페이스</text>
+      </svg>
+      <figcaption>교재 그림 1-21 커널과 디바이스 드라이버</figcaption>
+    </figure>
+
+    <p>요즘은 커널이 좋아져서 마우스·키보드는 꽂으면 바로 돼요(플러그 앤 플레이). 하지만 커널의 표준 기능으로는 <b>그래픽카드의 고성능 연산 기능</b>이나 <b>프린터의 다양한 출력 옵션</b>까지 지원하지 못해요. 그래서 이 둘은 지금도 제조사가 주는 드라이버를 설치해서 써야 해요.</p>
 
     <h3>API와 SDK — "사람들이 되게 헷갈려 한다"</h3>
-    <p>배달 앱을 만드는데 지도를 직접 구축하면 배보다 배꼽이 크죠. 구글이 "위치 찍기", "두 지점 거리" 같은 <b>함수</b>를 제공해 주면 그걸 불러 쓰면 돼요. OS의 시스템 콜처럼, 어떤 서비스가 응용 프로그램용으로 내놓은 함수 모음이 <mark>API</mark>예요(구글 API, 안드로이드 API, 카카오톡 API).</p>
-    <p>그런데 함수만 덜렁 있으면 뭘 하는 함수인지, 매개변수가 뭔지 모르잖아요. 그래서 <b>API + 매뉴얼 + 코딩할 에디터</b>까지 종합 선물 세트로 묶어 주는 게 <mark>SDK</mark>예요. 대표적인 예가 <b>안드로이드 스튜디오</b>.</p>
+    <p>운영체제가 응용 프로그램에 시스템 함수를 내주듯, 카카오톡 안에서 도는 게임을 만들려면 카카오톡이 제공하는 함수를 써야 해요. 이렇게 <b>특정 플랫폼이나 소프트웨어와 관련된 프로그램을 개발할 수 있도록 제공되는 인터페이스</b>가 <mark>API</mark>(응용 프로그램 인터페이스)예요. 예를 들어 구글 맵으로 배달 서비스나 길 찾기 서비스를 만든다면, 구글이 제공하는 다양한 함수 = <b>구글 맵 API</b>를 쓰면 돼요.</p>
+    <p>그런데 함수만 덜렁 있으면 뭘 하는 함수인지 모르잖아요. 그래서 <b>API뿐 아니라 API 사용 매뉴얼, 코드 편집기, 에뮬레이터 같은 각종 개발 도구를 하나로 묶어 제공하는 종합 개발 도구</b>가 <mark>SDK</mark>(시스템 개발자 키트)예요. 윈도우 프로그램을 만들 때 쓰는 <b>비주얼 스튜디오</b>, 안드로이드 앱을 만드는 <b>안드로이드 스튜디오</b>가 대표 SDK예요.</p>
 
     <div class="table-wrap"><table>
-      <thead><tr><th></th><th>API</th><th>SDK</th></tr></thead>
+      <thead><tr><th></th><th>디바이스 드라이버</th><th>API</th><th>SDK</th></tr></thead>
       <tbody>
-        <tr><td>무엇</td><td>응용 프로그램이 불러 쓰는 함수 모음</td><td>API + 매뉴얼 + 에디터 등 개발 도구 묶음</td></tr>
-        <tr><td>예</td><td>구글 지도 API, 카카오톡 API</td><td>안드로이드 스튜디오</td></tr>
+        <tr><td>무엇과 무엇 사이</td><td>커널 ↔ 하드웨어</td><td>플랫폼 ↔ 응용 프로그램 개발자</td><td>(API를 포함한 개발 도구 묶음)</td></tr>
+        <tr><td>누가 만드나</td><td>하드웨어 제작자</td><td>플랫폼·소프트웨어 회사</td><td>플랫폼·소프트웨어 회사</td></tr>
+        <tr><td>예</td><td>그래픽카드·프린터 드라이버</td><td>구글 맵 API, 카카오톡 API</td><td>비주얼 스튜디오, 안드로이드 스튜디오</td></tr>
       </tbody></table></div>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>디바이스 드라이버 = 커널과 하드웨어를 연결하는 하드웨어 인터페이스. API = 응용 프로그램용 함수 모음. SDK = API에 매뉴얼·에디터 등 개발 도구를 합친 종합 패키지.</p>
-      <div class="mn">외우는 법: <b>API는 함수, SDK는 선물 세트</b></div></div>
+      <p>디바이스 드라이버는 하드웨어 제작자가 설계하여 제공하는, 커널과 하드웨어 사이의 인터페이스다. API는 특정 플랫폼이나 소프트웨어와 관련된 프로그램을 개발할 수 있도록 제공되는 인터페이스이고, SDK는 API뿐 아니라 API 사용 매뉴얼, 코드 편집기, 에뮬레이터 같은 각종 개발 도구를 하나로 묶어 제공하는 종합 개발 도구다.</p>
+      <div class="mn">외우는 법: <b>드라이버 = 커널↔하드웨어</b> · <b>API는 함수, SDK는 선물 세트</b></div></div>
 
     <div class="check" data-id="k5" data-answer="0"><div class="lbl">바로 확인</div>
-      <div class="q">함수 목록뿐 아니라 설명서와 코드 편집기까지 한꺼번에 받았다. 이것은?</div>
+      <div class="q">함수 목록뿐 아니라 사용 매뉴얼, 코드 편집기, 에뮬레이터까지 한꺼번에 받았다. 이것은?</div>
       <div class="opts">
         <button class="o">SDK</button>
         <button class="o">API</button>
         <button class="o">디바이스 드라이버</button></div>
-      <div class="fb">함수(API)에 매뉴얼·에디터까지 묶은 종합 세트 = <b>SDK</b>. 안드로이드 스튜디오가 대표 예예요.</div></div>
+      <div class="fb">API에 매뉴얼·편집기·에뮬레이터까지 묶은 종합 개발 도구 = <b>SDK</b>. 안드로이드 스튜디오가 대표 예예요.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
   </section>
@@ -502,29 +571,29 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <h3 class="rv-h">한 장 정리 <small>공책에 옮겨 적기</small></h3>
     <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요.</p>
     <div class="box sheet" id="sheet">
-      <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제</p>
-      <div class="grp"><h4>① 컴퓨팅 환경</h4><ul>
-        <li>클라이언트-서버 → 서버 과부하 → <span class="kw">P2P</span>(목록만 서버, 파일은 직접)</li>
-        <li><span class="kw">클라우드</span> = 빌려 쓰기(SaaS) · <span class="kw">IoT</span> = 사물이 인터넷에</li></ul></div>
-      <div class="grp"><h4>② OS 구조 <span class="mn">엔진 + 핸들</span></h4><ul>
-        <li>OS = <span class="kw">UI</span> + <span class="kw">커널</span> · 하드웨어는 커널 통해서만</li>
-        <li>커널 기능 = 프로세스·메모리·저장장치·입출력 관리</li>
-        <li>CLI → <span class="kw">GUI</span> · 쉽다/어렵다 = UI 문제 ≠ 커널</li></ul></div>
-      <div class="grp"><h4>③ 시스템 콜 <span class="ex-t">★ 제일 중요</span></h4><ul>
-        <li>= 커널이 제공하는 하드웨어 접근 함수 (write, read, printf)</li>
-        <li>값은 맡기고 위치는 OS가 → <span class="kw">OS의 자기 보호</span></li></ul></div>
-      <div class="grp"><h4>④ 듀얼 모드 <span class="ex-t">★</span></h4><ul>
-        <li>사용자 모드 ↔ 커널 모드 번갈아 = <span class="kw">이중 모드</span></li>
-        <li>자발적 커널 모드 진입 유일한 방법 = <span class="kw">시스템 콜</span></li></ul></div>
-      <div class="grp"><h4>⑤ 드라이버 / API / SDK <span class="mn">함수 vs 선물 세트</span></h4><ul>
-        <li><span class="kw">디바이스 드라이버</span> = 커널↔하드웨어 · 플러그 앤 플레이(그래픽카드·프린터는 예외)</li>
-        <li><span class="kw">API</span> = 함수 모음 / <span class="kw">SDK</span> = API + 매뉴얼 + 에디터</li></ul></div>
+      <p class="legend">★ 교재 별표 · 시험 출제 표시</p>
+      <div class="grp"><h4>① P2P와 클라우드</h4><ul>
+        <li>클라이언트-서버 구조는 부하가 서버에 몰려요. 그래서 서버는 중재만 하고 파일은 가진 사람에게서 직접 받는 <span class="kw">P2P</span>가 나왔어요(메신저, 블록체인, 파일 공유).</li>
+        <li>하드웨어·소프트웨어는 중앙에 두고 인터넷으로 필요한 기능만 받는 게 <span class="kw">클라우드 컴퓨팅</span>이에요.</li></ul></div>
+      <div class="grp"><h4>② 운영체제 = UI + 커널 <span class="ex-t">★</span><span class="mn">엔진 + 핸들</span></h4><ul>
+        <li>운영체제는 사용자와 소통하는 <span class="kw">사용자 인터페이스</span>와 자원을 관리하는 <span class="kw">커널</span>로 되어 있고, 자원에는 커널이 제공하는 인터페이스를 통해서만 접근할 수 있어요.</li>
+        <li>커널은 프로세스 관리, 메모리 관리, 저장장치 관리, 입출력 관리를 해요(프·메·저·입).</li>
+        <li>UI는 명령어를 직접 치는 <span class="kw">CLI</span>(유닉스 셸, MS-DOS)와 클릭하는 <span class="kw">GUI</span>로 나뉘어요. 쉽다/어렵다는 UI 문제지 커널 문제가 아니에요.</li></ul></div>
+      <div class="grp"><h4>③ 시스템 호출 <span class="ex-t">★ 제일 중요</span></h4><ul>
+        <li><span class="kw">시스템 호출</span>은 커널이 제공하는 시스템 함수(read, write)를 불러 쓰는 거예요. 프로그램은 직접 접근하지 않고 요청만 하고, 커널이 안전하게 처리한 뒤 결과만 돌려줘요.</li>
+        <li>직접 쓰게 두면 같은 위치에 덮어쓸 수 있어서, 커널이 자원을 보호하려고 이렇게 해요.</li></ul></div>
+      <div class="grp"><h4>④ 이중 모드 연산 <span class="ex-t">★</span></h4><ul>
+        <li>평소엔 사용자 모드, 자원이 필요하면 시스템 호출로 커널 모드, 끝나면 결과를 받고 사용자 모드로. 이렇게 오가는 게 <span class="kw">이중 모드 연산</span>이에요. printf·scanf도 안에서 write·read를 불러요.</li>
+        <li>자발적으로 커널 모드에 들어가는 유일한 방법은 <span class="kw">시스템 호출</span>이에요. 0으로 나누기·배열 범위 초과 같은 오류가 나면 <span class="kw">비자발적</span>으로 커널 모드로 가서 예외 처리를 해요.</li></ul></div>
+      <div class="grp"><h4>⑤ 드라이버 / API / SDK <span class="ex-t">★</span><span class="mn">함수 vs 선물 세트</span></h4><ul>
+        <li><span class="kw">디바이스 드라이버</span>는 하드웨어 제작자가 만들어 주는, 커널과 하드웨어 사이의 인터페이스예요. 그래픽카드·프린터는 지금도 따로 설치해요.</li>
+        <li><span class="kw">API</span>는 특정 플랫폼용 프로그램을 개발하라고 주는 인터페이스(구글 맵 API), <span class="kw">SDK</span>는 API에 매뉴얼·코드 편집기·에뮬레이터까지 묶은 종합 개발 도구(안드로이드 스튜디오)예요.</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
     <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
     <div class="box cloze-box">
-      <p>운영체제의 핵심 기능을 담당하는 부분을 <span class="cloze">커널</span>이라 하고, 사용자와 커널 사이에서 명령과 결과를 주고받는 부분을 <span class="cloze">사용자 인터페이스</span>라 한다. 응용 프로그램은 커널이 제공하는 함수인 <span class="cloze">시스템 콜</span>을 통해서만 하드웨어를 쓸 수 있다. 사용자 모드와 커널 모드를 오가는 방식을 <span class="cloze">이중 모드</span>라 하며, 자발적으로 커널 모드에 들어가는 유일한 방법은 <span class="cloze">시스템 콜</span>이다. 커널과 하드웨어를 표준 규격으로 연결하는 것은 <span class="cloze">디바이스 드라이버</span>이고, API에 매뉴얼과 에디터를 합친 것은 <span class="cloze">SDK</span>다. 서버 과부하를 줄이려고 만든 구조는 <span class="cloze">P2P</span>다.</p>
+      <p>운영체제는 사용자 인터페이스와 <span class="cloze">커널</span>로 이루어지며, 커널은 프로세스·메모리·<span class="cloze">저장장치</span>·입출력 관리를 수행한다. 명령어를 직접 입력하는 인터페이스는 <span class="cloze">CLI</span>, 그래픽 인터페이스는 GUI다. 커널이 제공하는 시스템 함수를 호출해 사용하는 것을 <span class="cloze">시스템 호출</span>이라 하고, 대표적인 시스템 함수로 read()와 <span class="cloze">write()</span>가 있다. 사용자 모드와 커널 모드를 오가는 작업 방식을 <span class="cloze">이중 모드 연산</span>이라 하며, 일반 프로세스가 자발적으로 커널 모드에 진입하는 유일한 방법은 시스템 호출이다. 0으로 나누기 같은 오류가 나면 <span class="cloze">비자발적</span>으로 커널 모드로 전환된다. 커널과 하드웨어 사이의 인터페이스는 <span class="cloze">디바이스 드라이버</span>이고, API에 매뉴얼·코드 편집기·에뮬레이터를 묶은 종합 개발 도구는 <span class="cloze">SDK</span>다.</p>
       <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
     </div>
 
@@ -535,16 +604,18 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
       <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
       <div class="fc-items">
-        <div class="fc-item"><div class="q">P2P가 만들어진 이유는?</div><div class="a">클라이언트-서버 구조에서 서버에 몰리는 과부하를 줄이기 위해. 서버는 목록만, 데이터는 직접 전송.</div></div>
-        <div class="fc-item"><div class="q">커널이란?</div><div class="a">운영체제의 핵심 기능만 담당하는 부분. 하드웨어는 커널을 통해서만 접근할 수 있다.</div></div>
+        <div class="fc-item"><div class="q">P2P가 만들어진 이유는?</div><div class="a">클라이언트-서버 구조의 서버 과부하를 줄이기 위해. 서버는 중재만, 파일은 가진 사용자(peer)에게서 직접 받는다.</div></div>
+        <div class="fc-item"><div class="q">클라우드 컴퓨팅이란?</div><div class="a">하드웨어와 소프트웨어를 중앙에 두고, 사용자는 인터넷을 통해 필요한 기능만 제공받는 구조.</div></div>
+        <div class="fc-item"><div class="q">운영체제의 두 핵심 구성 요소는?</div><div class="a">사용자 인터페이스(사용자가 OS와 직접 소통하는 수단)와 커널(컴퓨터 자원을 관리하는 핵심).</div></div>
         <div class="fc-item"><div class="q">커널의 4가지 핵심 기능은?</div><div class="a">프로세스 관리, 메모리 관리, 저장장치 관리, 입출력 관리.</div></div>
-        <div class="fc-item"><div class="q">CLI와 GUI의 차이는?</div><div class="a">CLI는 글자로 명령(초기 유닉스·MS-DOS), GUI는 마우스로 클릭하는 그래픽 인터페이스.</div></div>
-        <div class="fc-item"><div class="q">시스템 콜이란?</div><div class="a">커널이 제공하는 하드웨어 접근용 함수. 응용 프로그램은 이걸 불러서만 하드웨어를 쓸 수 있다.</div></div>
-        <div class="fc-item"><div class="q">시스템 콜이 OS에게 주는 이점은?</div><div class="a">프로그램이 하드웨어에 직접 접근하지 못하게 해서 자원과 OS 자신을 보호한다.</div></div>
-        <div class="fc-item"><div class="q">이중 모드(듀얼 모드)란?</div><div class="a">사용자 모드와 커널 모드를 번갈아 오가며 작업하는 방식.</div></div>
-        <div class="fc-item"><div class="q">자발적으로 커널 모드에 들어가는 유일한 방법은?</div><div class="a">시스템 콜.</div></div>
-        <div class="fc-item"><div class="q">디바이스 드라이버란?</div><div class="a">커널과 하드웨어를 표준 규격으로 연결해 주는 소프트웨어(하드웨어 인터페이스).</div></div>
-        <div class="fc-item"><div class="q">API와 SDK의 차이는?</div><div class="a">API = 응용 프로그램용 함수 모음. SDK = API + 매뉴얼 + 에디터 등 개발 도구 묶음(안드로이드 스튜디오).</div></div>
+        <div class="fc-item"><div class="q">CLI와 GUI의 차이는?</div><div class="a">CLI는 명령어를 직접 입력하는 문자 기반(유닉스 셸, MS-DOS 명령 프롬프트), GUI는 그래픽 사용자 인터페이스.</div></div>
+        <div class="fc-item"><div class="q">시스템 호출이란?</div><div class="a">커널이 제공하는 시스템 함수(read, write 등)를 호출하여 사용하는 것. 커널이 자원을 안전하게 처리한 후 결과만 전달한다.</div></div>
+        <div class="fc-item"><div class="q">이중 모드 연산이란?</div><div class="a">사용자 모드와 커널 모드를 오가는 작업 방식.</div></div>
+        <div class="fc-item"><div class="q">일반 프로세스가 자발적으로 커널 모드에 진입하는 유일한 방법은?</div><div class="a">시스템 호출.</div></div>
+        <div class="fc-item"><div class="q">비자발적으로 커널 모드로 전환되는 경우는?</div><div class="a">실행 중 오류가 날 때. 예: 0으로 나누기, 배열 범위를 벗어나 저장. 커널이 예외 처리를 한다.</div></div>
+        <div class="fc-item"><div class="q">printf()와 시스템 호출의 관계는?</div><div class="a">printf는 고수준 함수이고, 내부적으로 write() 시스템 함수를 호출한다. 그 순간 커널 모드로 전환된다.</div></div>
+        <div class="fc-item"><div class="q">디바이스 드라이버란?</div><div class="a">하드웨어 제작자가 설계해 제공하는, 커널과 하드웨어 사이의 인터페이스.</div></div>
+        <div class="fc-item"><div class="q">API와 SDK의 차이는?</div><div class="a">API = 특정 플랫폼·소프트웨어용 프로그램을 개발하도록 제공되는 인터페이스(구글 맵 API). SDK = API + 사용 매뉴얼 + 코드 편집기 + 에뮬레이터 등을 묶은 종합 개발 도구(안드로이드 스튜디오).</div></div>
       </div>
       <ol class="fc-print"></ol>
     </div>
@@ -553,54 +624,68 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <form class="box quiz" data-quiz>
       <div class="q" data-answer="1"><p class="qt"><b>Q1</b>운영체제 구조에 대한 설명으로 옳은 것은?</p>
         <label class="opt"><input type="radio" name="q1" value="0">응용 프로그램은 성능을 위해 하드웨어에 바로 접근할 수 있다</label>
-        <label class="opt"><input type="radio" name="q1" value="1">어떤 프로그램도 커널을 거치지 않고는 하드웨어에 접근할 수 없다</label>
+        <label class="opt"><input type="radio" name="q1" value="1">사용자나 응용 프로그램은 커널이 제공하는 인터페이스를 통해서만 자원에 접근할 수 있다</label>
         <label class="opt"><input type="radio" name="q1" value="2">사용자 인터페이스가 하드웨어를 직접 제어한다</label>
-        <label class="opt"><input type="radio" name="q1" value="3">커널은 GUI를 그리는 부분이다</label>
-        <div class="explain">하드웨어는 사용자·프로그램으로부터 완전히 격리되고 커널을 통해서만 쓸 수 있어요.</div></div>
-      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>사용자가 자발적으로 커널 모드에 진입할 수 있는 유일한 방법은?</p>
+        <label class="opt"><input type="radio" name="q1" value="3">커널은 아이콘을 그리는 그래픽 부분이다</label>
+        <div class="explain">하드웨어는 커널 뒤에 숨어 있고, 커널이 제공하는 인터페이스(시스템 호출)를 통해서만 쓸 수 있어요.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>일반 프로세스가 자발적으로 커널 모드에 진입할 수 있는 유일한 방법은?</p>
         <label class="opt"><input type="radio" name="q2" value="0">디바이스 드라이버 설치</label>
         <label class="opt"><input type="radio" name="q2" value="1">GUI 클릭</label>
-        <label class="opt"><input type="radio" name="q2" value="2">API 다운로드</label>
-        <label class="opt"><input type="radio" name="q2" value="3">시스템 콜</label>
-        <div class="explain">교수님이 교재에 색깔로 표시해 둔 문장이에요. 커널 모드로 가는 문은 시스템 콜 하나.</div></div>
-      <div class="q" data-answer="0"><p class="qt"><b>Q3</b>프로그램이 <code>write</code>로 숫자 10을 저장했다. 저장 위치를 정하는 것은?</p>
-        <label class="opt"><input type="radio" name="q3" value="0">운영체제(커널)</label>
-        <label class="opt"><input type="radio" name="q3" value="1">응용 프로그램</label>
-        <label class="opt"><input type="radio" name="q3" value="2">사용자 인터페이스</label>
-        <label class="opt"><input type="radio" name="q3" value="3">사용자</label>
-        <div class="explain">프로그램은 값만 맡기고 위치는 정할 수 없어요. 그래야 남의 데이터를 덮어쓰는 일이 없죠.</div></div>
-      <div class="q" data-answer="2"><p class="qt"><b>Q4</b>새로 산 프린터를 꽂았더니 별도 프로그램을 설치하라고 한다. 이 프로그램은?</p>
+        <label class="opt"><input type="radio" name="q2" value="2">0으로 나누기</label>
+        <label class="opt"><input type="radio" name="q2" value="3">시스템 호출</label>
+        <div class="explain">교재에 색깔로 표시된 문장이에요. 0으로 나누기도 커널 모드로 가긴 하지만 그건 오류에 의한 <b>비자발적</b> 전환이에요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q3</b>배열 크기가 10인데 arr[50]에 값을 저장하려다 프로그램이 멈췄다. 이때 일어난 일은?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">오류 때문에 비자발적으로 커널 모드로 전환되어 커널이 예외 처리를 했다</label>
+        <label class="opt"><input type="radio" name="q3" value="1">프로그램이 시스템 호출로 자발적으로 커널 모드에 들어갔다</label>
+        <label class="opt"><input type="radio" name="q3" value="2">사용자 모드에서 하드웨어에 직접 접근했다</label>
+        <label class="opt"><input type="radio" name="q3" value="3">디바이스 드라이버가 오류를 처리했다</label>
+        <div class="explain">배열 범위를 벗어나는 저장은 교재가 든 비자발적 커널 모드 전환의 예예요. 커널이 예외 처리를 해요.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q4</b>새로 산 그래픽카드의 고성능 연산 기능을 쓰려면 제조사 프로그램을 설치하라고 한다. 이 프로그램은?</p>
         <label class="opt"><input type="radio" name="q4" value="0">SDK</label>
-        <label class="opt"><input type="radio" name="q4" value="1">시스템 콜</label>
+        <label class="opt"><input type="radio" name="q4" value="1">시스템 호출</label>
         <label class="opt"><input type="radio" name="q4" value="2">디바이스 드라이버</label>
         <label class="opt"><input type="radio" name="q4" value="3">사용자 인터페이스</label>
-        <div class="explain">프린터·그래픽카드처럼 기능이 복잡한 하드웨어는 플러그 앤 플레이가 안 돼서 드라이버를 설치해야 해요.</div></div>
-      <div class="q" data-answer="1"><p class="qt"><b>Q5</b>카카오톡 안에서 돌아가는 게임을 만들려면 카카오가 제공하는 무엇이 필요할까?</p>
+        <div class="explain">커널 표준으로는 그래픽카드의 고성능 연산 기능이 지원되지 않아서, 하드웨어 제작자가 주는 드라이버(커널과 하드웨어 사이 인터페이스)를 설치해요.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q5</b>구글 맵으로 배달 앱의 길 찾기 기능을 만들려고 한다. 구글이 제공하는 함수 모음은?</p>
         <label class="opt"><input type="radio" name="q5" value="0">디바이스 드라이버</label>
-        <label class="opt"><input type="radio" name="q5" value="1">카카오톡 API</label>
+        <label class="opt"><input type="radio" name="q5" value="1">API</label>
         <label class="opt"><input type="radio" name="q5" value="2">P2P 서버</label>
-        <label class="opt"><input type="radio" name="q5" value="3">커널 모드 권한</label>
-        <div class="explain">서비스가 응용 프로그램용으로 내놓은 함수 모음 = API. 매뉴얼·에디터까지 묶여 있다면 SDK예요.</div></div>
+        <label class="opt"><input type="radio" name="q5" value="3">커널 함수</label>
+        <div class="explain">특정 플랫폼용 프로그램을 개발하도록 제공되는 인터페이스 = API(구글 맵 API). 매뉴얼·편집기·에뮬레이터까지 묶여 있다면 SDK예요.</div></div>
       <div class="q" data-answer="3"><p class="qt"><b>Q6</b>"스마트폰 OS는 유닉스 계열인데도 쓰기 쉽다"는 사실이 보여 주는 것은?</p>
         <label class="opt"><input type="radio" name="q6" value="0">유닉스 커널이 윈도우 커널보다 무조건 좋다</label>
         <label class="opt"><input type="radio" name="q6" value="1">스마트폰에는 커널이 없다</label>
         <label class="opt"><input type="radio" name="q6" value="2">CLI가 GUI보다 쉽다</label>
-        <label class="opt"><input type="radio" name="q6" value="3">쉽고 어려움은 인터페이스가 결정하며 커널과는 다른 문제다</label>
-        <div class="explain">같은 유닉스 계열이라도 전문가용 CLI는 어렵게, 터치 GUI는 쉽게 느껴져요. 인터페이스 차이예요.</div></div>
+        <label class="opt"><input type="radio" name="q6" value="3">쉽고 어려움은 사용자 인터페이스가 결정하며 커널과는 다른 문제다</label>
+        <div class="explain">같은 유닉스 계열이라도 CLI는 어렵게, 터치 GUI는 쉽게 느껴져요. 인터페이스 차이예요.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q7</b>커널의 4가지 핵심 기능이 아닌 것은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">프로세스 관리</label>
+        <label class="opt"><input type="radio" name="q7" value="1">저장장치 관리</label>
+        <label class="opt"><input type="radio" name="q7" value="2">API 배포 관리</label>
+        <label class="opt"><input type="radio" name="q7" value="3">입출력 관리</label>
+        <div class="explain">커널 기능 = 프로세스·메모리·저장장치·입출력 관리(프·메·저·입). API는 플랫폼 회사가 개발자에게 주는 인터페이스예요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q8</b>두 프로그램이 하드디스크에 직접 접근해 14와 21을 저장하면 생길 수 있는 문제는?</p>
+        <label class="opt"><input type="radio" name="q8" value="0">같은 위치에 덮어써서 먼저 쓴 데이터가 사라질 수 있다</label>
+        <label class="opt"><input type="radio" name="q8" value="1">저장 속도가 느려질 뿐 문제는 없다</label>
+        <label class="opt"><input type="radio" name="q8" value="2">커널 모드로 비자발적으로 전환된다</label>
+        <label class="opt"><input type="radio" name="q8" value="3">사용자 인터페이스가 사라진다</label>
+        <div class="explain">교재 그림 1-19 (a) 직접 접근: 같은 위치에 덮어쓸 수 있어요. 그래서 (b)처럼 write() 시스템 호출로 커널이 관리하게 해요.</div></div>
       <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
     </form>
 
     <h3 class="rv-h">내 말로 설명하기 <small>친구한테 말하듯이</small></h3>
     <div class="box explain-box">
-      <p class="eq">시스템 콜이 무엇이고 왜 필요한지, 듀얼 모드와 엮어서 설명해 보세요.</p>
+      <p class="eq">시스템 호출이 무엇이고 왜 필요한지, 이중 모드 연산과 엮어서 설명해 보세요.</p>
       <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
       <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
-      <div class="model-answer">프로그램들이 하드디스크에 마음대로 쓰면 서로 데이터를 덮어써 버려요. 그래서 OS는 하드웨어를 숨기고 write·read 같은 함수만 내놓는데, 이게 시스템 콜이에요. 프로그램은 값만 맡기고 위치는 OS가 정해요. 평소 연산은 사용자 모드에서 하다가 시스템 콜을 부르면 커널 모드로 들어가서 OS가 대신 처리하고, 끝나면 사용자 모드로 돌아와요. 이게 이중 모드이고, 사용자가 자발적으로 커널 모드에 들어가는 유일한 방법이 시스템 콜이에요.</div>
+      <div class="model-answer">프로그램들이 하드디스크에 마음대로 쓰면 같은 위치에 덮어써서 서로 데이터를 날려 버려요. 그래서 커널은 자원을 숨기고 read()·write() 같은 시스템 함수만 내놓는데, 이 함수를 불러 쓰는 게 시스템 호출이에요. 프로그램은 요청만 하고 커널이 안전하게 처리한 뒤 결과만 돌려줘요. 평소 계산은 사용자 모드에서 하다가 시스템 호출을 부르면 커널 모드로 들어가고, 끝나면 사용자 모드로 돌아와요. 이렇게 오가는 게 이중 모드 연산이고, 일반 프로세스가 자발적으로 커널 모드에 들어가는 유일한 방법이 시스템 호출이에요. 0으로 나누기 같은 오류가 나면 비자발적으로 커널 모드로 가기도 해요.</div>
     </div>
 
     <details class="ref"><summary>더 알아두면 좋은 것 <small>시험 비중 낮음</small></summary><div class="ref-body">
       <h4>커널의 구조 (교재)</h4>
       <p>교수님이 "요새는 다 마이크로 커널 구조라서 옛날 구조를 살펴볼 필요가 없다, 그냥 읽어 보세요" 하고 넘어간 부분이에요.</p>
+      <h4>분산 시스템 · 사물인터넷 · SaaS</h4>
+      <p>분산 시스템은 작은 컴퓨터들을 네트워크로 묶어 큰 컴퓨터처럼 쓰려던 시도, 사물인터넷(IoT)은 기기들이 인터넷에 연결되는 것(9/9의 OTA와 연결), SaaS는 소프트웨어를 빌려 쓰는 클라우드 형태예요. 강의에서 짧게 지나간 내용이에요.</p>
       <h4>블록체인</h4>
       <p>P2P를 한 단계 더 발전시켜 서버조차 없앤 구조. 거래 기록이 전체 지갑의 과반 이상에 퍼져 있어서, 하나를 해킹해도 승인이 안 된다는 설명이었어요.</p>
     </div></details>

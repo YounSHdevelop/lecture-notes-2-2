@@ -294,7 +294,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">10월 7일 (수) · 6주차 ② · 4장 스레드와 프로세스 간 통신</div>
+    <div class="eyebrow">10월 7일 (수) · 6주차 ② · 4장 스레드와 프로세스 간 통신 · 교재 4장 사진 기준</div>
     <h1>카톡으로 큰 파일을 보내면서 채팅이 되는 이유는?</h1>
     <p class="lead">fork는 프로세스를 통째로 복사했죠. 오늘은 한 단계 더 나아가 <b>프로세스 하나 안에 일꾼을 여러 명</b> 두는 스레드, 그리고 프로세스끼리 데이터를 주고받는 방법(IPC)을 배워요. 수업 첫머리에 <b>중간고사 일정</b>도 말씀하셨어요.</p>
     <div class="goal">
@@ -329,17 +329,25 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 1</span>
       <div><h2>가스레인지 화구가 하나일 때와 둘일 때, 스테이크는 언제 빨리 나올까?</h2><div class="sub">스레드 · 멀티스레드 · fork와의 차이</div></div></div>
 
-    <p><mark>스레드</mark>는 <b>CPU가 실행하는 가장 작은 작업 단위</b>예요. 하나의 프로세스 안에 이 작업 단위를 여러 개 두는 걸 <mark>멀티스레드</mark>라고 해요.</p>
+    <p>교재 정의(동그라미 친 문장)부터. <mark>스레드</mark>는 프로세스의 코드에 정의된 절차에 따라 <b>CPU에 작업을 요청하는 실행 단위</b>예요. 프로세스가 생성되면 CPU 스케줄러는 프로세스가 해야 할 일을 CPU에 전달하는데, 이때 실제로 전달되는 실행 단위가 스레드예요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>누구 입장에서</th><th>단위</th><th>이름</th></tr></thead>
+      <tbody>
+        <tr><td>전체</td><td>작업(job)</td><td>여러 개의 작업 단위로 나뉨</td></tr>
+        <tr><td>운영체제</td><td>작업 단위(task)</td><td><b>프로세스</b></td></tr>
+        <tr><td>CPU</td><td>실행 단위(operation)</td><td><b>스레드</b></td></tr>
+      </tbody></table></div>
+    <p>크기 순으로 정리하면 <b>작업 &gt; 프로세스 &gt; 스레드</b>. 그리고 <mark>멀티스레딩</mark>은 <b>하나의 프로세스 내부에서 여러 개의 스레드가 동시에 작업하는 방식</b>이에요.</p>
     <div class="analogy"><b>교수님 비유</b> — 화구가 하나면 고기를 다 굽고 나서 같은 팬에 야채를 구워야 해요. 화구가 둘이면 한쪽에선 스테이크, 다른 쪽에선 야채를 <b>동시에</b> 구우니 빨라요. 주방(프로세스)은 하나인데 일하는 자리(스레드)가 여럿인 거예요.</div>
     <p>fork와 뭐가 다를까요? fork는 <b>똑같은 프로세스를 통째로 하나 더</b> 만들어요. 스레드는 <b>프로세스는 하나 그대로</b> 두고 그 안에 일하는 단위만 여러 개 만들어요.</p>
     <ul class="plain">
-      <li><b>한글</b> — 옛날엔 다 쓰고 "맞춤법 검사" 버튼을 눌러야 했어요(스레드 1개). 지금은 입력하는 동안 맞춤법 검사 스레드가 옆에서 같이 돌아서 오타에 바로 빨간 줄이 생겨요.</li>
+      <li><b>한글</b> — 옛날엔 다 쓰고 "맞춤법 검사" 버튼을 눌러야 했어요(스레드 1개). 지금은 교재 그림 4-2 (b)처럼 <b>문서 입출력 스레드 · 문서 편집 스레드 · 맞춤법 검사 스레드</b>가 독립적으로 동작해서, 내용을 입력하는 동시에 맞춤법 검사 스레드가 실시간으로 오류를 표시해요.</li>
       <li><b>카카오톡</b> — 파일 전송 스레드와 채팅 스레드가 따로 돌아서, 큰 파일을 보내는 동안에도 채팅이 돼요.</li>
     </ul>
     <p>옛날 CPU는 코어가 하나라 스레드를 여러 개 만들어 봐야 소용없었어요. 지금은 코어가 4·8·16개라, 스레드를 여러 개 만들면 각 코어에서 돌아 CPU가 여러 개인 것처럼 일해요. 그래서 요즘 프로세스는 거의 다 멀티스레드예요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>스레드는 CPU가 처리하는 가장 작은 작업 단위이며, 하나의 프로세스 안에 여러 스레드를 두어 작업을 동시에 처리하는 것을 멀티스레드라 한다. fork는 프로세스 전체를 복사하고, 스레드는 프로세스 하나 안에서 실행 단위만 늘린다.</p>
+      <p>스레드는 프로세스의 코드에 정의된 절차에 따라 CPU에 작업을 요청하는 실행 단위다(작업 &gt; 프로세스 &gt; 스레드). 멀티스레딩은 하나의 프로세스 내부에서 여러 개의 스레드가 동시에 작업하는 방식이다. fork는 프로세스 전체를 복사하고, 스레드는 프로세스 하나 안에서 실행 단위만 늘린다.</p>
       <div class="mn">외우는 법: <b>주방 하나, 화구 여러 개</b></div></div>
 
     <div class="check" data-id="k1" data-answer="0"><div class="lbl">바로 확인</div>
@@ -358,17 +366,17 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 2</span>
       <div><h2>스레드가 더 효율적이라는데, 크롬은 왜 탭마다 프로세스를 만들까?</h2><div class="sub">멀티태스킹 vs 멀티스레드 · 경량 프로세스 · 장점 4가지</div></div></div>
 
-    <p>먼저 단점부터. 한글과 프린트가 <b>서로 다른 프로세스</b>(멀티태스킹)면, 한글을 꺼도 프린트는 계속돼요. <b>독립적이라 한쪽이 죽어도 다른 쪽에 영향이 없어요.</b> 그런데 한글 안의 입력 스레드와 맞춤법 스레드는 같은 프로세스라서, 한글을 끄면 맞춤법 스레드도 <b>같이 죽어요.</b> 한 스레드가 잘못되면 프로세스 전체에 영향을 줄 수 있어요.</p>
+    <p>먼저 단점부터. 교재 그림 4-2 (a) 멀티태스킹 예: 문서 편집기가 출력할 데이터를 <b>프린터 프로세스(스풀러)</b>에 보내 두고 계속 편집해요. 둘이 <b>서로 다른 프로세스</b>라 IPC로 데이터를 주고받고, 문서 편집기가 갑자기 꺼져도 프린터 프로세스는 정상적으로 출력해요. <b>독립적이라 한쪽이 죽어도 다른 쪽에 영향이 없어요.</b> 그런데 한글 안의 입력 스레드와 맞춤법 스레드는 같은 프로세스라서, 한글을 끄면 맞춤법 스레드도 <b>같이 죽어요.</b> 한 스레드가 잘못되면 프로세스 전체에 영향을 줄 수 있어요.</p>
 
     <h3>그래도 스레드를 쓰는 이유 — 가볍다</h3>
-    <p>fork는 코드·데이터·PCB를 통째로 복사해서 똑같은 코드가 메모리에 두 개 있어요. 멀티스레드는 코드·열어 둔 파일·공유 데이터를 <b>스레드끼리 공유</b>해서 훨씬 작아요. 그래서 스레드를 <mark>경량 프로세스(Lightweight Process)</mark>라고 불러요.</p>
+    <p>fork는 코드·데이터·PCB를 통째로 복사해서 똑같은 코드가 메모리에 두 개 있어요. 멀티스레딩은 메모리나 파일 같은 <b>시스템 자원을 스레드끼리 공유</b>하고, 프로세스 간 통신(IPC) 없이도 스레드끼리 데이터를 주고받을 수 있어서 훨씬 가벼워요. 대신 프로세스가 비정상 종료되면 그 안의 <b>모든 스레드도 강제 종료</b>돼요. 그래서 스레드를 <mark>경량 프로세스(Lightweight Process)</mark>라고 불러요.</p>
     <div class="table-wrap"><table>
       <thead><tr><th>멀티스레드의 장점</th><th>설명</th></tr></thead>
       <tbody>
-        <tr><td><b>자원 공유</b></td><td>코드·파일·데이터를 따로 만들지 않고 공유</td></tr>
-        <tr><td><b>효율적인 문맥 교환</b></td><td>프로세스가 바뀌는 게 아니라 그 스레드가 쓰는 레지스터 일부만 바꾸면 돼서 교환 시간이 아주 짧음</td></tr>
-        <tr><td><b>빠른 응답</b></td><td>곰플레이어: 한 스레드가 I/O를 요청해 대기로 가도, 다른 스레드는 이미 올라온 영상을 계속 화면에 뿌림</td></tr>
-        <tr><td><b>확장성</b></td><td>코어가 늘어날수록 스레드를 나눠 돌려 성능이 올라감</td></tr>
+        <tr><td><b>자원 공유</b></td><td>하나의 프로세스 안에서 여러 스레드가 코드·데이터·파일 등의 자원을 공유해 낭비를 최소화</td></tr>
+        <tr><td><b>문맥 교환이 효율적</b></td><td>스레드는 프로세스 안에서 실행되니 문맥 교환 때 바꿀 정보가 적어 빠름. 또 IPC 없이 변수로 데이터를 주고받아 통신 비용이 줄어듦</td></tr>
+        <tr><td><b>응답 속도 향상</b></td><td>입출력을 맡은 스레드만 대기 상태가 되고 나머지 스레드는 계속 실행 (곰플레이어: 다른 스레드가 이미 올라온 영상을 계속 화면에 뿌림)</td></tr>
+        <tr><td><b>적응성 향상</b></td><td>멀티코어 CPU 환경에서 여러 코어에 스레드를 나눠 주어 멀티코어 환경을 최적화</td></tr>
       </tbody></table></div>
 
     <h3>크롬의 선택</h3>
@@ -376,8 +384,8 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="prof"><span class="av">교수</span><div class="bubble">멀티스레드로 갈 거냐, 포크를 시켜서 멀티태스킹으로 갈 거냐는 프로그래머의 철학이에요. 구글처럼 안정성이 더 중요하면 멀티프로세스로, 효율이 더 중요하면 멀티스레드로 가시면 됩니다.<small>10/7 강의 중 (말을 조금 다듬음)</small></div></div>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>멀티태스킹은 프로세스가 독립적이라 하나가 비정상 종료돼도 다른 프로세스에 영향이 없고, 멀티스레드는 자원을 공유해 가볍지만(경량 프로세스) 한 스레드의 문제가 프로세스 전체에 영향을 준다. 멀티스레드의 장점은 자원 공유, 효율적인 문맥 교환, 빠른 응답, 확장성이다.</p>
-      <div class="mn">외우는 법: <b>안정성은 프로세스(크롬), 효율은 스레드</b> · 장점 <b>공·교·응·확</b></div></div>
+      <p>멀티태스킹은 프로세스가 독립적이라 하나가 비정상 종료돼도 다른 프로세스에 영향이 없고, 멀티스레드는 자원을 공유해 가볍지만(경량 프로세스) 한 스레드의 문제가 프로세스 전체에 영향을 준다. 멀티스레드의 장점은 자원 공유, 문맥 교환이 효율적, 응답 속도 향상, 적응성 향상이다.</p>
+      <div class="mn">외우는 법: <b>안정성은 프로세스(크롬), 효율은 스레드</b> · 장점 <b>공·교·응·적</b></div></div>
 
     <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
       <div class="q">크롬이 탭마다 별도 프로세스를 쓰는 이유는?</div>
@@ -396,34 +404,66 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <div><h2>스레드를 먼저 start했는데, 왜 Main이 먼저 찍히기도 할까?</h2><div class="sub">자바 스레드 · extends Thread · start · join · try-catch</div></div></div>
 
     <p>교수님은 C의 <code>pthread_create</code>(포인터 함수가 나와서 어려움)보다 자바 코드로 설명했어요.</p>
-    <pre class="code"><span class="file">코드 4-2 · 자바 스레드 (요지)</span>class THTest extends Thread {          <span class="c">// Thread를 상속 → 독립적으로 도는 일꾼</span>
-    public void run() {
-        for (int i = 1; i &lt;= 5; i++)
-            System.out.println("Thread");
+    <pre class="code"><span class="file">코드 4-2 · 자바 스레드 코드 (교재)</span>class TH_test extends Thread {              <span class="c">// TH_test 스레드 클래스 정의 (Thread 상속)</span>
+    public void run() {                       <span class="c">// run() 메서드는</span>
+        for (int i = 0; i &lt; 5; i++)
+            System.out.println("Thread");     <span class="c">// "Thread" 문자열을 5번 출력</span>
     }
 }
+
 public class Main {
-    public static void main(String args[]) {   <span class="c">// 시작점</span>
-        THTest th = new THTest();              <span class="c">// 일꾼 객체 생성</span>
-        th.start();                            <span class="c">// <span class="hl">이때부터 스레드가 따로 돈다</span></span>
-        for (int i = 1; i &lt;= 5; i++)
-            System.out.println("Main");
+    public static void main(String[] args) {   <span class="c">// 자바 시작점</span>
+        TH_test TH_print = new TH_test();       <span class="c">// 스레드 객체 생성</span>
+
+        TH_print.start();                       <span class="c">// <span class="hl">멀티스레드 실행</span></span>
+
+        for (int i = 0; i &lt; 5; i++)
+            System.out.println("* main");
     }
 }</pre>
-    <p>순서대로 읽으면 Thread 5줄 다음 Main 5줄일 것 같죠. 그런데 <code>start()</code> 이후 스레드는 main과 <b>상관없이 따로 돌아요.</b> 그래서 Thread가 먼저일 수도, Main이 먼저일 수도, <b>섞여서</b> 찍힐 수도 있어요. <mark>순서는 보장되지 않아요.</mark></p>
+    <pre class="code"><span class="file">실행 결과 예 (실행할 때마다 달라짐)</span>* main
+Thread
+Thread
+Thread
+Thread
+Thread
+* main
+* main
+* main
+* main</pre>
+    <p>순서대로 읽으면 Thread 5줄 다음 * main 5줄일 것 같죠. 그런데 교재 결과처럼 * main이 먼저 찍히기도 해요. 이 코드에는 <b>동기화 과정이 없어서</b> main()과 스레드가 <b>독립적으로 실행</b>되거든요. 그래서 Thread가 먼저일 수도, main이 먼저일 수도, <b>섞여서</b> 찍힐 수도 있어요. <mark>순서는 보장되지 않아요.</mark> (실행할 때마다 결과가 다르다는 필기가 여기 있어요.)</p>
 
     <h3>순서를 정하고 싶다면 join</h3>
     <p>fork에서 부모가 wait로 자식을 기다렸죠. 스레드엔 부모·자식 개념은 없지만, "저 일꾼이 파일을 다 읽어 와야 내가 일할 수 있다" 같은 경우가 있어요. 그때 <b>다른 스레드가 끝날 때까지 기다리는</b> 게 <mark>join</mark>이에요.</p>
-    <pre class="code"><span class="file">start 다음에 추가</span>th.start();
+    <pre class="code"><span class="file">코드 4-3 · start 다음에 추가 (교재 12~15행)</span>TH_print.start();
 try {
-    th.join();                        <span class="c">// th가 끝날 때까지 main이 기다림</span>
-} catch (InterruptedException e) { }  <span class="c">// 스레드가 비정상 종료될 수 있으니 예외 처리</span>
-<span class="c">// → 출력: Thread 5줄이 먼저, 그다음 Main 5줄</span></pre>
-    <p>스레드가 안 만들어졌거나, 끝났다는 신호를 안 보냈거나, 비정상 종료될 수 있어서 join은 <b>꼭 try-catch 안에</b> 넣는 게 규칙이에요.</p>
+    TH_print.join();                   <span class="c">// <span class="hl">동기화</span>: 스레드가 끝날 때까지 main이 기다림</span>
+} catch (InterruptedException e) {}    <span class="c">// 문제가 생겼을 때 처리할 코드를 괄호 안에 등록</span>
+<span class="c">// → 출력: Thread 5줄이 먼저, 그다음 * main 5줄</span></pre>
+    <p>교재: <b>join() 메서드는 try{} 내부에서 작동</b>하고, catch의 괄호 안에는 문제가 발생했을 때 처리할 함수나 코드를 등록해요. join()을 쓰면 스레드가 끝난 후에 main()이 실행되니까 Thread가 5번 출력된 이후에 * main이 5번 출력돼요. 스레드가 안 만들어졌거나 비정상 종료될 수 있어서 join은 <b>꼭 try-catch 안에</b> 넣는 게 자바의 일반적인 방식이에요.</p>
+
+    <h3>C로는 pthread — 교재에 별표</h3>
+    <pre class="code"><span class="file">C 스레드 코드 (교재, 요지)</span>int sum = 0;                                      <span class="c">// 메인과 스레드가 공유하는 변수</span>
+
+void *T_run() {                                   <span class="c">// 스레드 실행</span>
+    for (int i = 1; i &lt; 5; i++)
+        printf("Td: %d add -&gt; sum = %d\n", i, sum = sum + i);
+    pthread_exit(NULL);                           <span class="c">// 스레드 종료</span>
+}
+
+int main() {
+    pthread_t tid;                                <span class="c">// 스레드 구조체</span>
+    <span class="hl">pthread_create(&amp;tid, NULL, T_run, NULL);</span>     <span class="c">// ★ 스레드 생성 → T_run() 실행</span>
+    printf("Main: sum = %d\n", sum);
+    pthread_join(tid, NULL);                      <span class="c">// 스레드 기다림 - 자원 회수</span>
+    printf("Main: sum = %d\n", sum);
+    return 0;
+}</pre>
+    <p>교재 실행 결과는 <code>Main: sum = 0</code> → <code>Td: 1 add -&gt; sum = 1</code> → <code>Td: 2 add -&gt; sum = 3</code> → <code>Td: 3 add -&gt; sum = 6</code> → <code>Td: 4 add -&gt; sum = 10</code>이에요. i가 1부터 4까지(i &lt; 5) 더해지니까 1, 3, 6, 10. <code>pthread_join</code>으로 스레드가 끝날 때까지 기다린 뒤 찍는 마지막 줄은 <b>sum = 10</b>이 돼요. 자바의 start ↔ <code>pthread_create</code>, join ↔ <code>pthread_join</code>으로 짝지어 기억하면 돼요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>자바에서 Thread를 상속한 객체는 start()로 실행되며 main과 독립적으로 동작하므로 출력 순서가 보장되지 않는다. 다른 스레드가 끝날 때까지 기다리려면 join()을 try-catch로 감싸 사용한다.</p>
-      <div class="mn">외우는 법: <b>프로세스는 wait, 스레드는 join</b></div></div>
+      <p>자바에서 Thread를 상속한 객체는 start()로 실행되며 동기화 과정이 없으면 main과 독립적으로 실행되므로 출력 순서가 보장되지 않는다. join()을 사용하면 스레드가 끝난 후 main()이 실행되도록 제어할 수 있으며, join()은 try-catch 방식으로 사용한다. C에서는 pthread_create()로 스레드를 생성하고 pthread_join()으로 기다린다(자원 회수).</p>
+      <div class="mn">외우는 법: <b>프로세스는 wait, 스레드는 join</b> · 자바 start/join = C pthread_create/pthread_join</div></div>
 
     <div class="check" data-id="k3" data-answer="1"><div class="lbl">바로 확인</div>
       <div class="q">위 첫 번째 코드(join 없음)의 출력에 대한 설명으로 옳은 것은?</div>
@@ -455,14 +495,22 @@ try {
 
     <h3>동기화 통신 vs 비동기화 통신 — 별표</h3>
     <ul class="plain">
-      <li><mark>비동기화 통신</mark> — 공유 메모리 100번지에 데이터가 언제 올라올지 모르니까, 받는 쪽이 <b>계속 바쁘게 왔다 갔다 확인</b>해야 해요. 전화 온다고 했는데 시간을 모르니 전화기 옆에서 계속 들여다보는 것처럼요.</li>
-      <li><mark>동기화 통신</mark> — 소켓처럼 <code>read</code>/<code>receive</code>를 실행해 두면 <b>느긋하게 기다리면 돼요.</b> 데이터가 도착하면 시스템이 알아서 받아 주고 다음 줄을 실행해요.</li>
+      <li><mark>비동기화 통신</mark> — 특징은 <b>데이터가 언제 도착할지 모른다</b>는 것. 교재 비유로는 <b>전보</b>예요. 전보를 받는 사람은 언제 올지 몰라서 도착 여부를 <b>직접 확인</b>해야 하죠. 운영체제가 도착 여부를 알려 주지 않으니까, 프로세스가 스스로 <code>while</code> 같은 반복문으로 데이터가 올 때까지 계속 확인하며 기다려요. 이렇게 기다리는 방식을 <mark>바쁜 대기</mark>(busy waiting)라고 해요. <b>논블로킹</b> 방식이라고도 하고, IPC 중 <b>공유 메모리와 공유 파일</b>이 비동기화 통신이에요.</li>
+      <li><mark>동기화 통신</mark> — 데이터가 도착할 때까지 <b>운영체제가 알아서 대기</b>시켜 주는 방식. 교재 비유로는 <b>전화</b>예요. 걸면 상대방이 수화기를 들어야 통신이 시작되죠. <b>블로킹</b> 방식이라고도 하고, OS가 대기를 처리하니 <b>바쁜 대기가 필요 없어요.</b> IPC 중 <b>파이프와 소켓</b>이 동기화 통신이라, 데이터가 도착한 다음에 다음 코드가 실행돼요.</li>
     </ul>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th>비동기화 통신</th><th>동기화 통신</th></tr></thead>
+      <tbody>
+        <tr><td>다른 이름</td><td>논블로킹</td><td>블로킹</td></tr>
+        <tr><td>도착 확인</td><td>프로세스가 직접(반복문) → <b>바쁜 대기</b></td><td>운영체제가 대기시켜 줌</td></tr>
+        <tr><td>비유</td><td>전보</td><td>전화</td></tr>
+        <tr><td>IPC 기법</td><td>공유 메모리, 공유 파일</td><td>파이프, 소켓</td></tr>
+      </tbody></table></div>
     <p>실제 컴퓨터에는 동기와 비동기가 섞여 있어요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>프로세스 간 통신(IPC)에는 공유 메모리·공유 파일, 같은 컴퓨터 내의 파이프(단방향), 네트워크로 연결된 컴퓨터 간의 소켓이 있다. 비동기화 통신은 데이터 도착 여부를 받는 쪽이 계속 확인해야 하고, 동기화 통신은 데이터가 도착하면 알려 주므로 기다리기만 하면 된다.</p>
-      <div class="mn">외우는 법: <b>비동기 = 내가 계속 확인, 동기 = 오면 알려 줌</b> · 무전기 = 반양방향</div></div>
+      <p>프로세스 간 통신(IPC)에는 공유 메모리·공유 파일, 같은 컴퓨터 내의 파이프(단방향), 네트워크로 연결된 컴퓨터 간의 소켓이 있다. 비동기화 통신(논블로킹)은 데이터가 언제 도착할지 모르므로 프로세스가 반복문으로 직접 확인하는 바쁜 대기를 하며 공유 메모리·공유 파일이 해당한다. 동기화 통신(블로킹)은 데이터가 도착할 때까지 운영체제가 대기시켜 주므로 바쁜 대기가 필요 없으며 파이프·소켓이 해당한다.</p>
+      <div class="mn">외우는 법: <b>비동기 = 전보, 내가 계속 확인(바쁜 대기)</b> · <b>동기 = 전화, OS가 기다려 줌</b> · 공유는 비동기, 파이프·소켓은 동기</div></div>
 
     <div class="check" data-id="k4" data-answer="2"><div class="lbl">바로 확인</div>
       <div class="q">같은 컴퓨터의 두 프로세스가 파이프로 서로 주고받는(양방향) 통신을 하려면 파이프가 몇 개 필요할까?</div>
@@ -487,10 +535,32 @@ try {
       <li><mark>close(fd)</mark> — 다 쓰면 반납.</li>
     </ol>
     <div class="analogy"><b>교수님 비유</b> — 찜질방 카운터에서 돈을 내면 <b>락커 키</b>를 줘요. 찜질방을 쓸 권리죠. 그 키(FD)로 락커를 열고 닫다가(read/write), 나갈 때 키를 반납해요(close).</div>
-    <p>교수님의 코드 읽는 법: 한 줄씩 읽지 말고 <b>구조부터</b> 찾으세요. 교재 코드 4-4라면 9번 줄 open의 fd에 동그라미, 16번 줄 read/write의 fd에 동그라미, close의 fd에 동그라미. 그 뼈대가 보이면 나머지는 그걸 받쳐 주는 보조 코드예요. 파이프 코드도 같아요. <code>int fd[2]</code>로 두 개를 열고, close도 두 번 나와요.</p>
+    <p>교수님의 코드 읽는 법: 한 줄씩 읽지 말고 <b>구조부터</b> 찾으세요. 교재 코드 4-4라면 9번 줄 open의 fd에 동그라미, 16번 줄 read의 fd에 동그라미, 23번 줄 close의 fd에 동그라미. 그 뼈대가 보이면 나머지는 그걸 받쳐 주는 보조 코드예요.</p>
+    <pre class="code"><span class="file">코드 4-4 · 파일 읽기 (교재, 요지)</span>int fd, n;
+char buf[6];
+
+<span class="hl">fd</span> = open("test.txt", O_RDONLY);   <span class="c">// 파일 open (읽기 전용)</span>
+if (fd == -1) {                       <span class="c">// 파일 열기 실패</span>
+    perror("Error opening file");
+    return 1;
+}
+n = read(<span class="hl">fd</span>, buf, 5);               <span class="c">// read(fd): n은 실제 읽은 문자 수</span>
+if (n &gt; 0) {
+    buf[n] = '\0';                    <span class="c">// 맨 마지막에 NULL 문자 삽입</span>
+    printf("%s \n", buf);
+} else {
+    perror("Error reading file");
+}
+close(<span class="hl">fd</span>);                            <span class="c">// 파일 close</span></pre>
+    <p>파이프 코드도 같은 뼈대예요. 교재: 파이프 통신은 파일 입출력과 비슷하게 동작하지만 <b>open() 대신 pipe(fd)</b>를 써서 <b>pipe() → read()/write() → close()</b> 형태예요. 파이프는 <b>단방향</b> 통신만 지원하고, 파이프 하나에 <b>파이프 기술자가 2개</b>(읽기용 <code>fd[0]</code>, 쓰기용 <code>fd[1]</code>) 있어요.</p>
+    <pre class="code"><span class="file">코드 4-5 · 파이프 통신 (보내는 쪽, 교재)</span>int fd[2];              <span class="c">// 2개의 파일 기술자: 읽기용 fd[0], 쓰기용 fd[1]</span>
+pipe(<span class="hl">fd</span>);               <span class="c">// 파이프 생성</span>
+close(fd[0]);           <span class="c">// 읽기용 기술자 닫기 (보내는 쪽이니까)</span>
+write(fd[1], "TEST", 5);  <span class="c">// fd[1]을 통해 데이터 쓰기</span>
+close(fd[1]);           <span class="c">// 쓰기용 기술자 닫기</span></pre>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>파일 입출력과 통신은 open(존재·권한 확인 후 파일 디스크립터 획득) → read/write(디스크립터로 읽기·쓰기) → close(반납)의 구조를 따른다.</p>
+      <p>파일 입출력과 통신은 open(존재·권한 확인 후 파일 디스크립터 획득) → read/write(디스크립터로 읽기·쓰기) → close(반납)의 구조를 따른다. 파이프 통신은 open() 대신 pipe(fd)를 사용하는 pipe() → read()/write() → close() 형태이며, 단방향이므로 읽기용 fd[0]과 쓰기용 fd[1] 두 개의 파이프 기술자를 사용한다.</p>
       <div class="mn">외우는 법: <b>키 받기 → 쓰기 → 키 반납</b></div></div>
 
     <div class="check" data-id="k5" data-answer="0"><div class="lbl">바로 확인</div>
@@ -514,27 +584,31 @@ try {
     <div class="box sheet" id="sheet">
       <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제</p>
       <div class="grp"><h4>① 스레드 <span class="mn">주방 하나, 화구 여럿</span></h4><ul>
-        <li><span class="kw">스레드</span> = CPU가 처리하는 가장 작은 작업 단위</li>
+        <li><span class="kw">스레드</span>는 프로세스 코드의 절차에 따라 CPU에 작업을 요청하는 실행 단위예요. 작업 &gt; 프로세스(OS의 작업 단위) &gt; 스레드(CPU의 실행 단위).</li>
+        <li><span class="kw">멀티스레딩</span> = 하나의 프로세스 안에서 여러 스레드가 동시에 작업하는 방식(한글: 입출력·편집·맞춤법 스레드).</li>
         <li>fork = 프로세스 통째 복사 / 스레드 = 한 프로세스 안에서 실행 단위만 늘림</li></ul></div>
-      <div class="grp"><h4>② 프로세스 vs 스레드 <span class="mn">공·교·응·확</span></h4><ul>
+      <div class="grp"><h4>② 프로세스 vs 스레드 <span class="mn">공·교·응·적</span></h4><ul>
         <li>멀티태스킹 = 독립(하나 죽어도 OK) / 멀티스레드 = 같이 죽음</li>
-        <li><span class="kw">경량 프로세스</span> · 장점 = 자원 공유 · 문맥 교환 효율 · 빠른 응답 · 확장성</li>
+        <li><span class="kw">경량 프로세스</span> · 장점 = 자원 공유 · 문맥 교환이 효율적 · 응답 속도 향상 · 적응성 향상(멀티코어)</li>
         <li>크롬 탭 = 프로세스(<span class="kw">안정성</span>) / IE 탭 = 스레드(효율)</li></ul></div>
       <div class="grp"><h4>③ 자바 스레드</h4><ul>
         <li>extends Thread · <span class="kw">start()</span> → 독립 실행, 순서 보장 X</li>
-        <li><span class="kw">join()</span> = 다른 스레드 끝까지 기다림, try-catch 필수</li></ul></div>
+        <li><span class="kw">join()</span> = 스레드가 끝난 뒤 main이 실행되도록(동기화), try{} 안에서 작동</li>
+        <li>C: <span class="kw">pthread_create</span>로 생성 → pthread_join으로 기다림(자원 회수)</li></ul></div>
       <div class="grp"><h4>④ IPC <span class="ex-t">★ 동기/비동기</span></h4><ul>
         <li>공유 메모리·파일 · <span class="kw">파이프</span>(같은 컴퓨터, 단방향 → 2개) · <span class="kw">소켓</span>(네트워크)</li>
         <li>단방향 / 양방향 / <span class="kw">반양방향</span>(무전기)</li>
-        <li><span class="kw">비동기</span> = 계속 확인 / <span class="kw">동기</span> = 도착하면 알려 줌</li></ul></div>
+        <li><span class="kw">비동기</span>(논블로킹, 전보) = 프로세스가 반복문으로 계속 확인하는 <span class="kw">바쁜 대기</span> → 공유 메모리·공유 파일</li>
+        <li><span class="kw">동기</span>(블로킹, 전화) = OS가 대기시켜 줌, 바쁜 대기 X → 파이프·소켓</li></ul></div>
       <div class="grp"><h4>⑤ 입출력 구조 <span class="mn">락커 키</span></h4><ul>
-        <li><span class="kw">open</span>(존재·권한 → FD) → read/write(FD) → <span class="kw">close</span></li></ul></div>
+        <li><span class="kw">open</span>(존재·권한 → FD) → read/write(FD) → <span class="kw">close</span></li>
+        <li>파이프 = <span class="kw">pipe(fd)</span> → read/write → close, 기술자 2개(읽기 fd[0], 쓰기 fd[1])</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
     <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
     <div class="box cloze-box">
-      <p>CPU가 처리하는 가장 작은 작업 단위를 <span class="cloze">스레드</span>라 하고, 자원을 공유해 가볍기 때문에 <span class="cloze">경량 프로세스</span>라고도 부른다. 프로세스가 서로 독립적이라 하나가 죽어도 다른 것에 영향이 없는 방식은 <span class="cloze">멀티태스킹</span>이다. 자바에서 스레드는 <span class="cloze">start()</span>로 실행하고, 다른 스레드가 끝날 때까지 기다리려면 <span class="cloze">join()</span>을 쓴다. 같은 컴퓨터 안에서 단방향으로 데이터를 보내는 통신 방법은 <span class="cloze">파이프</span>, 다른 컴퓨터와 통신할 때는 <span class="cloze">소켓</span>을 쓴다. 받는 쪽이 데이터 도착을 계속 확인해야 하는 방식은 <span class="cloze">비동기화 통신</span>이다. 파일을 쓰려면 먼저 <span class="cloze">open</span>으로 권한을 확인한다.</p>
+      <p>CPU가 처리하는 가장 작은 작업 단위를 <span class="cloze">스레드</span>라 하고, 자원을 공유해 가볍기 때문에 <span class="cloze">경량 프로세스</span>라고도 부른다. 프로세스가 서로 독립적이라 하나가 죽어도 다른 것에 영향이 없는 방식은 <span class="cloze">멀티태스킹</span>이다. 자바에서 스레드는 <span class="cloze">start()</span>로 실행하고, 다른 스레드가 끝날 때까지 기다리려면 <span class="cloze">join()</span>을 쓴다. 같은 컴퓨터 안에서 단방향으로 데이터를 보내는 통신 방법은 <span class="cloze">파이프</span>, 다른 컴퓨터와 통신할 때는 <span class="cloze">소켓</span>을 쓴다. 받는 쪽이 데이터 도착을 계속 확인해야 하는 방식은 <span class="cloze">비동기화 통신</span>이고, 이렇게 반복문으로 기다리는 것을 <span class="cloze">바쁜 대기</span>라 한다. 파일을 쓰려면 먼저 <span class="cloze">open</span>으로 권한을 확인한다.</p>
       <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
     </div>
 
@@ -545,16 +619,20 @@ try {
       <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
       <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
       <div class="fc-items">
-        <div class="fc-item"><div class="q">스레드란?</div><div class="a">CPU가 처리하는 가장 작은 작업 단위. 한 프로세스 안에 여러 개를 둘 수 있다(멀티스레드).</div></div>
+        <div class="fc-item"><div class="q">스레드란? (교재 정의)</div><div class="a">프로세스의 코드에 정의된 절차에 따라 CPU에 작업을 요청하는 실행 단위. 작업 &gt; 프로세스 &gt; 스레드.</div></div>
+        <div class="fc-item"><div class="q">멀티스레딩이란?</div><div class="a">하나의 프로세스 내부에서 여러 개의 스레드가 동시에 작업하는 방식. 시스템 자원을 공유하고 IPC 없이 데이터를 주고받는다.</div></div>
         <div class="fc-item"><div class="q">fork와 스레드의 차이는?</div><div class="a">fork는 프로세스 전체를 복사해 새 프로세스를 만들고, 스레드는 한 프로세스 안에서 실행 단위만 늘린다.</div></div>
         <div class="fc-item"><div class="q">멀티스레드의 단점은?</div><div class="a">같은 프로세스 안이라 한 스레드가 잘못되면 다른 스레드도 같이 영향을 받는다(같이 죽음).</div></div>
         <div class="fc-item"><div class="q">스레드를 경량 프로세스라 부르는 이유는?</div><div class="a">코드·파일·데이터를 공유해서 프로세스를 통째로 복사하지 않아 가볍기 때문.</div></div>
-        <div class="fc-item"><div class="q">멀티스레드의 장점 4가지는?</div><div class="a">자원 공유, 효율적인 문맥 교환, 빠른 응답, 확장성.</div></div>
+        <div class="fc-item"><div class="q">멀티스레드의 장점 4가지는?</div><div class="a">자원 공유, 문맥 교환이 효율적, 응답 속도 향상, 적응성 향상.</div></div>
+        <div class="fc-item"><div class="q">C에서 스레드를 만들고 기다리는 함수는?</div><div class="a">pthread_create()로 생성(→ T_run 실행), pthread_join()으로 기다림(자원 회수).</div></div>
         <div class="fc-item"><div class="q">크롬이 탭마다 프로세스를 쓰는 이유는?</div><div class="a">안정성. 한 탭이 죽어도 다른 탭에 영향이 없게.</div></div>
         <div class="fc-item"><div class="q">자바 join()의 역할과 주의점은?</div><div class="a">다른 스레드가 끝날 때까지 기다린다. 비정상 상황에 대비해 try-catch로 감싼다.</div></div>
         <div class="fc-item"><div class="q">파이프와 소켓의 차이는?</div><div class="a">파이프 = 같은 컴퓨터 안 프로세스끼리(단방향). 소켓 = 네트워크로 다른 컴퓨터와.</div></div>
         <div class="fc-item"><div class="q">반양방향 통신의 예는?</div><div class="a">무전기. 양쪽으로 되지만 한순간엔 한쪽만 말한다.</div></div>
-        <div class="fc-item"><div class="q">동기화 통신과 비동기화 통신은?</div><div class="a">비동기 = 받는 쪽이 데이터 도착을 계속 확인. 동기 = 기다리면 도착 시 알려 줘서 다음 줄이 실행.</div></div>
+        <div class="fc-item"><div class="q">동기화 통신과 비동기화 통신은?</div><div class="a">비동기(논블로킹) = 데이터가 언제 올지 몰라 프로세스가 반복문으로 직접 확인(바쁜 대기), 공유 메모리·공유 파일. 동기(블로킹) = OS가 도착할 때까지 대기시켜 줌, 파이프·소켓.</div></div>
+        <div class="fc-item"><div class="q">바쁜 대기(busy waiting)란?</div><div class="a">비동기화 통신에서 OS가 도착을 알려 주지 않아 프로세스가 while 같은 반복문으로 데이터가 도착할 때까지 계속 확인하며 기다리는 방식.</div></div>
+        <div class="fc-item"><div class="q">파이프의 기술자 2개는?</div><div class="a">읽기용 fd[0], 쓰기용 fd[1]. pipe(fd)로 만들고 단방향 통신만 지원.</div></div>
         <div class="fc-item"><div class="q">파일 입출력의 기본 구조는?</div><div class="a">open(존재·권한 확인, FD 받기) → read/write(FD 사용) → close(반납).</div></div>
       </div>
       <ol class="fc-print"></ol>

@@ -294,7 +294,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">9월 28일 (월) · 5주차 ① · 3장 프로세스와 스레드 ①</div>
+    <div class="eyebrow">9월 28일 (월) · 5주차 ① · 3장 프로세스와 스레드 ① · 교재 3장 사진 기준</div>
     <h1>카톡을 더블클릭하는 순간, 프로그램은 무엇이 될까?</h1>
     <p class="lead">드디어 운영체제의 첫 번째 진짜 파트, 프로세스예요. 교수님이 "오늘 배워야 하는 것 중 가장 중요하다", "<b>평생 잊어버리면 안 되는 그림</b>"이라고 한 프로세스 상태도가 나오는 날이에요. 이 페이지에서 제일 공들일 곳은 장면 3이에요.</p>
     <div class="goal">
@@ -330,12 +330,12 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 1</span>
       <div><h2>레시피와 요리하는 중, 어느 쪽이 프로세스일까?</h2><div class="sub">프로그램(정적) · 프로세스(동적)</div></div></div>
 
-    <p>하드디스크에 가만히 저장되어 있는 한글·카톡이 <mark>프로그램</mark>이에요. 움직이지 않는 <b>정적</b>인 상태죠. 9/16에 "모든 프로그램은 메모리에 올라와야 실행된다"고 했죠? 더블클릭해서 <b>메모리에 올라와 실행 준비가 된 상태</b>를 <mark>프로세스</mark>라고 해요. 실제로 움직이는 <b>동적</b>인 상태예요.</p>
+    <p>하드디스크에 가만히 저장되어 있는 한글·카톡이 <mark>프로그램</mark>이에요. 움직이지 않는 <b>정적</b>인 상태죠. 9/16에 "모든 프로그램은 메모리에 올라와야 실행된다"고 했죠? 더블클릭해서 <b>실행되어 메모리에 올라온 상태</b>를 <mark>프로세스</mark>라고 해요(교재 별표 문장). 실제로 움직이는 <b>동적</b>인 상태예요. 운영체제 입장에서 프로세스는 <b>하나의 작업 단위</b>이기도 하고요.</p>
     <div class="analogy"><b>교수님 비유</b> — 레시피는 요리가 아니라 요리하는 방법일 뿐이죠(프로그램). 그 레시피대로 실제로 조리하고 있는 것이 프로세스예요.</div>
     <p>작업 관리자를 열어 보면, 컴퓨터를 막 켜서 아무것도 안 했는데도 프로세스가 100개 가까이 돌고 있어요. 운영체제 자신도 프로그램이자 프로세스이고, 그 안에서 수많은 프로세스가 컴퓨터를 굴리고 있는 거예요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>프로그램은 저장장치에 있는 정적인 상태, 프로세스는 프로그램이 메모리에 올라와 실행되는 동적인 상태다.</p>
+      <p>프로세스는 프로그램이 실행되어 메모리에 올라온 상태를 의미하며, 운영체제에서 하나의 작업 단위다. 프로그램(레시피)은 정적인 상태로 존재하지만 이를 구현하는 프로세스(조리)는 동적인 상태다.</p>
       <div class="mn">외우는 법: <b>레시피 = 프로그램, 조리 중 = 프로세스</b></div></div>
 
     <div class="check" data-id="k1" data-answer="0"><div class="lbl">바로 확인</div>
@@ -354,13 +354,13 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 2</span>
       <div><h2>전역 변수, 지역 변수, malloc으로 잡은 메모리는 각각 어디로 갈까?</h2><div class="sub">코드 영역 · 데이터 영역(정적 · 힙 · 스택)</div></div></div>
 
-    <p>프로세스가 메모리에 올라오면 크게 <mark>코드 영역</mark>(프로그램 본체)과 <mark>데이터 영역</mark>(코드가 쓰는 데이터)으로 나뉘어요. 그리고 데이터 영역은 다시 셋으로 나뉘어요.</p>
+    <p>프로세스가 메모리에 올라오면 크게 <mark>코드 영역</mark>(프로그램 본체)과 <mark>데이터 영역</mark>(코드가 쓰는 데이터)으로 나뉘어요. 문서 편집기라면 편집 중인 문서 데이터가 데이터 영역에 들어가요. 데이터는 실행 중에 값이 바뀔 수 있으니 데이터 영역은 <b>읽기와 쓰기가 모두 가능</b>해요(단, 상수로 선언한 데이터는 읽기 전용). 그리고 데이터 영역은 다시 셋으로 나뉘어요.</p>
     <div class="table-wrap"><table>
       <thead><tr><th>영역</th><th>무엇이 들어가나</th><th>언제 생기고 없어지나</th></tr></thead>
       <tbody>
-        <tr><td><b>정적 데이터</b></td><td><b>전역 변수</b></td><td>프로그램 시작 ~ 끝 (프로그램과 운명을 같이함)</td></tr>
-        <tr><td><b>스택</b></td><td>함수의 <b>지역 변수</b></td><td>함수 호출 때 push, 함수 끝나면 pop</td></tr>
-        <tr><td><b>힙</b></td><td><code>malloc</code>으로 잡은 메모리 = <mark>동적 메모리 할당</mark></td><td>필요할 때 잡고 <code>free</code>로 해제</td></tr>
+        <tr><td><b>정적 데이터</b></td><td><b>정적 변수·전역 변수</b>. 크기가 고정됨</td><td>프로그램을 종료할 때까지 계속 저장 (프로그램과 운명을 같이함)</td></tr>
+        <tr><td><b>힙</b> ★</td><td>실행 중에 <b>동적으로 할당된 변수</b>(<code>malloc</code>으로 잡은 메모리) = <mark>동적 메모리 할당</mark></td><td>필요할 때 잡고 <code>free</code>로 해제</td></tr>
+        <tr><td><b>스택</b></td><td><b>함수 호출</b>과 관련된 데이터: 반환 주소, 매개변수, <b>지역 변수</b> 등</td><td>스택 자료구조로 쌓이고, 함수가 끝나면 그 데이터는 제거</td></tr>
       </tbody></table></div>
     <p>main이 함수 A를 부르고, A가 B를 부르면 스택에 A, B 순서로 쌓였다가 B가 끝나면 B 것부터 빠져요. 그래서 지역 변수는 <b>스택</b>이에요.</p>
 
@@ -385,7 +385,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <p>스택도 힙도 크기가 계속 변해요. 한쪽 방향으로만 쌓으면 경계가 계속 밀려나서 관리가 어렵죠. 그래서 <b>스택은 맨 아래에서 위로, 힙은 위에서 아래로</b> 자라게 하고 가운데 빈 공간을 둬요. 주어진 공간을 크게 벗어나지 않고 쓸 수 있어요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>프로세스는 코드 영역과 데이터 영역으로 구성되며, 데이터 영역은 전역 변수가 저장되는 정적 영역, 지역 변수가 저장되는 스택, 동적 메모리 할당(malloc/free)에 쓰이는 힙으로 나뉜다. 스택과 힙은 서로 반대 방향으로 커진다.</p>
+      <p>프로세스는 코드 영역과 데이터 영역으로 구성되며, 데이터 영역은 정적 데이터 영역(정적 변수·전역 변수, 크기 고정, 종료 시까지 유지), 힙 영역(실행 중 동적으로 할당된 변수), 스택 영역(함수 호출 관련 데이터: 반환 주소, 매개변수, 지역 변수, 함수 종료 시 제거)으로 나뉜다. 스택과 힙은 서로 반대 방향으로 커진다.</p>
       <div class="mn">외우는 법: <b>전역은 정적, 지역은 스택, malloc은 힙</b></div></div>
 
     <div class="check" data-id="k2" data-answer="1"><div class="lbl">바로 확인</div>
@@ -484,24 +484,27 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 4</span>
       <div><h2>주민등록이 말소되면 사람은 사라진다. 프로세스의 주민등록은?</h2><div class="sub">PCB(프로세스 제어 블록) · 들어 있는 정보</div></div></div>
 
-    <p>프로세스가 생기면 번호·상태 같은 정보를 담은 작은 블록이 같이 만들어져요. 이게 <mark>PCB(프로세스 제어 블록)</mark>예요. 학교에서 학번으로 같은 이름의 학생을 구분하듯, OS는 PCB로 프로세스를 구분하고 관리해요.</p>
+    <p>운영체제는 실행 중인 각 프로세스를 관리하려고 <b>프로세스별로 상태 정보를 저장</b>해요. 이때 쓰는 자료구조가 <mark>PCB(프로세스 제어 블록)</mark>예요. 교재는 PCB를 식당의 <b>주문서</b>에 비유해요. 프로그램이 프로세스가 되면 <b>운영체제로부터 PCB를 받고</b>, 작업이 끝난 프로세스의 PCB는 <b>삭제</b>돼요. 학교에서 학번으로 같은 이름의 학생을 구분하듯, OS는 PCB로 프로세스를 구분하고 관리해요.</p>
     <div class="analogy"><b>교수님 비유</b> — PCB는 주민등록 초본이에요. 사람이 세상을 떠나면 주민등록이 말소되듯, 프로세스에서 PCB를 빼면 다시 그냥 프로그램으로 돌아가요. 그래서 <b>프로세스 = 프로그램 + PCB</b>.</div>
     <p>PCB는 일반 사용자 데이터가 아니라서 사용자 영역이 아닌 <b>메모리의 OS 영역</b>에 들어가요.</p>
 
     <div class="table-wrap"><table>
       <thead><tr><th>PCB 안의 정보</th><th>왜 필요할까</th></tr></thead>
       <tbody>
-        <tr><td><b>포인터</b></td><td>준비 상태의 PCB들을 <b>링크드 리스트</b>로 줄줄이 엮으려고 (그래서 C에 포인터가 꼭 필요)</td></tr>
-        <tr><td><b>프로세스 상태</b> ★</td><td>지금 준비·실행·대기·보류 중 어디인지 — 가장 중요한 정보</td></tr>
-        <tr><td><b>PID</b></td><td>프로세스 번호(주민등록번호처럼 구분)</td></tr>
-        <tr><td><b>프로그램 카운터(PC) · 레지스터 정보</b></td><td>100번 줄까지 하고 쫓겨났으면 다음엔 101번부터 해야 하니까</td></tr>
+        <tr><td><b>포인터</b></td><td>준비·대기 상태의 프로세스는 <b>큐</b>에서 기다리는데, 큐는 <b>연결 리스트</b>로 구현돼요. 포인터가 다음 PCB와 연결해 줘요("PCB가 큐에 삽입될 때 포인터가 필요해")</td></tr>
+        <tr><td><b>프로세스 상태</b> ★</td><td>현재 상태를 저장하는 필드: 생성·준비·실행·대기·완료·보류 준비·보류 대기. 실행 중에 입출력을 요청하면 이 값이 실행 → 대기로 바뀌어요</td></tr>
+        <tr><td><b>PID(프로세스 구분자)</b> ★</td><td>OS는 여러 프로세스를 관리하므로 각 프로세스에 <b>고유한 번호</b>를 붙여요. ("프로세스 상태와 PID가 앞쪽에 나와")</td></tr>
+        <tr><td><b>PC(프로그램 카운터)</b></td><td>100번 줄까지 하고 쫓겨났으면 다음엔 101번부터 해야 하니까</td></tr>
         <tr><td>프로세스 우선순위</td><td>누가 먼저 CPU를 받을지(5장)</td></tr>
+        <tr><td>각종 레지스터 정보</td><td>실행 중에 쓰던 레지스터 값들 (다시 실행될 때 복원)</td></tr>
         <tr><td>메모리 관리 정보</td><td>메모리 어디를 얼마나 쓰고 있는지</td></tr>
         <tr><td>할당된 자원 정보</td><td>열어 둔 파일 등 내가 쓰는 자원</td></tr>
+        <tr><td>계정 정보</td><td>사용자·CPU 사용 시간 같은 기록</td></tr>
+        <tr><td>PPID · CPID</td><td>부모 PID, 자식 PID (9/30의 fork에서 나와요)</td></tr>
       </tbody></table></div>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>PCB는 프로세스를 관리하기 위한 정보(포인터, 프로세스 상태, PID, 프로그램 카운터와 레지스터 정보, 우선순위, 메모리 관리 정보, 자원 정보)를 담은 자료구조로 OS 영역에 저장된다. 프로세스 = 프로그램 + PCB.</p>
+      <p>PCB는 운영체제가 실행 중인 각 프로세스를 관리하기 위해 프로세스별 상태 정보를 저장하는 자료구조로, 프로그램이 프로세스가 되면 OS로부터 PCB를 받고 작업이 끝나면 PCB는 삭제된다(프로그램 + PCB = 프로세스). PCB에는 포인터, 프로세스 상태, PID, PC, 우선순위, 각종 레지스터 정보, 메모리 관리 정보, 할당된 자원 정보, 계정 정보, PPID·CPID가 저장된다.</p>
       <div class="mn">외우는 법: <b>포 · 상 · 아 · 피</b>(포인터·상태·ID·PC) + 우선순위·메모리·자원</div></div>
 
     <div class="check" data-id="k4" data-answer="0"><div class="lbl">바로 확인</div>
@@ -521,18 +524,23 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <div><h2>타임 슬라이스를 1ms로 아주 작게 하면 무조건 좋을까?</h2><div class="sub">문맥 교환(PCB 스위칭) · 오버헤드 · 타임 슬라이스 크기</div></div></div>
 
     <p>프로세스 P1이 디스패치되면 CPU는 먼저 P1의 PCB에 저장돼 있던 PC·레지스터 값으로 자기 레지스터를 싹 바꿔요. P1이 타임 슬라이스를 다 쓰면, 지금까지의 레지스터 값을 P1의 PCB에 저장하고 내보내요. 그다음 P2의 PCB 값으로 레지스터를 다시 채우고… 0.1초마다 이 짓을 반복해요.</p>
-    <p>이렇게 <b>실행 중인 프로세스의 정보를 PCB에 저장하고, 다음 프로세스의 PCB 정보로 바꿔 넣는 과정</b>을 <mark>문맥 교환(context switching)</mark>이라고 해요. PCB를 바꾸는 거라 <b>PCB 스위칭</b>이라고도 해요.</p>
+    <p>이렇게 <b>CPU를 쓰던 프로세스를 중단하고 새로운 프로세스로 전환하는 과정</b>을 <mark>문맥 교환(context switching)</mark>이라고 해요(교재 별표). 실행 상태에서 <b>나가는</b> 프로세스의 PCB에는 지금까지의 작업 내용을 저장하고, 실행 상태로 <b>들어오는</b> 프로세스는 레지스터 값을 자기 PCB에 저장된 값으로 바꿔요. 교재 말풍선 그대로 "기존의 PCB를 내보내고 새로운 PCB를 받는 과정"이라 <b>PCB 스위칭</b>이라고도 해요.</p>
+    <ol class="plain">
+      <li>P1 실행 중 타임 슬라이스 아웃 → <b>P1 상태를 PCB1에 저장</b></li>
+      <li><b>PCB2에서 P2 상태를 가져옴</b> → P2 디스패치, 실행 (P1은 준비 상태)</li>
+      <li>P2 타임 슬라이스 아웃 → P2 상태를 PCB2에 저장, PCB1에서 P1 상태를 가져와 다시 P1 실행</li>
+    </ol>
 
     <h3>타임 슬라이스 크기는 어떻게 정할까</h3>
     <ul class="plain">
-      <li><b>너무 크면</b> (예: 1초) — 하나가 1초씩 돌아서 화면이 뚝뚝 끊기고, 동시에 도는 것처럼 안 보여요.</li>
-      <li><b>너무 작으면</b> (예: 10ms 이하) — 문맥 교환에도 시간이 걸려요. 실제 작업은 조금인데 교환하는 시간이 그만큼 들면 <b>배보다 배꼽이 커요.</b> 이 낭비가 <mark>오버헤드</mark>예요.</li>
+      <li><b>너무 크면</b> — 하나의 프로세스가 오래 실행되니까 다른 프로세스의 대기 시간이 길어져요. 교재 예: 비디오 플레이어와 문서 편집기를 같이 켜면 비디오가 끊기고 글자 입력 반응도 매우 느려져요.</li>
+      <li><b>너무 작으면</b> — 문맥 교환에도 시간이 걸리고, 문맥 교환 중에는 <b>작업이 진행되지 않아요.</b> 교재 예: 타임 슬라이스 1ms인데 문맥 교환에 5ms가 걸리면, 실제 작업 시간보다 문맥 교환에 더 많은 시간을 낭비해요. <b>배보다 배꼽이 커요.</b> 이 낭비가 <mark>오버헤드</mark>예요.</li>
     </ul>
-    <p>결론: 타임 슬라이스는 동시에 도는 것처럼 보일 만큼 <b>충분히 작게</b>, 하지만 <b>문맥 교환 시간보다는 충분히 크게</b> 잡아야 해요.</p>
+    <p>결론: 타임 슬라이스는 동시에 도는 것처럼 보일 만큼 작게, 하지만 <b>문맥 교환 시간을 고려해서 충분히 크게</b> 잡아야 해요. 참고로 유닉스는 타임 슬라이스를 <b>10~200ms</b>로 설정해요.</p>
     <p>"그럼 100ms로 딱 정하면 되잖아요?" — 안 돼요. ① 시스템마다 문맥 교환 시간이 달라서 모르고, ② 프로세스 <b>우선순위에 따라 타임 슬라이스 크기가 달라지기</b> 때문이에요(5장에서 이유가 나와요). 그래서 일반 원칙만 기억하면 돼요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>문맥 교환은 CPU를 차지하던 프로세스의 상태를 PCB에 저장하고 다음 프로세스의 PCB로 레지스터를 채우는 과정이다. 타임 슬라이스가 너무 크면 동시 실행처럼 보이지 않고, 너무 작으면 문맥 교환 오버헤드가 커지므로 문맥 교환 시간보다 충분히 크게, 가능한 한 작게 설정한다.</p>
+      <p>문맥 교환은 CPU를 사용하던 프로세스를 중단하고 새로운 프로세스로 전환하는 과정으로, 나가는 프로세스의 PCB에는 지금까지의 작업 내용을 저장하고 들어오는 프로세스는 레지스터 값을 PCB에 저장된 값으로 변경한다. 타임 슬라이스가 너무 크면 동시 실행처럼 보이지 않고, 너무 작으면 문맥 교환 오버헤드가 커지므로 문맥 교환 시간보다 충분히 크게, 가능한 한 작게 설정한다.</p>
       <div class="mn">외우는 법: <b>크면 끊기고, 작으면 배꼽이 크다</b></div></div>
 
     <div class="check" data-id="k5" data-answer="1"><div class="lbl">바로 확인</div>
@@ -556,9 +564,9 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="box sheet" id="sheet">
       <p class="legend">= 정의 · → 흐름 · / 대비 · ★ 출제</p>
       <div class="grp"><h4>① 프로그램 / 프로세스 <span class="mn">레시피 / 조리 중</span></h4><ul>
-        <li><span class="kw">프로그램</span> = 저장장치, 정적 / <span class="kw">프로세스</span> = 메모리에서 실행, 동적</li></ul></div>
+        <li><span class="kw">프로세스</span>는 프로그램이 실행되어 메모리에 올라온 상태예요(동적, OS의 작업 단위). <span class="kw">프로그램</span>은 저장장치에 있는 정적인 상태(레시피)고요.</li></ul></div>
       <div class="grp"><h4>② 프로세스 메모리</h4><ul>
-        <li>코드 + 데이터(<span class="kw">정적</span>=전역 · <span class="kw">스택</span>=지역 · <span class="kw">힙</span>=malloc/free)</li>
+        <li>프로세스는 코드 영역 + 데이터 영역. 데이터 영역은 <span class="kw">정적</span>(정적·전역 변수, 크기 고정), <span class="kw">힙</span>(실행 중 동적 할당, malloc/free), <span class="kw">스택</span>(반환 주소·매개변수·지역 변수, 함수 끝나면 제거)으로 나뉘어요.</li>
         <li>스택 ↑ / 힙 ↓ 반대 방향으로 자람</li></ul></div>
       <div class="grp"><h4>③ 5가지 상태 <span class="ex-t">★ 평생</span><span class="mn">생·준·실·완 + 대기</span></h4><ul>
         <li>준비 → 실행 = <span class="kw">디스패치</span> · 실행 → 준비 = <span class="kw">타임아웃</span></li>
@@ -566,10 +574,11 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li>필수 아님, 효율 위한 상태 = <span class="kw">대기</span> · 보류(sleep) = 잠깐 멈춤</li></ul></div>
       <div class="grp"><h4>④ PCB <span class="ex-t">★</span></h4><ul>
         <li>프로세스 = 프로그램 + <span class="kw">PCB</span> · OS 영역에 저장</li>
-        <li>포인터(링크드 리스트) · <span class="kw">상태</span> · PID · PC·레지스터 · 우선순위 · 메모리 · 자원</li></ul></div>
+        <li>프로그램이 프로세스가 되면 OS에게서 PCB를 받고, 끝나면 PCB가 삭제돼요(주문서).</li>
+        <li>포인터(큐에 엮기) · <span class="kw">프로세스 상태</span> · <span class="kw">PID</span> · PC · 우선순위 · 레지스터 · 메모리 · 자원 · 계정 · PPID/CPID</li></ul></div>
       <div class="grp"><h4>⑤ 문맥 교환 <span class="ex-t">★</span><span class="mn">크면 끊김, 작으면 배꼽</span></h4><ul>
-        <li><span class="kw">문맥 교환</span> = PCB 저장 ↔ 다음 PCB 로드 (PCB 스위칭)</li>
-        <li>타임 슬라이스: 작게, 단 문맥 교환 시간보다 충분히 크게 (<span class="kw">오버헤드</span>)</li></ul></div>
+        <li><span class="kw">문맥 교환</span>은 CPU를 쓰던 프로세스를 중단하고 새 프로세스로 전환하는 과정이에요. 나가는 쪽은 PCB에 작업 내용을 저장하고, 들어오는 쪽은 PCB 값으로 레지스터를 바꿔요(PCB 스위칭).</li>
+        <li>타임 슬라이스가 크면 다른 프로세스가 오래 기다리고, 작으면(1ms인데 교환 5ms) 교환이 더 걸려 <span class="kw">오버헤드</span>. 문맥 교환 시간을 고려해 충분히 크게(유닉스 10~200ms).</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
@@ -594,8 +603,10 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <div class="fc-item"><div class="q">타임아웃이란?</div><div class="a">실행 중인 프로세스가 타임 슬라이스를 다 써서 준비 상태로 돌아가는 것.</div></div>
         <div class="fc-item"><div class="q">대기 상태는 언제, 왜?</div><div class="a">I/O를 요청했을 때. CPU가 기다리지 않고 다른 프로세스와 일하게 해 효율을 높이려고(필수 아닌 상태).</div></div>
         <div class="fc-item"><div class="q">I/O가 끝난 프로세스는 어디로?</div><div class="a">I/O 완료 인터럽트를 받아 준비 상태로. 실행으로 바로 가지 않는다.</div></div>
-        <div class="fc-item"><div class="q">PCB에 들어 있는 정보는?</div><div class="a">포인터, 프로세스 상태, PID, 프로그램 카운터·레지스터 정보, 우선순위, 메모리 관리 정보, 할당된 자원 정보.</div></div>
-        <div class="fc-item"><div class="q">문맥 교환이란?</div><div class="a">실행하던 프로세스의 정보를 PCB에 저장하고, 다음 프로세스의 PCB 정보로 레지스터를 채우는 과정(PCB 스위칭).</div></div>
+        <div class="fc-item"><div class="q">PCB에 들어 있는 정보는?</div><div class="a">포인터, 프로세스 상태, PID, PC, 프로세스 우선순위, 각종 레지스터 정보, 메모리 관리 정보, 할당된 자원 정보, 계정 정보, PPID와 CPID.</div></div>
+        <div class="fc-item"><div class="q">PCB의 포인터는 왜 필요할까?</div><div class="a">준비·대기 상태의 프로세스는 큐에서 기다리는데 큐는 연결 리스트로 구현되므로, 다음 PCB와 연결하기 위해.</div></div>
+        <div class="fc-item"><div class="q">문맥 교환이란?</div><div class="a">CPU를 사용하던 프로세스를 중단하고 새로운 프로세스로 전환하는 과정. 나가는 프로세스의 PCB에 작업 내용을 저장하고, 들어오는 프로세스는 레지스터 값을 PCB에 저장된 값으로 변경(PCB 스위칭).</div></div>
+        <div class="fc-item"><div class="q">유닉스의 타임 슬라이스 크기는?</div><div class="a">10~200ms.</div></div>
         <div class="fc-item"><div class="q">타임 슬라이스가 너무 작으면?</div><div class="a">작업 시간에 비해 문맥 교환 시간이 커져 오버헤드가 심해진다.</div></div>
       </div>
       <ol class="fc-print"></ol>
