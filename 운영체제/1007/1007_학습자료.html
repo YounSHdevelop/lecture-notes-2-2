@@ -401,7 +401,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 3 -->
   <section class="ch" id="c3">
     <div class="ch-head"><span class="ch-num">장면 3</span>
-      <div><h2>스레드를 먼저 start했는데, 왜 Main이 먼저 찍히기도 할까?</h2><div class="sub">자바 스레드 · extends Thread · start · join · try-catch</div></div></div>
+      <div><h2>스레드를 먼저 start했는데, 왜 Main이 먼저 찍히기도 할까?</h2><div class="sub">자바 스레드 · extends Thread · start · join ★ · try-catch ★ · pthread_create ★</div></div></div>
 
     <p>교수님은 C의 <code>pthread_create</code>(포인터 함수가 나와서 어려움)보다 자바 코드로 설명했어요.</p>
     <pre class="code"><span class="file">코드 4-2 · 자바 스레드 코드 (교재)</span>class TH_test extends Thread {              <span class="c">// TH_test 스레드 클래스 정의 (Thread 상속)</span>
@@ -440,9 +440,9 @@ try {
     TH_print.join();                   <span class="c">// <span class="hl">동기화</span>: 스레드가 끝날 때까지 main이 기다림</span>
 } catch (InterruptedException e) {}    <span class="c">// 문제가 생겼을 때 처리할 코드를 괄호 안에 등록</span>
 <span class="c">// → 출력: Thread 5줄이 먼저, 그다음 * main 5줄</span></pre>
-    <p>교재: <b>join() 메서드는 try{} 내부에서 작동</b>하고, catch의 괄호 안에는 문제가 발생했을 때 처리할 함수나 코드를 등록해요. join()을 쓰면 스레드가 끝난 후에 main()이 실행되니까 Thread가 5번 출력된 이후에 * main이 5번 출력돼요. 스레드가 안 만들어졌거나 비정상 종료될 수 있어서 join은 <b>꼭 try-catch 안에</b> 넣는 게 자바의 일반적인 방식이에요.</p>
+    <p>★ 교재(별표 두 군데): <b>join() 메서드는 try{} 내부에서 작동</b>하고, catch의 괄호 안에는 문제가 발생했을 때 처리할 함수나 코드를 등록해요. join()을 쓰면 스레드가 끝난 후에 main()이 실행되니까 Thread가 5번 출력된 이후에 * main이 5번 출력돼요. 스레드가 안 만들어졌거나 비정상 종료될 수 있어서 join은 <b>꼭 try-catch 안에</b> 넣는 게 자바의 일반적인 방식이에요.</p>
 
-    <h3>C로는 pthread — 교재에 별표</h3>
+    <h3>★ C로는 pthread — 교재에 별표</h3>
     <pre class="code"><span class="file">C 스레드 코드 (교재, 요지)</span>int sum = 0;                                      <span class="c">// 메인과 스레드가 공유하는 변수</span>
 
 void *T_run() {                                   <span class="c">// 스레드 실행</span>

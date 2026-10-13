@@ -327,11 +327,11 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 1 -->
   <section class="ch" id="c1">
     <div class="ch-head"><span class="ch-num">장면 1</span>
-      <div><h2>컴퓨터를 껐다 켜면 왜 빨라질까?</h2><div class="sub">가비지 컬렉션 · 부모-자식 관계 · init(PID 1)</div></div></div>
+      <div><h2>컴퓨터를 껐다 켜면 왜 빨라질까?</h2><div class="sub">가비지 컬렉션 · 부모-자식 관계 · init(PID 1) ★</div></div></div>
 
     <p>프로세스가 끝나면 그 자리를 누가 치워 줘야 해요. 식당에서 손님이 나가면 그릇을 치워야 다음 손님이 앉는 것처럼요. 교재 정의로는 운영체제의 역할 중 <b>프로세스를 종료시키고 자원을 회수하는 일</b>을 <mark>가비지 컬렉션</mark>이라고 해요. 그런데 프로세스가 수백 개씩 생겼다 사라지니까 OS가 다 못 치우면 <b>메모리 여유 공간이 줄어서 느려져요.</b> 껐다 켜면 메모리가 리셋되니까 다시 빨라지는 거예요.</p>
     <p>그래서 운영체제는 효율적으로 자원을 회수하려고 서로 관련 있는 프로세스를 <mark>부모-자식 관계</mark>로 묶어서 관리해요. 부모 프로세스가 자식 프로세스를 만들고, 자식이 끝나면 <b>부모가 자식의 자원을 회수</b>해요. OS가 전부 지켜보지 않아도 뒷정리가 잘 돼요. 이렇게 관계가 계속 이어지면 <b>트리 모양의 계층구조</b>가 만들어져요.</p>
-    <p>계속 거슬러 올라가면 모든 프로세스의 조상이 나와요. 유닉스에서는 부팅 중에 커널 프로세스가 메모리로 올라오는데, 그중 PID <b>1번</b>이 <mark>init</mark> 프로세스예요(교재 별표). init은 모든 프로세스 위에 있는 <b>최상위 부모</b>이고, 이후 만들어지는 모든 커널 프로세스와 사용자 프로세스는 init의 자식이에요. 끌 때는 <b>맨 아래 자식부터</b> 차례로 죽어 올라가서 마지막에 init이 끝나면 전원이 꺼져요.</p>
+    <p>계속 거슬러 올라가면 모든 프로세스의 조상이 나와요. 유닉스에서는 부팅 중에 커널 프로세스가 메모리로 올라오는데, 그중 PID <b>1번</b>이 <mark>init</mark> 프로세스예요(★ 교재 별표 — 본문 · 그림 말풍선 · ps -ef 세 군데에 별표). init은 모든 프로세스 위에 있는 <b>최상위 부모</b>이고, 이후 만들어지는 모든 커널 프로세스와 사용자 프로세스는 init의 자식이에요. 끌 때는 <b>맨 아래 자식부터</b> 차례로 죽어 올라가서 마지막에 init이 끝나면 전원이 꺼져요.</p>
 
     <figure class="fig">
       <svg viewBox="0 0 640 250" role="img" aria-label="swapper 아래 init, init 아래 사용자 세 명의 login, 각 login 아래 shell, shell 아래 web, mplayer, chatting, C edit가 달린 유닉스 프로세스 계층구조">
@@ -376,7 +376,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 2 -->
   <section class="ch" id="c2">
     <div class="ch-head"><span class="ch-num">장면 2</span>
-      <div><h2>손님 100명이 동시에 로그인하면, 로그인 프로그램은 어떻게 다 받을까?</h2><div class="sub">fork 시스템 콜 · 메모리 안에서 복사 · PID · PPID · CPID</div></div></div>
+      <div><h2>손님 100명이 동시에 로그인하면, 로그인 프로그램은 어떻게 다 받을까?</h2><div class="sub">fork 시스템 콜 · 메모리 안에서 복사 · 병렬 처리 구현 ★ · PID · PPID · CPID</div></div></div>
 
     <p>먼저 규칙 하나. 프로세스는 <b>시스템 호출을 통해서만</b> 커널에 작업을 요청할 수 있어요(1장). 그래서 새 프로세스를 만들거나 기존 프로세스를 바꾸려면 반드시 시스템 호출을 써야 해요. <b>자식 프로세스를 만드는</b> 시스템 호출이 <mark>fork()</mark>, <b>프로세스 내용을 바꾸는</b> 시스템 호출이 <mark>exec()</mark>예요(교재 밑줄). 보통은 fork()로 자식을 만든 다음 exec()로 자식의 내용을 바꿔요.</p>
     <p>크롬을 처음 켤 땐 하드디스크에서 코드와 데이터를 가져오고 PCB도 만들어야 해서 살짝 느려요. 그런데 <b>새 창</b>은 하드디스크에서 안 가져오고 <b>메모리 안에서 그대로 복사</b>해요. 그래서 빨라요. 이때 쓰는 시스템 콜이 <mark>fork</mark>예요.</p>
@@ -499,7 +499,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 장면 5 -->
   <section class="ch" id="c5">
     <div class="ch-head"><span class="ch-num">장면 5</span>
-      <div><h2>짜장면만 복사하던 주방에 "짬뽕 주세요"가 들어오면?</h2><div class="sub">exec 시스템 콜 · 코드 교체 · 셸 · fork + exec</div></div></div>
+      <div><h2>짜장면만 복사하던 주방에 "짬뽕 주세요"가 들어오면?</h2><div class="sub">exec 시스템 콜 ★ · 코드 교체 · 셸 · fork + exec</div></div></div>
 
     <div class="analogy"><b>교수님 비유</b> — 짜장면을 포크로 하나 복사해 놓고, 그 짜장면한테 "넌 짬뽕이야, 넌 짬뽕이야" 하고 우기는 거예요. 그러면 짬뽕이 돼요. 이렇게 <b>원래 있던 코드를 새 코드로 바꿔치기</b>하는 시스템 콜이 <mark>exec</mark>예요. 교재 정의(별표): 기존 프로세스를 완전히 종료하고 새 프로세스를 실행하는 <b>대신</b>, 기존 프로세스에서 <b>코드만</b> 새로운 프로그램으로 변경하는 시스템 호출.</div>
 
