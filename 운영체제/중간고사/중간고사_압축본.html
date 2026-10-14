@@ -745,22 +745,93 @@ if (pid == 0) {
 
     <h3>연습 — HRN (같은 데이터)</h3>
     <p>규칙: 앞 작업이 끝났을 때 도착해 있는 것마다 <b>응답률 = (대기 + 실행) ÷ 실행</b>을 계산해서 <b>가장 큰</b> 것. 대기 시간은 "지금 시각 − 도착"이에요.</p>
+    <figure class="fig">
+      <svg viewBox="0 0 640 738" role="img" aria-label="HRN 고르는 시점마다 P1~P4의 상태. 6 시점 P2 2, P3 1.25, P4 1로 P2 선택. 10 시점 P3 1.75, P4 3으로 P4 선택. 12 시점 P3 선택">
+        <text x="10" y="32" font-size="14" font-weight="700" fill="var(--teal-ink)">0 시점 — 처음 — P1만 도착 → P1 선택</text>
+        <text x="10" y="61" font-size="13" font-weight="700" fill="var(--ink)">P1</text>
+        <rect x="70" y="45" width="96" height="22" rx="3" fill="var(--teal)"/>
+        <text x="118.0" y="61" font-size="12" font-weight="700" text-anchor="middle" fill="var(--surface)">실행 6</text>
+        <text x="178" y="61" font-size="12.5" font-weight="700" fill="var(--exam)">(0 + 6) ÷ 6 = 1 ← 혼자라 선택</text>
+        <text x="10" y="91" font-size="13" font-weight="700" fill="var(--ink)">P2</text>
+        <text x="70" y="91" font-size="12.5" fill="var(--ink-3)">아직 도착 전 (도착 2)</text>
+        <text x="10" y="121" font-size="13" font-weight="700" fill="var(--ink)">P3</text>
+        <text x="70" y="121" font-size="12.5" fill="var(--ink-3)">아직 도착 전 (도착 4)</text>
+        <text x="10" y="151" font-size="13" font-weight="700" fill="var(--ink)">P4</text>
+        <text x="70" y="151" font-size="12.5" fill="var(--ink-3)">아직 도착 전 (도착 6)</text>
+        <text x="10" y="190" font-size="14" font-weight="700" fill="var(--teal-ink)">6 시점 — P1이 끝남 → P2 선택</text>
+        <text x="10" y="219" font-size="13" font-weight="700" fill="var(--ink)">P1</text>
+        <text x="70" y="219" font-size="12.5" fill="var(--ink-3)">실행 끝남 (0~6, 대기 0)</text>
+        <text x="10" y="249" font-size="13" font-weight="700" fill="var(--ink)">P2</text>
+        <rect x="70" y="233" width="64" height="22" rx="3" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="102.0" y="249" font-size="12" text-anchor="middle" fill="var(--ink-2)">대기 4</text>
+        <rect x="134" y="233" width="64" height="22" rx="3" fill="var(--teal)"/>
+        <text x="166.0" y="249" font-size="12" font-weight="700" text-anchor="middle" fill="var(--surface)">실행 4</text>
+        <text x="210" y="249" font-size="12.5" font-weight="700" fill="var(--exam)">(4 + 4) ÷ 4 = 2 ← 가장 큼, 선택</text>
+        <text x="10" y="279" font-size="13" font-weight="700" fill="var(--ink)">P3</text>
+        <rect x="70" y="263" width="32" height="22" rx="3" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="86.0" y="279" font-size="12" text-anchor="middle" fill="var(--ink-2)">2</text>
+        <rect x="102" y="263" width="128" height="22" rx="3" fill="var(--teal)"/>
+        <text x="166.0" y="279" font-size="12" font-weight="700" text-anchor="middle" fill="var(--surface)">실행 8</text>
+        <text x="242" y="279" font-size="12.5" font-weight="700" fill="var(--ink)">(2 + 8) ÷ 8 = 1.25</text>
+        <text x="10" y="309" font-size="13" font-weight="700" fill="var(--ink)">P4</text>
+        <rect x="70" y="293" width="32" height="22" rx="3" fill="var(--teal)"/>
+        <text x="86.0" y="309" font-size="12" font-weight="700" text-anchor="middle" fill="var(--surface)">2</text>
+        <text x="114" y="309" font-size="12.5" font-weight="700" fill="var(--ink)">(0 + 2) ÷ 2 = 1</text>
+        <text x="10" y="348" font-size="14" font-weight="700" fill="var(--teal-ink)">10 시점 — P2가 끝남 → P4 선택</text>
+        <text x="10" y="377" font-size="13" font-weight="700" fill="var(--ink)">P1</text>
+        <text x="70" y="377" font-size="12.5" fill="var(--ink-3)">실행 끝남 (0~6, 대기 0)</text>
+        <text x="10" y="407" font-size="13" font-weight="700" fill="var(--ink)">P2</text>
+        <text x="70" y="407" font-size="12.5" fill="var(--ink-3)">실행 끝남 (6~10, 대기 4)</text>
+        <text x="10" y="437" font-size="13" font-weight="700" fill="var(--ink)">P3</text>
+        <rect x="70" y="421" width="96" height="22" rx="3" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="118.0" y="437" font-size="12" text-anchor="middle" fill="var(--ink-2)">대기 6</text>
+        <rect x="166" y="421" width="128" height="22" rx="3" fill="var(--teal)"/>
+        <text x="230.0" y="437" font-size="12" font-weight="700" text-anchor="middle" fill="var(--surface)">실행 8</text>
+        <text x="306" y="437" font-size="12.5" font-weight="700" fill="var(--ink)">(6 + 8) ÷ 8 = 1.75</text>
+        <text x="10" y="467" font-size="13" font-weight="700" fill="var(--ink)">P4</text>
+        <rect x="70" y="451" width="64" height="22" rx="3" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="102.0" y="467" font-size="12" text-anchor="middle" fill="var(--ink-2)">대기 4</text>
+        <rect x="134" y="451" width="32" height="22" rx="3" fill="var(--teal)"/>
+        <text x="150.0" y="467" font-size="12" font-weight="700" text-anchor="middle" fill="var(--surface)">2</text>
+        <text x="178" y="467" font-size="12.5" font-weight="700" fill="var(--exam)">(4 + 2) ÷ 2 = 3 ← 가장 큼, 선택</text>
+        <text x="10" y="506" font-size="14" font-weight="700" fill="var(--teal-ink)">12 시점 — P4가 끝남 → P3 선택</text>
+        <text x="10" y="535" font-size="13" font-weight="700" fill="var(--ink)">P1</text>
+        <text x="70" y="535" font-size="12.5" fill="var(--ink-3)">실행 끝남 (0~6, 대기 0)</text>
+        <text x="10" y="565" font-size="13" font-weight="700" fill="var(--ink)">P2</text>
+        <text x="70" y="565" font-size="12.5" fill="var(--ink-3)">실행 끝남 (6~10, 대기 4)</text>
+        <text x="10" y="595" font-size="13" font-weight="700" fill="var(--ink)">P3</text>
+        <rect x="70" y="579" width="128" height="22" rx="3" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="134.0" y="595" font-size="12" text-anchor="middle" fill="var(--ink-2)">대기 8</text>
+        <rect x="198" y="579" width="128" height="22" rx="3" fill="var(--teal)"/>
+        <text x="262.0" y="595" font-size="12" font-weight="700" text-anchor="middle" fill="var(--surface)">실행 8</text>
+        <text x="338" y="595" font-size="12.5" font-weight="700" fill="var(--exam)">(8 + 8) ÷ 8 = 2 ← 혼자라 선택</text>
+        <text x="10" y="625" font-size="13" font-weight="700" fill="var(--ink)">P4</text>
+        <text x="70" y="625" font-size="12.5" fill="var(--ink-3)">실행 끝남 (10~12, 대기 4)</text>
+        <text x="10" y="666" font-size="14" font-weight="700" fill="var(--teal-ink)">완성된 간트 차트</text>
+        <rect x="40" y="678" width="156" height="32" fill="var(--teal)"/>
+        <text x="118.0" y="699" font-size="12.5" font-weight="700" text-anchor="middle" fill="var(--surface)">P1 (6)</text>
+        <rect x="196" y="678" width="104" height="32" fill="var(--exam-soft)" stroke="var(--exam-line)"/>
+        <text x="248.0" y="699" font-size="12.5" font-weight="700" text-anchor="middle" fill="var(--exam)">P2 (4)</text>
+        <rect x="300" y="678" width="52" height="32" fill="var(--teal-soft)"/>
+        <text x="326.0" y="699" font-size="12.5" font-weight="700" text-anchor="middle" fill="var(--teal-ink)">P4 (2)</text>
+        <rect x="352" y="678" width="208" height="32" fill="var(--teal)"/>
+        <text x="456.0" y="699" font-size="12.5" font-weight="700" text-anchor="middle" fill="var(--surface)">P3 (8)</text>
+        <text x="40" y="728" font-size="12" text-anchor="middle" fill="var(--ink-2)">0</text>
+        <text x="196" y="728" font-size="12" text-anchor="middle" fill="var(--ink-2)">6</text>
+        <text x="300" y="728" font-size="12" text-anchor="middle" fill="var(--ink-2)">10</text>
+        <text x="352" y="728" font-size="12" text-anchor="middle" fill="var(--ink-2)">12</text>
+        <text x="560" y="728" font-size="12" text-anchor="middle" fill="var(--ink-2)">20</text>
+      </svg>
+      <figcaption>회색 = 그 시점까지 기다린 시간, 초록 = 실행 시간. 응답률 = (대기 + 실행) ÷ 실행, 가장 큰 것을 고른다</figcaption>
+    </figure>
     <div class="table-wrap"><table>
-      <thead><tr><th>고르는 시점</th><th>후보별 응답률</th><th>선택</th></tr></thead>
+      <thead><tr><th>프로세스</th><th>도착</th><th>실행 시간</th><th>시작 ~ 끝</th><th>대기 시간 (시작 − 도착)</th></tr></thead>
       <tbody>
-        <tr><td>0</td><td>P1만 있음</td><td>P1 (0 ~ 6)</td></tr>
-        <tr><td>6</td><td>P2 (4 + 4) ÷ 4 = <b>2</b> · P3 (2 + 8) ÷ 8 = 1.25 · P4 (0 + 2) ÷ 2 = 1</td><td>P2 (6 ~ 10)</td></tr>
-        <tr><td>10</td><td>P3 (6 + 8) ÷ 8 = 1.75 · P4 (4 + 2) ÷ 2 = <b>3</b></td><td>P4 (10 ~ 12)</td></tr>
-        <tr><td>12</td><td>P3만 남음</td><td>P3 (12 ~ 20)</td></tr>
-      </tbody></table></div>
-    <div class="table-wrap"><table>
-      <thead><tr><th>프로세스</th><th>시작 ~ 끝</th><th>대기 (시작 − 도착)</th></tr></thead>
-      <tbody>
-        <tr><td>P1</td><td>0 ~ 6</td><td>0</td></tr>
-        <tr><td>P2</td><td>6 ~ 10</td><td>6 − 2 = 4</td></tr>
-        <tr><td>P4</td><td>10 ~ 12</td><td>10 − 6 = 4</td></tr>
-        <tr><td>P3</td><td>12 ~ 20</td><td>12 − 4 = 8</td></tr>
-        <tr><td colspan="2"><b>합 · 평균 대기 시간</b></td><td>16 · 16 ÷ 4 = <mark>4</mark></td></tr>
+        <tr><td>P1</td><td>0</td><td>6</td><td>0 ~ 6</td><td>0 − 0 = 0</td></tr>
+        <tr><td>P2</td><td>2</td><td>4</td><td>6 ~ 10</td><td>6 − 2 = 4</td></tr>
+        <tr><td>P3</td><td>4</td><td>8</td><td>12 ~ 20</td><td>12 − 4 = 8</td></tr>
+        <tr><td>P4</td><td>6</td><td>2</td><td>10 ~ 12</td><td>10 − 6 = 4</td></tr>
+        <tr><td colspan="4"><b>대기 시간 합 / 평균 대기 시간</b></td><td>0 + 4 + 8 + 4 = 16 / 16 ÷ 4 = <mark>4</mark></td></tr>
       </tbody></table></div>
     <p>6 시점에 SJF는 가장 짧은 P4를 골랐지만, HRN은 오래 기다린 P2의 응답률이 더 커서 P2를 골랐어요. 그래서 순서와 평균이 달라요. 교재 예제(P1 0/30 · P2 3/18 · P3 6/9)에서는 SJF와 HRN의 결과가 같았지만(둘 다 20ms), <b>항상 같은 건 아니에요.</b></p>
 
