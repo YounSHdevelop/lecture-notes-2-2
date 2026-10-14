@@ -294,7 +294,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">중간고사 · 10월 20일 (화) 9:30 · 2~7주차 강의자료 (이 페이지는 2~6주차)</div>
+    <div class="eyebrow">중간고사 · 10월 20일 (화) 9:30 · 2~7주차 강의자료 (10/13까지 전부)</div>
     <h1>중간고사, 실행 결과 문제로 한 바퀴 돌자</h1>
     <p class="lead">교수님이 "Summary를 중점적으로 보고 확장해서 생각하라", "코드 빈칸보다는 이렇게 짜면 어떻게 실행될까를 내겠다"고 했어요. 그래서 이 페이지는 주차별 <b>Summary 그대로</b> + <b>"이 코드 실행하면 뭐가 나와?"</b> 연습으로만 짰어요. 자세한 설명은 각 날짜 페이지 링크로.</p>
     <div class="goal">
@@ -312,7 +312,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li><b>10월 20일(화) 09:30~10:30 · 18422 강의실</b> · <b>자리 지정</b>(아침에 화면에 띄움)</li>
         <li>객관식 + 주관식(<b>필기</b>) · 범위 <b>2~7주차 강의자료</b> · "강의자료를 벗어난 내용은 절대 내지 않는다"</li>
         <li><b>Summary 위주</b>로 보고 확장해서 생각하기 · 코드는 <b>실행 결과 쓰기</b> 형태</li>
-        <li>7주차(React 아키텍처)는 아직 강의 전 — 강의록이 생기면 추가</li>
+        <li><b>10/13: "시험 범위는 정확히 여기까지"</b> · <b>MVC · MVVM은 안 물어본다</b> · "리액트와 자바스크립트 중점" → 장면 7</li>
       </ul>
     </div>
     <nav class="flow" aria-label="오늘의 흐름">
@@ -322,6 +322,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <a href="#c4"><b>장면 4</b>4주차 비동기</a>
       <a href="#c5"><b>장면 5</b>5주차 React</a>
       <a href="#c6"><b>장면 6</b>6주차 State · Effect</a>
+      <a href="#c7"><b>장면 7</b>7주차 useReducer</a>
       <a href="#review"><b>복습</b>실행 결과 퀴즈</a>
     </nav>
   </div>
@@ -521,7 +522,41 @@ Promise.resolve().then(() =&gt; console.log("Promise 3"));
         <button class="o">5</button></div>
       <div class="fb">첫 줄 → 5로 요청, 둘째 줄 prev(5) + 1 → <b>6</b>.</div></div>
 
-    <div class="next"><label><input type="checkbox" data-done="c6">이해했어요</label><a href="#review">실행 결과 퀴즈로 →</a></div>
+    <div class="next"><label><input type="checkbox" data-done="c6">이해했어요</label><a href="#c7">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 7 -->
+  <section class="ch" id="c7">
+    <div class="ch-head"><span class="ch-num">장면 7</span>
+      <div><h2>7주차 React 아키텍처와 useReducer — 시험 범위의 끝</h2><div class="sub">자세히: <a href="../1013/1013_학습자료.html">10/13 페이지</a> · MVC · MVVM은 시험에 안 나옴</div></div></div>
+
+    <ul class="plain">
+      <li><b>One-way data flow</b> : 데이터는 부모 → 자식으로 Props(읽기 전용)를 통해, 이벤트는 부모가 내려 준 <b>콜백 Props</b>를 자식이 호출해 위로.</li>
+      <li><b>Lifting State Up</b> : 여러 자식이 쓰는 state를 공통 부모로. state는 쓰는 곳에 최대한 가깝게.</li>
+      <li><b>커스텀 훅</b> : 반복되는 state · effect 로직을 묶어 재사용(useWindowWidth). UI가 아닌 로직 재사용, 이름은 use~.</li>
+      <li><b>서비스 레이어</b> : API 호출을 별도 JS 파일로 분리 → 재사용성 · 테스트 용이성.</li>
+      <li><b>UI State / Server State</b> : 모달 · 토글 · 입력처럼 화면 안의 상태 / 서버에서 온 데이터(API로 갱신, 무결성).</li>
+      <li><mark>useReducer</mark> : [state, dispatch] = useReducer(reducer, 초기값). UI는 <b>dispatch(action)</b>, reducer는 (state, action) → <b>새 state</b>(기존 state 수정 X).</li>
+    </ul>
+    <pre class="code"><span class="file">실행 결과 연습 · 초기 { count: 0 }</span>dispatch({ type: "increment" });              <span class="c">// 1</span>
+dispatch({ type: "increment" });              <span class="c">// 2</span>
+dispatch({ type: "setCount", payload: 10 });  <span class="c">// 10 (더하기가 아니라 그 값으로)</span>
+dispatch({ type: "decrement" });              <span class="c">// <span class="hl">9</span></span>
+dispatch({ type: "unknown" });                <span class="c">// default: return state → 9 그대로</span></pre>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>useReducer는 복잡한 state 변경 로직을 하나의 reducer 함수에서 관리하는 훅으로, UI는 dispatch로 action(type, payload)을 전달하고 reducer는 현재 state와 action을 받아 새로운 state를 반환한다. 단순한 상태는 useState, 변경 규칙이 많은 상태(폼 · 장바구니 · 투두)는 useReducer가 적합하다.</p>
+      <div class="mn">외우는 법: <b>데이터는 아래로, 이벤트는 위로</b> · <b>dispatch로 보내고 reducer가 새로 만든다</b></div></div>
+
+    <div class="check" data-id="k7" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">초기 { count: 2 }에서 decrement, reset, increment, increment를 dispatch하면 count는?</div>
+      <div class="opts">
+        <button class="o">2</button>
+        <button class="o">3</button>
+        <button class="o">4</button></div>
+      <div class="fb">2 → 1 → 0(reset) → 1 → <b>2</b>.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c7">이해했어요</label><a href="#review">실행 결과 퀴즈로 →</a></div>
   </section>
 
   <section class="ch review" id="review">
