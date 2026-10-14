@@ -775,6 +775,41 @@ if (pid == 0) {
       <li>★ <b>MLFQ(다단계 피드백 큐)</b> : 변동 우선순위. CPU를 쓰면 우선순위가 낮아지고, 아래 큐일수록 타임 슬라이스가 커지며, <mark>맨 아래는 FCFS</mark>. 리눅스 · 유닉스</li>
     </ul>
 
+    <h3>연습 — 라운드 로빈 (같은 데이터 · 타임 슬라이스 5ms)</h3>
+    <p>규칙: 도착 순서대로 큐에 서고, 한 번에 <b>5ms까지만</b> 실행. 안 끝나면 <b>큐 맨 뒤로</b>. 재시작할 때 대기 시간은 <b>이번 시작 − 지난번 멈춘 시각</b>.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>구간</th><th>실행</th><th>그때 큐 상태 · 이유</th><th>이번 대기</th></tr></thead>
+      <tbody>
+        <tr><td>0 ~ 5</td><td>P1 (남은 1)</td><td>P1만 도착. 5ms 쓰고 타임아웃 → 큐 뒤로 (큐: P2, P3, P1)</td><td>P1 0</td></tr>
+        <tr><td>5 ~ 9</td><td>P2 (끝)</td><td>P2 4ms라 다 끝남. 6에 P4 도착 (큐: P3, P1, P4)</td><td>P2 5 − 2 = 3</td></tr>
+        <tr><td>9 ~ 14</td><td>P3 (남은 3)</td><td>5ms 쓰고 타임아웃 → 큐 뒤로 (큐: P1, P4, P3)</td><td>P3 9 − 4 = 5</td></tr>
+        <tr><td>14 ~ 15</td><td>P1 (끝)</td><td>남은 1ms 실행</td><td>P1 14 − 5 = 9</td></tr>
+        <tr><td>15 ~ 17</td><td>P4 (끝)</td><td>2ms라 다 끝남</td><td>P4 15 − 6 = 9</td></tr>
+        <tr><td>17 ~ 20</td><td>P3 (끝)</td><td>남은 3ms 실행</td><td>P3 17 − 14 = 3</td></tr>
+        <tr><td colspan="3"><b>합 · 평균 대기 시간</b></td><td>0 + 3 + 5 + 9 + 9 + 3 = 29 · 29 ÷ 4 = <mark>7.25</mark></td></tr>
+      </tbody></table></div>
+    <p>프로세스별로 모으면 P1 0 + 9 = 9, P2 3, P3 5 + 3 = 8, P4 9. 이 데이터에선 FCFS(5.5)보다 평균이 길어요. 짧게 끝날 P1 · P4가 큐를 한 바퀴 기다려야 해서예요. RR은 평균 대기 시간을 줄이려는 게 아니라 <b>CPU 독점을 막아 응답을 고르게</b> 하려는 방식이라는 점이 보여요.</p>
+
+    <h3>연습 — SRT (같은 데이터 · 타임 슬라이스 5ms)</h3>
+    <p>규칙: 타임 슬라이스가 끝날 때마다 <b>도착해 있는 것 중 남은 시간이 가장 적은</b> 것을 고른다(교재 예제와 같은 방식).</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>구간</th><th>고르는 시점의 남은 시간</th><th>실행</th><th>이번 대기</th></tr></thead>
+      <tbody>
+        <tr><td>0 ~ 5</td><td>P1 6</td><td>P1 (남은 1)</td><td>P1 0</td></tr>
+        <tr><td>5 ~ 6</td><td>P1 <b>1</b> · P2 4 · P3 8</td><td>P1 (끝)</td><td>P1 5 − 5 = 0</td></tr>
+        <tr><td>6 ~ 8</td><td>P2 4 · P3 8 · P4 <b>2</b></td><td>P4 (끝)</td><td>P4 6 − 6 = 0</td></tr>
+        <tr><td>8 ~ 12</td><td>P2 <b>4</b> · P3 8</td><td>P2 (끝)</td><td>P2 8 − 2 = 6</td></tr>
+        <tr><td>12 ~ 20</td><td>P3 8 (혼자)</td><td>P3 (5ms + 3ms)</td><td>P3 12 − 4 = 8</td></tr>
+        <tr><td colspan="3"><b>합 · 평균 대기 시간</b></td><td>0 + 0 + 6 + 8 = 14 · 14 ÷ 4 = <mark>3.5</mark></td></tr>
+      </tbody></table></div>
+    <p>P1은 5에 타임아웃됐지만 남은 시간이 1로 가장 적어서 바로 이어서 실행돼요(대기 0). P3는 혼자 남아서 타임아웃 뒤에도 곧바로 다시 실행돼요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>같은 데이터 비교</th><th>FCFS</th><th>SJF</th><th>HRN</th><th>RR (5ms)</th><th>SRT (5ms)</th></tr></thead>
+      <tbody>
+        <tr><td>대기 시간 합</td><td>22</td><td>14</td><td>16</td><td>29</td><td>14</td></tr>
+        <tr><td>평균 대기 시간</td><td>5.5</td><td>3.5</td><td>4</td><td>7.25</td><td>3.5</td></tr>
+      </tbody></table></div>
+
     <h3>멀티프로세서</h3>
     <ul class="plain">
       <li>★ <b>CPU 선호도</b> : 같은 프로세스의 스레드를 계속 같은 코어에서 실행 (프로세스 · 코어 · 캐시 선호도). 캐시를 계속 활용</li>
