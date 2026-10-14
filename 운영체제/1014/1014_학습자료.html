@@ -592,13 +592,14 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요.</p>
     <div class="box sheet" id="sheet">
       <p class="legend">★ 교재 별표 · 시험 언급</p>
-      <div class="grp"><h4>① 비선점형 <span class="mn">FCFS 23 → SJF 20 = HRN 20</span></h4><ul>
+      <div class="grp"><h4>① 비선점형 — FCFS · SJF · HRN <span class="mn">FCFS 23 → SJF 20 = HRN 20</span></h4><ul>
+        <li><span class="kw">FCFS</span> : 준비 큐에 도착한 순서대로 CPU를 주는 비선점형. 평균 대기 23ms, 약점은 콘보이 효과 (10/12)</li>
         <li><span class="kw">SJF</span> : 실행 시간이 가장 짧은 작업부터 CPU를 주는 비선점형. 평균 대기 20ms</li>
         <li><span class="kw">기아 현상</span> : 특정 프로세스가 CPU나 자원을 계속 할당받지 못하는 상태 (starvation)</li>
         <li><span class="kw">에이징</span> : 양보할 때마다 나이를 먹여 상한선을 정해 기아를 완화하는 기법</li>
         <li><span class="kw">HRN</span> : 대기 시간과 실행 시간을 모두 고려해 기아를 완화하는 비선점형</li>
         <li><span class="kw">응답률</span> : (대기 시간 + CPU 사용 시간) ÷ CPU 사용 시간. 높을수록 먼저</li></ul></div>
-      <div class="grp"><h4>② 선점형 <span class="ex-t">★ 계산</span></h4><ul>
+      <div class="grp"><h4>② 선점형 — RR · SRT <span class="ex-t">★ 계산</span></h4><ul>
         <li><span class="kw">라운드 로빈</span> : 타임 슬라이스 동안만 실행하고 안 끝나면 큐 맨 뒤로. 선점형의 대표 · 현대 스케줄링의 기본</li>
         <li>RR 예제 : 대기 0 · 7 · 14 · 19 · 19 · 8 → <span class="kw">합 67</span>, 평균 22.33. 재시작 대기 = 이번 시작 − 지난번 멈춤</li>
         <li>RR 주의 : 문맥 교환 시간이 추가되므로 평균 대기 시간만으로 성능을 판단할 수 없다</li>
