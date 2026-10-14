@@ -294,7 +294,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">중간고사 대비 · CH01~CH05(SELECT · LIKE까지) · 9/3~10/8 수업 8회 + 교재</div>
+    <div class="eyebrow">중간고사 대비 · CH01~CH05(SELECT · LIKE · IS NULL · 집합 연산자까지) · 9/3~10/8 수업 8회 + 교재</div>
     <h1>중간고사, 이 한 페이지로 한 바퀴 돌자</h1>
     <p class="lead">8번의 수업에서 시험에 나올 것만 장(章) 순서로 다시 설명하고, 수업에서 못 다룬 교재 내용(3단계 구조)도 채웠어요. "구조를 그려라" 5종을 빈 종이에 직접 그려 보는 연습과, SQL 문장을 보고 결과를 말하는 연습(장면 7)이 있어요.</p>
     <div class="goal">
@@ -845,7 +845,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <!-- 복습 -->
   <section class="ch" id="c7">
     <div class="ch-head"><span class="ch-num">장면 7</span>
-      <div><h2>CH05 — SQL 문장을 보고 "결과를 말하시오"</h2><div class="sub">SELECT · WHERE · DISTINCT · ORDER BY · 집계 · GROUP BY · LIKE · 자세히: <a href="../1008/1008_학습자료.html">10/8 페이지</a></div></div></div>
+      <div><h2>CH05 — SQL 문장을 보고 "결과를 말하시오"</h2><div class="sub">SELECT · WHERE · DISTINCT · ORDER BY · 집계 · GROUP BY · LIKE · IS NULL · UNION · INTERSECT · EXCEPT · 자세히: <a href="../1008/1008_학습자료.html">10/8</a> · <a href="../1013/1013_학습자료.html">10/13</a></div></div></div>
 
     <p>시험 메모에 그대로 적혀 있어요: "<b>mysql 문장 해석할 줄 알아야 함.</b> 예시로 <code>select 이름, 주소 from 학생;</code> 이 구문의 결과를 말하시오." 그러니 univDB 학생 테이블을 머릿속에 넣고, 문장을 <mark>실행 순서대로</mark> 읽는 연습만 하면 돼요.</p>
     <div class="table-wrap"><table>
@@ -870,10 +870,14 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <tr><td><code>… GROUP BY 학년 HAVING COUNT(*) &gt;= 2;</code></td><td>1학년 2 · 2학년 2 · 4학년 2</td></tr>
         <tr><td><code>… WHERE 이름 LIKE '이__';</code></td><td>이승엽 · 이영애 · 이은진</td></tr>
         <tr><td><code>… WHERE 주소 LIKE '%서울%' ORDER BY 학년 DESC;</code></td><td>김연아(4) · 홍길동(2)</td></tr>
+        <tr><td><code>SELECT 이름, 휴대폰번호 FROM 학생 WHERE 휴대폰번호 IS NULL;</code> (= NULL은 0행)</td><td>홍길동(s002) · 이승엽</td></tr>
+        <tr><td><code>SELECT 학번 FROM 학생 WHERE 성별='여' UNION SELECT 학번 FROM 수강 WHERE 평가학점='A';</code></td><td>s001 · s004 · s005 · s007 (중복 제거)</td></tr>
+        <tr><td>같은 두 문장을 <code>INTERSECT</code>로</td><td>s001 · s004 (MySQL 8.0.31 이상, 교재 정정)</td></tr>
+        <tr><td>같은 두 문장을 <code>EXCEPT</code>로</td><td>s005 · s007 (MINUS는 MySQL에 없음)</td></tr>
       </tbody></table></div>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>SELECT문은 FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY 순으로 실행된다. 결과는 SELECT에 쓴 열만으로 된 테이블이며, 조건이 없으면 모든 행을 반환한다. DISTINCT는 중복 제거, COUNT(열)은 NULL 제외, HAVING은 그룹 조건, LIKE의 _는 1글자 · %는 0글자 이상.</p>
+      <p>SELECT문은 FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY 순으로 실행된다. 결과는 SELECT에 쓴 열만으로 된 테이블이며, 조건이 없으면 모든 행을 반환한다. DISTINCT는 중복 제거, COUNT(열)은 NULL 제외, HAVING은 그룹 조건, LIKE의 _는 1글자 · %는 0글자 이상. NULL은 = 대신 IS NULL로 찾고, UNION은 합집합(중복 제거) · INTERSECT는 교집합 · EXCEPT는 차집합이다.</p>
       <div class="mn">외우는 법: <b>프 · 웨 · 그 · 해 · 셀 · 오</b> / <b>*은 다 세고, 열은 NULL 빼고</b></div></div>
 
     <div class="check" data-id="k7" data-answer="1"><div class="lbl">바로 확인</div>
