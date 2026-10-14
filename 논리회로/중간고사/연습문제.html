@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>논리회로 중간고사 연습문제</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+/* 공책 정리 칸 (코넬식, 스크립트가 장면의 "시험엔 이렇게"로 채움) */
+.nb{padding:0;overflow:hidden}
+.nb-head,.nb-row{display:grid;grid-template-columns:34% 1fr}
+.nb-head{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;font-size:14px}
+.nb-head span{padding:10px 16px}
+.nb-head span+span{border-left:2px solid var(--teal)}
+.nb-row{border-top:1px solid var(--line)}
+.nb-q{padding:14px 16px;font-weight:700;font-size:15px;line-height:1.55;display:flex;gap:8px}
+.nb-n{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;margin-top:1px}
+:root[data-theme="dark"] .nb-n{color:#062b27}
+.nb-a{position:relative;padding:14px 16px 40px;border-left:2px solid var(--teal);font-size:15.5px;line-height:1.75}
+.nb-a p{margin:0}
+.nb-sub{display:block;margin-top:4px;font-size:13px;font-weight:500;color:var(--ink-3)}
+.nb-draw li{margin:4px 0}
+.nb-mn{margin-top:6px;font-size:13.5px;font-weight:700;color:var(--exam)}
+.nb-ok{position:absolute;right:12px;bottom:8px;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);cursor:pointer}
+.nb-ok input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer}
+.nb-row.done .nb-q{color:var(--ink-3)}
+.nb.hide .nb-a:not(.open){background:var(--bg);cursor:pointer}
+.nb.hide .nb-a:not(.open) .nb-txt,.nb.hide .nb-a:not(.open) .nb-txt *{color:transparent!important;background:none!important;user-select:none}
+.nb.hide .nb-a:not(.open)::before{content:"눌러서 답 확인";position:absolute;left:16px;top:14px;font-size:13px;color:var(--ink-3)}
+.nb-draw,.nb-sum{border-top:1px solid var(--line);padding:14px 16px;font-size:15px}
+.nb-draw ol{margin:6px 0 0;padding-left:20px}
+.nb-sum p{margin:6px 0 0;padding:12px 14px;border:1.5px dashed var(--line);border-radius:10px;color:var(--ink-2)}
+.nb-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:0 16px 16px}
+.nb-foot .btns{margin-top:14px}
+.nb-count{margin-top:14px;font-size:14px;color:var(--teal-ink);font-weight:700}
+@media(max-width:640px){
+  .nb-head{display:none}
+  .nb-row{grid-template-columns:1fr}
+  .nb-a{border-left:0;border-top:1px dashed var(--line)}
+}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+  .nb-ok,.nb-count,.nb-foot{display:none!important}
+  .nb .nb-a .nb-txt,.nb .nb-a .nb-txt *{color:inherit!important}
+  .nb .nb-a::before{content:none!important}
+  .nb-row{break-inside:avoid}
+  body.print-nb main>:not(#review),body.print-nb #review>:not(.nb-wrap),body.print-nb footer{display:none!important}
+  body.print-nb .review{border-top:0;margin-top:0}
+}
+</style>
+</head>
+<body data-course="논리회로" data-week="연습문제">
+<body data-course="논리회로" data-week="연습문제">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>논리회로</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">중간고사 대비 · 제1장 ~ 제5장 · 연습문제 168문제 (10/21 시험)</div>
+    <h1>시험 메모에 적힌 것부터, 손이 기억할 때까지 풀어 보자</h1>
+    <p class="lead">설명은 날짜별 페이지와 <a href="중간고사_압축본.html">중간고사 압축본</a>에 있으니, 여기는 <b>문제만</b> 모았어요. 시험 메모(메모/시험.txt)와 교수님이 "무조건", "100%", "반드시"라고 한 것 순서로 배치했어요. 회색 칸을 누르면 답이 나오고, 모든 계산 답은 직접 계산하거나 진리표로 검산했어요.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 풀면 할 수 있는 것</h2>
+      <ol>
+        <li>듀티 사이클 · 진법 변환 · 2의 보수 · 그레이 변환을 숫자가 바뀌어도 풀 수 있다</li>
+        <li>드모르간으로 모자를 자르고, 불 대수식을 간소화하며 쓴 법칙 이름을 댈 수 있다</li>
+        <li>최소항 · 최대항 표의 빈칸을 채우고 Σm ↔ ΠM을 바꿀 수 있다</li>
+      </ol>
+      <div class="time">약 2시간 · 주제 8개 · 직접 풀기 · 바로 확인 16개 · 마무리 퀴즈 10문항 합쳐 168문제</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험 메모 · 교수님이 시험이라고 한 것</h2>
+      <ul>
+        <li><b>시험 메모(시험.txt)</b>: 2진 ↔ 그레이 변환 · 드모르간 반드시 · 불대수식 반드시 · 최대항 표현을 진리표 빈칸 채우기로(다른 진리표도) · "이 식에 적용된 법칙이 무엇이냐" · <b>카르노 맵은 안 나옴</b></li>
+        <li><b>예제 1-4 듀티 사이클</b> "무조건, 숫자 바꿔서 10문제" · <b>예제 2-1 2진 → 10진</b> "100% 출제, 과정이 맞으면 점수"</li>
+        <li><b>2의 보수</b> 장단점 · 왜 쓰는지(서술) · "BCD 코드가 뭐예요?" · <b>최소항이 뭐예요?</b>(설명 · 고르기) · 예제 4-8 XOR</li>
+        <li><b>10/21 시험</b>, 10/22 보강 수업(기말 범위) — 10/13 수업 말씀, 정확한 시간은 공지 확인</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="주제">
+      <a href="#c1"><b>주제 1</b>듀티 사이클</a>
+      <a href="#c2"><b>주제 2</b>진법 · 2의 보수</a>
+      <a href="#c3"><b>주제 3</b>게이트</a>
+      <a href="#c4"><b>주제 4</b>그레이 변환</a>
+      <a href="#c5"><b>주제 5</b>BCD · 패리티</a>
+      <a href="#c6"><b>주제 6</b>드모르간</a>
+      <a href="#c7"><b>주제 7</b>간소화 · 법칙</a>
+      <a href="#c8"><b>주제 8</b>최소항 · 최대항</a>
+      <a href="#review"><b>마무리</b>섞어서 10문항</a>
+    </nav>
+  </div>
+
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">주제 1</span>
+      <div><h2>제1장 — 듀티 사이클, 숫자만 바꿔서 10번 (예제 1-4 "무조건")</h2><div class="sub">주파수 f = 1/T · 듀티 사이클 = tw/T × 100 · 단위 변환</div></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>주파수 f = 1 / T, 듀티 사이클 = (tw / T) × 100 [%]. 예제 1-4: tw = 50 μs, T = 250 μs → f = 4 kHz, 듀티 사이클 20 %.</p>
+      <div class="mn">외우는 법: <b>주파수는 뒤집기, 듀티는 폭 ÷ 주기 × 100</b> · 단위부터 맞추기(μs ↔ ms)</div></div>
+    <h3>직접 풀기 — 숫자 바꾼 예제 1-4 <small>(14문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">교수님: "숫자 바꿔서 10문제 낼게." 계산기 없이 분수로 먼저 써 보세요.</p>
+      <ol class="plain">
+        <li>tw = 50 μs, T = 250 μs (예제 1-4 원본) → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 250μs = 4 kHz, 듀티 = 50 / 250 × 100 = 20 %</span></li>
+        <li>tw = 2 ms, T = 8 ms → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 8ms = 125 Hz, 듀티 = 2 / 8 × 100 = 25 %</span></li>
+        <li>tw = 10 μs, T = 40 μs → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 40μs = 25 kHz, 듀티 = 10 / 40 × 100 = 25 %</span></li>
+        <li>tw = 1 ms, T = 5 ms → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 5ms = 200 Hz, 듀티 = 1 / 5 × 100 = 20 %</span></li>
+        <li>tw = 0.5 ms, T = 2 ms → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 2ms = 500 Hz, 듀티 = 0.5 / 2 × 100 = 25 %</span></li>
+        <li>tw = 30 μs, T = 50 μs → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 50μs = 20 kHz, 듀티 = 30 / 50 × 100 = 60 %</span></li>
+        <li>tw = 25 ns, T = 100 ns → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 100ns = 10 MHz, 듀티 = 25 / 100 × 100 = 25 %</span></li>
+        <li>tw = 40 μs, T = 200 μs → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 200μs = 5 kHz, 듀티 = 40 / 200 × 100 = 20 %</span></li>
+        <li>tw = 6 ms, T = 20 ms → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 20ms = 50 Hz, 듀티 = 6 / 20 × 100 = 30 %</span></li>
+        <li>tw = 4 μs, T = 16 μs → 주파수와 듀티 사이클은? <span class="cloze">f = 1 / 16μs = 62.5 kHz, 듀티 = 4 / 16 × 100 = 25 %</span></li>
+        <li>f = 1 kHz, 듀티 사이클 30 %인 펄스의 주기 T와 펄스 폭 tw는? <span class="cloze">T = 1 / f = 1 ms, tw = T × 30 / 100 = 300 μs</span></li>
+        <li>f = 50 kHz, 듀티 사이클 40 %인 펄스의 주기 T와 펄스 폭 tw는? <span class="cloze">T = 1 / f = 20 μs, tw = T × 40 / 100 = 8 μs</span></li>
+        <li>f = 200 Hz, 듀티 사이클 25 %인 펄스의 주기 T와 펄스 폭 tw는? <span class="cloze">T = 1 / f = 5 ms, tw = T × 25 / 100 = 1.25 ms</span></li>
+        <li>f = 4 kHz, 듀티 사이클 75 %인 펄스의 주기 T와 펄스 폭 tw는? <span class="cloze">T = 1 / f = 250 μs, tw = T × 75 / 100 = 187.5 μs</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <div class="check" data-id="k1" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">T = 400 μs, tw = 100 μs인 펄스의 주파수와 듀티 사이클은?</div>
+      <div class="opts">
+        <button class="o">2.5 kHz, 25 %</button>
+        <button class="o">25 kHz, 25 %</button>
+        <button class="o">2.5 kHz, 400 %</button></div>
+      <div class="fb">f = 1 / 400μs = 2,500 Hz = <b>2.5 kHz</b>, 듀티 = 100 / 400 × 100 = <b>25 %</b>.</div></div>
+    <div class="check" data-id="k2" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">주기 10 ms, 듀티 사이클 60 %인 펄스에서 Low로 있는 시간은?</div>
+      <div class="opts">
+        <button class="o">6 ms</button>
+        <button class="o">4 ms</button>
+        <button class="o">10 ms</button></div>
+      <div class="fb">High(펄스 폭) = 10 × 0.6 = 6 ms이니 Low는 10 − 6 = <b>4 ms</b>.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">다 풀었어요</label><a href="#c2">다음 주제 →</a></div>
+  </section>
+
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">주제 2</span>
+      <div><h2>제2장 — 2진 → 10진은 100% 출제, 2의 보수는 서술까지</h2><div class="sub">예제 2-1 · 10진 → 2 · 8 · 16진 · 묶어서 변환 · 1의 보수 · 2의 보수 · 보수 뺄셈</div></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>2진 → 10진은 자리값(2ⁿ)을 곱해 더한다. 예제 2-1: 110010.011<sub>(2)</sub> = 32 + 16 + 2 + 0.25 + 0.125 = 50.375. 2의 보수 = 1의 보수(비트 반전) + 1이며, 0이 하나뿐이라 컴퓨터는 2의 보수로 뺄셈을 덧셈으로 처리한다.</p>
+      <div class="mn">외우는 법: <b>정수는 나눠서 나머지 거꾸로, 소수는 곱해서 정수 순서대로</b> · 8진 3자리 · 16진 4자리</div></div>
+    <h3>직접 풀기 — 진법 변환 (예제 2-1 "100% 출제") <small>(18문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">과정이 맞으면 점수를 준다고 했으니, 자리값을 적는 줄까지 쓰는 연습을 하세요.</p>
+      <ol class="plain">
+        <li>110010.011<sub>(2)</sub> (예제 2-1 원본) → 10진수 <span class="cloze">32 + 16 + 2 + 0.25 + 0.125 = 50.375</span></li>
+        <li>1011.101<sub>(2)</sub> → 10진수 <span class="cloze">8 + 2 + 1 + 0.5 + 0.125 = 11.625</span></li>
+        <li>1101.01<sub>(2)</sub> → 10진수 <span class="cloze">8 + 4 + 1 + 0.25 = 13.25</span></li>
+        <li>10110.1<sub>(2)</sub> → 10진수 <span class="cloze">16 + 4 + 2 + 0.5 = 22.5</span></li>
+        <li>111.111<sub>(2)</sub> → 10진수 <span class="cloze">4 + 2 + 1 + 0.5 + 0.25 + 0.125 = 7.875</span></li>
+        <li>100001.001<sub>(2)</sub> → 10진수 <span class="cloze">32 + 1 + 0.125 = 33.125</span></li>
+        <li>1010.011<sub>(2)</sub> → 10진수 <span class="cloze">8 + 2 + 0.25 + 0.125 = 10.375</span></li>
+        <li>11001.101<sub>(2)</sub> → 10진수 <span class="cloze">16 + 8 + 1 + 0.5 + 0.125 = 25.625</span></li>
+        <li>25<sub>(10)</sub> → 2진수 <span class="cloze">11001<sub>(2)</sub></span></li>
+        <li>37<sub>(10)</sub> → 2진수 <span class="cloze">100101<sub>(2)</sub></span></li>
+        <li>100<sub>(10)</sub> → 2진수 <span class="cloze">1100100<sub>(2)</sub></span></li>
+        <li>0.625<sub>(10)</sub> → 2진수 <span class="cloze">0.101<sub>(2)</sub></span></li>
+        <li>13.625<sub>(10)</sub> → 2진수 <span class="cloze">1101.101<sub>(2)</sub></span></li>
+        <li>156<sub>(10)</sub> → 8진수, 16진수 <span class="cloze">234<sub>(8)</sub>, 9C<sub>(16)</sub></span></li>
+        <li>255<sub>(10)</sub> → 8진수, 16진수 <span class="cloze">377<sub>(8)</sub>, FF<sub>(16)</sub></span></li>
+        <li>48.8125<sub>(10)</sub> → 8진수, 16진수 <span class="cloze">60.64<sub>(8)</sub>, 30.D<sub>(16)</sub></span></li>
+        <li>11010110<sub>(2)</sub> → 8진수, 16진수 (3자리 · 4자리씩 묶기) <span class="cloze">326<sub>(8)</sub>, D6<sub>(16)</sub></span></li>
+        <li>101111.01<sub>(2)</sub> → 8진수, 16진수 (3자리 · 4자리씩 묶기) <span class="cloze">57.2<sub>(8)</sub>, 2F.4<sub>(16)</sub></span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <h3>직접 풀기 — 2의 보수 <small>(7문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <ol class="plain">
+        <li>−23의 8비트 2의 보수 (+23 = 00010111) <span class="cloze">1의 보수 11101000 → +1 → 11101001</span></li>
+        <li>−45의 8비트 2의 보수 (+45 = 00101101) <span class="cloze">1의 보수 11010010 → +1 → 11010011</span></li>
+        <li>−100의 8비트 2의 보수 (+100 = 01100100) <span class="cloze">1의 보수 10011011 → +1 → 10011100</span></li>
+        <li>−1의 8비트 2의 보수 (+1 = 00000001) <span class="cloze">1의 보수 11111110 → +1 → 11111111</span></li>
+        <li>4비트 2의 보수로 7 − 5 <span class="cloze">0111 + 1011 = 10010 → 자리올림 버리면 0010 = 2</span></li>
+        <li>4비트 2의 보수로 6 − 2 <span class="cloze">0110 + 1110 = 10100 → 자리올림 버리면 0100 = 4</span></li>
+        <li>4비트 2의 보수로 3 − 5 <span class="cloze">0011 + 1011 = 1110 → −2 (맨 앞이 1이라 음수: 2의 보수를 다시 취하면 0010 = 2)</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">100.101<sub>(2)</sub>를 10진수로 바꾸면?</div>
+      <div class="opts">
+        <button class="o">4.625</button>
+        <button class="o">4.101</button>
+        <button class="o">4.5</button></div>
+      <div class="fb">4 + 0.5 + 0.125 = <b>4.625</b>.</div></div>
+    <div class="check" data-id="k4" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">2의 보수를 쓰는 이유로 옳은 것은?</div>
+      <div class="opts">
+        <button class="o">1의 보수보다 계산이 훨씬 쉬워서</button>
+        <button class="o">0이 +0과 −0 두 개 생기지 않고 덧셈기로 뺄셈을 할 수 있어서</button>
+        <button class="o">음수를 표현할 수 없어서</button></div>
+      <div class="fb">1의 보수는 반전만 하면 돼서 쉽지만 <b>0이 두 개</b>예요. 2의 보수는 0이 하나라 결과가 정확해서 컴퓨터가 써요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">다 풀었어요</label><a href="#c3">다음 주제 →</a></div>
+  </section>
+
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">주제 3</span>
+      <div><h2>제4장 — 게이트에 0과 1을 넣으면 뭐가 나올까</h2><div class="sub">진리표 · XOR(예제 4-8) · 잡음 여유도 · 팬아웃 · 소비 전력</div></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>XOR는 1의 개수가 홀수면 1(2입력: 다르면 1), XNOR는 그 반대. AND는 모두 1일 때만 1, OR는 하나라도 1이면 1, NAND · NOR는 각각의 반전. 잡음 여유도 VNL = VIL(max) − VOL(max), VNH = VOH(min) − VIH(min), 팬아웃은 두 전류비 중 작은 값.</p>
+      <div class="mn">외우는 법: <b>XOR = 홀수 탐지기</b> · Low는 입력 − 출력, High는 출력 − 입력 · 팬아웃은 작은 쪽</div></div>
+    <h3>직접 풀기 — 게이트 출력과 게이트 계산 <small>(12문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">계산 문제의 숫자는 연습용이에요. 공식은 9/22 페이지 기준.</p>
+      <ol class="plain">
+        <li>2입력 XOR에 A = 1, B = 1을 넣으면? <span class="cloze">0 (같으면 0)</span></li>
+        <li>3입력 XOR에 1, 1, 1을 넣으면? <span class="cloze">1 (1의 개수 3개 = 홀수)</span></li>
+        <li>3입력 XOR에 1, 0, 1을 넣으면? <span class="cloze">0 (1의 개수 2개 = 짝수)</span></li>
+        <li>NAND에 A = 1, B = 1을 넣으면? <span class="cloze">0 (모두 1일 때만 0)</span></li>
+        <li>NOR에 A = 0, B = 0을 넣으면? <span class="cloze">1 (모두 0일 때만 1)</span></li>
+        <li>XNOR에 A = 1, B = 0을 넣으면? <span class="cloze">0 (다르면 0)</span></li>
+        <li>예제 4-8: XOR의 한 입력에 구형파 A, 다른 입력 B = 1이면 출력은? <span class="cloze">A′ (반전되어 나온다), B = 0이면 A 그대로</span></li>
+        <li>VIL(max) = 0.8 V, VOL(max) = 0.5 V일 때 Low 잡음 여유도 VNL은? <span class="cloze">0.8 − 0.5 = 0.3 V</span></li>
+        <li>VOH(min) = 2.7 V, VIH(min) = 2.0 V일 때 High 잡음 여유도 VNH는? <span class="cloze">2.7 − 2.0 = 0.7 V</span></li>
+        <li>IOH = 0.4 mA, IIH = 0.02 mA, IOL = 8 mA, IIL = 0.4 mA일 때 팬아웃은? <span class="cloze">IOH/IIH = 20, IOL/IIL = 20 → 작은 쪽 20</span></li>
+        <li>IOH/IIH = 25, IOL/IIL = 10일 때 팬아웃은? <span class="cloze">작은 쪽 10</span></li>
+        <li>VCC = 5 V, ICC = 3 mA인 게이트의 소비 전력은? <span class="cloze">P = 5 × 3 mA = 15 mW</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <div class="check" data-id="k5" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">2입력 OR의 한 입력을 1로 고정하면 출력은?</div>
+      <div class="opts">
+        <button class="o">다른 입력 그대로</button>
+        <button class="o">항상 1</button>
+        <button class="o">다른 입력의 반전</button></div>
+      <div class="fb">OR는 하나라도 1이면 1이라 <b>항상 1</b>. 0으로 고정하면 다른 입력이 그대로 통과해요(AND는 반대로 1이 문 열기).</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">다 풀었어요</label><a href="#c4">다음 주제 →</a></div>
+  </section>
+
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">주제 4</span>
+      <div><h2>제3장 — 2진 ↔ 그레이 변환, 앞으로도 뒤로도 (시험 메모)</h2><div class="sub">XOR로 한 자리씩 · 2진 → 그레이 · 그레이 → 2진 · 검산</div></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>2진 → 그레이: 첫 비트는 그대로, 이후 각 비트는 (바로 앞 2진 비트 ⊕ 현재 2진 비트). 그레이 → 2진: 첫 비트는 그대로, 이후 각 비트는 (방금 구한 2진 비트 ⊕ 현재 그레이 비트). 그레이 코드는 인접한 값이 1비트만 달라 입출력 장치의 오차가 적다.</p>
+      <div class="mn">외우는 법: <b>2진 → 그레이는 위끼리, 그레이 → 2진은 결과와</b></div></div>
+    <h3>직접 풀기 — 2진 ↔ 그레이 변환 (시험 메모) <small>(14문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">시험 메모: "2진 코드를 그레이 코드로 변환(또는 역순)". 거꾸로 변환도 꼭 연습하세요.</p>
+      <ol class="plain">
+        <li>2진수 1011 → 그레이 코드 <span class="cloze">1, 1⊕0=1, 0⊕1=1, 1⊕1=0 → 1110</span></li>
+        <li>2진수 0110 → 그레이 코드 <span class="cloze">0, 0⊕1=1, 1⊕1=0, 1⊕0=1 → 0101</span></li>
+        <li>2진수 1001 → 그레이 코드 <span class="cloze">1, 1⊕0=1, 0⊕0=0, 0⊕1=1 → 1101</span></li>
+        <li>2진수 1100 → 그레이 코드 <span class="cloze">1, 1⊕1=0, 1⊕0=1, 0⊕0=0 → 1010</span></li>
+        <li>2진수 0111 → 그레이 코드 <span class="cloze">0, 0⊕1=1, 1⊕1=0, 1⊕1=0 → 0100</span></li>
+        <li>2진수 1000 → 그레이 코드 <span class="cloze">1, 1⊕0=1, 0⊕0=0, 0⊕0=0 → 1100</span></li>
+        <li>2진수 10110 → 그레이 코드 <span class="cloze">1, 1⊕0=1, 0⊕1=1, 1⊕1=0, 1⊕0=1 → 11101</span></li>
+        <li>2진수 11111 → 그레이 코드 <span class="cloze">1, 1⊕1=0, 1⊕1=0, 1⊕1=0, 1⊕1=0 → 10000</span></li>
+        <li>그레이 코드 1110 → 2진수 <span class="cloze">1, 1⊕1=0, 0⊕1=1, 1⊕0=1 → 1011</span></li>
+        <li>그레이 코드 0101 → 2진수 <span class="cloze">0, 0⊕1=1, 1⊕0=1, 1⊕1=0 → 0110</span></li>
+        <li>그레이 코드 1101 → 2진수 <span class="cloze">1, 1⊕1=0, 0⊕0=0, 0⊕1=1 → 1001</span></li>
+        <li>그레이 코드 0010 → 2진수 <span class="cloze">0, 0⊕0=0, 0⊕1=1, 1⊕0=1 → 0011</span></li>
+        <li>그레이 코드 1011 → 2진수 <span class="cloze">1, 1⊕0=1, 1⊕1=0, 0⊕1=1 → 1101</span></li>
+        <li>그레이 코드 11001 → 2진수 <span class="cloze">1, 1⊕1=0, 0⊕0=0, 0⊕0=0, 0⊕1=1 → 10001</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <div class="check" data-id="k6" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">2진수 1101을 그레이 코드로 바꾸면?</div>
+      <div class="opts">
+        <button class="o">1011</button>
+        <button class="o">1001</button>
+        <button class="o">0111</button></div>
+      <div class="fb">1, 1⊕1=0, 1⊕0=1, 0⊕1=1 → <b>1011</b>.</div></div>
+    <div class="check" data-id="k7" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">그레이 코드 0110을 2진수로 바꾸면?</div>
+      <div class="opts">
+        <button class="o">0101</button>
+        <button class="o">0100</button>
+        <button class="o">0110</button></div>
+      <div class="fb">0, 0⊕1=1, 1⊕1=0, 0⊕0=0 → <b>0100</b>. (확인: 0100을 그레이로 → 0, 0⊕1=1, 1⊕0=1, 0⊕0=0 = 0110)</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">다 풀었어요</label><a href="#c5">다음 주제 →</a></div>
+  </section>
+
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">주제 5</span>
+      <div><h2>제3장 — BCD는 왜 1010을 안 쓸까, 패리티는 1을 센다</h2><div class="sub">BCD 변환 · BCD 덧셈 +6 보정 · 짝수/홀수 패리티 · 해밍 위치</div></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>BCD는 10진수 각 자리를 4비트 2진수(8421)로 나타낸 코드로 0000~1001만 쓴다. BCD 덧셈에서 자리 합이 9를 넘거나 자리올림이 생기면 0110(6)을 더해 보정한다. 패리티 비트는 1의 개수를 짝수(또는 홀수)로 맞추는 비트로, 받은 쪽에서 개수가 맞지 않으면 에러로 판단한다.</p>
+      <div class="mn">외우는 법: <b>9 넘으면 6 더해</b> · 패리티는 <b>1 세기</b></div></div>
+    <h3>직접 풀기 — BCD · 패리티 <small>(15문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">"BCD 코드가 뭐예요?"에 답할 수 있어야 한다고 했어요. 서술은 위 시험엔 이렇게 문장 그대로.</p>
+      <ol class="plain">
+        <li>59 → BCD <span class="cloze">0101 1001</span></li>
+        <li>307 → BCD <span class="cloze">0011 0000 0111</span></li>
+        <li>86 → BCD <span class="cloze">1000 0110</span></li>
+        <li>BCD 1001 0110 → 10진수 <span class="cloze">96</span></li>
+        <li>BCD 덧셈 38 + 45 (일의 자리 합이 9를 넘으면 +0110) <span class="cloze">0011 1000 + 0100 0101 → 자리별 보정 → 1000 0011 = 83</span></li>
+        <li>BCD 덧셈 27 + 15 (일의 자리 합이 9를 넘으면 +0110) <span class="cloze">0010 0111 + 0001 0101 → 자리별 보정 → 0100 0010 = 42</span></li>
+        <li>BCD 덧셈 69 + 85 (일의 자리 합이 9를 넘으면 +0110) <span class="cloze">0110 1001 + 1000 0101 → 자리별 보정 → 0001 0101 0100 = 154</span></li>
+        <li>0110 1010은 올바른 BCD일까? <span class="cloze">아니다. 1010(10)은 BCD에 없다(0000~1001만 사용)</span></li>
+        <li>데이터 1011001에 짝수 패리티 비트를 붙이면 패리티 비트는? <span class="cloze">1의 개수 4개 → 0</span></li>
+        <li>데이터 1100에 홀수 패리티 비트를 붙이면 패리티 비트는? <span class="cloze">1의 개수 2개 → 1</span></li>
+        <li>데이터 1110001에 짝수 패리티 비트를 붙이면 패리티 비트는? <span class="cloze">1의 개수 4개 → 0</span></li>
+        <li>데이터 0000에 홀수 패리티 비트를 붙이면 패리티 비트는? <span class="cloze">1의 개수 0개 → 1</span></li>
+        <li>짝수 패리티로 받은 11010, 에러일까? <span class="cloze">1이 3개 → 에러</span></li>
+        <li>홀수 패리티로 받은 10111, 에러일까? <span class="cloze">1이 4개 → 에러</span></li>
+        <li>짝수 패리티로 받은 100100, 에러일까? <span class="cloze">1이 2개 → 정상</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <div class="check" data-id="k8" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">해밍 코드에서 패리티 비트가 들어가는 위치는?</div>
+      <div class="opts">
+        <button class="o">1, 3, 5, 7번</button>
+        <button class="o">1, 2, 4, 8번(2의 거듭제곱 자리)</button>
+        <button class="o">맨 앞 한 자리</button></div>
+      <div class="fb">해밍 코드는 <b>1 · 2 · 4 · 8번</b>처럼 2의 거듭제곱 자리에 패리티를 넣고, 검사 결과(P8P4P2P1)가 에러 위치를 알려 줘요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">다 풀었어요</label><a href="#c6">다음 주제 →</a></div>
+  </section>
+
+  <section class="ch" id="c6">
+    <div class="ch-head"><span class="ch-num">주제 6</span>
+      <div><h2>제5장 — 드모르간, 모자 자르기 12번 (시험에 반드시)</h2><div class="sub">(A + B)′ = A′B′ · (AB)′ = A′ + B′ · 여러 겹 모자 · NAND/NOR</div></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>드모르간의 정리: (A + B)′ = A′B′, (AB)′ = A′ + B′. 전체를 부정한 것은 각 변수를 부정하고 + 와 · 를 바꾼 것과 같으며 n항으로도 확장된다. 증명은 진리표에서 좌변과 우변의 열이 모든 행에서 같음을 보인다.</p>
+      <div class="mn">외우는 법: <b>큰 모자를 잘라 작은 모자로, 자르면 + ↔ · 바뀜</b> · NAND = 반전 입력 OR, NOR = 반전 입력 AND</div></div>
+    <h3>직접 풀기 — 모자 자르기 (시험에 반드시) <small>(12문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">모자를 한 번에 다 자르지 말고, 바깥 큰 모자부터 한 겹씩 자르세요. 답은 모두 진리표로 검산한 식이에요.</p>
+      <ol class="plain">
+        <li>(AB)′ = <span class="cloze">A′ + B′</span></li>
+        <li>(A + B + C)′ = <span class="cloze">A′B′C′</span></li>
+        <li>(A′B)′ = <span class="cloze">A + B′</span></li>
+        <li>(AB′C)′ = <span class="cloze">A′ + B + C′</span></li>
+        <li>(A + BC)′ = <span class="cloze">A′(B′ + C′) = A′B′ + A′C′</span></li>
+        <li>(AB + C)′ = <span class="cloze">(A′ + B′)C′ = A′C′ + B′C′</span></li>
+        <li>((A + B)C)′ = <span class="cloze">A′B′ + C′</span></li>
+        <li>(A′ + B′)′ = <span class="cloze">AB</span></li>
+        <li>(A′B′)′ = <span class="cloze">A + B</span></li>
+        <li>((A + B′)(C′ + D))′ = <span class="cloze">A′B + CD′</span></li>
+        <li>(A′B + C)′ = <span class="cloze">(A + B′)C′ = AC′ + B′C′</span></li>
+        <li>(AB + CD)′ = <span class="cloze">(A′ + B′)(C′ + D′)</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <div class="check" data-id="k9" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">(A + B′ + C)′를 드모르간으로 바꾸면?</div>
+      <div class="opts">
+        <button class="o">A′BC′</button>
+        <button class="o">A′ + B + C′</button>
+        <button class="o">AB′C</button></div>
+      <div class="fb">각각 뒤집고 + 를 · 로: A′ · B · C′ = <b>A′BC′</b>.</div></div>
+    <div class="check" data-id="k10" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">2입력 NOR 게이트와 같은 것은?</div>
+      <div class="opts">
+        <button class="o">입력을 반전한 OR</button>
+        <button class="o">입력을 반전한 AND</button>
+        <button class="o">출력을 반전한 AND</button></div>
+      <div class="fb">(A + B)′ = A′B′이니까 NOR = <b>입력을 반전한 AND</b>. NAND = 입력을 반전한 OR.</div></div>
+    <div class="check" data-id="k11" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">(AB)′ = A′ + B′를 진리표로 증명할 때 확인해야 하는 것은?</div>
+      <div class="opts">
+        <button class="o">A = B인 행만 같으면 된다</button>
+        <button class="o">좌변 열과 우변 열이 네 행 모두에서 같다</button>
+        <button class="o">한 행만 같으면 된다</button></div>
+      <div class="fb">모든 입력 조합(00, 01, 10, 11)에서 좌변 = 우변이어야 같은 식이에요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c6">다 풀었어요</label><a href="#c7">다음 주제 →</a></div>
+  </section>
+
+  <section class="ch" id="c7">
+    <div class="ch-head"><span class="ch-num">주제 7</span>
+      <div><h2>제5장 — 줄이고, 줄일 때 쓴 법칙 이름 대기 (시험 메모 두 줄)</h2><div class="sub">흡수 · 분배 14 · 15 · 합의 · 같은 항 추가 · 법칙 이름 맞히기</div></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>불 대수 간소화는 공통 인수를 분배법칙으로 묶고, X + X′ = 1과 X · 1 = X로 변수를 지운다. 짝이 남으면 X + X = X로 같은 항을 추가해 묶을 수 있다. 각 단계에 쓴 법칙(분배 · 흡수 · 합의 · 드모르간 · 교환 · 결합)과 공리를 함께 적는다.</p>
+      <div class="mn">외우는 법: <b>묶고(분배) → 1 만들고(X + X′) → 지우기(X · 1)</b></div></div>
+    <h3>직접 풀기 — 간소화 (시험 메모 "불대수식 반드시") <small>(12문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">답 옆에 과정 힌트가 있어요. 모든 답은 진리표로 원래 식과 같은지 검산했어요.</p>
+      <ol class="plain">
+        <li>A + AB 를 간소화 <span class="cloze">A ← A(1 + B) = A · 1 = A (흡수법칙)</span></li>
+        <li>A(A + B) 를 간소화 <span class="cloze">A ← AA + AB = A + AB = A (흡수법칙)</span></li>
+        <li>A + A′B 를 간소화 <span class="cloze">A + B ← (A + A′)(A + B) = 1 · (A + B) (분배법칙 → X + X′ = 1)</span></li>
+        <li>AB + AB′ 를 간소화 <span class="cloze">A ← A(B + B′) = A · 1 (분배 → X + X′ = 1 → X · 1 = X)</span></li>
+        <li>(A + B)(A + B′) 를 간소화 <span class="cloze">A ← A + BB′ = A + 0 (분배 X + YZ = (X + Y)(X + Z)를 거꾸로 → X · X′ = 0)</span></li>
+        <li>AB + A′C + BC 를 간소화 <span class="cloze">AB + A′C ← 가운데 BC가 사라짐 (합의의 정리)</span></li>
+        <li>A′B′C + A′BC + AB′C + ABC 를 간소화 <span class="cloze">C ← A′C(B′ + B) + AC(B′ + B) = A′C + AC = C(A′ + A) = C</span></li>
+        <li>ABC + ABC′ + AB′C 를 간소화 <span class="cloze">AB + AC = A(B + C) ← ABC를 한 번 더 써서(X + X = X) AB(C + C′) + AC(B + B′)</span></li>
+        <li>A′B′ + A′B + AB 를 간소화 <span class="cloze">A′ + B ← A′(B′ + B) + AB = A′ + AB = A′ + B (분배 15: (A′ + A)(A′ + B))</span></li>
+        <li>(A + B)(A + C) 를 간소화 <span class="cloze">A + BC ← 분배법칙 X + YZ = (X + Y)(X + Z) (일반 수학엔 없음)</span></li>
+        <li>A′B′C′ + A′BC′ + A′BC + AB′C′ (예제 5-8 · 과제 5) 를 간소화 <span class="cloze">B′C′ + A′B ← B′C′(A′ + A) + A′B(C′ + C)</span></li>
+        <li>AB′ + A′B + AB 를 간소화 <span class="cloze">A + B ← AB를 한 번 더 써서 A(B′ + B) + B(A′ + A) = A + B</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <h3>직접 풀기 — 이 식에 적용된 법칙은? (시험 메모) <small>(14문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">시험 메모: "이 식에 적용된 법칙이 무엇이냐 문제 나옴". 이름을 정확히 쓰는 연습.</p>
+      <ol class="plain">
+        <li>A + 0 = A <span class="cloze">기본법칙(항등) X + 0 = X</span></li>
+        <li>A · A′ = 0 <span class="cloze">보수 법칙 X · X′ = 0</span></li>
+        <li>A + A′ = 1 <span class="cloze">보수 법칙 X + X′ = 1</span></li>
+        <li>A + A = A <span class="cloze">기본법칙 X + X = X (같은 항 추가에 사용)</span></li>
+        <li>(A′)′ = A <span class="cloze">이중 부정</span></li>
+        <li>A + B = B + A <span class="cloze">교환법칙</span></li>
+        <li>(AB)C = A(BC) <span class="cloze">결합법칙</span></li>
+        <li>A(B + C) = AB + AC <span class="cloze">분배법칙 14</span></li>
+        <li>A + BC = (A + B)(A + C) <span class="cloze">분배법칙 15 (일반 수학엔 없음)</span></li>
+        <li>A + AB = A <span class="cloze">흡수법칙</span></li>
+        <li>(A + B)′ = A′B′ <span class="cloze">드모르간의 정리</span></li>
+        <li>AB + A′C + BC = AB + A′C <span class="cloze">합의의 정리</span></li>
+        <li>1 + 1 = 1 <span class="cloze">공리 P5 (불 대수에는 2가 없다)</span></li>
+        <li>A + B′C + DD′ = (A + B′C + D)(A + B′C + D′) <span class="cloze">분배법칙 X + YZ = (X + Y)(X + Z) (최대항 변환)</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <div class="check" data-id="k12" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">A + A′B = (A + A′)(A + B)로 바꾼 단계에 쓰인 법칙은?</div>
+      <div class="opts">
+        <button class="o">흡수법칙</button>
+        <button class="o">분배법칙 X + YZ = (X + Y)(X + Z)</button>
+        <button class="o">드모르간</button></div>
+      <div class="fb">X = A, Y = A′, Z = B로 보면 X + YZ = (X + Y)(X + Z), <b>분배법칙</b>이에요. 다음 줄의 A + A′ = 1은 보수 법칙(공리).</div></div>
+    <div class="check" data-id="k13" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">AB + AB′ = A의 마지막 단계 A · 1 = A의 근거는?</div>
+      <div class="opts">
+        <button class="o">X · 1 = X</button>
+        <button class="o">X + 1 = 1</button>
+        <button class="o">X · X = X</button></div>
+      <div class="fb">1을 곱해도 그대로: <b>X · 1 = X</b>.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c7">다 풀었어요</label><a href="#c8">다음 주제 →</a></div>
+  </section>
+
+  <section class="ch" id="c8">
+    <div class="ch-head"><span class="ch-num">주제 8</span>
+      <div><h2>제5장 — 최소항 · 최대항 표를 가리고 채우기 (시험 메모)</h2><div class="sub">3변수 · 4변수 빈칸 · 진리표 → Σm · ΠM · 식 → 최소항식 · 최대항식 · F′</div></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>최소항은 모든 변수를 포함하는 AND항(0은 보수, 1은 그대로, 소문자 m), 최대항은 모든 변수를 포함하는 OR항(0은 그대로, 1은 보수, 대문자 M)이다. 출력이 1인 행은 Σm으로, 0인 행은 ΠM으로 모으며, 같은 함수의 Σm과 ΠM 번호는 서로 나머지이고 Mᵢ = mᵢ′이다.</p>
+      <div class="mn">외우는 법: <b>최소 = 1 모아 Σm, 0에 바</b> / <b>최대 = 0 모아 ΠM, 1에 바</b></div></div>
+    <h3>표 빈칸 채우기 — 3변수 (시험 메모 "진리표 빈칸 채우기 형식")</h3>
+    <div class="box cloze-box">
+      <p class="rv-d">교수님: "여기를 다 가리는 거예요. 가리면 그런 문제를 내는 거예요." 아래 회색 칸을 머릿속으로 채운 뒤 눌러서 확인하세요.</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>A B C</th><th>최소항</th><th>기호</th><th>최대항</th><th>기호</th></tr></thead>
+        <tbody>
+          <tr><td>0 0 0</td><td>A′B′C′</td><td>m0</td><td>A + B + C</td><td>M0</td></tr>
+          <tr><td>0 0 1</td><td><span class="cloze">A′B′C</span></td><td><span class="cloze">m1</span></td><td><span class="cloze">A + B + C′</span></td><td><span class="cloze">M1</span></td></tr>
+          <tr><td>0 1 0</td><td><span class="cloze">A′BC′</span></td><td><span class="cloze">m2</span></td><td><span class="cloze">A + B′ + C</span></td><td><span class="cloze">M2</span></td></tr>
+          <tr><td>0 1 1</td><td>A′BC</td><td>m3</td><td>A + B′ + C′</td><td>M3</td></tr>
+          <tr><td>1 0 0</td><td><span class="cloze">AB′C′</span></td><td><span class="cloze">m4</span></td><td><span class="cloze">A′ + B + C</span></td><td><span class="cloze">M4</span></td></tr>
+          <tr><td>1 0 1</td><td>AB′C</td><td>m5</td><td>A′ + B + C′</td><td>M5</td></tr>
+          <tr><td>1 1 0</td><td><span class="cloze">ABC′</span></td><td><span class="cloze">m6</span></td><td><span class="cloze">A′ + B′ + C</span></td><td><span class="cloze">M6</span></td></tr>
+          <tr><td>1 1 1</td><td><span class="cloze">ABC</span></td><td><span class="cloze">m7</span></td><td><span class="cloze">A′ + B′ + C′</span></td><td><span class="cloze">M7</span></td></tr>
+        </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <h3>표 빈칸 채우기 — 4변수</h3>
+    <div class="box cloze-box">
+      <div class="table-wrap"><table>
+        <thead><tr><th>A B C D</th><th>최소항</th><th>기호</th><th>최대항</th><th>기호</th></tr></thead>
+        <tbody>
+          <tr><td>0 0 1 1</td><td><span class="cloze">A′B′CD</span></td><td><span class="cloze">m3</span></td><td><span class="cloze">A + B + C′ + D′</span></td><td><span class="cloze">M3</span></td></tr>
+          <tr><td>0 1 1 0</td><td><span class="cloze">A′BCD′</span></td><td><span class="cloze">m6</span></td><td><span class="cloze">A + B′ + C′ + D</span></td><td><span class="cloze">M6</span></td></tr>
+          <tr><td>1 0 0 1</td><td><span class="cloze">AB′C′D</span></td><td><span class="cloze">m9</span></td><td><span class="cloze">A′ + B + C + D′</span></td><td><span class="cloze">M9</span></td></tr>
+          <tr><td>1 0 1 1</td><td><span class="cloze">AB′CD</span></td><td><span class="cloze">m11</span></td><td><span class="cloze">A′ + B + C′ + D′</span></td><td><span class="cloze">M11</span></td></tr>
+          <tr><td>1 1 0 0</td><td><span class="cloze">ABC′D′</span></td><td><span class="cloze">m12</span></td><td><span class="cloze">A′ + B′ + C + D</span></td><td><span class="cloze">M12</span></td></tr>
+          <tr><td>1 1 1 0</td><td><span class="cloze">ABCD′</span></td><td><span class="cloze">m14</span></td><td><span class="cloze">A′ + B′ + C′ + D</span></td><td><span class="cloze">M14</span></td></tr>
+        </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <h3>직접 풀기 — 진리표 · Σm · ΠM 변환 <small>(13문제 · 회색 칸을 누르면 답)</small></h3>
+    <div class="box cloze-box">
+      <p class="rv-d">답은 모두 진리표로 계산해서 확인했어요. 식 → 최소항은 "변수 채우기" 대신 진리표를 그려서 1인 줄을 찾는 게 빨라요.</p>
+      <ol class="plain">
+        <li>3변수 진리표의 출력 F가 위에서부터(000 → 111) 0 1 1 0 1 0 0 1일 때 F의 Σm과 ΠM은? <span class="cloze">F = Σm(1, 2, 4, 7) = ΠM(0, 3, 5, 6)</span></li>
+        <li>3변수 진리표의 출력 F가 위에서부터(000 → 111) 1 1 0 0 0 0 1 1일 때 F의 Σm과 ΠM은? <span class="cloze">F = Σm(0, 1, 6, 7) = ΠM(2, 3, 4, 5)</span></li>
+        <li>3변수 진리표의 출력 F가 위에서부터(000 → 111) 0 0 0 1 0 1 1 1일 때 F의 Σm과 ΠM은? <span class="cloze">F = Σm(3, 5, 6, 7) = ΠM(0, 1, 2, 4)</span></li>
+        <li>3변수 진리표의 출력 F가 위에서부터(000 → 111) 1 0 1 1 1 0 1 0일 때 F의 Σm과 ΠM은? <span class="cloze">F = Σm(0, 2, 3, 4, 6) = ΠM(1, 5, 7)</span></li>
+        <li>F(A, B, C) = Σm(0, 2, 5)를 반대 형식으로, 그리고 F′의 Σm은? <span class="cloze">F = Σm(0, 2, 5) = ΠM(1, 3, 4, 6, 7), F′ = Σm(1, 3, 4, 6, 7)</span></li>
+        <li>F(A, B, C) = ΠM(1, 3, 4, 6)를 반대 형식으로, 그리고 F′의 Σm은? <span class="cloze">F = Σm(0, 2, 5, 7) = ΠM(1, 3, 4, 6), F′ = Σm(1, 3, 4, 6)</span></li>
+        <li>F(A, B, C, D) = Σm(0, 1, 2, 3, 10, 11, 13)를 반대 형식으로, 그리고 F′의 Σm은? <span class="cloze">F = Σm(0, 1, 2, 3, 10, 11, 13) = ΠM(4, 5, 6, 7, 8, 9, 12, 14, 15), F′ = Σm(4, 5, 6, 7, 8, 9, 12, 14, 15)</span></li>
+        <li>F(A, B, C) = A + B′C를 최소항식과 최대항식으로 <span class="cloze">Σm(1, 4, 5, 6, 7) = ΠM(0, 2, 3)</span></li>
+        <li>F(A, B, C) = AB + C를 최소항식과 최대항식으로 <span class="cloze">Σm(1, 3, 5, 6, 7) = ΠM(0, 2, 4)</span></li>
+        <li>F(A, B, C) = (A + B)(A′ + C)를 최소항식과 최대항식으로 <span class="cloze">Σm(2, 3, 5, 7) = ΠM(0, 1, 4, 6)</span></li>
+        <li>F(A, B, C) = A′B + BC′를 최소항식과 최대항식으로 <span class="cloze">Σm(2, 3, 6) = ΠM(0, 1, 4, 5, 7)</span></li>
+        <li>m₅와 M₅의 관계를 3변수 식으로 <span class="cloze">m₅ = AB′C, M₅ = A′ + B + C′ = (AB′C)′ → M₅ = m₅′ (드모르간)</span></li>
+        <li>Σm(1, 2, 3, 4, 5)를 같은 번호로 Π를 써서 나타내면? <span class="cloze">(ΠM(1, 2, 3, 4, 5))′ — 같은 번호면 큰 모자를 씌워야 함</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">답 모두 보기</button><button class="btn" type="button" data-cloze="close">답 모두 가리기</button></div>
+    </div>
+    <div class="check" data-id="k14" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">4변수에서 최소항인 것을 고르면?</div>
+      <div class="opts">
+        <button class="o">ABD</button>
+        <button class="o">A′B′C′D</button>
+        <button class="o">A + B + C + D</button>
+        <button class="o">BC′</button></div>
+      <div class="fb">네 변수가 다 있는 <b>곱</b>은 A′B′C′D뿐이에요. A + B + C + D는 합이라 최대항이에요.</div></div>
+    <div class="check" data-id="k15" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">3변수 F = ΠM(0, 1, 2)일 때 F의 최소항식은?</div>
+      <div class="opts">
+        <button class="o">Σm(0, 1, 2)</button>
+        <button class="o">Σm(3, 4, 5, 6, 7)</button>
+        <button class="o">ΠM(3, 4, 5, 6, 7)</button></div>
+      <div class="fb">0인 줄이 0 · 1 · 2이면 1인 줄은 <b>나머지 3 · 4 · 5 · 6 · 7</b>.</div></div>
+    <div class="check" data-id="k16" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">최대항식으로 바꿀 때 없는 변수 C에 대해 하는 것은?</div>
+      <div class="opts">
+        <button class="o">(C + C′)를 곱한다</button>
+        <button class="o">CC′를 더하고 분배법칙으로 나눈다</button>
+        <button class="o">C를 그냥 더한다</button></div>
+      <div class="fb">합의 항에는 <b>0을 더해야</b> 값이 안 변해요. CC′ = 0을 더한 다음 X + YZ = (X + Y)(X + Z)로 나눠요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c8">다 풀었어요</label><a href="#review">마무리 퀴즈로 →</a></div>
+  </section>
+
+  <!-- 마무리 -->
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">마무리</span>
+      <div><h2>섞어서 풀기 — 시험장처럼 한 번에</h2><div class="sub">주제를 섞은 10문항 · 다 풀고 채점하기</div></div></div>
+
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="0"><p class="qt"><b>Q1</b>T = 125 μs, tw = 25 μs인 펄스의 주파수와 듀티 사이클은?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">8 kHz, 20 %</label>
+        <label class="opt"><input type="radio" name="q1" value="1">80 kHz, 20 %</label>
+        <label class="opt"><input type="radio" name="q1" value="2">8 kHz, 25 %</label>
+        <label class="opt"><input type="radio" name="q1" value="3">125 Hz, 20 %</label>
+        <div class="explain">1 / 125μs = 8,000 Hz = 8 kHz, 25 / 125 × 100 = 20 %.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q2</b>1110.11<sub>(2)</sub>을 10진수로 바꾸면?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">14.3</label>
+        <label class="opt"><input type="radio" name="q2" value="1">14.75</label>
+        <label class="opt"><input type="radio" name="q2" value="2">13.75</label>
+        <label class="opt"><input type="radio" name="q2" value="3">14.5</label>
+        <div class="explain">8 + 4 + 2 + 0.5 + 0.25 = 14.75.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q3</b>−12의 8비트 2의 보수는? (+12 = 00001100)</p>
+        <label class="opt"><input type="radio" name="q3" value="0">11110011</label>
+        <label class="opt"><input type="radio" name="q3" value="1">11110100</label>
+        <label class="opt"><input type="radio" name="q3" value="2">10001100</label>
+        <label class="opt"><input type="radio" name="q3" value="3">11110010</label>
+        <div class="explain">1의 보수 11110011 → +1 → 11110100.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q4</b>2진수 10011을 그레이 코드로 바꾸면?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">11010</label>
+        <label class="opt"><input type="radio" name="q4" value="1">11011</label>
+        <label class="opt"><input type="radio" name="q4" value="2">10110</label>
+        <label class="opt"><input type="radio" name="q4" value="3">11100</label>
+        <div class="explain">1, 1⊕0=1, 0⊕0=0, 0⊕1=1, 1⊕1=0 → 11010.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q5</b>((A + B)C′)′를 드모르간으로 정리하면?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">A′B′ + C</label>
+        <label class="opt"><input type="radio" name="q5" value="1">A′ + B′ + C</label>
+        <label class="opt"><input type="radio" name="q5" value="2">A′B′C</label>
+        <label class="opt"><input type="radio" name="q5" value="3">(A + B)C</label>
+        <div class="explain">바깥 모자를 자르면 (A + B)′ + C = A′B′ + C.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q6</b>AB + A′C + BC를 간소화하면 어떤 법칙으로 BC가 사라질까?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">흡수법칙</label>
+        <label class="opt"><input type="radio" name="q6" value="1">드모르간</label>
+        <label class="opt"><input type="radio" name="q6" value="2">합의의 정리</label>
+        <label class="opt"><input type="radio" name="q6" value="3">교환법칙</label>
+        <div class="explain">합의의 정리 AB + A′C + BC = AB + A′C.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q7</b>3변수에서 입력 0 1 1의 최대항은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">A′BC</label>
+        <label class="opt"><input type="radio" name="q7" value="1">A + B′ + C′</label>
+        <label class="opt"><input type="radio" name="q7" value="2">A′ + B + C</label>
+        <label class="opt"><input type="radio" name="q7" value="3">A + B + C</label>
+        <div class="explain">최대항은 1에 바: B, C가 1이니 B′, C′ → A + B′ + C′ = M₃.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q8</b>F(A, B, C) = A + BC′를 최소항식으로 쓰면?</p>
+        <label class="opt"><input type="radio" name="q8" value="0">Σm(2, 4, 5, 6, 7)</label>
+        <label class="opt"><input type="radio" name="q8" value="1">Σm(4, 5, 6, 7)</label>
+        <label class="opt"><input type="radio" name="q8" value="2">Σm(1, 3, 6)</label>
+        <label class="opt"><input type="radio" name="q8" value="3">ΠM(2, 4, 5, 6, 7)</label>
+        <div class="explain">A = 1인 줄 4 · 5 · 6 · 7, 그리고 BC′ = 1인 010(2)과 110(6). 합치면 2, 4, 5, 6, 7.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q9</b>BCD 덧셈 47 + 25에서 일의 자리 7 + 5 = 1100이 나왔다. 다음 할 일은?</p>
+        <label class="opt"><input type="radio" name="q9" value="0">그대로 둔다</label>
+        <label class="opt"><input type="radio" name="q9" value="1">0110을 더해 보정한다</label>
+        <label class="opt"><input type="radio" name="q9" value="2">0011을 더한다</label>
+        <label class="opt"><input type="radio" name="q9" value="3">자리올림을 버린다</label>
+        <div class="explain">9를 넘었으니 +0110 → 1 0010 → 일의 자리 2, 십의 자리로 1 올림 → 72.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q10</b>A + AB = A에 쓰인 법칙은?</p>
+        <label class="opt"><input type="radio" name="q10" value="0">분배법칙 15</label>
+        <label class="opt"><input type="radio" name="q10" value="1">흡수법칙</label>
+        <label class="opt"><input type="radio" name="q10" value="2">드모르간</label>
+        <label class="opt"><input type="radio" name="q10" value="3">합의의 정리</label>
+        <div class="explain">A(1 + B) = A · 1 = A, 흡수법칙.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">서술형 연습 <small>친구한테 말하듯이</small></h3>
+    <div class="box explain-box">
+      <p class="eq">"최소항이 뭐예요?" "BCD 코드가 뭐예요?" "2의 보수는 왜 쓰나요?" 셋 중 하나를 골라 답안처럼 써 보세요.</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">최소항: 모든 변수를 포함하는 AND항으로, 0인 변수는 보수로 1인 변수는 그대로 쓴다. n변수면 2ⁿ개이고 출력이 1인 행의 최소항을 OR로 묶은 것이 최소항식(Σm)이다. 예: 4변수에서 A′BCD′는 최소항, ABC는 D가 없어 최소항이 아니다. / BCD: 10진수의 각 자리를 4비트 2진수(8421)로 나타낸 코드로 0000~1001만 쓴다. 읽기 쉽지만 비트가 낭비되고 덧셈 시 +6 보정이 필요하다. / 2의 보수: 1의 보수에 1을 더한 것. 덧셈기만으로 뺄셈을 할 수 있고 0이 하나뿐이라(1의 보수는 +0, −0 두 개) 컴퓨터는 2의 보수를 쓴다.</div>
+    </div>
+
+    <details class="ref"><summary>이 페이지 쓰는 법 <small>공부 순서</small></summary><div class="ref-body">
+      <h4>1회차</h4>
+      <p>주제마다 "답 모두 가리기" 상태로 공책에 풀고, 한 문제씩 눌러서 맞춰 보세요. 틀린 번호에 표시.</p>
+      <h4>2회차 (시험 전날)</h4>
+      <p>표시한 문제와 마무리 10문항만 다시. 시험 메모 항목(그레이 · 드모르간 · 불대수식 · 최대항 빈칸 · 적용 법칙)은 전부 한 번 더.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>논리회로 · 중간고사 연습문제 · 제1장 ~ 제5장 · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  /* 공책 정리 칸: 장면 질문(왼쪽) + "시험엔 이렇게"(오른쪽) + 그려 볼 그림 + 요약 */
+  var review = $('#review');
+  var scenes = $$('section.ch:not(.review)').filter(function (s) { return $('.key', s); });
+  if (review && scenes.length) {
+    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+    var rows = scenes.map(function (s, i) {
+      var key = $('.key', s), h2 = $('.ch-head h2', s), sub = $('.ch-head .sub', s);
+      var txt = $$('p', key).map(function (p) { return '<p>' + p.innerHTML + '</p>'; }).join('');
+      var mn = $('.mn', key);
+      return '<div class="nb-row"><div class="nb-q"><span class="nb-n">' + (i + 1) + '</span><span>' + (h2 ? h2.innerHTML : '') + (sub ? '<small class="nb-sub">' + sub.innerHTML + '</small>' : '') + '</span></div>' +
+        '<div class="nb-a" tabindex="0"><div class="nb-txt">' + txt + (mn ? '<div class="nb-mn">' + mn.innerHTML + '</div>' : '') + '</div>' +
+        '<label class="nb-ok"><input type="checkbox" data-nb="' + i + '">공책에 적었어요</label></div></div>';
+    }).join('');
+    var figs = $$('section.ch:not(.review) .fig figcaption').map(function (c) {
+      var sec = c.closest('section'), n = sec ? $('.ch-num', sec) : null;
+      var svg = $('svg', c.closest('.fig')), what = svg && svg.getAttribute('aria-label');
+      return '<li>' + (n ? esc(n.textContent) + ' · ' : '') + (what ? esc(what) + '<br><small class="nb-sub">' + c.innerHTML + '</small>' : c.innerHTML) + '</li>';
+    });
+    var h1 = $('.hero h1');
+    var wrapEl = document.createElement('div');
+    wrapEl.className = 'nb-wrap';
+    wrapEl.innerHTML = '<h3 class="rv-h">공책 정리 칸 <small>왼쪽 질문 · 오른쪽 답 · 맨 아래 요약</small></h3>' +
+      '<p class="rv-d">공책에 세로줄을 하나 긋고 왼쪽 좁은 칸에 질문, 오른쪽 넓은 칸에 답을 옮겨 적어요. 그림은 보지 말고 직접 그려 보고, 맨 아래엔 내 말로 한두 줄 요약. 다음 날엔 "답 가리기"를 누르고 질문만 보며 소리 내어 답해 보세요.</p>' +
+      '<div class="box nb" id="nb"><div class="nb-head"><span>질문 (왼쪽 칸)</span><span>공책에 적을 답 (오른쪽 칸)</span></div>' + rows +
+      (figs.length ? '<div class="nb-draw"><b>직접 그려 볼 그림</b><ol>' + figs.join('') + '</ol></div>' : '') +
+      '<div class="nb-sum"><b>맨 아래 요약 칸</b><p>' + (h1 ? '"' + h1.innerHTML + '" — 이 질문에 내 말로 답해서 한두 줄로 적기' : '오늘 배운 것을 내 말로 한두 줄') + '</p></div>' +
+      '<div class="nb-foot"><div class="btns"><button class="btn" type="button" data-nb-hide>답 가리기</button><button class="btn" type="button" data-nb-show>모두 보기</button><button class="btn" type="button" data-nb-print>공책 칸만 인쇄</button></div><span class="nb-count"></span></div></div>';
+    var head = $('.ch-head', review);
+    review.insertBefore(wrapEl, head ? head.nextSibling : review.firstChild);
+    var nb = $('#nb'), nbState = load('notebook', {});
+    function nbCount() {
+      var boxes = $$('[data-nb]', nb), n = boxes.filter(function (b) { return b.checked; }).length;
+      $('.nb-count', nb).textContent = '공책에 적은 것 ' + n + ' / ' + boxes.length;
+    }
+    $$('[data-nb]', nb).forEach(function (b) {
+      b.checked = !!nbState[b.dataset.nb];
+      b.closest('.nb-row').classList.toggle('done', b.checked);
+      b.addEventListener('change', function () { nbState[b.dataset.nb] = b.checked; save('notebook', nbState); b.closest('.nb-row').classList.toggle('done', b.checked); nbCount(); });
+    });
+    $$('.nb-a', nb).forEach(function (a) {
+      function t(e) { if (e.target.closest('.nb-ok')) return; if (nb.classList.contains('hide')) a.classList.toggle('open'); }
+      a.addEventListener('click', t);
+      a.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(e); } });
+    });
+    $('[data-nb-hide]', nb).addEventListener('click', function () { nb.classList.add('hide'); $$('.nb-a.open', nb).forEach(function (a) { a.classList.remove('open'); }); });
+    $('[data-nb-show]', nb).addEventListener('click', function () { nb.classList.remove('hide'); });
+    $('[data-nb-print]', nb).addEventListener('click', function () {
+      body.classList.add('print-nb');
+      window.print();
+      setTimeout(function () { body.classList.remove('print-nb'); }, 500);
+    });
+    nbCount();
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

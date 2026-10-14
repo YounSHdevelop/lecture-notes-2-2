@@ -296,7 +296,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   <div class="hero">
     <div class="eyebrow">중간고사 대비 · 제1장 ~ 제5장 · 9/3 ~ 10/8 강의</div>
     <h1>중간고사, 손으로 푸는 문제로 한 바퀴 돌자</h1>
-    <p class="lead">논리회로 시험은 <b>계산</b>이 많아요. 교수님이 "무조건 나온다", "100% 출제", "반드시 나옴"이라고 짚은 것만 골라, 장마다 <b>공식 한 줄 + 직접 풀어 보는 문제</b>로 묶었어요. 설명이 기억 안 나면 장면마다 달린 날짜 페이지로 가세요. 시험 날짜는 아직 공지 기록이 없어요.</p>
+    <p class="lead">논리회로 시험은 <b>계산</b>이 많아요. 교수님이 "무조건 나온다", "100% 출제", "반드시 나옴"이라고 짚은 것만 골라, 장마다 <b>공식 한 줄 + 직접 풀어 보는 문제</b>로 묶었어요. 설명이 기억 안 나면 장면마다 달린 날짜 페이지로 가세요. 시험은 <b>10/21</b>이에요(10/13 수업 말씀, 시간은 공지 확인). 문제를 더 많이 풀고 싶으면 <a href="연습문제.html">중간고사 연습문제 168문제</a>로 가세요.</p>
     <div class="goal">
       <h2>이 페이지를 다 보면 할 수 있는 것</h2>
       <ol>
@@ -313,7 +313,8 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li><b>예제 2-1</b> 2진 → 10진 — "100% 출제", 과정이 맞으면 점수</li>
         <li><b>2의 보수</b> — "장단점, 왜 필요한지, 결국 뭘 쓰는지" (서술)</li>
         <li><b>예제 4-8</b> XOR에 0/1 — "논리회로 책에 항상 나오는 예제"</li>
-        <li><b>2진 ↔ 그레이 코드 변환</b> · <b>드모르간 반드시</b> (시험.txt) · "<b>BCD 코드가 뭐예요?</b>에 답할 수 있어야"</li>
+        <li><b>2진 ↔ 그레이 코드 변환</b> · <b>드모르간 반드시</b> · <b>불대수식 반드시</b> · <b>최대항 진리표 빈칸 채우기</b> · <b>"이 식에 적용된 법칙은?"</b> · 카르노 맵은 안 나옴 (시험.txt) · "<b>BCD 코드가 뭐예요?</b>에 답할 수 있어야"</li>
+        <li>10/13: "<b>최소항이 뭐예요?</b>" 설명 · 섞인 항에서 최소항 고르기 · 최소항/최대항 표의 칸을 가리고 채우기</li>
         <li>"교재에 있는 것은 시험에 나올 가능성이 있고, 칠판에 따로 그린 회로는 아니다"</li>
       </ul>
     </div>
@@ -448,7 +449,7 @@ VCC=5V, ICC=2mA → P = <span class="hl">10 mW</span></pre>
 
   <section class="ch" id="c5">
     <div class="ch-head"><span class="ch-num">장면 5</span>
-      <div><h2>제5장 — 드모르간(반드시) · 법칙 · 최소항</h2><div class="sub">자세히: <a href="../1006/1006_학습자료.html">10/6</a> · <a href="../1008/1008_학습자료.html">10/8</a></div></div></div>
+      <div><h2>제5장 — 드모르간(반드시) · 법칙 · 최소항 · 최대항</h2><div class="sub">자세히: <a href="../1006/1006_학습자료.html">10/6</a> · <a href="../1008/1008_학습자료.html">10/8</a> · <a href="../1013/1013_학습자료.html">10/13</a></div></div></div>
 
     <div class="key" style="margin-top:0"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>드모르간 (시험에 반드시)</span>
       <p>(A + B)′ = A′B′ · (AB)′ = A′ + B′ · n항도 같다 · 진리표에서 좌변 = 우변으로 증명</p>
@@ -459,8 +460,14 @@ VCC=5V, ICC=2mA → P = <span class="hl">10 mW</span></pre>
 A + A′B = <span class="hl">A + B</span>            (분배 15: (A + A′)(A + B))
 AB + BC + A′C = <span class="hl">AB + A′C</span>   (합의)
 
-<span class="file">최소항 · 최대항</span>F = Σm(1, 2, 3, 4, 5) = ΠM(0, 6, 7) · F′ = Σm(0, 6, 7)
-Σm(0, 1, 3, 5, 7) = <span class="hl">A′B′ + C</span></pre>
+<span class="file">최소항 · 최대항</span>최소항 = 모든 변수의 AND항, 0에 바   011 → A′BC = m₃
+최대항 = 모든 변수의 OR항, 1에 바    011 → <span class="hl">A + B′ + C′ = M₃</span>
+F = Σm(1, 2, 3, 4, 5) = ΠM(0, 6, 7) · F′ = Σm(0, 6, 7)   (나머지 번호)
+Σm(0, 1, 3, 5, 7) = <span class="hl">A′B′ + C</span>
+
+<span class="file">최소항식 · 최대항식으로 변환</span>AB′C = AB′C(D + D′) = AB′CD + AB′CD′        (1을 곱함)
+A + B′ + C = A + B′ + C + DD′
+           = (A + B′ + C + D)(A + B′ + C + D′)  (<span class="hl">분배법칙</span>)</pre>
     <div class="table-wrap"><table>
       <thead><tr><th>꼭 쓸 줄 알아야 하는 법칙</th><th></th></tr></thead>
       <tbody>
