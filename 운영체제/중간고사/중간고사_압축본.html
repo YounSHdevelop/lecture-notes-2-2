@@ -661,7 +661,7 @@ if (pid == 0) {
   <!-- 장면 6 -->
   <section class="ch" id="c6">
     <div class="ch-head"><span class="ch-num">장면 6</span>
-      <div><h2>5장 — 평균 대기 시간, 손으로 구할 수 있을까?</h2><div class="sub">저수준 스케줄링 · 선점/비선점 ★★★★★ · 우선순위 · 큐 · FCFS 계산 · 콘보이 효과</div></div></div>
+      <div><h2>5장 — 평균 대기 시간, 손으로 구할 수 있을까?</h2><div class="sub">저수준 스케줄링 · 선점/비선점 ★★★★★ · 우선순위 · 큐 · 평균 대기 시간 (FCFS부터 각 알고리즘은 장면 7)</div></div></div>
 
     <h3>스케줄링의 기본</h3>
     <ul class="plain">
@@ -681,33 +681,20 @@ if (pid == 0) {
       <li>★ <b>대기 큐</b> : 입출력 장치별로 줄 선 큐 (연결 리스트)</li>
     </ul>
 
-    <h3>평균 대기 시간과 FCFS</h3>
+    <h3>평균 대기 시간</h3>
     <ul class="plain">
       <li><b>대기 시간</b> : 시작 시각 − 도착 시각</li>
       <li><b>반환 시간</b> : 끝 시각 − 도착 시각 (= 대기 + 실행)</li>
       <li><mark>평균 대기 시간</mark> : 모든 프로세스의 대기 시간 합 ÷ 프로세스 수. 알고리즘 비교 기준</li>
-      <li><b>FCFS</b> : 준비 큐에 도착한 순서대로 처리하는 비선점형. 우선순위 동일. 교재 예제 (0 + 27 + 42) ÷ 3 = 23ms</li>
-      <li><b>콘보이 효과</b> : 긴 작업 뒤에서 짧은 작업들이 오래 기다리는 현상 (FCFS의 약점)</li>
     </ul>
 
-    <h3>연습 — FCFS</h3>
-    <div class="table-wrap"><table>
-      <thead><tr><th>프로세스</th><th>도착</th><th>실행</th><th>시작 ~ 끝</th><th>대기 (시작 − 도착)</th></tr></thead>
-      <tbody>
-        <tr><td>P1</td><td>0</td><td>6</td><td>0 ~ 6</td><td>0</td></tr>
-        <tr><td>P2</td><td>2</td><td>4</td><td>6 ~ 10</td><td>4</td></tr>
-        <tr><td>P3</td><td>4</td><td>8</td><td>10 ~ 18</td><td>6</td></tr>
-        <tr><td>P4</td><td>6</td><td>2</td><td>18 ~ 20</td><td>12</td></tr>
-        <tr><td colspan="4"><b>평균 대기 시간</b></td><td>(0 + 4 + 6 + 12) ÷ 4 = <mark>5.5</mark></td></tr>
-      </tbody></table></div>
-    <p>P4는 2만 하면 되는데 12를 기다렸어요. 앞의 P3(8) 때문이죠. 이게 콘보이 효과예요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>평균 대기 시간은 각 프로세스의 (시작 시각 − 도착 시각)을 모두 더해 프로세스 수로 나눈 값이며, 값이 작을수록 좋은 스케줄링 알고리즘이다.</p>
       <div class="mn">외우는 법: <b>간트 차트 → 시작 − 도착 → 더하고 나누기</b></div></div>
 
     <div class="check" data-id="k6" data-answer="0"><div class="lbl">바로 확인</div>
-      <div class="q">위 연습에서 P3의 반환 시간은?</div>
+      <div class="q">도착 4, 실행 8인 P3가 10에 시작해 18에 끝났다. P3의 반환 시간은?</div>
       <div class="opts">
         <button class="o">14</button>
         <button class="o">18</button>
@@ -724,12 +711,25 @@ if (pid == 0) {
 
     <h3>비선점형 스케줄링 — FCFS · SJF · HRN</h3>
     <ul class="plain">
-      <li>★ <b>FCFS</b> : 준비 큐에 도착한 순서대로 CPU를 주는 비선점형. 우선순위 동일. 교재 예제 평균 대기 23ms. 약점은 콘보이 효과</li>
+      <li>★ <b>FCFS</b> : 준비 큐에 도착한 순서대로 CPU를 주는 비선점형. 우선순위 동일. 교재 예제 (0 + 27 + 42) ÷ 3 = 23ms</li>
+      <li>★ <b>콘보이 효과</b> : 실행 시간이 긴 작업 뒤에서 짧은 작업들이 줄줄이 오래 기다리는 현상. FCFS의 약점이고, 이걸 줄이려고 SJF가 나옴</li>
       <li>★ <b>SJF</b> : 실행 시간이 가장 짧은 작업부터 CPU를 주는 비선점형. 교재 예제 평균 대기 20ms (FCFS 23ms)</li>
       <li>★ <b>기아 현상</b> : 특정 프로세스가 CPU나 자원을 계속 할당받지 못하는 상태. SJF에서 긴 작업이 계속 밀림</li>
       <li>★ <b>에이징</b> : 양보할 때마다 나이를 먹여 상한선을 정해 기아를 완화하는 기법</li>
       <li>★ <b>HRN</b> : 대기 시간과 실행 시간을 모두 고려해 기아를 완화한 비선점형. <mark>응답률 = (대기 + CPU 사용) ÷ CPU 사용</mark>, 높을수록 먼저</li>
     </ul>
+
+    <h3>연습 — FCFS (비선점형)</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>프로세스</th><th>도착</th><th>실행</th><th>시작 ~ 끝</th><th>대기 (시작 − 도착)</th></tr></thead>
+      <tbody>
+        <tr><td>P1</td><td>0</td><td>6</td><td>0 ~ 6</td><td>0</td></tr>
+        <tr><td>P2</td><td>2</td><td>4</td><td>6 ~ 10</td><td>4</td></tr>
+        <tr><td>P3</td><td>4</td><td>8</td><td>10 ~ 18</td><td>6</td></tr>
+        <tr><td>P4</td><td>6</td><td>2</td><td>18 ~ 20</td><td>12</td></tr>
+        <tr><td colspan="4"><b>평균 대기 시간</b></td><td>(0 + 4 + 6 + 12) ÷ 4 = <mark>5.5</mark></td></tr>
+      </tbody></table></div>
+    <p>P4는 2만 하면 되는데 12를 기다렸어요. 앞의 P3(8) 때문이죠. 이게 콘보이 효과예요.</p>
 
     <h3>선점형 스케줄링 — RR · SRT · MLQ · MLFQ</h3>
     <ul class="plain">
