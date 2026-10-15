@@ -295,7 +295,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">10월 13일 (화) · 7주차 ① · React Architecture · useReducer · 7주차 강의자료 PDF는 아직 없어 녹음 기준</div>
+    <div class="eyebrow">10월 13일 (화) · 7주차 ① · SH327 7주차 자료 p.3~27 · React Architecture · useReducer</div>
     <h1>좋아요 · 취소 · 리셋 · 10으로 맞추기, 세터 네 개 대신 한 곳에 모을 수 없을까?</h1>
     <p class="lead">중간고사 범위의 <b>마지막 수업</b>이에요. 지금까지 배운 컴포넌트 · State · Props · 이벤트를 "아키텍처"라는 눈으로 한 번 정리하고, 새 훅 <b>useReducer</b>를 배워요. 교수님 말로 "느긋하게" 한 수업이고, 설계 이야기가 많지만 시험은 <b>React와 JavaScript 중심</b>이에요.</p>
     <div class="goal">
@@ -311,8 +311,8 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>중간고사 공지 · 이날 수업에서</h2>
       <ul>
         <li><b>10월 20일(화) 09:30~10:30 · 18422 강의실</b> · 범위 2~7주차 강의자료 · Summary 중심 · 실행 결과 쓰기 (10/8 공지)</li>
-        <li><b>"시험 범위는 정확히 여기까지"</b> — 10/13 수업이 범위의 끝</li>
-        <li><b>MVC · MVVM은 시험에서 안 물어본다</b> — "선택과 집중. 리액트와 자바스크립트를 중점적으로"</li>
+        <li><b>"시험 범위는 정확히 여기까지"</b> — 10/13 수업이 범위의 끝. 7주차 자료의 <b>Summary (1)</b>(p.26) 문장들이 이 페이지의 "시험엔 이렇게"에 다 들어 있어요</li>
+        <li><b>MVC · MVVM은 시험에서 안 물어본다</b> — "선택과 집중. 리액트와 자바스크립트를 중점적으로" (Summary (2)에 있긴 해서 맨 아래 참고에 한 줄씩 정리)</li>
         <li>목요일(10/15)은 쇼핑카트 예제만 빨리 하고 공부 시간을 준다고 함</li>
       </ul>
     </div>
@@ -394,10 +394,10 @@ function Child({ id, onSelect }) {
     </figure>
 
     <h3>State는 어디에 둘까 — Lifting State Up</h3>
-    <p>State는 <b>실제로 쓰는 컴포넌트, 또는 그에 가장 가까운 곳</b>에 둬요. 한 컴포넌트만 쓰면 로컬 state. 형제 두 컴포넌트가 같은 state를 써야 하면 <b>공통 부모로 끌어올려요</b>(<mark>Lifting State Up</mark>). 그러면 부모가 그 state의 원천(Single Source of Truth)이 되고, 자식은 Props로 받아 쓰고, 바꾸고 싶으면 콜백으로 부모의 세터를 불러요. 모든 state를 최상위에 올릴 필요는 없어요. 범위가 넓을수록 하나만 바뀌어도 다시 그려지는(리렌더링) 컴포넌트가 많아지거든요.</p>
+    <p>State는 <b>실제로 쓰는 컴포넌트, 또는 그에 가장 가까운 곳</b>에 둬요. 한 컴포넌트만 쓰면 로컬 state. 형제 두 컴포넌트가 같은 state를 써야 하면 <b>공통 부모로 끌어올려요</b>(<mark>Lifting State Up</mark>). 그러면 부모가 그 state의 원천(Single Source of Truth)이 되고, 자식은 Props로 받아 쓰고, 바꾸고 싶으면 콜백으로 부모의 세터를 불러요. 모든 state를 최상위에 올릴 필요는 없어요. 범위가 넓을수록 하나만 바뀌어도 다시 그려지는(리렌더링) 컴포넌트가 많아지거든요. (자료 Summary에는 공유 State를 관리하는 방법으로 Lifting State Up과 함께 <b>Context</b>도 이름만 나와요. 수업에서 따로 다루진 않았어요.)</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>React의 데이터는 부모에서 자식으로 Props를 통해 한 방향으로 전달되며(One-way data flow), Props는 읽기 전용이다. 자식의 이벤트는 부모가 내려 준 콜백 Props를 호출해 부모로 전달된다. State는 실제로 사용하는 컴포넌트에 최대한 가깝게 두고, 여러 자식이 공유하면 공통 부모로 끌어올린다(Lifting State Up).</p>
+      <p>React의 데이터는 부모에서 자식으로 Props를 통해 한 방향으로 전달되며(One-way data flow), Props는 읽기 전용이다. 그래서 데이터 흐름이 예측 가능하고, 상태 변경 위치를 추적하기 쉬워 디버깅이 쉽다. 자식의 이벤트는 부모가 내려 준 콜백 Props를 호출해 부모로 전달된다. State는 실제로 사용하는 컴포넌트에 최대한 가깝게 두고, 여러 자식이 공유하면 공통 부모로 끌어올린다(Lifting State Up). 공유 State는 Lifting State Up, Context 등으로 관리할 수 있다.</p>
       <div class="mn">외우는 법: <b>데이터는 아래로, 이벤트는 위로</b> · state는 쓰는 곳 가까이</div></div>
 
     <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
@@ -420,9 +420,9 @@ function Child({ id, onSelect }) {
     <pre class="code"><span class="file">커스텀 훅 · useWindowWidth</span>function useWindowWidth() {
   const [width, setWidth] = useState(window.innerWidth);      <span class="c">// 처음 값 = 지금 창 너비</span>
   useEffect(() =&gt; {
-    const handleResize = () =&gt; setWidth(window.innerWidth);   <span class="c">// 창 크기가 바뀌면 state 갱신</span>
-    window.addEventListener("resize", handleResize);          <span class="c">// 마운트 때 한 번 등록 ([] 의존성)</span>
-    return () =&gt; window.removeEventListener("resize", handleResize);  <span class="c">// 언마운트 때 정리</span>
+    const handler = () =&gt; setWidth(window.innerWidth);        <span class="c">// 창 크기가 바뀌면 state 갱신</span>
+    window.addEventListener("resize", handler);               <span class="c">// 마운트 때 한 번 등록 ([] 의존성)</span>
+    return () =&gt; window.removeEventListener("resize", handler);  <span class="c">// 언마운트 때 정리</span>
   }, []);
   return width;                                               <span class="c">// <span class="hl">UI가 아니라 값(로직의 결과)을 돌려줌</span></span>
 }
@@ -433,11 +433,11 @@ const width = useWindowWidth();</pre>
 
     <h3>서비스 레이어 — API 호출은 따로 빼 둔다</h3>
     <p>API 호출 코드를 컴포넌트 안에 다 넣으면 복잡해지죠. 그래서 .jsx가 아닌 <b>그냥 .js 파일</b>에 API 함수들을 모아 둬요.</p>
-    <pre class="code"><span class="file">userApi.js · 서비스 레이어</span>export async function fetchUsers() {
-  const res = await fetch("/api/users");   <span class="c">// 응답 올 때까지 기다렸다가</span>
-  return res.json();                       <span class="c">// JSON으로 바꿔서 돌려줌</span>
+    <pre class="code"><span class="file">userApi.js · 서비스 레이어</span>export async function getUsers() {
+  const response = await fetch("/api/users");   <span class="c">// 응답 올 때까지 기다렸다가</span>
+  return response.json();                       <span class="c">// JSON으로 바꿔서 돌려줌</span>
 }
-<span class="c">// 컴포넌트에서는 useEffect 안에서 fetchUsers()만 호출해 state에 넣으면 끝</span></pre>
+<span class="c">// 컴포넌트에서는 useEffect 안에서 getUsers()만 호출해 state에 넣으면 끝</span></pre>
     <p>이렇게 두면 재사용성이 높아지고, <b>테스트하기 쉬워져요</b>. 비즈니스 로직에 붙이기 전에 API 함수만 따로 불러서 원하는 데이터가 오는지 확인할 수 있거든요. 현업에서는 백엔드가 준 API 명세대로 이런 함수(엔드포인트 연결)를 먼저 쭉 만들어 두고, 필요한 컴포넌트가 가져다 써요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
@@ -493,12 +493,12 @@ const width = useWindowWidth();</pre>
       <div><h2>좋아요 +1, −1, 리셋, 10으로 맞추기 — 세터 대신 dispatch 하나로</h2><div class="sub">useReducer · reducer(state, action) · dispatch · action type · payload · 새 state 반환(순수 함수) · useState와 비교</div></div></div>
 
     <p>10/1의 좋아요 카운터를 떠올려 봐요. +1, 취소(−1), 리셋(0), 특정 값으로 설정… 상태를 바꾸는 방법이 늘어날 때마다 세터를 부르는 함수가 여기저기 흩어져요. 이걸 <b>한 곳에 모으자</b>는 게 <mark>useReducer</mark>예요. 여러 개의 state 변경 로직을 하나의 함수(reducer)로 관리하는 훅이에요.</p>
-    <pre class="code"><span class="file">useReducer · 카운터</span>function reducer(state, action) {            <span class="c">// (현재 state, 무엇을 할지) → 새 state</span>
+    <pre class="code"><span class="file">useReducer · 카운터 (자료 p.15~16 코드 + 수업에서 말한 RESET)</span>function reducer(state, action) {            <span class="c">// (현재 state, 무엇을 할지) → 새 state</span>
   switch (action.type) {
-    case "increment": return { ...state, count: state.count + 1 };
-    case "decrement": return { ...state, count: state.count - 1 };
-    case "reset":     return { ...state, count: 0 };
-    case "setCount":  return { ...state, count: action.payload };  <span class="c">// 추가 데이터는 payload로</span>
+    case "INCREMENT": return { ...state, count: state.count + 1 };
+    case "DECREMENT": return { ...state, count: state.count - 1 };
+    case "RESET":     return { ...state, count: 0 };
+    case "SET_COUNT": return { ...state, count: action.payload };  <span class="c">// 추가 데이터는 payload로</span>
     default:          return state;
   }
 }
@@ -508,8 +508,8 @@ function Counter() {
   return (
     &lt;&gt;
       &lt;p&gt;{state.count}&lt;/p&gt;
-      &lt;button onClick={() =&gt; dispatch({ type: "increment" })}&gt;+1&lt;/button&gt;
-      &lt;button onClick={() =&gt; dispatch({ type: "setCount", payload: 10 })}&gt;10으로&lt;/button&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: "INCREMENT" })}&gt;+1&lt;/button&gt;
+      &lt;button onClick={() =&gt; dispatch({ type: "SET_COUNT", payload: 10 })}&gt;10으로&lt;/button&gt;
     &lt;/&gt;
   );
 }</pre>
@@ -521,14 +521,15 @@ function Counter() {
     </ul>
 
     <h3>흐름과 실행 결과</h3>
-    <p>이벤트 발생 → <b>dispatch(action)</b> → <b>reducer(state, action)</b>가 분기 → 새 state 반환 → <b>리렌더링</b>. 초기 count가 0일 때 increment, increment, decrement를 차례로 보내면 0 → 1 → 2 → 1. 그다음 setCount(payload 10)를 보내면 10, reset이면 0이에요.</p>
+    <p>이벤트 발생 → <b>dispatch(action)</b> → <b>reducer(state, action)</b>가 분기 → 새 state 반환 → <b>리렌더링</b>. 초기 count가 0일 때 INCREMENT, INCREMENT, DECREMENT를 차례로 보내면 0 → 1 → 2 → 1. 그다음 SET_COUNT(payload 10)를 보내면 10, RESET이면 0이에요. 자료 p.16의 흐름 그림 그대로 <b>User Event → dispatch(action) → Reducer → New State → Re-render</b>예요.</p>
 
     <div class="table-wrap"><table>
       <thead><tr><th></th><th>useState</th><th>useReducer</th></tr></thead>
       <tbody>
-        <tr><td>어울리는 상태</td><td>단순한 상태 (토글, 카운터)</td><td>복잡한 상태 (폼, 장바구니, 투두리스트, 상태 머신)</td></tr>
+        <tr><td>상태 구조</td><td>단순한 상태 (토글, 카운터)</td><td>복잡한 상태 (폼, 장바구니, 투두리스트, 상태 머신)</td></tr>
         <tr><td>바꾸는 방법</td><td>세터를 직접 호출</td><td>action을 dispatch → reducer가 처리</td></tr>
         <tr><td>변경 로직 위치</td><td>컴포넌트 여기저기 흩어질 수 있음</td><td>reducer 한 곳에 집중 → "어디서 바꾸지?" 하면 reducer만 보면 됨</td></tr>
+        <tr><td>추천 상황 (자료 p.18)</td><td>Toggle, Input, Counter</td><td>Form, Cart, Todo</td></tr>
       </tbody></table></div>
     <p>교수님 한 줄 요약: "<b>간단하면 useState, 변경 규칙이 많아지면 useReducer.</b>" 무조건 어느 쪽을 써야 하는 건 아니고, 상황에 맞게 고르는 게 설계예요.</p>
 
@@ -540,12 +541,12 @@ function Counter() {
       <div class="o"><b>○ 맞는 생각</b>기존 state는 그대로 두고 <code>{ ...state, count: state.count + 1 }</code>처럼 <b>새 객체</b>를 반환</div></div>
 
     <div class="check" data-id="k5" data-answer="2"><div class="lbl">바로 확인</div>
-      <div class="q">초기 { count: 0 }에서 increment, increment, setCount(payload 5), decrement 순서로 dispatch하면 count는?</div>
+      <div class="q">초기 { count: 0 }에서 INCREMENT, INCREMENT, SET_COUNT(payload 5), DECREMENT 순서로 dispatch하면 count는?</div>
       <div class="opts">
         <button class="o">1</button>
         <button class="o">6</button>
         <button class="o">4</button></div>
-      <div class="fb">0 → 1 → 2 → <b>5</b>(setCount는 더하는 게 아니라 그 값으로 바꿈) → 4.</div></div>
+      <div class="fb">0 → 1 → 2 → <b>5</b>(SET_COUNT는 더하는 게 아니라 그 값으로 바꿈) → 4.</div></div>
 
     <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
   </section>
@@ -609,13 +610,13 @@ function Counter() {
 
     <h3 class="rv-h">퀴즈 <small>다 풀고 채점하기 · 실행 결과 중심</small></h3>
     <form class="box quiz" data-quiz>
-      <div class="q" data-answer="1"><p class="qt"><b>Q1</b>초기 { count: 3 }에서 decrement, decrement, reset, increment를 차례로 dispatch하면 화면의 count는?</p>
+      <div class="q" data-answer="1"><p class="qt"><b>Q1</b>초기 { count: 3 }에서 DECREMENT, DECREMENT, RESET, INCREMENT를 차례로 dispatch하면 화면의 count는?</p>
         <label class="opt"><input type="radio" name="q1" value="0">0</label>
         <label class="opt"><input type="radio" name="q1" value="1">1</label>
         <label class="opt"><input type="radio" name="q1" value="2">2</label>
         <label class="opt"><input type="radio" name="q1" value="3">4</label>
         <div class="explain">3 → 2 → 1 → 0(reset) → 1.</div></div>
-      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>위 reducer에 dispatch({ type: "double" })을 보내면? (case에 없는 type)</p>
+      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>위 reducer에 dispatch({ type: "DOUBLE" })을 보내면? (case에 없는 type)</p>
         <label class="opt"><input type="radio" name="q2" value="0">count가 2배가 된다</label>
         <label class="opt"><input type="radio" name="q2" value="1">count가 0이 된다</label>
         <label class="opt"><input type="radio" name="q2" value="2">오류로 앱이 멈춘다</label>
@@ -662,19 +663,31 @@ function Counter() {
 
     <h3 class="rv-h">내 말로 설명하기 <small>교수님이 내 준 질문 그대로</small></h3>
     <div class="box explain-box">
-      <p class="eq">교수님이 목요일 예제 전에 먼저 생각해 오라고 한 질문: "dispatch의 역할은? reducer가 직접 세터를 호출해서 state를 바꾸면 안 되는 이유는? action type을 쓰는 이유는?"</p>
+      <p class="eq">자료 p.32 Step 4 질문 (AI에게 묻기 전에 내가 먼저): Q1. 왜 장바구니 예제에서 useState보다 useReducer가 적합한가? Q2. dispatch()의 역할은? Q3. Reducer가 직접 State를 수정하면 안 되는 이유는? Q4. Action Type을 사용하는 이유는?</p>
       <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
       <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
-      <div class="model-answer">dispatch는 UI가 "이런 변경이 필요해"라는 action을 reducer에게 보내는 통로예요. 세터를 여기저기서 직접 부르지 않고 action만 보내니까, 실제로 state를 바꾸는 규칙은 reducer 한 곳에 모여요. reducer는 현재 state와 action을 받아 새 state를 돌려주는 순수 함수여야 해서, 안에서 세터를 부르거나 기존 state를 직접 고치면 안 돼요. 그러면 언제 어떻게 바뀌었는지 예측이 어려워지고 React가 변화를 제대로 알아채지 못해요. action type은 "무엇을 할지"를 이름으로 구분하는 키워드라서, reducer가 switch로 분기할 수 있고 코드를 읽는 사람도 어떤 변경들이 가능한지 한눈에 볼 수 있어요.</div>
+      <div class="model-answer">장바구니는 상품 추가 · 수량 증가 · 감소 · 삭제 · 비우기처럼 변경 규칙이 많아서, useState로 하면 세터 호출이 여기저기 흩어져요. useReducer면 그 규칙을 cartReducer 한 곳에 모을 수 있어요. dispatch는 UI가 "이런 변경이 필요해"라는 action을 reducer에게 보내는 통로예요. 세터를 여기저기서 직접 부르지 않고 action만 보내니까, 실제로 state를 바꾸는 규칙은 reducer 한 곳에 모여요. reducer는 현재 state와 action을 받아 새 state를 돌려주는 순수 함수여야 해서, 기존 state를 직접 고치면 안 돼요. 그러면 언제 어떻게 바뀌었는지 예측이 어려워지고 React가 변화를 제대로 알아채지 못해요. action type은 "무엇을 할지"를 이름으로 구분하는 키워드라서, reducer가 switch로 분기할 수 있고 코드를 읽는 사람도 어떤 변경들이 가능한지 한눈에 볼 수 있어요.</div>
     </div>
 
     <details class="ref"><summary>더 알아두면 좋은 것 <small>시험에 안 나옴 · 교양</small></summary><div class="ref-body">
       <h4>MVC · MVVM (교수님: "시험에서 안 물어볼 거다")</h4>
       <p>MVC = Model(데이터 · 비즈니스 로직) · View(화면) · Controller(사용자 입력을 받아 Model과 View 연결). PHP · JSP · 초기 스프링에서 많이 썼어요. MVVM = Model · View · ViewModel(View가 쓸 상태와 동작을 제공, 데이터 바인딩). 안드로이드 · WPF · Vue.js. React에 억지로 맞추면 컴포넌트 = View, state · 커스텀 훅 = ViewModel, API · 서비스 = Model 정도인데, 실제로 그렇게 부르진 않아요. "패턴에 너무 매몰되지 말자."</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>구분 (자료 p.23)</th><th>MVC</th><th>MVVM</th></tr></thead>
+        <tbody>
+          <tr><td>UI</td><td>View</td><td>View</td></tr>
+          <tr><td>데이터</td><td>Model</td><td>Model</td></tr>
+          <tr><td>중간 계층</td><td>Controller</td><td>ViewModel</td></tr>
+          <tr><td>사용자 입력</td><td>Controller 중심</td><td>ViewModel의 Command/Handler</td></tr>
+          <tr><td>데이터 연결</td><td>직접 갱신 가능</td><td>Data Binding 중심</td></tr>
+          <tr><td>주요 관점</td><td>요청과 역할 분리</td><td>UI와 State 동기화</td></tr>
+        </tbody></table></div>
+      <h4>흔한 설계 실수 (자료 p.19 · 수업에선 거의 안 다룸)</h4>
+      <p>모든 로직을 App.jsx 하나에 쓰기 · 컴포넌트를 너무 잘게 쪼개기 · 모든 State를 Global State로 만들기 · Props가 몇 단계 내려간다는 이유만으로 바로 Context 쓰기 · useEffect를 일반 계산이나 이벤트 처리에 남용하기. 결론: "복잡한 구조(X), 책임과 데이터 흐름이 명확한 구조(O)".</p>
       <h4>디자인 패턴 · AI 시대의 설계</h4>
       <p>디자인 패턴은 반복되는 설계 문제를 해결하는 일반적인 구조(팩토리, 싱글턴 등). 교수님 이야기: AI가 짠 코드에는 필요 없는 디자인 패턴이 덕지덕지 붙는 "오버 프로그래밍"이 생기니, 필요한지 아닌지는 사람이 판단해야 한다. TDD(테스트 주도 개발) 시절엔 API 함수를 분리해 테스트하는 게 중요했다.</p>
       <h4>10/15(목) 예제 예고</h4>
-      <p>쇼핑카트를 단계별로: UI만 → reducer로 상품 추가 → 상태 · 액션 확장 · 금액 표시 → LLM에게 질문해 보기 → 디자인 가이드(마크다운) 적용. "내가 먼저 생각한 다음에 AI에게 확인받는 용도로 쓰라"는 공부법.</p>
+      <p>쇼핑카트를 단계별로(자료 p.29~32): ① UI만(Keyboard 50000 · Mouse 30000 · Monitor 300000) → ② cartReducer + ADD_ITEM(처음 담으면 quantity 1, 또 담으면 +1, 새 객체 · 배열로) → ③ INCREASE_QUANTITY · DECREASE_QUANTITY(최소 1) · REMOVE_ITEM · CLEAR_CART + 총금액(price × quantity 합계) → ④ LLM에게 질문해 보기 → ⑤ designmd.ai 디자인 가이드 적용(Toss 스타일). "내가 먼저 생각한 다음에 AI에게 확인받는 용도로 쓰라"는 공부법.</p>
     </div></details>
   </section>
 </main>

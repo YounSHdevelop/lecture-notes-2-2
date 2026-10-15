@@ -538,10 +538,10 @@ Promise.resolve().then(() =&gt; console.log("Promise 3"));
       <li><b>UI State / Server State</b> : 모달 · 토글 · 입력처럼 화면 안의 상태 / 서버에서 온 데이터(API로 갱신, 무결성).</li>
       <li><mark>useReducer</mark> : [state, dispatch] = useReducer(reducer, 초기값). UI는 <b>dispatch(action)</b>, reducer는 (state, action) → <b>새 state</b>(기존 state 수정 X).</li>
     </ul>
-    <pre class="code"><span class="file">실행 결과 연습 · 초기 { count: 0 }</span>dispatch({ type: "increment" });              <span class="c">// 1</span>
-dispatch({ type: "increment" });              <span class="c">// 2</span>
-dispatch({ type: "setCount", payload: 10 });  <span class="c">// 10 (더하기가 아니라 그 값으로)</span>
-dispatch({ type: "decrement" });              <span class="c">// <span class="hl">9</span></span>
+    <pre class="code"><span class="file">실행 결과 연습 · 초기 { count: 0 }</span>dispatch({ type: "INCREMENT" });              <span class="c">// 1</span>
+dispatch({ type: "INCREMENT" });              <span class="c">// 2</span>
+dispatch({ type: "SET_COUNT", payload: 10 });  <span class="c">// 10 (더하기가 아니라 그 값으로)</span>
+dispatch({ type: "DECREMENT" });              <span class="c">// <span class="hl">9</span></span>
 dispatch({ type: "unknown" });                <span class="c">// default: return state → 9 그대로</span></pre>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
@@ -549,7 +549,7 @@ dispatch({ type: "unknown" });                <span class="c">// default: return
       <div class="mn">외우는 법: <b>데이터는 아래로, 이벤트는 위로</b> · <b>dispatch로 보내고 reducer가 새로 만든다</b></div></div>
 
     <div class="check" data-id="k7" data-answer="0"><div class="lbl">바로 확인</div>
-      <div class="q">초기 { count: 2 }에서 decrement, reset, increment, increment를 dispatch하면 count는?</div>
+      <div class="q">초기 { count: 2 }에서 DECREMENT, RESET, INCREMENT, INCREMENT를 dispatch하면 count는?</div>
       <div class="opts">
         <button class="o">2</button>
         <button class="o">3</button>
