@@ -332,8 +332,13 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 1</span>
       <div><h2>CH01 — 데이터가 정보가 되고, 파일이 DB가 되기까지</h2><div class="sub">9/3 · 9/8 수업 · 데이터와 정보 · 파일 시스템의 문제 · DB 정의와 특성</div></div></div>
 
-    <h3>① 데이터와 정보</h3>
-    <p>출석, 중간 80, 기말 90처럼 <b>그대로의 값</b>이 <mark>데이터</mark>, 그걸 합산해서 "A+"라고 판정한 <b>가공 결과</b>가 <mark>정보</mark>예요. 이 흐름을 그림으로 그린 게 정보 시스템 구조 <code>I = P(D)</code>고, 만들어진 정보는 다른 시스템의 입력 데이터가 돼요.</p>
+    <h3>데이터와 정보</h3>
+    <ul class="plain">
+      <li>★ <b>데이터</b> : 현실 세계에서 관찰·측정해 얻은 그대로의 값 (출석, 중간 80, 기말 90)</li>
+      <li>★ <b>정보</b> : 데이터를 가공 처리해 의사 결정에 쓸 수 있게 만든 결과 ("A+" 판정)</li>
+      <li><b>정보 시스템</b> : 데이터를 가공 처리(P)해 정보(I)를 만드는 시스템. <code>I = P(D)</code></li>
+      <li><b>정보의 연쇄</b> : 만들어진 정보는 다른 시스템의 입력 데이터가 된다. <code>I = P(P(P(D)))</code></li>
+    </ul>
     <figure class="fig">
       <svg viewBox="0 0 640 210" role="img" aria-label="현실 세계에서 데이터를 수집해 가공 처리를 거쳐 정보가 되고, 그 정보가 다시 다른 시스템의 입력 데이터가 되는 구조">
         <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
@@ -359,8 +364,15 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <figcaption>시험 답안은 이 그림 그대로: 박스 3개 + 한 방향 화살표 + 되돌아가는 점선</figcaption>
     </figure>
 
-    <h3>② 파일 시스템이 DB가 된 이유</h3>
-    <p>파일 하나 고치면 프로그램을 다 고쳐야 했고(<mark>종속성</mark>) → 그래서 파일을 나눴더니 같은 데이터가 여기저기 생기고(<mark>중복성</mark>) → 그래서 합쳤더니 여러 명이 동시에 못 쓰고 복구도 안 됐어요(<mark>공유 한계</mark>). 마지막에 파일을 <b>DBMS라는 보호 장치</b>로 감싼 게 DB 시스템이에요.</p>
+    <h3>파일 시스템이 DB가 된 이유</h3>
+    <ul class="plain">
+      <li>★ <b>종속성</b> : 프로그램이 파일 구조에 묶여, 파일 하나를 바꾸면 그 파일을 쓰는 프로그램을 다 고쳐야 하는 문제 (전통 파일 시스템)</li>
+      <li>★ <b>중복성</b> : 프로그램마다 파일을 나눴더니 같은 데이터가 여러 파일에 생기는 문제 (개선 1)</li>
+      <li>★ <b>공유 한계</b> : 파일을 하나로 합쳤더니 여러 명이 동시에 못 쓰고 회복도 안 되는 문제 (개선 2)</li>
+      <li>★ <b>DB 시스템</b> : 파일을 DBMS라는 보호 장치로 감싸 모든 접근을 DBMS를 통해서만 하게 한 시스템. 동시성·권한·회복 해결</li>
+      <li><b>종속성의 해결책</b> : 공통 데이터 모델 + 표준 데이터 언어</li>
+      <li><b>중복성의 해결책</b> : 통합 저장소 (이 짝을 바꿔 쓰는 실수가 많아요)</li>
+    </ul>
     <figure class="fig">
       <svg viewBox="0 0 640 170" role="img" aria-label="전통 파일 시스템, 개선1, 개선2, 데이터베이스 시스템 네 단계와 각 단계의 문제">
         <defs><marker id="b1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
@@ -382,17 +394,21 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       </svg>
       <figcaption>각 단계가 남긴 문제가 다음 단계가 나온 이유. 시험 답안은 이 4칸 + 문제 3개</figcaption>
     </figure>
-    <p>DB 시스템은 종속성을 <b>공통 데이터 모델 + 표준 데이터 언어</b>로, 중복성을 <b>통합 저장소</b>로 풀었어요. 이 짝을 바꿔 쓰는 실수가 정말 많아요.</p>
 
-    <h3>③ DB의 정의 · 특성 · 단점</h3>
-    <div class="table-wrap"><table>
-      <thead><tr><th>구분</th><th>내용</th><th>외우는 법</th></tr></thead>
-      <tbody>
-        <tr><td>정의 4</td><td>공용 · 통합(논리적) · 운영 · 저장 데이터의 저장소</td><td>공 · 통 · 운 · 저</td></tr>
-        <tr><td>특성 4</td><td>실시간 접근 · 끊임없는 변화 · <b>동시 공용</b>(제일 중요) · 내용 기반 참조</td><td>실 · 변 · 동 · 내</td></tr>
-        <tr><td>단점 2</td><td>개발·운영·관리 <b>비용</b> · <b>시스템 취약성</b>(한 시스템이라 뚫리면 전체 위험)</td><td>돈 · 한 방</td></tr>
-        <tr><td>의미</td><td>넓은 의미 = 콘텐츠 모음(웹 문서, VOD) / 좁은 의미 = 형식 엄격(뱅킹, 예매) → 수업은 좁은 의미</td><td></td></tr>
-      </tbody></table></div>
+    <h3>DB의 정의 · 특성 · 단점</h3>
+    <ul class="plain">
+      <li>★ <b>데이터베이스</b> : 공용 · 통합 · 운영 · 저장 데이터의 저장소 (공 · 통 · 운 · 저)</li>
+      <li><b>공용 데이터</b> : 여러 사용자가 함께 쓰는 데이터. 혼자만 쓰면 공용이 아니다</li>
+      <li><b>통합 데이터</b> : 중복을 최소화해 논리적으로 통합한 데이터. 흩어져 있어도 연결돼 있으면 통합</li>
+      <li><b>운영 데이터</b> : 조직의 업무를 수행하는 데 필요한 데이터</li>
+      <li><b>저장 데이터</b> : 컴퓨터 저장 장치에 저장된 데이터</li>
+      <li><b>실시간 접근</b> : 요청한 데이터를 몇 초 안에 바로 돌려준다 (남은 좌석 검색)</li>
+      <li><b>끊임없는 변화</b> : 데이터가 삽입·삭제·수정되며 늘 최신 상태를 유지한다</li>
+      <li>★ <b>동시 공용</b> : 여러 사용자가 같은 데이터를 동시에 쓸 수 있다. 교수님이 가장 중요하다고 한 특성</li>
+      <li><b>내용 기반 참조</b> : 저장 위치가 아니라 값(내용)으로 데이터를 찾는다 ("홍길동"으로 검색)</li>
+      <li><b>DB의 단점</b> : 개발·운영·관리 비용이 크고, 한 시스템이라 뚫리거나 고장 나면 전체가 위험하다 (시스템 취약성)</li>
+      <li><b>넓은 의미 / 좁은 의미의 DB</b> : 콘텐츠 모음(웹 문서, VOD) / 형식이 엄격한 DB(뱅킹, 예매). 수업은 좁은 의미</li>
+    </ul>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>그대로의 값 = 데이터, 처리해서 얻은 결과 = 정보. 파일 시스템의 문제는 종속성 → 중복성 → 공유 한계 순서로 생겼고, DB 시스템은 모든 접근을 DBMS를 통해서만 하게 해 해결했다.</p>
@@ -414,7 +430,14 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 2</span>
       <div><h2>CH02 — 누가, 어떤 언어로, 무엇을 거쳐 데이터에 닿나</h2><div class="sub">9/10 수업 · DB · DBMS · DBS · 사용자 · 데이터 언어 · DBMS 구성 · 데이터 모델</div></div></div>
 
-    <p><b>DB</b>는 저장소(창고), <b>DBMS</b>는 그걸 관리하는 소프트웨어(창고지기), <b>DBS</b>는 둘을 합친 체계예요. MySQL·Oracle은 엄밀히 DBMS죠. DBMS가 생긴 이유는 데이터의 <mark>신뢰성과 무결성</mark>을 지키기 위해서고, 필수 기능 정의 · 조작 · 제어 중 <mark>제어</mark>(동시성 · 무결성 · 보안 · 회복)가 가장 중요해요.</p>
+    <h3>DB · DBMS · DBS</h3>
+    <ul class="plain">
+      <li>★ <b>DB</b> : 데이터를 모아 둔 저장소 (창고)</li>
+      <li>★ <b>DBMS</b> : DB를 관리하는 소프트웨어 (창고지기). MySQL·Oracle은 엄밀히 DBMS. 데이터의 <mark>신뢰성과 무결성</mark>을 지키려고 생겼다</li>
+      <li><b>DBS(DB 시스템)</b> : DB + DBMS를 합친 전체 체계</li>
+      <li><b>DBMS 필수 기능</b> : 정의 · 조작 · 제어 3가지</li>
+      <li>★ <b>제어 기능</b> : 동시성 · 무결성 · 보안 · 회복을 맡는 기능. 셋 중 가장 중요</li>
+    </ul>
     <figure class="fig">
       <svg viewBox="0 0 640 400" role="img" aria-label="사용자에서 데이터 언어, DBMS 구성 요소를 거쳐 데이터 사전과 데이터 파일까지 가는 구조">
         <defs><marker id="c1a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
@@ -444,19 +467,37 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <figcaption>위 → 아래 순서로 요청이 흐른다. 맨 아래가 데이터베이스(데이터 사전 + 데이터 파일)</figcaption>
     </figure>
 
-    <h3>사용자와 언어, 한 표로</h3>
-    <div class="table-wrap"><table>
-      <thead><tr><th>언어</th><th>하는 일</th><th>명령어</th><th>누가</th></tr></thead>
-      <tbody>
-        <tr><td><b>DDL</b></td><td>구조(틀) 정의</td><td>CREATE · ALTER · DROP</td><td>응용 프로그래머 · DBA</td></tr>
-        <tr><td><b>DML</b></td><td>데이터 값 조작</td><td>SELECT · INSERT · UPDATE · DELETE</td><td>모두 (일반 사용자 포함)</td></tr>
-        <tr><td><b>DCL</b></td><td>권한 · 보안 제어</td><td>GRANT · REVOKE · CREATE USER</td><td class="hl"><b>DBA만</b></td></tr>
-        <tr><td>TCL</td><td>트랜잭션 묶기</td><td>COMMIT · ROLLBACK · SAVEPOINT</td><td>시험 ✗</td></tr>
-      </tbody></table></div>
-    <p>일반 사용자는 초급(DB가 있는지도 모르고 UI만)과 중급(SQL 직접)으로 나뉘고, 응용 프로그래머는 코드 안에 SQL을 넣어 쓰고, DBA는 모든 권한과 최종 책임을 가진 슈퍼 사용자예요.</p>
-
+    <h3>사용자</h3>
+    <ul class="plain">
+      <li><b>초급 일반 사용자</b> : DB가 있는지도 모르고 화면(UI)만 쓰는 사람</li>
+      <li><b>중급 일반 사용자</b> : SQL로 직접 조회할 줄 아는 사람</li>
+      <li><b>응용 프로그래머</b> : 프로그램 코드 안에 SQL을 넣어 DB를 쓰는 사람</li>
+      <li>★ <b>DBA(DB 관리자)</b> : 모든 권한과 최종 책임을 가진 슈퍼 사용자</li>
+    </ul>
+    <h3>데이터 언어</h3>
+    <ul class="plain">
+      <li>★ <b>DDL(정의어)</b> : 테이블의 구조(틀)를 정의하는 언어. CREATE · ALTER · DROP. 응용 프로그래머 · DBA</li>
+      <li>★ <b>DML(조작어)</b> : 데이터 값을 조작하는 언어. SELECT · INSERT · UPDATE · DELETE. 일반 사용자 포함 모두</li>
+      <li>★ <b>DCL(제어어)</b> : 권한 · 보안을 제어하는 언어. GRANT · REVOKE · CREATE USER. <mark>DBA만</mark></li>
+      <li><b>TCL</b> : 트랜잭션을 묶는 언어. COMMIT · ROLLBACK · SAVEPOINT. <b>시험 안 나옴</b></li>
+    </ul>
+    <h3>DBMS 구성 요소 (위 그림 순서)</h3>
+    <ul class="plain">
+      <li><b>DDL 컴파일러</b> : DDL로 정의한 구조를 해석해 데이터 사전에 저장</li>
+      <li><b>DML 프리컴파일러</b> : 프로그램 코드(PHP 등) 안에서 SQL만 뽑아 먼저 해석</li>
+      <li><b>질의 처리기 → 런타임 DB 처리기 → 트랜잭션 관리자 → 저장 데이터 관리자</b> : 요청이 이 순서로 내려가 실제 데이터에 닿는다</li>
+      <li><b>데이터 사전</b> : 어떤 데이터가 어디에 어떤 형태로 있는지 적어 둔 곳. 데이터에 대한 정보</li>
+      <li><b>데이터 파일</b> : 실제 데이터가 저장된 파일</li>
+    </ul>
     <h3>데이터 모델 5종</h3>
-    <p>계층형(트리 1:N, 포인터) → 네트워크형(M:N, 포인터, 복잡) → <mark>관계형</mark>(테이블 + 키, 가장 많이 씀) → 객체 지향형 → 객체 관계형(절충형). 데이터 모델은 <b>DBMS를 분류하는 가장 중요한 기준</b>이에요.</p>
+    <ul class="plain">
+      <li>★ <b>데이터 모델</b> : DB 구조를 표현하는 방식. DBMS를 분류하는 가장 중요한 기준</li>
+      <li><b>계층형</b> : 트리 구조(1:N), 포인터로 연결. 이해·구축은 쉽지만 새 관계가 생기면 트리를 새로 만들어야 함</li>
+      <li><b>네트워크형</b> : 계층형을 보완해 M:N 허용. 유연하지만 연결이 복잡해 유지 관리가 힘듦</li>
+      <li>★ <b>관계형</b> : 행과 열로 된 테이블에 데이터를 담고 키로 연결. 가장 많이 씀, 수업에서 배우는 것</li>
+      <li><b>객체 지향형</b> : 객체 지향 언어의 개념을 가져와 데이터를 객체 단위로 저장</li>
+      <li><b>객체 관계형</b> : 관계형과 객체 지향형의 절충형</li>
+    </ul>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>DB = 저장소, DBMS = 관리 SW, DBS = DB + DBMS. DDL = 구조, DML = 데이터, DCL = 권한(DBA만). DBMS 필수 기능 중 가장 중요한 것은 제어.</p>
@@ -484,9 +525,11 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="hook"><p class="q">이 부분은 수업 녹음이 없어서 놓치기 쉬워요. 그런데 "구조를 그려라" 단골 후보예요</p>
       <p class="h">교재 p.20~29를 그대로 따라가면서 쉽게 풀었어요.</p></div>
 
-    <h3>스키마가 뭐였더라?</h3>
-    <p><mark>스키마</mark>는 DB에 저장되는 <b>데이터 구조와 제약 조건을 정의한 것</b>이에요. 예를 들어 학생(학번, 이름, 학년, 성별)이 구조고, "학번은 문자 4자리, 학년은 정수 1~4" 같은 게 제약 조건이죠. 그런데 같은 DB라도 <b>보는 사람에 따라</b> 필요한 모습이 달라요. 그래서 DB를 보는 관점을 세 단계로 나눴어요. 미국 표준 기관 ANSI가 1978년에 제안한 <b>ANSI/SPARC 3단계 구조</b>예요.</p>
-
+    <h3>스키마와 3단계 구조</h3>
+    <ul class="plain">
+      <li>★ <b>스키마</b> : DB에 저장되는 데이터 구조와 제약 조건을 정의한 것 (학생(학번, 이름, 학년, 성별) + "학년은 정수 1~4")</li>
+      <li><b>ANSI/SPARC 3단계 구조</b> : 같은 DB를 보는 관점을 외부 · 개념 · 내부 세 단계로 나눈 구조 (미국 표준 기관 ANSI, 1978)</li>
+    </ul>
     <figure class="fig">
       <svg viewBox="0 0 640 330" role="img" aria-label="외부 단계의 외부 스키마 여러 개가 개념 스키마 하나로, 개념 스키마가 내부 스키마 하나로, 내부 스키마가 데이터베이스로 이어지는 3단계 구조">
         <defs><marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
@@ -511,27 +554,29 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <figcaption>여러 개(외부) → 하나(개념) → 하나(내부) → DB. 단계 사이의 연결이 "사상(mapping)"</figcaption>
     </figure>
 
+    <h3>세 가지 스키마</h3>
     <ul class="plain">
-      <li><mark>외부 스키마</mark> — 사용자 한 명 한 명이 바라보는 <b>일부분</b>. 전체가 아니라 일부라서 <b>서브 스키마</b>라고도 하고, 사용자마다 다르니 <b>여러 개</b>예요. 교재 예: 교수님이 보는 "강의정보", 학생이 보는 "수강정보".</li>
-      <li><mark>개념 스키마</mark> — 모든 사용자의 관점을 합친 <b>조직 전체</b>의 DB 구조. DB당 <b>하나</b>뿐이고, 그냥 "스키마"라고 하면 보통 이걸 말해요. 예: "대학정보" 개념 스키마.</li>
-      <li><mark>내부 스키마</mark> — 저장 장치 관점에서 <b>어떻게 저장하나</b>. 레코드 형식, 배치 방법, 인덱스 같은 걸 정해요. 하드디스크의 물리적 구조 자체는 아니고 그보다 한 단계 위의 표현이에요. 이것도 DB당 <b>하나</b>.</li>
+      <li>★ <mark>외부 스키마</mark> : 사용자 한 명 한 명이 바라보는 DB의 일부분. 서브 스키마라고도 하며 사용자마다 달라 <b>여러 개</b> (교수의 "강의정보", 학생의 "수강정보")</li>
+      <li>★ <mark>개념 스키마</mark> : 모든 사용자의 관점을 합친 조직 전체의 DB 구조. DB당 <b>하나</b>, 그냥 "스키마"라고 하면 보통 이것</li>
+      <li>★ <mark>내부 스키마</mark> : 저장 장치 관점에서 데이터를 어떻게 저장할지 정한 구조(레코드 형식, 배치, 인덱스). DB당 <b>하나</b></li>
+      <li><b>사상(mapping)</b> : 단계와 단계 사이를 연결하는 것. DBMS의 핵심 역할 중 하나</li>
     </ul>
-
     <div class="analogy"><b>교재 비유로 보면 (F-35 전투기)</b> — 외부 스키마는 조종석 · 날개 · 꼬리처럼 <b>각자 담당하는 부품 한 조각</b>, 개념 스키마는 그 부품들이 모인 <b>비행기 전체 모습</b>, 내부 스키마는 겉판을 벗긴 <b>속 배선과 기계 구조</b>예요.</div>
 
-    <h3>왜 굳이 셋으로 나눴을까? → 데이터 독립성</h3>
-    <p>CH01에서 파일 시스템의 제일 큰 문제가 <b>종속성</b>(하나 바꾸면 다 고쳐야 함)이었죠. 3단계로 나누고 단계 사이를 DBMS가 연결(사상)해 주면, <b>아래가 바뀌어도 위는 영향을 거의 안 받아요</b>. 이게 <mark>데이터 독립성</mark>이고, 종속성 문제에 대한 DB의 답이에요.</p>
-    <div class="table-wrap"><table>
-      <thead><tr><th>사상</th><th>제공하는 독립성</th><th>무슨 뜻</th></tr></thead>
-      <tbody>
-        <tr><td>외부/개념 사상 (위쪽)</td><td class="hl"><b>논리적</b> 데이터 독립성</td><td>개념 스키마(논리 구조)를 바꿔도 응용 프로그램 영향 최소</td></tr>
-        <tr><td>개념/내부 사상 (아래쪽)</td><td class="hl"><b>물리적</b> 데이터 독립성</td><td>저장 구조(내부 스키마, 예: 인덱스 추가)를 바꿔도 개념 스키마 영향 최소</td></tr>
-      </tbody></table></div>
-    <p>이 사상을 지원하는 게 <b>DBMS의 핵심 역할 중 하나</b>예요.</p>
-
-    <h3>데이터 사전 = 데이터에 관한 데이터</h3>
-    <p>DBMS는 스키마와 사상 정보를 <mark>데이터 사전</mark>이라는 별도 저장소에 관리해요. 테이블 · 열 · 뷰 · 인덱스 · 사용자 권한 같은 정보가 다 들어 있죠. 실제 데이터가 아니라 데이터를 설명하는 데이터라서 <mark>메타 데이터</mark>라고 불러요. DBMS가 스스로 만들고 유지하고, 일반 사용자도 <b>검색은 할 수 있지만 변경은 DBMS만</b> 할 수 있어요.</p>
-    <p>정리하면 DB는 둘로 나뉘어요. 실제 데이터가 든 <b>사용자 데이터베이스</b>, 그리고 메타 데이터가 든 <b>시스템 데이터베이스</b>(= 시스템 카탈로그). 시스템 데이터베이스 안에는 데이터 사전과 <b>데이터 디렉토리</b>(데이터 위치 정보, 사용자 접근 불가)가 있어요.</p>
+    <h3>데이터 독립성</h3>
+    <ul class="plain">
+      <li>★ <mark>데이터 독립성</mark> : 아래 단계가 바뀌어도 위 단계가 영향을 거의 안 받는 성질. 파일 시스템의 종속성 문제에 대한 DB의 답</li>
+      <li>★ <b>논리적 데이터 독립성</b> : 개념 스키마(논리 구조)를 바꿔도 외부 스키마·응용 프로그램이 영향을 덜 받는 것. 외부/개념 사상(위쪽)이 제공</li>
+      <li>★ <b>물리적 데이터 독립성</b> : 내부 스키마(저장 구조, 예: 인덱스 추가)를 바꿔도 개념 스키마가 영향을 덜 받는 것. 개념/내부 사상(아래쪽)이 제공</li>
+    </ul>
+    <h3>데이터 사전</h3>
+    <ul class="plain">
+      <li>★ <mark>데이터 사전</mark> : 스키마와 사상 정보 등 DB를 설명하는 정보를 저장하는 곳(테이블·열·뷰·인덱스·권한). DBMS가 만들고 유지, 사용자는 검색만 가능하고 변경은 DBMS만</li>
+      <li><mark>메타 데이터</mark> : 실제 데이터가 아니라 데이터를 설명하는 데이터</li>
+      <li><b>사용자 데이터베이스</b> : 실제 데이터가 저장된 DB</li>
+      <li><b>시스템 데이터베이스(시스템 카탈로그)</b> : 메타 데이터가 저장된 DB. 데이터 사전과 데이터 디렉토리가 들어 있음</li>
+      <li><b>데이터 디렉토리</b> : 데이터의 위치 정보를 저장한 곳. 사용자 접근 불가</li>
+    </ul>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>3단계 구조 = 외부(사용자별, 여러 개) · 개념(조직 전체, 1개) · 내부(저장 방식, 1개). 외부/개념 사상 → 논리적 독립성, 개념/내부 사상 → 물리적 독립성. 데이터 사전 = 메타 데이터 저장소, 변경은 DBMS만.</p>
@@ -556,11 +601,32 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 4</span>
       <div><h2>CH03 — 표에 숨은 규칙, 그리고 그 규칙을 지키는 키</h2><div class="sub">9/17 · 9/22 수업 · 릴레이션 용어와 특성 · 키 · 무결성 제약조건</div></div></div>
 
-    <h3>① 용어와 특성</h3>
-    <p>속성 = 열, 투플 = 행, 도메인 = 속성이 가질 수 있는 값의 범위. <mark>차수</mark> = 속성 수(정적), <mark>카디널리티</mark> = 투플 수(동적, 학생이 늘면 바뀜). 그리고 릴레이션은 <b>집합</b>이라서 특성 4가지를 가져요: 투플 유일성 · 투플 무순서성 · 속성 무순서성 · 속성 원자성(한 칸에 값 하나).</p>
-
-    <h3>② 키 — 시험 단골</h3>
-    <p>투플이 유일해야 하니 구별 수단인 키가 필요해요. 후보키는 <mark>유일성</mark>(하나도 안 겹침) + <mark>최소성</mark>(군더더기 없음). 슈퍼키는 유일성만 있으면 되고요.</p>
+    <h3>릴레이션 용어</h3>
+    <ul class="plain">
+      <li><b>속성</b> : 릴레이션의 열</li>
+      <li><b>투플</b> : 릴레이션의 행</li>
+      <li><b>도메인</b> : 하나의 속성이 가질 수 있는 값의 범위 (학년의 도메인 = {1, 2, 3, 4})</li>
+      <li>★ <mark>차수</mark> : 속성의 개수. 잘 안 바뀜(정적)</li>
+      <li>★ <mark>카디널리티</mark> : 투플의 개수. 데이터가 들어오고 나가면 바뀜(동적)</li>
+    </ul>
+    <h3>릴레이션의 특성 4가지 (릴레이션은 집합이라서)</h3>
+    <ul class="plain">
+      <li><b>투플의 유일성</b> : 똑같은 투플은 없다</li>
+      <li><b>투플의 무순서성</b> : 투플 순서는 상관없다</li>
+      <li><b>속성의 무순서성</b> : 속성 순서도 상관없다</li>
+      <li><b>속성의 원자성</b> : 한 칸에는 더 쪼갤 수 없는 값 하나만</li>
+    </ul>
+    <h3>키 — 시험 단골</h3>
+    <ul class="plain">
+      <li><b>키</b> : 투플을 구별하는 기준이 되는 속성(들)</li>
+      <li>★ <mark>유일성</mark> : 키 값으로 모든 투플을 하나씩 구별할 수 있는 성질 (하나도 안 겹침)</li>
+      <li>★ <mark>최소성</mark> : 꼭 필요한 속성만으로 이루어진 성질 (하나라도 빼면 유일성이 깨짐)</li>
+      <li>★ <b>슈퍼키</b> : 유일성만 만족하는 키</li>
+      <li>★ <b>후보키</b> : 유일성과 최소성을 모두 만족하는 키</li>
+      <li>★ <b>기본키(PK)</b> : 후보키 중에서 골라 뽑은 1개. 안 바뀌고 · 널 없고 · 속성 적고 · 값 작은 것으로 (앞으로 들어올 값까지 고려)</li>
+      <li><b>대체키</b> : 기본키로 뽑히지 못한 나머지 후보키</li>
+      <li>★ <b>외래키(FK)</b> : 다른 릴레이션의 기본키를 참조하는 속성. 릴레이션끼리 잇는 연결 고리</li>
+    </ul>
     <figure class="fig">
       <svg viewBox="0 0 640 260" role="img" aria-label="슈퍼키가 가장 바깥, 그 안에 후보키, 후보키 안에 기본키와 대체키가 나뉘는 포함 관계">
         <rect x="20" y="10" width="600" height="240" rx="20" fill="var(--bg)" stroke="var(--line)" stroke-width="2"/>
@@ -587,18 +653,16 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <tr><td>{이름, 폰번호}</td><td>슈퍼키</td><td>이름 빼도 유일 → 최소성 ✗</td></tr>
         <tr><td>{이름, 학교이름, 학년, 반}</td><td>키 아님</td><td>같은 반 동명이인 → 유일성 ✗</td></tr>
       </tbody></table></div>
-    <p>기본키 고르는 기준: <b>안 바뀌고 · 널 없고 · 속성 적고 · 값 작은 것</b>. 지금 데이터만 보지 말고 앞으로 들어올 값까지 봐야 해요. 외래키는 <b>다른 릴레이션의 기본키를 가리키는</b> 연결 고리예요.</p>
 
-    <h3>③ 무결성 제약조건 4가지</h3>
-    <div class="table-wrap"><table>
-      <thead><tr><th>제약조건</th><th>규칙</th><th>SQL</th><th>위반 예</th></tr></thead>
-      <tbody>
-        <tr><td><b>개체</b></td><td>기본키는 널 ✗ · 중복 ✗</td><td>PRIMARY KEY</td><td>학번 NULL, 같은 학번 두 번</td></tr>
-        <tr><td><b>참조</b></td><td>외래키는 참조하는 기본키 값 <b>또는 널</b></td><td>FOREIGN KEY</td><td>학생에 없는 s999를 수강에</td></tr>
-        <tr><td>도메인</td><td>값이 허용 범위 안</td><td>NOT NULL · DEFAULT · CHECK</td><td>학년 CHECK(1~4)에 5</td></tr>
-        <tr><td>유일성</td><td>키 아닌 속성 중복 금지</td><td>UNIQUE</td><td>이메일 중복</td></tr>
-      </tbody></table></div>
-    <p>널은 0이나 빈칸이 아니라 <mark>아직 모르는 값</mark>이에요. 그래서 외래키는 "아직 안 가리킴(널)"은 괜찮고, 기본키는 비면 구별이 안 되니 안 돼요. 무결성은 코드가 아니라 <b>DBMS에 제약조건을 선언</b>해서 지켜요(자동 검사).</p>
+    <h3>무결성 제약조건 4가지</h3>
+    <ul class="plain">
+      <li>★ <b>개체 무결성</b> : 기본키는 널도, 중복도 안 된다. PRIMARY KEY (위반: 학번 NULL, 같은 학번 두 번)</li>
+      <li>★ <b>참조 무결성</b> : 외래키는 참조하는 릴레이션의 기본키 값이거나 <b>널</b>이어야 한다. FOREIGN KEY (위반: 학생에 없는 s999를 수강에)</li>
+      <li><b>도메인 무결성</b> : 속성 값이 도메인(허용 범위) 안에 있어야 한다. NOT NULL · DEFAULT · CHECK (위반: 학년 CHECK(1~4)에 5)</li>
+      <li><b>유일성 무결성</b> : 키가 아닌 속성도 중복이 안 되게 막는다. UNIQUE (위반: 이메일 중복)</li>
+      <li><mark>널(NULL)</mark> : 0이나 빈칸이 아니라 아직 모르는 값. 그래서 외래키는 널 허용, 기본키는 구별이 안 되니 불가</li>
+      <li><b>무결성을 지키는 방법</b> : 코드가 아니라 DBMS에 제약조건을 선언해 자동 검사</li>
+    </ul>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>슈퍼키(유일성) ⊇ 후보키(유일성 + 최소성) ⊇ 기본키, 남은 후보키 = 대체키. 개체 무결성 = PK 널·중복 ✗, 참조 무결성 = FK는 참조 PK 값이거나 널.</p>
@@ -620,29 +684,42 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 5</span>
       <div><h2>CH04 — SQL 뒤에서 돌아가는 수학, 관계 대수</h2><div class="sub">9/22 · 9/29 수업 · 관계 대수 vs 해석 · 집합 연산 · σ π ⋈ ÷ · 질의 최적화</div></div></div>
 
-    <p><b>관계 대수</b>는 "어떻게" 얻을지 순서를 쓰는 <mark>절차적</mark> 언어, <b>관계 해석</b>은 "무엇을" 원하는지만 쓰는 <mark>선언적</mark> 언어예요. 표현력은 같고, 둘 다 DBMS가 직접 실행하는 언어는 아니에요. SQL과 DBMS 내부 처리의 <b>이론적 기반</b>이죠. 입력도 릴레이션, 결과도 릴레이션.</p>
-
-    <h3>① 집합 연산 — 계산 문제</h3>
-    <div class="table-wrap"><table>
-      <thead><tr><th>연산</th><th>합병 조건</th><th>차수</th><th>카디널리티</th></tr></thead>
-      <tbody>
-        <tr><td>∪ 합집합</td><td>필요</td><td>그대로</td><td>≤ 합 (겹치면 한 번만)</td></tr>
-        <tr><td>∩ 교집합</td><td>필요</td><td>그대로</td><td>≤ 작은 쪽</td></tr>
-        <tr><td>− 차집합</td><td>필요</td><td>그대로</td><td>≤ 왼쪽 (순서 중요)</td></tr>
-        <tr><td class="hl"><b>× 카티션</b></td><td class="hl">불필요</td><td class="hl"><b>더하기</b></td><td class="hl"><b>곱하기</b></td></tr>
-      </tbody></table></div>
-    <p>합병 가능 = 차수가 같고 대응 속성의 도메인이 같은 것. R1 {s001, s002, s003}, R2 {s001, s002, s004, s005}면 ∪ = 5, ∩ = 2, R1−R2 = 1, R2−R1 = 2, × = 12.</p>
-
-    <h3>② 관계 연산 — σ π ⋈ ÷</h3>
+    <h3>관계 대수와 관계 해석</h3>
     <ul class="plain">
-      <li><mark>σ</mark> 셀렉트 = 조건에 맞는 <b>행</b> (SQL의 WHERE) · <mark>π</mark> 프로젝트 = 지정한 <b>열</b> (중복 투플 자동 제거). 예: <code>π 이름 (σ 학년=4 (학생))</code> = 4학년의 이름</li>
-      <li><mark>조인 ⋈</mark> = × 후 σ. 세타(비교 연산자) ⊃ 동등('=', 공통 속성 두 번) ⊃ <b>자연</b>(중복 속성 제거, 한 번)</li>
-      <li><b>디비전 ÷</b> = "<b>모든</b> ~을 가진" 투플 찾기</li>
-      <li>기본 연산 5 = ∪ − × σ π / 복합 연산 3 = ∩ ⋈ ÷ (∩ = R − (R − S))</li>
-      <li>확장: <b>세미 조인</b> = 한쪽 속성만(줄이기) · <b>외부 조인</b> = 짝 없는 투플도 널로 채워 포함(늘리기)</li>
+      <li>★ <b>관계 대수</b> : 원하는 결과를 얻는 연산 순서("어떻게")를 쓰는 <mark>절차적</mark> 언어</li>
+      <li><b>관계 해석</b> : 원하는 결과("무엇을")만 쓰는 <mark>선언적</mark> 언어</li>
+      <li><b>둘의 관계</b> : 표현력이 같고, DBMS가 직접 실행하는 언어가 아니라 SQL과 DBMS 내부 처리의 이론적 기반. 입력도 결과도 릴레이션</li>
     </ul>
-
-    <h3>③ 질의 최적화 — 서술형 1순위</h3>
+    <h3>집합 연산 — 계산 문제</h3>
+    <ul class="plain">
+      <li><b>합병 가능</b> : 두 릴레이션의 차수가 같고 대응 속성의 도메인이 같은 것. ∪ ∩ −에 필요</li>
+      <li><b>합집합 ∪</b> : 두 릴레이션의 투플을 합친 것. 차수 그대로, 카디널리티 ≤ 두 쪽의 합 (겹치면 한 번만)</li>
+      <li><b>교집합 ∩</b> : 양쪽에 다 있는 투플. 차수 그대로, 카디널리티 ≤ 작은 쪽</li>
+      <li><b>차집합 −</b> : 왼쪽에만 있는 투플. 차수 그대로, 카디널리티 ≤ 왼쪽 (순서 중요)</li>
+      <li>★ <b>카티션 프로덕트 ×</b> : 두 릴레이션의 투플을 모두 짝지은 것. 합병 조건 불필요, <mark>차수는 더하고 카디널리티는 곱한다</mark></li>
+      <li><b>계산 예</b> : R1 {s001, s002, s003}, R2 {s001, s002, s004, s005} → ∪ = 5, ∩ = 2, R1−R2 = 1, R2−R1 = 2, × = 12</li>
+    </ul>
+    <h3>관계 연산 — σ π ⋈ ÷</h3>
+    <ul class="plain">
+      <li>★ <mark>셀렉트 σ</mark> : 조건에 맞는 <b>행</b>을 고르는 연산 (SQL의 WHERE)</li>
+      <li>★ <mark>프로젝트 π</mark> : 지정한 <b>열</b>만 뽑는 연산. 중복 투플은 자동 제거. 예: <code>π 이름 (σ 학년=4 (학생))</code> = 4학년의 이름</li>
+      <li><mark>조인 ⋈</mark> : 두 릴레이션을 공통 속성으로 이어 붙이는 연산. × 한 뒤 σ 한 것과 같음</li>
+      <li><b>세타 조인</b> : 비교 연산자(=, &lt;, &gt; 등)로 조건을 거는 조인</li>
+      <li><b>동등 조인</b> : "=" 조건만 쓰는 조인. 공통 속성이 결과에 두 번 나온다</li>
+      <li><b>자연 조인</b> : 동등 조인에서 중복 속성을 하나 뺀 조인. 공통 속성이 한 번만</li>
+      <li><b>디비전 ÷</b> : "<b>모든</b> ~을 가진" 투플을 찾는 연산</li>
+      <li><b>기본 연산</b> : 다른 연산으로 대신할 수 없는 5가지. ∪ − × σ π</li>
+      <li><b>복합 연산</b> : 기본 연산으로 만들 수 있는 3가지. ∩ ⋈ ÷ (∩ = R − (R − S))</li>
+      <li><b>세미 조인</b> : 조인하되 한쪽 릴레이션의 속성만 남긴다 (결과가 줄어듦)</li>
+      <li><b>외부 조인</b> : 짝이 없는 투플도 널로 채워 결과에 포함한다 (결과가 늘어남)</li>
+    </ul>
+    <h3>질의 최적화 — 서술형 1순위</h3>
+    <ul class="plain">
+      <li><b>질의 처리 순서</b> : SQL → 관계 대수식 → 질의 트리 → 최적화 → 실행</li>
+      <li>★ <mark>질의 최적화</mark> : 연산 순서를 조정해 중간 릴레이션 크기를 최소화하는 것. 같은 결과라도 순서에 따라 속도가 크게 달라짐</li>
+      <li>★ <b>최적화 원칙</b> : 셀렉트·프로젝트를 트리 아래로(먼저), × + σ는 조인으로</li>
+      <li><b>김연아 예시</b> : 학생 × 수강을 먼저 하면 "학생 수 × 수강 수"줄을 만든 뒤에야 김연아를 찾지만(A), σ로 김연아를 먼저 고르면 1명으로 줄인 채 조인한다(B) → B가 빠르다</li>
+    </ul>
     <figure class="fig">
       <svg viewBox="0 0 640 300" role="img" aria-label="트리 A는 학생과 수강을 먼저 곱한 뒤 김연아를 고르고, 트리 B는 학생에서 김연아를 먼저 고른 뒤 수강과 조인한다">
         <defs><marker id="q1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--ink-3)"/></marker></defs>
@@ -669,7 +746,6 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       </svg>
       <figcaption>A는 중간 결과가 "학생 수 × 수강 수"로 폭발, B는 처음부터 1명으로 줄인 채 진행</figcaption>
     </figure>
-    <p>SQL → 관계 대수식 → 질의 트리 → 최적화 → 실행. 같은 결과라도 순서에 따라 <b>중간 릴레이션 크기</b>가 크게 달라요. 학생 × 수강을 먼저 하면 "학생 수 × 수강 수"줄을 만든 뒤에야 김연아를 찾지만, σ로 김연아를 <b>먼저 고르면</b> 1명으로 줄어든 채 조인해요. 그래서 B가 빨라요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>질의 최적화의 핵심 = 연산 순서를 조정해 중간 릴레이션 크기를 최소화. 셀렉트·프로젝트를 트리 아래로(먼저), × + σ는 조인으로. 그래서 셀렉트를 먼저 하는 트리가 효율적이다.</p>
@@ -847,7 +923,25 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
     <div class="ch-head"><span class="ch-num">장면 7</span>
       <div><h2>CH05 — SQL 문장을 보고 "결과를 말하시오"</h2><div class="sub">SELECT · WHERE · DISTINCT · ORDER BY · 집계 · GROUP BY · LIKE · IS NULL · UNION · INTERSECT · EXCEPT · 자세히: <a href="../1008/1008_학습자료.html">10/8</a> · <a href="../1013/1013_학습자료.html">10/13</a></div></div></div>
 
-    <p>시험 메모에 그대로 적혀 있어요: "<b>mysql 문장 해석할 줄 알아야 함.</b> 예시로 <code>select 이름, 주소 from 학생;</code> 이 구문의 결과를 말하시오." 그러니 univDB 학생 테이블을 머릿속에 넣고, 문장을 <mark>실행 순서대로</mark> 읽는 연습만 하면 돼요.</p>
+    <p>시험 메모에 그대로 적혀 있어요: "<b>mysql 문장 해석할 줄 알아야 함.</b> 예시로 <code>select 이름, 주소 from 학생;</code> 이 구문의 결과를 말하시오." univDB 학생 테이블을 머릿속에 넣고, 문장을 <mark>실행 순서대로</mark> 읽는 연습을 해요.</p>
+    <h3>SELECT 문 구성</h3>
+    <ul class="plain">
+      <li>★ <b>실행 순서</b> : FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY (프 · 웨 · 그 · 해 · 셀 · 오)</li>
+      <li><b>SELECT</b> : 결과에 보여 줄 열을 지정. 조건이 없으면 모든 행을 반환</li>
+      <li><b>DISTINCT</b> : 결과에서 중복 행을 제거</li>
+      <li><b>WHERE</b> : 조건에 맞는 행만 고른다</li>
+      <li><b>ORDER BY</b> : 결과를 정렬. ASC 오름차순(기본) · DESC 내림차순</li>
+      <li>★ <b>COUNT(*)</b> : 모든 행의 개수</li>
+      <li>★ <b>COUNT(열)</b> : 그 열에서 NULL을 뺀 개수</li>
+      <li><b>GROUP BY</b> : 같은 값끼리 그룹으로 묶는다</li>
+      <li><b>HAVING</b> : 그룹에 거는 조건 (WHERE는 행 조건)</li>
+      <li>★ <b>LIKE</b> : 문자열 패턴 검색. <code>_</code>는 정확히 1글자, <code>%</code>는 0글자 이상</li>
+      <li>★ <b>IS NULL</b> : NULL인 행 찾기. <code>= NULL</code>로 쓰면 0행</li>
+      <li><b>UNION</b> : 두 SELECT 결과의 합집합 (중복 제거)</li>
+      <li><b>INTERSECT</b> : 교집합 (MySQL 8.0.31 이상)</li>
+      <li><b>EXCEPT</b> : 차집합 (MINUS는 MySQL에 없음)</li>
+    </ul>
+    <h3>univDB 학생 테이블로 연습</h3>
     <div class="table-wrap"><table>
       <thead><tr><th>학번</th><th>이름</th><th>주소</th><th>학년</th><th>나이</th><th>성별</th><th>휴대폰번호</th><th>소속학과</th></tr></thead>
       <tbody>
