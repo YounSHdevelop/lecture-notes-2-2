@@ -602,6 +602,42 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <div><h2>CH03 — 표에 숨은 규칙, 그리고 그 규칙을 지키는 키</h2><div class="sub">9/17 · 9/22 수업 · 릴레이션 용어와 특성 · 키 · 무결성 제약조건</div></div></div>
 
     <h3>릴레이션 용어</h3>
+    <figure class="fig">
+      <svg viewBox="0 0 640 300" role="img" aria-label="학생 릴레이션 표 하나에 속성(열), 투플(행), 도메인, 차수(속성 개수 4), 카디널리티(투플 개수 3)를 표시한 그림">
+        <text x="350" y="30" font-size="14" font-weight="800" fill="var(--teal-ink)" text-anchor="middle">차수 = 속성 개수 = 4 (정적)</text>
+        <path d="M152 52 V44 H548 V52" fill="none" stroke="var(--teal)" stroke-width="2"/>
+        <rect x="150" y="62" width="400" height="36" fill="var(--teal-soft)" stroke="var(--line)" stroke-width="1.5"/>
+        <rect x="150" y="98" width="400" height="105" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5"/>
+        <g stroke="var(--line)" stroke-width="1.5">
+          <line x1="250" y1="62" x2="250" y2="203"/><line x1="350" y1="62" x2="350" y2="203"/><line x1="450" y1="62" x2="450" y2="203"/>
+          <line x1="150" y1="133" x2="550" y2="133"/><line x1="150" y1="168" x2="550" y2="168"/>
+        </g>
+        <g font-size="14" font-weight="800" fill="var(--teal-ink)" text-anchor="middle">
+          <text x="200" y="85">학번</text><text x="300" y="85">이름</text><text x="400" y="85">학년</text><text x="500" y="85">학과</text>
+        </g>
+        <g font-size="13" fill="var(--ink)" text-anchor="middle">
+          <text x="200" y="121">1001</text><text x="300" y="121">홍길동</text><text x="400" y="121">2</text><text x="500" y="121">컴퓨터</text>
+          <text x="200" y="156">1002</text><text x="300" y="156">이몽룡</text><text x="400" y="156">3</text><text x="500" y="156">경영</text>
+          <text x="200" y="191">1003</text><text x="300" y="191">성춘향</text><text x="400" y="191">1</text><text x="500" y="191">컴퓨터</text>
+        </g>
+        <rect x="353" y="65" width="94" height="135" rx="4" fill="none" stroke="var(--teal)" stroke-width="2.5" stroke-dasharray="6 4"/>
+        <rect x="153" y="136" width="394" height="29" rx="4" fill="none" stroke="var(--teal)" stroke-width="2.5"/>
+        <path d="M140 100 H132 V201 H140" fill="none" stroke="var(--teal)" stroke-width="2"/>
+        <g font-size="13" text-anchor="end">
+          <text x="124" y="134" font-weight="800" fill="var(--teal-ink)">카디널리티</text>
+          <text x="124" y="153" fill="var(--ink-2)">= 투플 개수 = 3</text>
+          <text x="124" y="172" fill="var(--ink-3)">(동적)</text>
+        </g>
+        <line x1="550" y1="150" x2="566" y2="150" stroke="var(--teal)" stroke-width="2"/>
+        <text x="572" y="146" font-size="13" font-weight="800" fill="var(--teal-ink)">투플</text>
+        <text x="572" y="163" font-size="12" fill="var(--ink-3)">= 행</text>
+        <line x1="400" y1="203" x2="400" y2="246" stroke="var(--teal)" stroke-width="2"/>
+        <text x="410" y="226" font-size="13" font-weight="800" fill="var(--teal-ink)">속성 <tspan font-weight="400" fill="var(--ink-3)">= 열 (점선)</tspan></text>
+        <rect x="260" y="246" width="280" height="38" rx="10" fill="var(--bg)" stroke="var(--line)" stroke-width="1.5"/>
+        <text x="400" y="270" font-size="13" fill="var(--ink)" text-anchor="middle"><tspan font-weight="800">학년의 도메인</tspan> = {1, 2, 3, 4}</text>
+      </svg>
+      <figcaption>표 하나로 보면: 세로줄 = 속성, 가로줄 = 투플. 속성을 세면 차수(4), 투플을 세면 카디널리티(3). 학년 칸에 들어갈 수 있는 값의 범위가 도메인.</figcaption>
+    </figure>
     <ul class="plain">
       <li><b>속성</b> : 릴레이션의 열</li>
       <li><b>투플</b> : 릴레이션의 행</li>
