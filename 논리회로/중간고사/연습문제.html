@@ -266,8 +266,22 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   .ch-num{margin-top:0}
   .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
 }
+/* 틀린 문제 체크 (연습문제 페이지만, data-week="연습문제") */
+.wr-btn{margin-left:6px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-3);border-radius:8px;padding:0 9px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;min-height:30px;vertical-align:middle;white-space:nowrap}
+.wr-btn:hover{border-color:var(--no);color:var(--no)}
+li.wrong{background:var(--no-soft);box-shadow:inset 3px 0 0 var(--no);border-radius:6px;padding-left:8px}
+li.wrong>.wr-btn{border-color:var(--no);background:var(--no);color:#fff}
+:root[data-theme="dark"] li.wrong>.wr-btn{color:#2e1616}
+body.wr-on{padding-bottom:84px}
+.wr-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;width:max-content;max-width:calc(100% - 32px);background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.wr-bar b{color:var(--no);font-variant-numeric:tabular-nums}
+.wr-bar .btn{min-height:36px;padding:5px 12px;font-size:14px}
+.wr-bar .btn[disabled]{opacity:.45;cursor:not-allowed}
+body.wr-only .cloze-box li:not(.wrong):not(.wr-has),body.wr-only main>section.ch:not(.wr-has),body.wr-only .flow{display:none}
+body.wr-only .cloze-box>p.rv-d{display:none}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 @media print{
+  .wr-btn,.wr-bar{display:none!important}
   .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
   body{background:#fff;font-size:12pt}
   .fc-print{display:block}
@@ -1116,6 +1130,69 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       setTimeout(function () { body.classList.remove('print-nb'); }, 500);
     });
     nbCount();
+  }
+
+  /* 틀린 문제 체크: 답 칸(.cloze)이 바로 붙은 문제마다 "틀림" 버튼 → 틀린 것만 모아 보기 */
+  if (body.dataset.week === '연습문제') {
+    var wrong = load('wrong', {});
+    var items = $$('.cloze-box li').filter(function (li) {
+      return Array.prototype.some.call(li.children, function (c) { return c.classList.contains('cloze'); });
+    });
+    if (items.length) {
+      var seq = {};
+      items.forEach(function (li) {
+        var sec = li.closest('section'), sid = (sec && sec.id) || 'p';
+        seq[sid] = (seq[sid] || 0) + 1;
+        li.dataset.wr = sid + '-' + seq[sid];
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'wr-btn';
+        var ans = Array.prototype.filter.call(li.children, function (c) { return c.classList.contains('cloze'); })[0];
+        li.insertBefore(b, ans.nextSibling);
+        li._wrb = b;
+        b.addEventListener('click', function () {
+          if (wrong[li.dataset.wr]) delete wrong[li.dataset.wr]; else wrong[li.dataset.wr] = 1;
+          save('wrong', wrong); wrPaint();
+        });
+      });
+      var bar = document.createElement('div');
+      bar.className = 'wr-bar'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', '틀린 문제');
+      bar.innerHTML = '<span>틀린 문제 <b class="wr-n">0</b>개</span>' +
+        '<button type="button" class="btn pri wr-only">틀린 것만 보기</button>' +
+        '<button type="button" class="btn wr-clear">표시 지우기</button>';
+      body.appendChild(bar); body.classList.add('wr-on');
+      var onlyBtn = $('.wr-only', bar), clearBtn = $('.wr-clear', bar);
+      onlyBtn.addEventListener('click', function () {
+        var on = !body.classList.contains('wr-only');
+        body.classList.toggle('wr-only', on);
+        if (on) $$('li.wrong .cloze').forEach(function (c) { c.classList.remove('open'); });
+        wrPaint(); window.scrollTo(0, 0);
+      });
+      clearBtn.addEventListener('click', function () {
+        if (!confirm('틀림 표시를 모두 지울까요?')) return;
+        wrong = {}; save('wrong', wrong); body.classList.remove('wr-only'); wrPaint();
+      });
+      function wrPaint() {
+        var n = 0;
+        $$('.wr-has').forEach(function (el) { el.classList.remove('wr-has'); });
+        items.forEach(function (li) {
+          var on = !!wrong[li.dataset.wr], b = li._wrb;
+          li.classList.toggle('wrong', on);
+          b.textContent = on ? '틀림 ✓' : '틀림';
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          if (!on) return;
+          n++;
+          for (var p = li.parentElement; p && p !== body; p = p.parentElement) {
+            if (p.tagName === 'LI' || p.tagName === 'SECTION') p.classList.add('wr-has');
+          }
+        });
+        if (!n) body.classList.remove('wr-only');
+        $('.wr-n', bar).textContent = n;
+        onlyBtn.disabled = !n && !body.classList.contains('wr-only');
+        onlyBtn.textContent = body.classList.contains('wr-only') ? '전체 보기' : '틀린 것만 보기';
+        clearBtn.disabled = !n;
+      }
+      wrPaint();
+    }
   }
 
   updateProgress();
