@@ -294,9 +294,9 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">중간고사 대비 · CH01~CH05(SELECT · LIKE · IS NULL · 집합 연산자까지) · 9/3~10/8 수업 8회 + 교재</div>
+    <div class="eyebrow">중간고사 대비 · CH01~CH06 앞부분(SELECT · 집합 연산자 · CREATE TABLE 제약조건 · GRANT · 뷰 개념까지) · 9/3~10/15 수업 + 교재</div>
     <h1>중간고사, 이 한 페이지로 한 바퀴 돌자</h1>
-    <p class="lead">8번의 수업에서 시험에 나올 것만 장(章) 순서로 다시 설명하고, 수업에서 못 다룬 교재 내용(3단계 구조)도 채웠어요. "구조를 그려라" 5종을 빈 종이에 직접 그려 보는 연습과, SQL 문장을 보고 결과를 말하는 연습(장면 7)이 있어요.</p>
+    <p class="lead">8번의 수업에서 시험에 나올 것만 장(章) 순서로 다시 설명하고, 수업에서 못 다룬 교재 내용(3단계 구조)도 채웠어요. "구조를 그려라" 5종을 빈 종이에 직접 그려 보는 연습과, SQL 문장을 보고 결과를 말하는 연습(장면 7), 10/15에 나간 CH06 앞부분(장면 8)이 있어요.</p>
     <div class="goal">
       <h2>이 페이지를 다 보면 할 수 있는 것</h2>
       <ol>
@@ -304,7 +304,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li>후보키 판별, 무결성 위반 구분, 집합 연산 크기 계산을 바로 풀 수 있다</li>
         <li>"왜 그런가"를 묻는 서술형(질의 최적화, 데이터 독립성)에 내 말로 답할 수 있다</li>
       </ol>
-      <div class="time">1회독 약 100분 · 장면 7개 · 퀴즈 12문항 · 시간 없으면 장면마다 주황 박스만</div>
+      <div class="time">1회독 약 110분 · 장면 8개 · 퀴즈 15문항 · 시간 없으면 장면마다 주황 박스만</div>
     </div>
     <div class="exam">
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것 (모아 보기)</h2>
@@ -313,6 +313,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li>"용어 정의는 되도록 시험에 안 내려고 한다" → 정의 암기보다 <b>왜 그런지</b></li>
         <li>"<b>MySQL 문장 해석할 줄 알아야 함</b> — select 이름, 주소 from 학생; 이 구문의 결과를 말하시오" → 장면 7</li>
         <li>질의 트리는 "어떤 게 성능이 좋고 <b>왜 그런지 설명</b>할 수 있으면" · <b>TCL은 안 나온다</b></li>
+        <li>"INSERT 명령어를 봤을 때 <b>어디가 맞고 어디가 문제인지</b> 아는 게 중요하다" (10/15) → 장면 8</li>
       </ul>
     </div>
     <nav class="flow" aria-label="공부 순서">
@@ -323,6 +324,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <a href="#c5"><b>장면 5</b>CH04 관계 대수</a>
       <a href="#c6"><b>장면 6</b>그리기 5종</a>
       <a href="#c7"><b>장면 7</b>SELECT 결과 말하기</a>
+      <a href="#c8"><b>장면 8</b>CH06 INSERT · 권한</a>
       <a href="#review"><b>복습</b>최종 점검</a>
     </nav>
   </div>
@@ -1013,12 +1015,77 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <button class="o">이승엽</button></div>
       <div class="fb">나이 30(이승엽), 26(홍길동 ×2) → 많은 순. NULL(이영애)은 비교에서 빠져요.</div></div>
 
-    <div class="next"><label><input type="checkbox" data-done="c7">이해했어요</label><a href="#review">최종 점검하러 가기 →</a></div>
+    <div class="next"><label><input type="checkbox" data-done="c7">이해했어요</label><a href="#c8">다음 장면 →</a></div>
+  </section>
+
+  <section class="ch" id="c8">
+    <div class="ch-head"><span class="ch-num">장면 8</span>
+      <div><h2>이 INSERT는 들어갈까, 에러가 날까? (CH06 앞부분)</h2><div class="sub">10/15 수업 · CREATE TABLE 제약조건 · INSERT 에러 판별 · ALTER · DROP · GRANT · REVOKE · 뷰 · 자세한 설명은 10/15 학습자료</div></div></div>
+
+    <p>중간고사 전 마지막 수업(10/15)이에요. 장면 4의 무결성 제약조건을 <b>진짜 SQL로 테이블에 걸고</b>, INSERT를 넣어서 들어가는지 에러가 나는지 확인했어요. 교수님이 "INSERT 명령어를 봤을 때 <mark>어디가 맞고 어디가 문제인지</mark> 아는 게 중요하다"고 했어요.</p>
+
+    <h3>CREATE TABLE 제약조건</h3>
+    <ul class="plain">
+      <li><mark>NOT NULL</mark> : 반드시 값을 넣어야 함. 빠지면 에러</li>
+      <li><mark>DEFAULT</mark> : 값을 안 넣으면 정해 둔 기본값이 자동으로 들어감 (학생2 주소 '미정', 수강2 중간성적 0)</li>
+      <li><b>PRIMARY KEY</b> : 기본키, 널 · 중복 금지 (개체 무결성)</li>
+      <li><b>UNIQUE</b> : 키가 아닌 열의 중복 금지 (유일성 무결성, 학생2 휴대폰번호)</li>
+      <li><b>FOREIGN KEY ... REFERENCES</b> : 다른 테이블의 키를 참조 (참조 무결성)</li>
+      <li><b>NULL vs DEFAULT</b> : NULL은 아직 모르는 값, DEFAULT는 안 넣으면 자동으로 들어가는 진짜 값. 교수님이 "0, 공백, 기본값은 다르다"고 했어요</li>
+      <li><b>만드는 순서</b> : 참조되는 테이블 먼저(과목2 · 학생2 → 수강2). <b>지울 땐 반대</b>로 자식(수강2) 먼저</li>
+    </ul>
+
+    <h3>INSERT 판별 (교재 p.6~7 예제)</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>넣으려는 것</th><th>결과</th><th>왜</th></tr></thead>
+      <tbody>
+        <tr><td>과목2(모든 열 NOT NULL)에 시수를 빼고 넣음</td><td><b>에러</b></td><td>NOT NULL 열 누락</td></tr>
+        <tr><td>강의실(CHAR(5))에 따옴표 없이 A-123</td><td><b>에러</b></td><td>데이터 유형 불일치</td></tr>
+        <tr><td>학생2에 이미 있는 휴대폰번호</td><td><b>에러</b></td><td>UNIQUE 위반 (이름이 같은 건 상관없음)</td></tr>
+        <tr><td>학생2에 주소 · 나이 없이 넣음</td><td>성공</td><td>주소는 DEFAULT '미정', 나이는 NULL 허용</td></tr>
+        <tr><td>수강2에 과목2에 없는 c222</td><td><b>에러</b></td><td>외래키(참조 무결성) 위반</td></tr>
+        <tr><td>수강2에 이미 있는 (s111, c111)</td><td><b>에러</b></td><td>기본키(학번 + 과목번호) 중복</td></tr>
+      </tbody></table></div>
+
+    <h3>ALTER · DROP</h3>
+    <ul class="plain">
+      <li><b>ALTER TABLE</b> : ADD(열 추가) · MODIFY(수정) · DROP COLUMN(열 삭제)</li>
+      <li><b>DROP TABLE 과목2</b> : 수강2가 참조하고 있으면 삭제 불가 → 수강2 먼저 삭제</li>
+    </ul>
+
+    <h3>사용자와 권한 (DCL)</h3>
+    <pre class="code"><span class="file">교재 p.10~13</span>CREATE USER 'user1'@'127.1.1.1' IDENTIFIED BY '1111' ;   <span class="c">// % 이면 어디서든 접속</span>
+GRANT INSERT, UPDATE, DELETE ON univDB.* TO 'user1'@'127.1.1.1' ;
+GRANT ALL ON *.* TO 'user4'@'%' <span class="hl">WITH GRANT OPTION</span> ;
+REVOKE DELETE ON univDB.* FROM 'user1'@'127.1.1.1' ;   <span class="c">// 남는 권한 : INSERT, UPDATE</span></pre>
+    <ul class="plain">
+      <li><b>권한 5가지</b> : INSERT · UPDATE · DELETE · SELECT · ALL</li>
+      <li><mark>WITH GRANT OPTION</mark> : 받은 권한을 다른 사람에게 다시 줄 수 있음 (root에 가까워짐)</li>
+    </ul>
+
+    <h3>뷰 (개념만)</h3>
+    <ul class="plain">
+      <li><mark>뷰</mark> : 실제 데이터를 저장하지 않는 가상 테이블. 기반 테이블에서 필요한 부분만 보여 주는 "창문". 테이블은 실체, 뷰는 가상</li>
+    </ul>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>INSERT 에러는 NOT NULL 열 누락, 데이터 유형 불일치, UNIQUE · 기본키 중복, 참조 테이블에 없는 외래키 값 때문에 생긴다. 권한은 GRANT ~ TO로 주고 REVOKE ~ FROM으로 빼앗으며, WITH GRANT OPTION이면 받은 권한을 다시 줄 수 있다.</p>
+      <div class="mn">판별 순서: <b>빠진 NOT NULL? → 형식? → PK · UNIQUE 중복? → FK 값이 부모에 있나?</b> / <b>GRANT ~ TO, REVOKE ~ FROM</b></div></div>
+
+    <div class="check" data-id="k8" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">수강2(FK 학번 → 학생2, FK 과목번호 → 과목2)에 학생2에 없는 학번 s333과 과목2에 있는 c111을 넣으면?</div>
+      <div class="opts">
+        <button class="o">성공 (과목 c111은 있으니까)</button>
+        <button class="o">외래키 제약 오류</button>
+        <button class="o">UNIQUE 제약 오류</button></div>
+      <div class="fb">외래키가 두 개라 <b>둘 다</b> 부모 테이블에 있어야 해요. s333이 학생2에 없으니 참조 무결성 위반이에요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c8">이해했어요</label><a href="#review">최종 점검하러 가기 →</a></div>
   </section>
 
   <section class="ch review" id="review">
     <div class="ch-head"><span class="ch-num">복습</span>
-      <div><h2>시험 전날 최종 점검</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 12 → 내 말로</div></div></div>
+      <div><h2>시험 전날 최종 점검</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 15 → 내 말로</div></div></div>
 
     <h3 class="rv-h">한 장 정리 <small>인쇄하면 A4 한두 장</small></h3>
     <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요. 눌러서 하나씩 확인하세요.</p>
@@ -1047,6 +1114,10 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li>질의 최적화의 핵심은 <span class="kw">중간 릴레이션을 최소화</span>하는 것. 그래서 조인하기 전에 σ로 행부터 줄여요.</li></ul></div>
       <div class="grp"><h4>⑥ CH05 앞부분</h4><ul>
         <li>SQL은 관계 DB의 표준 언어예요(IBM SYSTEM R에서 시작, ANSI · ISO 표준). univDB의 수강 테이블은 (학번 + 과목번호)가 기본키인데, 이 둘이 각각 학생 · 과목 테이블을 가리키는 외래키이기도 해요. 학생 한 명이 여러 과목을 들으니 학생 : 수강 = 1 : N.</li></ul></div>
+      <div class="grp"><h4>⑦ CH06 앞부분 (10/15) <span class="ex-t">★ 해석</span><span class="mn">GRANT ~ TO / REVOKE ~ FROM</span></h4><ul>
+        <li>NOT NULL 열이 빠지거나, UNIQUE · 기본키 값이 겹치거나, 부모 테이블에 없는 외래키 값을 넣으면 INSERT가 <span class="kw">에러</span>가 나요. NULL은 모르는 값, <span class="kw">DEFAULT</span>는 안 넣으면 자동으로 들어가는 값.</li>
+        <li>참조되는 테이블을 먼저 만들고, 지울 땐 참조하는 테이블(자식)을 먼저. ALTER TABLE은 ADD · MODIFY · DROP COLUMN.</li>
+        <li>권한 : INSERT · UPDATE · DELETE · SELECT · ALL. <span class="kw">WITH GRANT OPTION</span>이면 받은 권한을 다른 사람에게 다시 줄 수 있어요. 뷰는 데이터를 저장하지 않는 <span class="kw">가상 테이블</span>.</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
@@ -1078,11 +1149,16 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <div class="fc-item"><div class="q">집합 연산 결과 크기는?</div><div class="a">∪ ≤ 합 · ∩ ≤ 작은 쪽 · − ≤ 왼쪽 (차수 그대로) / × 차수 합 · 카디 곱</div></div>
         <div class="fc-item"><div class="q">동등 조인 vs 자연 조인은?</div><div class="a">동등 = '=' 조건, 공통 속성 두 번. 자연 = 중복 속성 제거, 한 번.</div></div>
         <div class="fc-item"><div class="q">질의 최적화의 핵심은?</div><div class="a">연산 순서를 조정해 중간 릴레이션 크기 최소화. σ · π를 먼저(트리 아래로).</div></div>
+        <div class="fc-item"><div class="q">NULL과 DEFAULT의 차이는?</div><div class="a">NULL = 아직 모르는 값. DEFAULT = 값을 안 넣으면 자동으로 들어가는 기본값.</div></div>
+        <div class="fc-item"><div class="q">INSERT가 에러 나는 경우는?</div><div class="a">NOT NULL 열 누락 · 유형 불일치 · UNIQUE / 기본키 중복 · 부모에 없는 외래키 값.</div></div>
+        <div class="fc-item"><div class="q">테이블 만드는 순서 · 지우는 순서는?</div><div class="a">만들 땐 참조되는 테이블(과목2 · 학생2) 먼저, 지울 땐 참조하는 테이블(수강2) 먼저.</div></div>
+        <div class="fc-item"><div class="q">WITH GRANT OPTION이란?</div><div class="a">받은 권한을 다른 사용자에게 다시 줄 수 있게 하는 옵션.</div></div>
+        <div class="fc-item"><div class="q">뷰란?</div><div class="a">실제 데이터를 저장하지 않는 가상 테이블. 기반 테이블에서 필요한 부분만 보여 준다.</div></div>
       </div>
       <ol class="fc-print"></ol>
     </div>
 
-    <h3 class="rv-h">퀴즈 12문항 <small>다 풀고 채점하기</small></h3>
+    <h3 class="rv-h">퀴즈 15문항 <small>다 풀고 채점하기</small></h3>
     <form class="box quiz" data-quiz>
       <div class="q" data-answer="2"><p class="qt"><b>Q1</b>"파일 구조가 바뀌면 그 파일을 쓰는 프로그램을 모두 고쳐야 하는" 문제는?</p>
         <label class="opt"><input type="radio" name="q1" value="0">중복성</label>
@@ -1156,6 +1232,24 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <label class="opt"><input type="radio" name="q12" value="2">AND로 연결된 셀렉트는 하나로 합친다</label>
         <label class="opt"><input type="radio" name="q12" value="3">AND 조건식은 OR로 바꾼다</label>
         <div class="explain">σ · π는 먼저, AND 셀렉트는 분리, OR는 AND로, × + σ는 조인으로. 목적은 중간 릴레이션 최소화.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q13</b>학생2(학번 PK, 휴대폰번호 UNIQUE, 주소 DEFAULT '미정')에 이미 있는 휴대폰번호로 새 학생을 넣으면?</p>
+        <label class="opt"><input type="radio" name="q13" value="0">성공, 주소는 '미정'</label>
+        <label class="opt"><input type="radio" name="q13" value="1">기본키 제약 오류</label>
+        <label class="opt"><input type="radio" name="q13" value="2">UNIQUE 제약 오류</label>
+        <label class="opt"><input type="radio" name="q13" value="3">외래키 제약 오류</label>
+        <div class="explain">휴대폰번호에 UNIQUE가 걸려 있어 중복이면 에러예요. 학번이 새 값이면 기본키 문제는 없어요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q14</b>수강2가 과목2를 참조하고 있을 때 <code>DROP TABLE 과목2;</code>를 실행하면?</p>
+        <label class="opt"><input type="radio" name="q14" value="0">삭제 불가, 수강2를 먼저 지워야 함</label>
+        <label class="opt"><input type="radio" name="q14" value="1">과목2와 수강2가 함께 삭제됨</label>
+        <label class="opt"><input type="radio" name="q14" value="2">과목2만 삭제되고 수강2의 과목번호는 NULL이 됨</label>
+        <label class="opt"><input type="radio" name="q14" value="3">ALTER TABLE을 먼저 해야 함</label>
+        <div class="explain">참조당하는 테이블은 바로 지울 수 없어요. 참조하는(자식) 수강2를 먼저 지워요.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q15</b><code>GRANT SELECT ON univDB.학생 TO 'user2'@'localhost';</code>를 받은 user2가 할 수 있는 것은?</p>
+        <label class="opt"><input type="radio" name="q15" value="0">학생 테이블 수정</label>
+        <label class="opt"><input type="radio" name="q15" value="1">다른 사용자에게 SELECT 권한 주기</label>
+        <label class="opt"><input type="radio" name="q15" value="2">univDB의 모든 테이블 조회</label>
+        <label class="opt"><input type="radio" name="q15" value="3">학생 테이블 조회만</label>
+        <div class="explain">SELECT를 학생 테이블 하나에만 받았어요. 다시 주려면 WITH GRANT OPTION이 필요해요.</div></div>
       <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
     </form>
 
@@ -1184,7 +1278,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
   </section>
 </main>
 
-<footer>데이터베이스 · 중간고사 대비 · CH01~CH05 · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<footer>데이터베이스 · 중간고사 대비 · CH01~CH06 앞부분 · 진행률은 이 브라우저에만 저장됩니다.</footer>
 <script>
 /* study-html v3 공통 스크립트 */
 (function () {
