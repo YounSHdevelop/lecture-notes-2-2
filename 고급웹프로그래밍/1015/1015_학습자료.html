@@ -463,14 +463,25 @@ case "REMOVE_ITEM":
   };</pre>
 
     <p>헷갈리기 쉬운 곳이 둘 있어요. 하나, <b>수량 1에서 - 를 누르면</b> 상품이 사라지는 게 아니라 <mark>1 그대로</mark>예요. 빼고 싶으면 Remove를 눌러야 하죠. 둘, <mark>filter는 조건이 true인 것만 남겨요</mark>. 그래서 "지울 id와 <b>다른</b> 것만 남겨라"(<code>!==</code>)가 곧 삭제예요.</p>
-    <p>총 금액은 State에 따로 저장하지 않아요. items만 있으면 언제든 계산되니까 화면을 그릴 때마다 <code>items.reduce((sum, item) =&gt; sum + item.price * item.quantity, 0)</code>로 구해요. 이미 있는 State로 계산할 수 있는 값은 State로 또 만들지 않는 거예요.</p>
+    <p>총 금액은 State에 따로 저장하지 않아요. items만 있으면 언제든 계산되니까 화면을 그릴 때마다 아래처럼 reduce로 구해요. 이미 있는 State로 계산할 수 있는 값은 State로 또 만들지 않는 거예요.</p>
+    <pre class="code">const total = items.reduce(
+  (sum, item) =&gt; sum + item.price * item.quantity,
+  0
+);</pre>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>상태 변경 규칙은 모두 Reducer 안에 두고, map() · filter() · Spread Syntax로 Immutable Update를 한다. Event Handler는 State를 직접 바꾸지 않고 dispatch()로 Action만 전달한다.</p>
       <div class="mn">외우는 법: <b>바꾸기는 map, 빼기는 filter, 복사는 ...</b></div></div>
 
-    <div class="vs"><div class="x"><b>✗ 이렇게 쓰면 틀려요</b><code>state.items.push(product); return state;</code> — 같은 배열을 고쳐서 그대로 돌려주면 React는 "안 바뀌었네" 하고 화면을 다시 안 그려요</div>
-      <div class="o"><b>○ 맞게 쓰기</b><code>return { ...state, items: [...state.items, { ...product, quantity: 1 }] };</code> — 새 객체 · 새 배열</div></div>
+    <div class="vs"><div class="x"><b>✗ 이렇게 쓰면 틀려요</b>같은 배열을 고쳐서 그대로 돌려주면 React는 "안 바뀌었네" 하고 화면을 다시 안 그려요<pre class="code">state.items.push(product);
+return state;</pre></div>
+      <div class="o"><b>○ 맞게 쓰기</b>새 객체 · 새 배열을 만들어 돌려줘요<pre class="code">return {
+  ...state,
+  items: [
+    ...state.items,
+    { ...product, quantity: 1 },
+  ],
+};</pre></div></div>
 
     <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
       <div class="q">items가 Keyboard ×2, Mouse ×1일 때 <code>DECREASE_QUANTITY(Mouse)</code> → <code>REMOVE_ITEM(Keyboard)</code> 순서로 dispatch했다. 결과는?</div>

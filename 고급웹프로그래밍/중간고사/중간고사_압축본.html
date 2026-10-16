@@ -304,7 +304,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li>출력 순서 · Scope · Hoisting · Closure · this · State 코드의 실행 결과를 맞힐 수 있다</li>
         <li>면접 단골(GET/POST, HTTP/HTTPS, 쿠키/세션, Call by Value/Reference, Virtual DOM)을 3문장으로 말할 수 있다</li>
       </ol>
-      <div class="time">약 60분 · 장면 6개(주차별) · 퀴즈 14문항</div>
+      <div class="time">약 60분 · 퀴즈 16문항 · 처음이면 <a href="규칙8.html">규칙 8개 페이지</a>(모바일 5분 단위)를 먼저 보고, 여기선 퀴즈만 풀어도 돼요</div>
     </div>
     <div class="exam">
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님 시험 공지 (10/8)</h2>
@@ -378,7 +378,9 @@ console.log(localValue);
     <p><code>classList.add("active")</code>로 글씨가 빨개지면 <mark>DOM만 바뀌고 CSSOM은 그대로</mark>예요(교수님이 "그대로겠지?"를 세 번 물은 포인트). Render Tree가 CSSOM에서 .active를 찾아 다시 그려요.</p>
 
     <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
-      <div class="q"><code>const name = "Kim"; console.log(`Hi ${name.length}`);</code>의 출력은?</div>
+      <div class="q">출력은?</div>
+      <pre class="code">const name = "Kim";
+console.log(`Hi ${name.length}`);</pre>
       <div class="opts">
         <button class="o">Hi ${name.length}</button>
         <button class="o">Hi Kim</button>
@@ -413,7 +415,16 @@ console.log(localValue);
       </tbody></table></div>
 
     <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
-      <div class="q"><code>let x = "A"; function outer() { let x = "B"; function inner() { console.log(x); } return inner; } outer()();</code>의 출력은?</div>
+      <div class="q">출력은?</div>
+      <pre class="code">let x = "A";
+function outer() {
+  let x = "B";
+  function inner() {
+    console.log(x);
+  }
+  return inner;
+}
+outer()();</pre>
       <div class="opts">
         <button class="o">B</button>
         <button class="o">A</button>
@@ -447,7 +458,12 @@ Promise.resolve().then(() =&gt; console.log("Promise 3"));
     <p>그 밖에 실행 결과로 나오기 좋은 것: <code>setTimeout(fn, 3000)</code>은 <b>최소</b> 3초(콜스택이 비어야 실행), async 함수는 <b>항상 Promise 반환</b>, await는 <b>그 함수만</b> 멈춤, fetch는 <b>404여도 reject 안 됨</b>(response.ok 확인), 독립 작업은 <b>Promise.all</b>로 병렬.</p>
 
     <div class="check" data-id="k4" data-answer="2"><div class="lbl">바로 확인</div>
-      <div class="q"><code>log(1); setTimeout(()=&gt;log(2)); Promise.resolve().then(()=&gt;log(3)); log(4);</code></div>
+      <div class="q">출력 순서는?</div>
+      <pre class="code">log(1);
+setTimeout(() =&gt; log(2));
+Promise.resolve()
+  .then(() =&gt; log(3));
+log(4);</pre>
       <div class="opts">
         <button class="o">1 2 3 4</button>
         <button class="o">1 4 2 3</button>
@@ -516,7 +532,9 @@ Promise.resolve().then(() =&gt; console.log("Promise 3"));
       </tbody></table></div>
 
     <div class="check" data-id="k6" data-answer="0"><div class="lbl">바로 확인</div>
-      <div class="q">count 0 · <code>setCount(count + 5); setCount(prev =&gt; prev + 1);</code> 후 다음 렌더의 count는?</div>
+      <div class="q">count가 0일 때 아래를 실행했다. 다음 렌더의 count는?</div>
+      <pre class="code">setCount(count + 5);
+setCount(prev =&gt; prev + 1);</pre>
       <div class="opts">
         <button class="o">6</button>
         <button class="o">1</button>
@@ -620,75 +638,119 @@ dispatch({ type: "unknown" });                <span class="c">// default: return
       <ol class="fc-print"></ol>
     </div>
 
-    <h3 class="rv-h">실행 결과 퀴즈 14문항 <small>시험 형태 그대로</small></h3>
+    <h3 class="rv-h">실행 결과 퀴즈 16문항 <small>시험 형태 그대로</small></h3>
     <form class="box quiz" data-quiz>
-      <div class="q" data-answer="1"><p class="qt"><b>Q1</b><code>log("S"); setTimeout(()=&gt;log("T"),0); Promise.resolve().then(()=&gt;log("P")); log("E");</code></p>
+      <div class="q" data-answer="1"><p class="qt"><b>Q1</b>출력 순서는?</p>
+        <pre class="code">log("S");
+setTimeout(() =&gt; log("T"), 0);
+Promise.resolve()
+  .then(() =&gt; log("P"));
+log("E");</pre>
         <label class="opt"><input type="radio" name="q1" value="0">S T P E</label>
         <label class="opt"><input type="radio" name="q1" value="1">S E P T</label>
         <label class="opt"><input type="radio" name="q1" value="2">S E T P</label>
         <label class="opt"><input type="radio" name="q1" value="3">S P E T</label>
         <div class="explain">동 · 마 · 매.</div></div>
-      <div class="q" data-answer="3"><p class="qt"><b>Q2</b><code>console.log(a); var a = 1; console.log(a);</code></p>
+      <div class="q" data-answer="3"><p class="qt"><b>Q2</b>출력은?</p>
+        <pre class="code">console.log(a);
+var a = 1;
+console.log(a);</pre>
         <label class="opt"><input type="radio" name="q2" value="0">1, 1</label>
         <label class="opt"><input type="radio" name="q2" value="1">ReferenceError</label>
         <label class="opt"><input type="radio" name="q2" value="2">undefined, undefined</label>
         <label class="opt"><input type="radio" name="q2" value="3">undefined, 1</label>
         <div class="explain">var Hoisting: 선언만 먼저, 할당은 제자리.</div></div>
-      <div class="q" data-answer="0"><p class="qt"><b>Q3</b><code>const c = createCounter(); c(); c(); console.log(c());</code> (count 0에서 시작, 호출마다 ++ 후 반환)</p>
+      <div class="q" data-answer="0"><p class="qt"><b>Q3</b>출력은? (createCounter는 count 0에서 시작, 호출마다 ++ 후 반환)</p>
+        <pre class="code">const c = createCounter();
+c();
+c();
+console.log(c());</pre>
         <label class="opt"><input type="radio" name="q3" value="0">3</label>
         <label class="opt"><input type="radio" name="q3" value="1">1</label>
         <label class="opt"><input type="radio" name="q3" value="2">0</label>
         <label class="opt"><input type="radio" name="q3" value="3">함수 코드가 찍힌다</label>
         <div class="explain">Closure로 같은 count 유지.</div></div>
-      <div class="q" data-answer="2"><p class="qt"><b>Q4</b><code>const arr1 = [1]; const arr2 = arr1; arr2.push(2); console.log(arr1);</code></p>
+      <div class="q" data-answer="2"><p class="qt"><b>Q4</b>출력은?</p>
+        <pre class="code">const arr1 = [1];
+const arr2 = arr1;
+arr2.push(2);
+console.log(arr1);</pre>
         <label class="opt"><input type="radio" name="q4" value="0">[1]</label>
         <label class="opt"><input type="radio" name="q4" value="1">[2]</label>
         <label class="opt"><input type="radio" name="q4" value="2">[1, 2]</label>
         <label class="opt"><input type="radio" name="q4" value="3">오류</label>
         <div class="explain">배열 = 참조 타입 = 주소 복사.</div></div>
-      <div class="q" data-answer="1"><p class="qt"><b>Q5</b><code>const o = { n: "철수", say: () =&gt; console.log(this.n) }; o.say();</code> (브라우저)</p>
+      <div class="q" data-answer="1"><p class="qt"><b>Q5</b>출력은? (브라우저)</p>
+        <pre class="code">const o = {
+  n: "철수",
+  say: () =&gt; console.log(this.n),
+};
+o.say();</pre>
         <label class="opt"><input type="radio" name="q5" value="0">철수</label>
         <label class="opt"><input type="radio" name="q5" value="1">undefined</label>
         <label class="opt"><input type="radio" name="q5" value="2">o</label>
         <label class="opt"><input type="radio" name="q5" value="3">SyntaxError</label>
         <div class="explain">화살표 함수는 자기 this 없음 → window.n → undefined.</div></div>
-      <div class="q" data-answer="3"><p class="qt"><b>Q6</b><code>if (true) { let k = 1; var v = 2; } console.log(v); console.log(k);</code></p>
+      <div class="q" data-answer="3"><p class="qt"><b>Q6</b>결과는?</p>
+        <pre class="code">if (true) {
+  let k = 1;
+  var v = 2;
+}
+console.log(v);
+console.log(k);</pre>
         <label class="opt"><input type="radio" name="q6" value="0">2, 1</label>
         <label class="opt"><input type="radio" name="q6" value="1">ReferenceError만</label>
         <label class="opt"><input type="radio" name="q6" value="2">undefined, 1</label>
         <label class="opt"><input type="radio" name="q6" value="3">2 출력 후 ReferenceError</label>
         <div class="explain">var는 Block 무시, let은 Block Scope.</div></div>
-      <div class="q" data-answer="0"><p class="qt"><b>Q7</b><code>async function f() { return 7; } console.log(f() instanceof Promise);</code></p>
+      <div class="q" data-answer="0"><p class="qt"><b>Q7</b>출력은?</p>
+        <pre class="code">async function f() { return 7; }
+console.log(f() instanceof Promise);</pre>
         <label class="opt"><input type="radio" name="q7" value="0">true</label>
         <label class="opt"><input type="radio" name="q7" value="1">false</label>
         <label class="opt"><input type="radio" name="q7" value="2">7</label>
         <label class="opt"><input type="radio" name="q7" value="3">undefined</label>
         <div class="explain">async 함수는 항상 Promise 반환.</div></div>
-      <div class="q" data-answer="2"><p class="qt"><b>Q8</b>서버가 500을 응답할 때 <code>try { const r = await fetch(u); console.log(r.ok); } catch { console.log("ERR"); }</code></p>
+      <div class="q" data-answer="2"><p class="qt"><b>Q8</b>서버가 500을 응답할 때 출력은?</p>
+        <pre class="code">try {
+  const r = await fetch(u);
+  console.log(r.ok);
+} catch {
+  console.log("ERR");
+}</pre>
         <label class="opt"><input type="radio" name="q8" value="0">ERR</label>
         <label class="opt"><input type="radio" name="q8" value="1">true</label>
         <label class="opt"><input type="radio" name="q8" value="2">false</label>
         <label class="opt"><input type="radio" name="q8" value="3">500</label>
         <div class="explain">reject 안 됨 → try 안에서 r.ok가 false.</div></div>
-      <div class="q" data-answer="1"><p class="qt"><b>Q9</b>count 2 · <code>setCount(count * 2); setCount(count * 2);</code> 후 다음 렌더의 count</p>
+      <div class="q" data-answer="1"><p class="qt"><b>Q9</b>count가 2일 때 아래를 실행했다. 다음 렌더의 count는?</p>
+        <pre class="code">setCount(count * 2);
+setCount(count * 2);</pre>
         <label class="opt"><input type="radio" name="q9" value="0">8</label>
         <label class="opt"><input type="radio" name="q9" value="1">4</label>
         <label class="opt"><input type="radio" name="q9" value="2">2</label>
         <label class="opt"><input type="radio" name="q9" value="3">16</label>
         <div class="explain">둘 다 스냅샷 2 기준 → "4로".</div></div>
-      <div class="q" data-answer="0"><p class="qt"><b>Q10</b>count 2 · <code>setCount(p =&gt; p * 2); setCount(p =&gt; p * 2);</code> 후 다음 렌더의 count</p>
+      <div class="q" data-answer="0"><p class="qt"><b>Q10</b>count가 2일 때 아래를 실행했다. 다음 렌더의 count는?</p>
+        <pre class="code">setCount(p =&gt; p * 2);
+setCount(p =&gt; p * 2);</pre>
         <label class="opt"><input type="radio" name="q10" value="0">8</label>
         <label class="opt"><input type="radio" name="q10" value="1">4</label>
         <label class="opt"><input type="radio" name="q10" value="2">2</label>
         <label class="opt"><input type="radio" name="q10" value="3">6</label>
         <div class="explain">2 → 4 → 8 (Functional Update).</div></div>
-      <div class="q" data-answer="3"><p class="qt"><b>Q11</b><code>const user = {a: 1}; const copy = {...user}; copy.a = 9; console.log(user.a, user === copy);</code></p>
+      <div class="q" data-answer="3"><p class="qt"><b>Q11</b>출력은?</p>
+        <pre class="code">const user = { a: 1 };
+const copy = { ...user };
+copy.a = 9;
+console.log(user.a, user === copy);</pre>
         <label class="opt"><input type="radio" name="q11" value="0">9 true</label>
         <label class="opt"><input type="radio" name="q11" value="1">9 false</label>
         <label class="opt"><input type="radio" name="q11" value="2">1 true</label>
         <label class="opt"><input type="radio" name="q11" value="3">1 false</label>
         <div class="explain">Spread로 새 객체 → 원본 그대로, 주소 다름.</div></div>
-      <div class="q" data-answer="2"><p class="qt"><b>Q12</b><code>useEffect(() =&gt; console.log("E"), [a]);</code> — Mount 후 a가 1번, b가 2번 바뀌었다. "E"는 몇 번?</p>
+      <div class="q" data-answer="2"><p class="qt"><b>Q12</b>Mount 후 a가 1번, b가 2번 바뀌었다. "E"는 몇 번 찍힐까?</p>
+        <pre class="code">useEffect(() =&gt; console.log("E"), [a]);</pre>
         <label class="opt"><input type="radio" name="q12" value="0">1번</label>
         <label class="opt"><input type="radio" name="q12" value="1">4번</label>
         <label class="opt"><input type="radio" name="q12" value="2">2번</label>
@@ -706,6 +768,25 @@ dispatch({ type: "unknown" });                <span class="c">// default: return
         <label class="opt"><input type="radio" name="q14" value="2">쿠키</label>
         <label class="opt"><input type="radio" name="q14" value="3">TLS</label>
         <div class="explain">Authorization: Bearer = 토큰.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q15</b>장바구니(10/15 실습). 빈 장바구니에서 아래 순서로 dispatch했다. 총 금액은? (Keyboard 50,000 · Mouse 30,000)</p>
+        <pre class="code">ADD_ITEM(Keyboard)
+ADD_ITEM(Mouse)
+ADD_ITEM(Keyboard)
+REMOVE_ITEM(Mouse)</pre>
+        <label class="opt"><input type="radio" name="q15" value="0">130,000원</label>
+        <label class="opt"><input type="radio" name="q15" value="1">50,000원</label>
+        <label class="opt"><input type="radio" name="q15" value="2">100,000원</label>
+        <label class="opt"><input type="radio" name="q15" value="3">0원</label>
+        <div class="explain">같은 상품을 또 담으면 줄이 아니라 수량 +1 → Keyboard ×2, Mouse ×1. Mouse를 filter로 빼면 Keyboard ×2 = 100,000원.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q16</b>장바구니에 Mouse ×1만 있다. 아래 순서로 dispatch하면 Mouse는?</p>
+        <pre class="code">DECREASE_QUANTITY(Mouse)
+DECREASE_QUANTITY(Mouse)
+INCREASE_QUANTITY(Mouse)</pre>
+        <label class="opt"><input type="radio" name="q16" value="0">수량 2</label>
+        <label class="opt"><input type="radio" name="q16" value="1">수량 0</label>
+        <label class="opt"><input type="radio" name="q16" value="2">장바구니에서 사라진다</label>
+        <label class="opt"><input type="radio" name="q16" value="3">수량 −1</label>
+        <div class="explain">수량 빼기는 최소 1 유지(Math.max(1, …))라 두 번 빼도 1, 그다음 +1 → 2. 빼려면 REMOVE_ITEM.</div></div>
       <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
     </form>
 
