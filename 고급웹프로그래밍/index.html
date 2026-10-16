@@ -74,10 +74,10 @@ footer { margin-top: 32px; color: var(--muted); font-size: .82rem; }
   <div class="info">
     <h2>수업 정보</h2>
     <ul>
-      <li><strong>중간고사</strong> <b>10월 20일(화) 09:30~10:30 (60분) · 18422 강의실</b> · 자리 지정 · 객관식 + 주관식(필기)</li>
+      <li><strong>중간고사</strong> <b>10월 20일(화) 09:30~10:30 (60분) · 18422 강의실</b> · 자리 지정 · <b>18문제 = 객관식 8 + 주관식 10</b> (10/15 출제 완료)</li>
       <li><strong>범위</strong> 2~7주차 강의자료 (1주차 OT 제외) · "강의자료를 벗어난 내용은 절대 내지 않는다" · 자료마다 있는 <b>Summary 중심</b> · <b>10/13: "시험 범위는 정확히 여기까지"</b>, MVC · MVVM은 안 물어봄</li>
-      <li><strong>문제 형태</strong> 코드 빈칸보다 <b>"이렇게 짜면 어떻게 실행될까" 실행 결과 쓰기</b> — 예제로 많이 했던 것 위주</li>
-      <li><strong>교재</strong> SH327 2~7주차 PDF (수업pdf/) · 녹음 수업txt/ · 실습 코드 실습/week+5 · 실습/timer</li>
+      <li><strong>문제 형태</strong> 주관식 = <b>코드 해석 · 코드 실행 결과 쓰기 · 개념</b> · <b>손코딩 없음</b> ("코드 해석만 잘하면 돼", 10/15)</li>
+      <li><strong>교재</strong> SH327 2~7주차 PDF (수업pdf/) · 녹음 수업txt/ · 실습 코드 실습/week+5 · 실습/timer · 실습/shopping-cart</li>
     </ul>
   </div>
 
@@ -151,10 +151,10 @@ footer { margin-top: 32px; color: var(--muted); font-size: .82rem; }
       <div class="n">10월 13일 (화) · 7주차 ① · 시험 범위 끝</div><h2>좋아요 · 취소 · 리셋 · 10으로 맞추기, 세터 네 개 대신 한 곳에 모을 수 없을까?</h2><p>아키텍처 = 데이터 흐름, Container/Presentational, 데이터는 아래로 · 이벤트는 위로, Lifting State Up, 커스텀 훅 · 서비스 레이어, UI/Server State, useReducer · dispatch · action</p>
       <div class="bar"><span></span></div><div class="pct">0%</div>
     </a></li>
-    <li><span class="week soon" data-week="next">
-      <div class="n">다음 강의</div><h2>준비 중</h2><p>10/15 쇼핑카트 예제(useReducer). 강의 텍스트가 추가되면 여기에 표시됩니다.</p>
-      <div class="bar"><span></span></div><div class="pct">-</div>
-    </span></li>
+    <li><a class="week" href="1015/1015_학습자료.html" data-week="1015">
+      <div class="n">10월 15일 (목) · 7주차 ② 실습 · 시험 구성 공지</div><h2>Add to Cart를 누르면 장바구니 State는 어떻게 바뀔까?</h2><p>18문제(객관식 8 · 주관식 10) · 손코딩 없음, App.jsx 분리, ADD_ITEM · quantity, INCREASE · DECREASE(최소 1) · REMOVE(filter) · CLEAR, 콜백 Props → dispatch, LLM 질문 Q1~Q4</p>
+      <div class="bar"><span></span></div><div class="pct">0%</div>
+    </a></li>
   </ul>
 
   <footer>진행률은 이 브라우저에만 저장됩니다.</footer>
