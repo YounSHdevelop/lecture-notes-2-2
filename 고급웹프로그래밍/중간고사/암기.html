@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>고급웹프로그래밍 중간고사 · 외울 것만 모음</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+/* 공책 정리 칸 (코넬식, 스크립트가 장면의 "시험엔 이렇게"로 채움) */
+.nb{padding:0;overflow:hidden}
+.nb-head,.nb-row{display:grid;grid-template-columns:34% 1fr}
+.nb-head{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;font-size:14px}
+.nb-head span{padding:10px 16px}
+.nb-head span+span{border-left:2px solid var(--teal)}
+.nb-row{border-top:1px solid var(--line)}
+.nb-q{padding:14px 16px;font-weight:700;font-size:15px;line-height:1.55;display:flex;gap:8px}
+.nb-n{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;margin-top:1px}
+:root[data-theme="dark"] .nb-n{color:#062b27}
+.nb-a{position:relative;padding:14px 16px 40px;border-left:2px solid var(--teal);font-size:15.5px;line-height:1.75}
+.nb-a p{margin:0}
+.nb-sub{display:block;margin-top:4px;font-size:13px;font-weight:500;color:var(--ink-3)}
+.nb-draw li{margin:4px 0}
+.nb-mn{margin-top:6px;font-size:13.5px;font-weight:700;color:var(--exam)}
+.nb-ok{position:absolute;right:12px;bottom:8px;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);cursor:pointer}
+.nb-ok input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer}
+.nb-row.done .nb-q{color:var(--ink-3)}
+.nb.hide .nb-a:not(.open){background:var(--bg);cursor:pointer}
+.nb.hide .nb-a:not(.open) .nb-txt,.nb.hide .nb-a:not(.open) .nb-txt *{color:transparent!important;background:none!important;user-select:none}
+.nb.hide .nb-a:not(.open)::before{content:"눌러서 답 확인";position:absolute;left:16px;top:14px;font-size:13px;color:var(--ink-3)}
+.nb-draw,.nb-sum{border-top:1px solid var(--line);padding:14px 16px;font-size:15px}
+.nb-draw ol{margin:6px 0 0;padding-left:20px}
+.nb-sum p{margin:6px 0 0;padding:12px 14px;border:1.5px dashed var(--line);border-radius:10px;color:var(--ink-2)}
+.nb-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:0 16px 16px}
+.nb-foot .btns{margin-top:14px}
+.nb-count{margin-top:14px;font-size:14px;color:var(--teal-ink);font-weight:700}
+@media(max-width:640px){
+  .nb-head{display:none}
+  .nb-row{grid-template-columns:1fr}
+  .nb-a{border-left:0;border-top:1px dashed var(--line)}
+}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+.cloze{max-width:100%;overflow-wrap:anywhere;word-break:normal}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+/* 틀린 문제 체크 (연습문제 페이지만, data-week="연습문제") */
+.wr-btn{margin-left:6px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-3);border-radius:8px;padding:0 9px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;min-height:30px;vertical-align:middle;white-space:nowrap}
+.wr-btn:hover{border-color:var(--no);color:var(--no)}
+li.wrong{background:var(--no-soft);box-shadow:inset 3px 0 0 var(--no);border-radius:6px;padding-left:8px}
+li.wrong>.wr-btn{border-color:var(--no);background:var(--no);color:#fff}
+:root[data-theme="dark"] li.wrong>.wr-btn{color:#2e1616}
+body.wr-on{padding-bottom:84px}
+.wr-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;width:max-content;max-width:calc(100% - 32px);background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.wr-bar b{color:var(--no);font-variant-numeric:tabular-nums}
+.wr-bar .btn{min-height:36px;padding:5px 12px;font-size:14px}
+.wr-bar .btn[disabled]{opacity:.45;cursor:not-allowed}
+body.wr-only .cloze-box li:not(.wrong):not(.wr-has),body.wr-only main>section.ch:not(.wr-has),body.wr-only .flow{display:none}
+body.wr-only .cloze-box>p.rv-d{display:none}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .wr-btn,.wr-bar{display:none!important}
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+  .nb-ok,.nb-count,.nb-foot{display:none!important}
+  .nb .nb-a .nb-txt,.nb .nb-a .nb-txt *{color:inherit!important}
+  .nb .nb-a::before{content:none!important}
+  .nb-row{break-inside:avoid}
+  body.print-nb main>:not(#review),body.print-nb #review>:not(.nb-wrap),body.print-nb footer{display:none!important}
+  body.print-nb .review{border-top:0;margin-top:0}
+}
+</style>
+</head>
+<body data-course="고급웹프로그래밍" data-week="암기">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>고급웹프로그래밍</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">중간고사 전용 · 10월 20일 (화) 9:30 · 2~7주차 강의자료에서 이름 · 숫자 · 순서만</div>
+    <h1>그래서 결국 외워야 하는 이름과 순서는 뭘까?</h1>
+    <p class="lead">설명은 다른 페이지에 다 있으니까 여기엔 <b>외울 것만</b> 모았어요. 메소드 이름, 상태 코드 숫자, "A 다음 B" 같은 순서, 그리고 강의자료에 나온 코드의 <b>출력 정답</b>. 전부 <mark>가려져 있어서</mark> 누르면 하나씩 열려요. 먼저 머리로 답하고 눌러서 확인하는 식으로 보세요.</p>
+    <div class="goal">
+      <h2>이렇게 쓰세요</h2>
+      <ol>
+        <li>회색으로 가려진 칸을 보기 전에 소리 내서 먼저 말해 본다</li>
+        <li>눌러서 확인하고, 틀린 줄만 다시 본다 (박스마다 "모두 보기 · 모두 가리기")</li>
+        <li>장면 끝 바로 확인 1문제로 확인하고, 맨 아래 카드 · 퀴즈로 마무리한다</li>
+      </ol>
+      <div class="time">약 40분 · 장면 7개 · 전부 강의자료(PDF) 기준 · ★ = 시험에 나오기 좋은 것</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>외우기 전에 알아 둘 것 (10/8 · 10/15 공지)</h2>
+      <ul>
+        <li><b>18문제 = 객관식 8 + 주관식 10</b> · 주관식은 코드 해석 · 실행 결과 쓰기 · 개념 · <b>손코딩 없음</b></li>
+        <li>그래서 메소드 이름은 <b>철자까지 써낼 정도가 아니라, 코드에서 보고 "아 이건 뭐 하는 거" 하고 알아볼 정도</b>면 돼요. 대신 <b>출력 순서 · 실행 결과</b>는 정확히 써야 해요</li>
+        <li>범위 2~7주차 · Summary 중심 · MVC · MVVM은 안 냄</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="장면 목록">
+      <a href="#c1"><b>장면 1</b>HTTP 숫자 · 이름</a>
+      <a href="#c2"><b>장면 2</b>DOM · BOM 이름</a>
+      <a href="#c3"><b>장면 3</b>JS 문법 표</a>
+      <a href="#c4"><b>장면 4</b>비동기 메소드</a>
+      <a href="#c5"><b>장면 5</b>React 훅 · 문법</a>
+      <a href="#c6"><b>장면 6</b>순서로 외울 것</a>
+      <a href="#c7"><b>장면 7</b>출력 정답 모음</a>
+      <a href="#review"><b>복습</b>카드 · 퀴즈</a>
+    </nav>
+  </div>
+
+  <!-- 장면 1 -->
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>상태 코드 404는 누구 탓이고, Request는 몇 칸으로 되어 있었지?</h2><div class="sub">HTTP Method · Request/Response 구성 · 상태 코드 · 프로토콜 · TLS · 2주차 (0908 · 0910)</div></div></div>
+
+    <p>2주차는 이름이랑 숫자가 제일 많은 주예요. 객관식으로 내기 딱 좋은 것들이라 표 하나씩 가리고 떠올려 보세요. 오른쪽 칸이 가려져 있어요.</p>
+
+    <h3 class="rv-h">HTTP 메시지</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>질문</th><th>답</th></tr></thead>
+      <tbody>
+        <tr><td>대표 HTTP Method 4개</td><td><span class="cloze">GET · POST · PUT · DELETE</span></td></tr>
+        <tr><td>보통 Body를 안 쓰는 Method</td><td><span class="cloze">GET</span></td></tr>
+        <tr><td>Body를 쓸 수 있는 Method</td><td><span class="cloze">POST · PUT · PATCH</span></td></tr>
+        <tr><td>★ Request 구성 4칸</td><td><span class="cloze">Method · URL(Path) · Header · Body</span></td></tr>
+        <tr><td>★ Response 구성 3칸</td><td><span class="cloze">Status Code · Header · Body</span></td></tr>
+        <tr><td>JSON을 달라고 하는 요청 헤더</td><td><span class="cloze">Accept: application/json</span></td></tr>
+        <tr><td>Body가 JSON이라고 알리는 헤더</td><td><span class="cloze">Content-Type: application/json</span></td></tr>
+        <tr><td>HTTP가 이전 요청을 기억 못 하는 특징</td><td><span class="cloze">Stateless</span></td></tr>
+        <tr><td>브라우저에서 HTTP 통신 직접 보는 곳</td><td><span class="cloze">F12 개발자 도구 · Network 탭</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">상태 코드 <small>자료 p.17 표 그대로</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>범위</th><th>의미</th><th>대표 코드</th></tr></thead>
+      <tbody>
+        <tr><td>2xx</td><td><span class="cloze">요청 성공</span></td><td><span class="cloze">200 OK · 201 Created</span></td></tr>
+        <tr><td>3xx</td><td><span class="cloze">Redirect</span></td><td><span class="cloze">301 · 302</span></td></tr>
+        <tr><td>4xx</td><td><span class="cloze">Client Error (내 탓)</span></td><td><span class="cloze">400 · 401 · 403 · 404</span></td></tr>
+        <tr><td>5xx</td><td><span class="cloze">Server Error (서버 탓)</span></td><td><span class="cloze">500 · 503</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">프로토콜 · 보안 · 상태 유지</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>설명</th><th>이름</th></tr></thead>
+      <tbody>
+        <tr><td>도메인을 IP 주소로 바꿔 줌</td><td><span class="cloze">DNS</span></td></tr>
+        <tr><td>신뢰성 있는 데이터 전송 (HTTP/1.1, HTTP/2 밑)</td><td><span class="cloze">TCP</span></td></tr>
+        <tr><td>빠른 비연결형 전송 (Streaming, DNS)</td><td><span class="cloze">UDP</span></td></tr>
+        <tr><td>데이터 암호화 및 인증 (HTTPS 밑)</td><td><span class="cloze">TLS</span></td></tr>
+        <tr><td>양방향 실시간 통신 (채팅 · 게임 · 알림)</td><td><span class="cloze">WebSocket</span></td></tr>
+        <tr><td>★ HTTPS를 한 줄로</td><td><span class="cloze">HTTP + TLS</span></td></tr>
+        <tr><td>★ TLS가 주는 3가지</td><td><span class="cloze">암호화 · 무결성 · 인증 (Encryption · Integrity · Authentication)</span></td></tr>
+        <tr><td>TLS의 구버전 이름</td><td><span class="cloze">SSL</span></td></tr>
+        <tr><td>Stateless를 보완하는 3가지</td><td><span class="cloze">Cookie · Session · Token</span></td></tr>
+        <tr><td>브라우저에는 ID만, 상태는 서버에</td><td><span class="cloze">Session (Session ID)</span></td></tr>
+        <tr><td>대표적인 토큰 이름 (풀네임까지)</td><td><span class="cloze">JWT = JSON Web Token</span></td></tr>
+        <tr><td>토큰을 실어 보내는 헤더</td><td><span class="cloze">Authorization: Bearer …</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>Request = Method · URL · Header · Body, Response = Status Code · Header · Body. 4xx는 Client Error, 5xx는 Server Error. HTTPS = HTTP + TLS(암호화 · 무결성 · 인증).</p>
+      <div class="mn">외우는 법: <b>요청은 4칸(뭘 · 어디 · 추가정보 · 내용), 응답은 3칸(결과 숫자 · 추가정보 · 내용) / 4는 나, 5는 서버 / TLS = 암 · 무 · 인</b></div></div>
+
+    <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">로그인 안 한 사용자가 권한 없는 페이지를 요청해서 403을 받았다. 403이 속한 범위의 뜻은?</div>
+      <div class="opts">
+        <button class="o">Server Error</button>
+        <button class="o">Client Error</button>
+        <button class="o">Redirect</button></div>
+      <div class="fb">4로 시작하면 전부 <b>Client Error</b>예요(400 · 401 · 403 · 404). 서버가 고장 난 게 아니라 요청 쪽 문제.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">외웠어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 2 -->
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>요소 찾는 건 querySelector, 그럼 현재 URL은 어느 객체에 있지?</h2><div class="sub">DOM 메소드 · BOM 객체 5개 · CSSOM · 브라우저 구성 · Storage · 2주차 (0910)</div></div></div>
+
+    <p>2주차 실습에서 F12 콘솔에 친 코드가 <code>querySelector</code> → <code>textContent</code> → <code>classList.add</code> 세 줄이었죠. 이 세 개랑 BOM 객체 다섯 개가 핵심이에요.</p>
+
+    <h3 class="rv-h">DOM · CSSOM 메소드</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>하는 일</th><th>이름</th></tr></thead>
+      <tbody>
+        <tr><td>★ CSS 선택자로 요소 하나 찾기</td><td><span class="cloze">document.querySelector("#main_text")</span></td></tr>
+        <tr><td>★ 요소의 글자 바꾸기</td><td><span class="cloze">title.textContent = "…"</span></td></tr>
+        <tr><td>★ 요소에 CSS 클래스 붙이기</td><td><span class="cloze">title.classList.add("active")</span></td></tr>
+        <tr><td>classList.add를 하면 바뀌는 쪽</td><td><span class="cloze">DOM만 (CSSOM은 그대로)</span></td></tr>
+        <tr><td>새 요소 만들기 (DOM API 예)</td><td><span class="cloze">createElement</span></td></tr>
+        <tr><td>이벤트 연결 / 해제</td><td><span class="cloze">addEventListener / removeEventListener</span></td></tr>
+        <tr><td>CSSOM 쪽 JS 예 (자료 p.38)</td><td><span class="cloze">style · getComputedStyle()</span></td></tr>
+        <tr><td>id로 요소 찾기 (main.jsx)</td><td><span class="cloze">document.getElementById('root')</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">BOM 객체 <small>window 아래</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>역할</th><th>객체</th></tr></thead>
+      <tbody>
+        <tr><td>★ BOM의 최상위 · 브라우저 창</td><td><span class="cloze">window</span></td></tr>
+        <tr><td>★ 현재 URL 정보</td><td><span class="cloze">location</span></td></tr>
+        <tr><td>★ 방문 기록</td><td><span class="cloze">history</span></td></tr>
+        <tr><td>★ 브라우저 환경 정보</td><td><span class="cloze">navigator</span></td></tr>
+        <tr><td>화면 정보</td><td><span class="cloze">screen</span></td></tr>
+        <tr><td>DOM의 중심 객체</td><td><span class="cloze">document</span></td></tr>
+        <tr><td>창 너비 (커스텀 훅 예제)</td><td><span class="cloze">window.innerWidth</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">브라우저 구성 · 저장소</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>질문</th><th>답</th></tr></thead>
+      <tbody>
+        <tr><td>Web Browser = ? + ? + ?</td><td><span class="cloze">Web Resource Fetcher + Rendering Engine + JS Runtime</span></td></tr>
+        <tr><td>HTML/CSS로 DOM · CSSOM · Render Tree 만드는 곳</td><td><span class="cloze">Rendering Engine</span></td></tr>
+        <tr><td>Chrome · Edge의 JS 엔진</td><td><span class="cloze">V8</span></td></tr>
+        <tr><td>Safari의 JS 엔진</td><td><span class="cloze">JavaScriptCore</span></td></tr>
+        <tr><td>Data Storage 종류 5</td><td><span class="cloze">Cookie · LocalStorage · SessionStorage · IndexedDB · Cache</span></td></tr>
+        <tr><td>DOM은 무엇을, CSSOM은?</td><td><span class="cloze">DOM = 무엇을 보여줄까 / CSSOM = 어떻게 보여줄까</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>BOM은 window 아래 location(URL) · history(방문 기록) · navigator(브라우저 정보) · screen(화면)이고, DOM은 document로 HTML 요소를 다룬다.</p>
+      <div class="mn">외우는 법: <b>DOM은 페이지 안(document), BOM은 페이지 밖(location · history · navigator · screen)</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">"뒤로 가기" 같은 방문 기록을 다루는 BOM 객체는?</div>
+      <div class="opts">
+        <button class="o">navigator</button>
+        <button class="o">location</button>
+        <button class="o">history</button></div>
+      <div class="fb">방문 기록 = <b>history</b>. location은 지금 URL, navigator는 브라우저 환경 정보예요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">외웠어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 3 -->
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>var · let · const, 재선언 되는 건 어느 쪽이었지?</h2><div class="sub">var/let/const 표 · Hoisting 표 · this 규칙 · 타입 · 객체 접근 · Module · 2~3주차 (0910 · 0915 · 0917)</div></div></div>
+
+    <p>JS 문법은 <b>표 두 개</b>(var/let/const, Hoisting)만 통째로 외우면 실행 결과 문제가 거의 풀려요. 표 칸이 가려져 있으니 행마다 말해 보세요.</p>
+
+    <h3 class="rv-h">var · let · const <small>자료 p.42</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th></th><th>var</th><th>let</th><th>const</th></tr></thead>
+      <tbody>
+        <tr><td>Scope</td><td><span class="cloze">Function</span></td><td><span class="cloze">Block</span></td><td><span class="cloze">Block</span></td></tr>
+        <tr><td>재선언</td><td><span class="cloze">가능</span></td><td><span class="cloze">불가</span></td><td><span class="cloze">불가</span></td></tr>
+        <tr><td>재할당</td><td><span class="cloze">가능</span></td><td><span class="cloze">가능</span></td><td><span class="cloze">불가</span></td></tr>
+        <tr><td>권장</td><td><span class="cloze">X</span></td><td><span class="cloze">O (바뀔 때)</span></td><td><span class="cloze">O (기본)</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">★ Hoisting <small>선언문 전에 쓰면? 자료 p.22</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>선언 방식</th><th>선언 전 상태</th><th>선언 전에 쓰면</th></tr></thead>
+      <tbody>
+        <tr><td>var</td><td><span class="cloze">선언 O · undefined로 초기화</span></td><td><span class="cloze">undefined</span></td></tr>
+        <tr><td>let · const</td><td><span class="cloze">선언 O · 초기화 X (TDZ)</span></td><td><span class="cloze">ReferenceError</span></td></tr>
+        <tr><td>function 선언</td><td><span class="cloze">함수 객체까지 초기화</span></td><td><span class="cloze">호출 가능</span></td></tr>
+        <tr><td>화살표 함수 · 함수 표현식</td><td><span class="cloze">변수 규칙을 따름</span></td><td><span class="cloze">호출 불가 (const면 ReferenceError)</span></td></tr>
+        <tr><td>TDZ 풀네임</td><td colspan="2"><span class="cloze">Temporal Dead Zone</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">★ this는 누구? <small>자료 p.30~34</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>부르는 방식</th><th>this</th></tr></thead>
+      <tbody>
+        <tr><td>전역에서 단독 (브라우저)</td><td><span class="cloze">window</span></td></tr>
+        <tr><td>전역 일반 함수 안</td><td><span class="cloze">window (전역 객체)</span></td></tr>
+        <tr><td>obj.method()로 호출</td><td><span class="cloze">호출한 객체 (점 앞 obj)</span></td></tr>
+        <tr><td>new User()로 호출</td><td><span class="cloze">새로 만들어진 객체</span></td></tr>
+        <tr><td>화살표 함수</td><td><span class="cloze">자기 this 없음, 바깥 this (Lexical this)</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">이름 · 용어</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>질문</th><th>답</th></tr></thead>
+      <tbody>
+        <tr><td>Primitive Type 5개</td><td><span class="cloze">String · Number · Boolean · null · undefined</span></td></tr>
+        <tr><td>Object Type 3개</td><td><span class="cloze">Object · Array · Function</span></td></tr>
+        <tr><td>복사할 때 Primitive / Object</td><td><span class="cloze">Value Copy / Reference Copy</span></td></tr>
+        <tr><td>ES6의 다른 이름</td><td><span class="cloze">ES2015 (ECMAScript 2015)</span></td></tr>
+        <tr><td>문자열 안에 변수 넣는 문법</td><td><span class="cloze">Template Literal `Hello ${name}`</span></td></tr>
+        <tr><td>Scope 3종류</td><td><span class="cloze">Global · Function · Block</span></td></tr>
+        <tr><td>Execution Context 2종류</td><td><span class="cloze">Global · Function</span></td></tr>
+        <tr><td>Call Stack 구조</td><td><span class="cloze">LIFO (마지막에 들어간 게 먼저 나감)</span></td></tr>
+        <tr><td>안쪽 변수가 바깥 같은 이름을 가림</td><td><span class="cloze">Shadowing</span></td></tr>
+        <tr><td>정의된 위치로 Scope가 정해짐</td><td><span class="cloze">Lexical Scope</span></td></tr>
+        <tr><td>변수 찾기: 안 → 밖</td><td><span class="cloze">Scope Chain</span></td></tr>
+        <tr><td>Property · Method 찾기: 객체 → Prototype</td><td><span class="cloze">Prototype Chain</span></td></tr>
+        <tr><td>변수 이름으로 Property 접근</td><td><span class="cloze">Bracket Notation user[key]</span></td></tr>
+        <tr><td>Property 지우기</td><td><span class="cloze">delete user.email (true 반환)</span></td></tr>
+        <tr><td>객체 반복 생성 함수 + 키워드</td><td><span class="cloze">Constructor Function + new (이름은 대문자)</span></td></tr>
+        <tr><td>class에서 초기화 담당 메소드</td><td><span class="cloze">constructor()</span></td></tr>
+        <tr><td>여러 개 내보내기 / 가져오기</td><td><span class="cloze">export const add / import { add, sub } from "./math.js"</span></td></tr>
+        <tr><td>Default Export 규칙 2</td><td><span class="cloze">모듈당 하나만 · import할 때 이름 자유</span></td></tr>
+        <tr><td>일급 객체 4조건</td><td><span class="cloze">매개변수 · 반환값 · 할당 대상 · 동일 비교가 될 수 있음</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>선언 전 접근 시 var는 undefined, let · const는 ReferenceError(TDZ), function 선언은 호출 가능. this는 호출 방식으로 정해지고 화살표 함수는 바깥 this를 쓴다.</p>
+      <div class="mn">외우는 법: <b>var 빈 상자 · let 잠긴 상자 · function 꽉 찬 상자 / 점 앞이 this · 화살표는 바깥</b></div></div>
+
+    <div class="check" data-id="k3" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">재선언은 안 되지만 재할당은 되는 것은?</div>
+      <div class="opts">
+        <button class="o">let</button>
+        <button class="o">const</button>
+        <button class="o">var</button></div>
+      <div class="fb"><b>let</b>: 재선언 불가 · 재할당 가능. const는 둘 다 불가, var는 둘 다 가능.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">외웠어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 4 -->
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>fetch 결과를 JSON으로 바꾸는 메소드, 모두 성공해야 성공인 Promise 메소드는?</h2><div class="sub">Web API 7종 · Timer · Macro/Micro 목록 · Promise 상태 · then/catch/finally · Promise.all · Response · 4주차 (0922)</div></div></div>
+
+    <p>4주차가 메소드 이름이 제일 많아요. 특히 <code>response.json()</code>, <code>response.ok</code>, <code>Promise.all</code>은 코드 해석 문제에 그대로 나올 수 있어요.</p>
+
+    <h3 class="rv-h">Web API 7종 <small>자료 p.12 · p.30</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>API</th><th>하는 일</th><th>대표 이름</th></tr></thead>
+      <tbody>
+        <tr><td>Timer API</td><td>시간 제어</td><td><span class="cloze">setTimeout · setInterval · clearInterval</span></td></tr>
+        <tr><td>DOM API</td><td>화면 제어</td><td><span class="cloze">querySelector · createElement · classList</span></td></tr>
+        <tr><td>Fetch API</td><td>서버 통신</td><td><span class="cloze">fetch (HTTP 통신)</span></td></tr>
+        <tr><td>Event API</td><td>사용자 입력</td><td><span class="cloze">addEventListener</span></td></tr>
+        <tr><td>Geolocation API</td><td><span class="cloze">위치 정보 요청</span></td><td>—</td></tr>
+        <tr><td>WebSocket API</td><td><span class="cloze">Client ↔ Server 양방향 실시간 통신</span></td><td>—</td></tr>
+        <tr><td>Storage API</td><td>데이터 저장</td><td><span class="cloze">localStorage · sessionStorage</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">Timer · Queue · Promise</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>질문</th><th>답</th></tr></thead>
+      <tbody>
+        <tr><td>한 번 실행 타이머의 인자</td><td><span class="cloze">setTimeout(callback, delay)</span></td></tr>
+        <tr><td>반복 타이머의 인자</td><td><span class="cloze">setInterval(callback, interval)</span></td></tr>
+        <tr><td>반복 타이머 멈추기</td><td><span class="cloze">clearInterval(timer)</span></td></tr>
+        <tr><td>★ delay 3000의 진짜 뜻</td><td><span class="cloze">최소 대기 시간 (Call Stack이 비어야 실행)</span></td></tr>
+        <tr><td>★ Macrotask에 들어가는 것</td><td><span class="cloze">setTimeout · setInterval · 이벤트 callback · MessageChannel · 최초 script</span></td></tr>
+        <tr><td>★ Microtask에 들어가는 것</td><td><span class="cloze">Promise (then 콜백)</span></td></tr>
+        <tr><td>★ Promise 상태 3개</td><td><span class="cloze">Pending · Fulfilled · Rejected</span></td></tr>
+        <tr><td>then()</td><td><span class="cloze">fulfilled · rejected 상태의 callback 처리</span></td></tr>
+        <tr><td>catch()</td><td><span class="cloze">rejected 상태의 에러 처리</span></td></tr>
+        <tr><td>finally()</td><td><span class="cloze">성공 여부 관계없이 무조건 실행</span></td></tr>
+        <tr><td>바로 성공한 Promise 만들기</td><td><span class="cloze">Promise.resolve()</span></td></tr>
+        <tr><td>콜백이 계속 중첩되는 문제</td><td><span class="cloze">Callback Hell</span></td></tr>
+        <tr><td>async 함수의 반환값</td><td><span class="cloze">항상 Promise</span></td></tr>
+        <tr><td>await가 멈추는 범위</td><td><span class="cloze">그 함수만 (전체 Thread는 안 멈춤)</span></td></tr>
+        <tr><td>async/await 에러 처리 문법</td><td><span class="cloze">try-catch</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">Promise 보조 메소드 <small>자료 p.41</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>설명</th><th>이름</th></tr></thead>
+      <tbody>
+        <tr><td>★ 모두 성공해야 성공 (독립 작업 병렬)</td><td><span class="cloze">Promise.all()</span></td></tr>
+        <tr><td>★ 성공 · 실패 결과를 모두 확인</td><td><span class="cloze">Promise.allSettled()</span></td></tr>
+        <tr><td>자료에 이름만 나온 나머지 둘</td><td><span class="cloze">Promise.race() · Promise.any()</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">fetch · Response <small>자료 p.35~37</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>질문</th><th>답</th></tr></thead>
+      <tbody>
+        <tr><td>fetch가 바로 주는 것</td><td><span class="cloze">Response Object (JSON 아님, Promise로 옴)</span></td></tr>
+        <tr><td>Response에서 바로 읽는 값 3개</td><td><span class="cloze">response.status · response.ok · response.headers</span></td></tr>
+        <tr><td>★ Body를 JSON으로</td><td><span class="cloze">await response.json()</span></td></tr>
+        <tr><td>Body를 글자 / 파일로</td><td><span class="cloze">response.text() / response.blob()</span></td></tr>
+        <tr><td>★ 404 · 500일 때 fetch는?</td><td><span class="cloze">reject 안 됨, response.ok가 false</span></td></tr>
+        <tr><td>POST로 보낼 때 옵션 3개</td><td><span class="cloze">method: "POST" · headers: Content-Type · body</span></td></tr>
+        <tr><td>객체를 JSON 문자열로 바꾸기</td><td><span class="cloze">JSON.stringify(obj)</span></td></tr>
+        <tr><td>에러 직접 던지기</td><td><span class="cloze">throw new Error(`HTTP Error: ${response.status}`)</span></td></tr>
+        <tr><td>에러 출력용 콘솔 메소드</td><td><span class="cloze">console.error</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>Promise는 Pending · Fulfilled · Rejected 상태를 가지고 then · catch · finally로 후속 처리한다. fetch는 404 · 500에도 reject되지 않으므로 response.ok로 확인하고, response.json()으로 Body를 변환한다. 독립 작업은 Promise.all로 병렬 처리한다.</p>
+      <div class="mn">외우는 법: <b>Promise는 기다 · 성 · 실 / 타이머는 매크로, Promise는 마이크로 / fetch는 404에도 안 운다(ok로 확인)</b></div></div>
+
+    <div class="check" data-id="k4" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">여러 요청 중 하나가 실패해도 모든 결과(성공 · 실패)를 받아 보고 싶다. 쓸 메소드는?</div>
+      <div class="opts">
+        <button class="o">Promise.all()</button>
+        <button class="o">Promise.allSettled()</button>
+        <button class="o">Promise.resolve()</button></div>
+      <div class="fb"><b>allSettled</b> = 성공 · 실패 결과를 모두 확인. all은 하나라도 실패하면 실패예요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">외웠어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 5 -->
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>useState는 두 개를 돌려주는데, useReducer는 뭘 돌려줬지?</h2><div class="sub">React 기본 정보 · 훅 3개의 모양 · Event 이름 · Controlled Component · 장바구니 Action 이름 · 5~7주차 (0929 ~ 1015)</div></div></div>
+
+    <p>React는 <b>훅 세 개의 모양</b>(useState · useEffect · useReducer)이 제일 중요해요. 코드 해석 문제에서 <code>[state, dispatch]</code> 같은 걸 보고 뭔지 바로 알아봐야 하거든요.</p>
+
+    <h3 class="rv-h">React 기본</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>질문</th><th>답</th></tr></thead>
+      <tbody>
+        <tr><td>React는 Framework? Library?</td><td><span class="cloze">UI를 만들기 위한 JavaScript Library</span></td></tr>
+        <tr><td>만든 곳 · 공개 연도</td><td><span class="cloze">Facebook(Meta) · 2013년</span></td></tr>
+        <tr><td>React로 주로 만드는 앱 형태</td><td><span class="cloze">SPA (Single Page Application)</span></td></tr>
+        <tr><td>JSX의 정체</td><td><span class="cloze">HTML 아님, JavaScript Syntax Extension</span></td></tr>
+        <tr><td>JSX가 빌드 때 바뀌는 함수</td><td><span class="cloze">React.createElement("h1", null, "Hello React")</span></td></tr>
+        <tr><td>Component 이름 규칙</td><td><span class="cloze">대문자로 시작</span></td></tr>
+        <tr><td>Hook 이름 규칙</td><td><span class="cloze">use로 시작 (커스텀 훅도 useWindowWidth)</span></td></tr>
+        <tr><td>JSX 이벤트 이름 3개</td><td><span class="cloze">onClick · onChange · onSubmit</span></td></tr>
+        <tr><td>프로젝트 만드는 명령</td><td><span class="cloze">npm create vite@latest my-react-app -- --template react</span></td></tr>
+        <tr><td>main.jsx에서 App 띄우기</td><td><span class="cloze">createRoot(document.getElementById('root')).render(&lt;App /&gt;)</span></td></tr>
+        <tr><td>명령형 UI / 선언형 UI</td><td><span class="cloze">어떻게 바꿀지 명령 / 지금 상태에서 UI가 무엇인지 선언</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">★ 훅 세 개의 모양</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>훅</th><th>모양</th></tr></thead>
+      <tbody>
+        <tr><td>useState 가져오기</td><td><span class="cloze">import { useState } from 'react'</span></td></tr>
+        <tr><td>useState</td><td><span class="cloze">const [state, setState] = useState(initialState)</span></td></tr>
+        <tr><td>이전 값으로 업데이트</td><td><span class="cloze">setCount(prev =&gt; prev + 1) (Functional Update)</span></td></tr>
+        <tr><td>객체 State 바꾸기</td><td><span class="cloze">setUser({ ...user, age: 21 }) (Immutable Update)</span></td></tr>
+        <tr><td>배열 State에 추가</td><td><span class="cloze">setItems([...items, newItem])</span></td></tr>
+        <tr><td>useEffect</td><td><span class="cloze">useEffect(() =&gt; { … }, dependencies)</span></td></tr>
+        <tr><td>Cleanup 쓰는 자리</td><td><span class="cloze">Effect 안에서 return () =&gt; { clearInterval(timer) }</span></td></tr>
+        <tr><td>useReducer</td><td><span class="cloze">const [state, dispatch] = useReducer(reducer, initialState)</span></td></tr>
+        <tr><td>reducer 함수 모양</td><td><span class="cloze">function reducer(state, action) { switch (action.type) … }</span></td></tr>
+        <tr><td>모르는 action.type일 때</td><td><span class="cloze">default: return state (그대로)</span></td></tr>
+        <tr><td>action 객체의 두 칸</td><td><span class="cloze">type · payload</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">★ useEffect 두 번째 칸 <small>자료 p.36</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>Dependency Array</th><th>언제 실행</th></tr></thead>
+      <tbody>
+        <tr><td>없음</td><td><span class="cloze">매 Render 이후</span></td></tr>
+        <tr><td>[ ]</td><td><span class="cloze">Mount 시 1번 (Cleanup은 Unmount 때)</span></td></tr>
+        <tr><td>[value]</td><td><span class="cloze">Mount 후 1번 + value가 바뀔 때</span></td></tr>
+        <tr><td>[count, name]</td><td><span class="cloze">둘 중 하나라도 바뀌면</span></td></tr>
+        <tr><td>Cleanup이 도는 때</td><td><span class="cloze">Unmount 시 · Effect 재실행 직전</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">이름이 붙은 개념 · 패턴</h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>설명</th><th>이름</th></tr></thead>
+      <tbody>
+        <tr><td>input value를 State에 묶고 onChange로 갱신</td><td><span class="cloze">Controlled Component</span></td></tr>
+        <tr><td>입력값 꺼내기</td><td><span class="cloze">e.target.value</span></td></tr>
+        <tr><td>공유 State를 공통 부모로 올림</td><td><span class="cloze">Lifting State Up</span></td></tr>
+        <tr><td>그때 부모의 역할</td><td><span class="cloze">Single Source of Truth</span></td></tr>
+        <tr><td>계산하면 되는 값은 State로 안 만듦</td><td><span class="cloze">Derived State (total = price * quantity)</span></td></tr>
+        <tr><td>Spread가 하는 복사</td><td><span class="cloze">얕은 복사 (Shallow Copy)</span></td></tr>
+        <tr><td>렌더 두 단계</td><td><span class="cloze">Render (새 UI 계산) · Commit (실제 DOM 반영)</span></td></tr>
+        <tr><td>UI 표현만 / State · 로직 담당</td><td><span class="cloze">Presentational / Container Component</span></td></tr>
+        <tr><td>데이터는 아래로, 이벤트는 위로</td><td><span class="cloze">One-Way Data Flow (콜백 Props로 위로)</span></td></tr>
+        <tr><td>API 호출을 별도 JS 파일로</td><td><span class="cloze">Service Layer (userApi.js의 getUsers)</span></td></tr>
+        <tr><td>모달 · 입력 · 토글 상태 / 서버 데이터</td><td><span class="cloze">UI State / Server State</span></td></tr>
+        <tr><td>Side Effect 예 5</td><td><span class="cloze">fetch · setInterval · addEventListener · localStorage · document.title</span></td></tr>
+        <tr><td>useState 추천 / useReducer 추천</td><td><span class="cloze">Toggle · Input · Counter / Form · Cart · Todo</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">장바구니 Action 이름 <small>1015 실습</small></h3>
+    <div class="box cloze-box"><div class="table-wrap"><table>
+      <thead><tr><th>하는 일</th><th>type</th></tr></thead>
+      <tbody>
+        <tr><td>상품 담기 (이미 있으면 수량 +1)</td><td><span class="cloze">ADD_ITEM</span></td></tr>
+        <tr><td>수량 +1</td><td><span class="cloze">INCREASE_QUANTITY</span></td></tr>
+        <tr><td>수량 −1 (최소 1 유지)</td><td><span class="cloze">DECREASE_QUANTITY</span></td></tr>
+        <tr><td>상품 삭제 (filter)</td><td><span class="cloze">REMOVE_ITEM</span></td></tr>
+        <tr><td>전체 비우기</td><td><span class="cloze">CLEAR_CART</span></td></tr>
+        <tr><td>Immutable Update에 쓴 배열 메소드 2 + 문법</td><td><span class="cloze">map() · filter() · Spread</span></td></tr>
+        <tr><td>카운터 예제의 Action 3</td><td><span class="cloze">INCREMENT · DECREMENT · SET_COUNT(payload)</span></td></tr>
+      </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>useState는 [state, setState]를, useReducer는 [state, dispatch]를 반환한다. reducer는 (state, action)을 받아 새 State를 반환하고, useEffect의 Dependency Array는 없음 = 매 Render, [ ] = Mount 1회, [value] = value 변경 시다.</p>
+      <div class="mn">외우는 법: <b>setter 대신 dispatch / 없으면 매번 · 비면 처음만 · 넣으면 바뀔 때</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q"><code>const [a, b] = useReducer(reducer, { count: 0 });</code>에서 b는?</div>
+      <div class="opts">
+        <button class="o">setter 함수 (setState)</button>
+        <button class="o">reducer 함수</button>
+        <button class="o">dispatch 함수</button></div>
+      <div class="fb">useReducer는 <b>[state, dispatch]</b>를 돌려줘요. b({ type: "INCREMENT" })처럼 부르면 reducer가 실행돼요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">외웠어요</label><a href="#c6">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 6 -->
+  <section class="ch" id="c6">
+    <div class="ch-head"><span class="ch-num">장면 6</span>
+      <div><h2>"A 다음 B" 순서 문제, 몇 개나 외워야 할까?</h2><div class="sub">URL → 화면 · DNS 조회 · 렌더링 · 이벤트 루프 · React 렌더링 · Lifecycle · useReducer 흐름 · 2~7주차</div></div></div>
+
+    <p>순서 문제는 자료에 화살표로 그려진 흐름에서 나와요. 아래 9개가 전부예요. 단계마다 가려져 있으니 1번부터 순서대로 말해 보세요.</p>
+
+    <div class="box cloze-box">
+      <h4>① ★ URL 입력부터 화면까지 <small>2주차 Summary</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">DNS Lookup (IP 주소 확인)</span></li>
+        <li><span class="cloze">TCP/TLS 연결</span></li>
+        <li><span class="cloze">HTTP/HTTPS Request 전송</span></li>
+        <li><span class="cloze">Server가 HTML · CSS · JS · Image 반환</span></li>
+        <li><span class="cloze">HTML/CSS Parsing · JavaScript 실행</span></li>
+        <li><span class="cloze">Render Tree</span></li>
+        <li><span class="cloze">Layout</span></li>
+        <li><span class="cloze">Paint</span></li>
+        <li><span class="cloze">Composite</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="box cloze-box">
+      <h4>② DNS 조회 순서 <small>브 · 오 · 리</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">Browser DNS Cache</span></li>
+        <li><span class="cloze">OS DNS Cache</span></li>
+        <li><span class="cloze">DNS Resolver</span></li>
+      </ol>
+      <h4>③ 화면 그리기 <small>DOM + CSSOM에서 시작</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">DOM + CSSOM 결합</span></li>
+        <li><span class="cloze">Render Tree</span></li>
+        <li><span class="cloze">Layout (위치 · 크기 계산)</span></li>
+        <li><span class="cloze">Paint (픽셀로 그리기)</span></li>
+      </ol>
+      <h4>④ Scope Chain 탐색 <small>3주차 p.16</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">현재(inner) Scope</span></li>
+        <li><span class="cloze">outer 함수 Scope</span></li>
+        <li><span class="cloze">전역 Scope</span></li>
+        <li><span class="cloze">끝까지 없으면 ReferenceError</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="box cloze-box">
+      <h4>⑤ ★ 이벤트 루프 실행 순서 <small>동 · 마 · 매</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">동기 코드 (Call Stack)</span></li>
+        <li><span class="cloze">Microtask 전부 (Promise · 큐가 빌 때까지)</span></li>
+        <li><span class="cloze">Macrotask (setTimeout 등)</span></li>
+      </ol>
+      <h4>Event Loop가 하는 일 3</h4>
+      <ol class="plain">
+        <li><span class="cloze">Call Stack이 비었는지 계속 확인</span></li>
+        <li><span class="cloze">Queue에서 실행 가능한 Callback을 가져옴</span></li>
+        <li><span class="cloze">Callback을 Call Stack으로 옮김</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="box cloze-box">
+      <h4>⑥ ★ React 버튼 클릭 후 <small>5주차 p.13</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">User Click</span></li>
+        <li><span class="cloze">setCount()</span></li>
+        <li><span class="cloze">State 변경</span></li>
+        <li><span class="cloze">Component Re-render</span></li>
+        <li><span class="cloze">새로운 UI 계산</span></li>
+        <li><span class="cloze">DOM Update</span></li>
+      </ol>
+      <h4>⑦ 렌더링 단계 <small>6주차 p.10</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">Render 단계 (Component 실행 · 새 UI 계산 · 이전과 비교)</span></li>
+        <li><span class="cloze">Commit 단계 (필요한 DOM 변경만 반영)</span></li>
+        <li><span class="cloze">Browser가 Layout · Paint</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="box cloze-box">
+      <h4>⑧ ★ Lifecycle <small>6주차 Summary</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">Mount (처음 화면에 추가)</span></li>
+        <li><span class="cloze">Update (Props · State 변경)</span></li>
+        <li><span class="cloze">Unmount (화면에서 제거)</span></li>
+      </ol>
+      <div class="table-wrap"><table>
+        <thead><tr><th>단계</th><th>안에서 일어나는 순서</th></tr></thead>
+        <tbody>
+          <tr><td>Mount</td><td><span class="cloze">Component 생성 · Render · DOM 반영 · Effect 실행</span></td></tr>
+          <tr><td>Update</td><td><span class="cloze">State/Props 변경 · Re-render · DOM 반영 · Effect 재실행</span></td></tr>
+          <tr><td>Unmount</td><td><span class="cloze">Component 제거 · Cleanup 실행 · Resource 해제</span></td></tr>
+        </tbody></table></div>
+      <h4>⑨ useReducer 흐름 <small>7주차 p.16</small></h4>
+      <ol class="plain">
+        <li><span class="cloze">User Event</span></li>
+        <li><span class="cloze">dispatch(action)</span></li>
+        <li><span class="cloze">Reducer</span></li>
+        <li><span class="cloze">New State</span></li>
+        <li><span class="cloze">Re-render</span></li>
+      </ol>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>URL 입력 후 DNS Lookup → TCP/TLS 연결 → HTTP Request → Resource 반환 → Parsing · JS 실행 → Render Tree → Layout → Paint → Composite. 이벤트 루프는 동기 → Microtask → Macrotask. Lifecycle은 Mount → Update → Unmount.</p>
+      <div class="mn">외우는 법: <b>찾고 · 잇고 · 묻고 · 받고 · 그린다 / 동 · 마 · 매 / 태어나고 · 변하고 · 사라진다</b></div></div>
+
+    <div class="check" data-id="k6" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">Render Tree를 만든 바로 다음 단계는?</div>
+      <div class="opts">
+        <button class="o">Layout</button>
+        <button class="o">Paint</button>
+        <button class="o">Composite</button></div>
+      <div class="fb">Render Tree → <b>Layout</b>(위치 · 크기) → Paint(칠하기) → Composite. 크기를 알아야 칠할 수 있죠.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c6">외웠어요</label><a href="#c7">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 7 -->
+  <section class="ch" id="c7">
+    <div class="ch-head"><span class="ch-num">장면 7</span>
+      <div><h2>강의자료에 나온 코드, 출력 정답만 모으면?</h2><div class="sub">출력 순서 · Hoisting · Closure · this · 복사 · State · useEffect · dispatch · 자료 코드 그대로</div></div></div>
+
+    <p>교수님이 "코드 빈칸보다 이렇게 짜면 어떻게 실행될까를 내겠다"고 했죠. 그래서 <b>자료 슬라이드에 실제로 있던 코드</b>의 정답만 모았어요. 코드를 보고 출력을 먼저 말한 다음 아래 칸을 눌러 보세요. 이유가 궁금하면 <a href="규칙8.html">규칙 8개 페이지</a>에 있어요.</p>
+
+    <h3 class="rv-h">출력 순서 <small>4주차</small></h3>
+    <div class="box cloze-box">
+      <pre class="code"><span class="file">① 자료 p.24</span>console.log("A");
+setTimeout(() =&gt; console.log("B"), 0);
+Promise.resolve().then(() =&gt; console.log("C"));
+console.log("D");</pre>
+      <p>출력 : <span class="cloze">A D C B</span></p>
+      <pre class="code"><span class="file">② 자료 p.26</span>setTimeout(() =&gt; console.log("Timeout"), 0);
+Promise.resolve()
+  .then(() =&gt; console.log("Promise1"))
+  .then(() =&gt; console.log("Promise2"));
+Promise.resolve().then(() =&gt; console.log("Promise3"));</pre>
+      <p>출력 : <span class="cloze">Promise1 Promise3 Promise2 Timeout</span></p>
+      <pre class="code"><span class="file">③ 자료 p.20 · p.23</span>console.log("Start");
+setTimeout(() =&gt; console.log("Timeout"), 0);
+console.log("End");
+<span class="c">// 그리고 setTimeout 자리에 Promise.resolve().then(…"Promise")</span></pre>
+      <p>출력 : <span class="cloze">Start End Timeout / Start End Promise</span></p>
+      <pre class="code"><span class="file">④ 자료 p.16</span>console.log("Start");
+setTimeout(() =&gt; console.log("Timer Finished"), 3000);
+console.log("Done");</pre>
+      <p>출력 : <span class="cloze">Start Done Timer Finished (최소 3초 뒤)</span></p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">Scope · Hoisting · Closure · this <small>3주차</small></h3>
+    <div class="box cloze-box">
+      <pre class="code"><span class="file">⑤ Hoisting 세 개 (p.19~21)</span>console.log(value); var value = 10;
+console.log(value); let value = 10;
+hello(); function hello() { console.log("Hello"); }</pre>
+      <p>출력 : <span class="cloze">undefined / ReferenceError / Hello</span></p>
+      <pre class="code"><span class="file">⑥ Shadowing (p.17)</span>const name = "Global";
+function example() {
+  const name = "Local";
+  console.log(name);
+}
+example();</pre>
+      <p>출력 : <span class="cloze">Local</span></p>
+      <pre class="code"><span class="file">⑦ 전역 상태 (p.11)</span>let discountRate = 0.1;
+function calculatePrice(price) { return price * (1 - discountRate); }
+function startEvent() { discountRate = 0.3; }
+console.log(calculatePrice(10000));
+startEvent();
+console.log(calculatePrice(10000));</pre>
+      <p>출력 : <span class="cloze">9000 / 7000</span></p>
+      <pre class="code"><span class="file">⑧ Closure 카운터 (p.27)</span>const counter = createCounter();  <span class="c">// count 0, 호출마다 ++ 후 반환</span>
+counter(); counter(); counter();</pre>
+      <p>출력 : <span class="cloze">1 / 2 / 3</span> · counter에 저장된 것 : <span class="cloze">숫자가 아니라 내부 함수</span></p>
+      <pre class="code"><span class="file">⑨ Private State (p.29)</span>const account = createAccount();
+account.deposit(1000);
+account.deposit(500);
+console.log(account.getBalance());
+console.log(account.balance);</pre>
+      <p>출력 : <span class="cloze">1500 / undefined</span></p>
+      <pre class="code"><span class="file">⑩ this in function (p.32)</span>var num = 0;
+function Add_Num() {
+  this.num = 100;
+  num++;
+  console.log(num);
+  console.log(window.num);
+  console.log(num === window.num);
+}
+Add_Num();</pre>
+      <p>출력 : <span class="cloze">101 / 101 / true</span></p>
+      <pre class="code"><span class="file">⑪ this in method (p.33)</span>person.fullName();  <span class="c">// firstName '김', lastName '상무', this.firstName + ' ' + this.lastName</span></pre>
+      <p>결과 : <span class="cloze">"김 상무"</span></p>
+      <pre class="code"><span class="file">⑫ 화살표 메서드 (p.34)</span>const user = { name: "철수", sayHello: () =&gt; { console.log(this.name); } };
+user.sayHello();</pre>
+      <p>결과 : <span class="cloze">"철수"가 보장 안 됨 (바깥 this, 브라우저면 window.name)</span></p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">복사 · 비교 · 객체 <small>3주차</small></h3>
+    <div class="box cloze-box">
+      <pre class="code"><span class="file">⑬ 값 복사 · 주소 복사 (p.44)</span>let a = 10; let b = a; b = 20;          <span class="c">// a = ?</span>
+const user1 = { name: "Kim" };
+const user2 = user1; user2.name = "Lee";  <span class="c">// user1.name = ?</span></pre>
+      <p>답 : <span class="cloze">a = 10 / user1.name = "Lee"</span></p>
+      <pre class="code"><span class="file">⑭ 객체 비교 (p.45)</span>const a = { name: "Kim" };
+const b = { name: "Kim" };
+console.log(a === b);
+const c = a;
+console.log(a === c);</pre>
+      <p>출력 : <span class="cloze">false / true</span></p>
+      <pre class="code"><span class="file">⑮ 동적 객체 (p.40)</span>user.email = "user@example.com";
+console.log(user["email"]);
+delete user.email;
+console.log(user["email"]);</pre>
+      <p>출력 : <span class="cloze">user@example.com / (delete는 true) / undefined</span></p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <h3 class="rv-h">React <small>6~7주차</small></h3>
+    <div class="box cloze-box">
+      <pre class="code"><span class="file">⑯ Snapshot (p.11)</span>console.log(count);   <span class="c">// count 0</span>
+setCount(count + 1);
+console.log(count);</pre>
+      <p>출력 : <span class="cloze">0 / 0 (여전히 0)</span></p>
+      <pre class="code"><span class="file">⑰ 연속 업데이트 (p.12~13) · count가 1일 때</span>setCount(count + 1); setCount(count + 1); setCount(count + 1);
+setCount(prev =&gt; prev + 1); <span class="c">// ×3 이면?</span></pre>
+      <p>다음 렌더 count : <span class="cloze">2 / 4</span></p>
+      <pre class="code"><span class="file">⑱ 일반 변수 (p.4)</span>let count = 0;
+count++;   <span class="c">// 화면은?</span></pre>
+      <p>답 : <span class="cloze">화면은 자동으로 안 바뀜 (React가 감지 못 함)</span></p>
+      <pre class="code"><span class="file">⑲ 무한 루프 (p.45)</span>useEffect(() =&gt; {
+  setCount(count + 1);
+}, [count]);</pre>
+      <p>답 : <span class="cloze">count 변경 · Effect 실행 · setCount가 끝없이 반복 (무한 루프)</span></p>
+      <pre class="code"><span class="file">⑳ dispatch 순서 (p.15~16) · 초기 { count: 0 }</span>dispatch({ type: "INCREMENT" });
+dispatch({ type: "INCREMENT" });
+dispatch({ type: "SET_COUNT", payload: 10 });
+dispatch({ type: "DECREMENT" });</pre>
+      <p>count : <span class="cloze">1 · 2 · 10 · 9 (SET_COUNT는 더하기가 아니라 그 값으로)</span></p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>A · setTimeout B · Promise C · D는 A D C B. Promise1 · Promise3이 먼저 큐에 들어가고 Promise2는 1이 끝나야 들어가서 Promise1 → Promise3 → Promise2 → Timeout.</p>
+      <div class="mn">외우는 법: <b>동 · 마 · 매 / 체인 then은 앞이 끝나야 줄 선다</b></div></div>
+
+    <div class="check" data-id="k7" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">출력은?</div>
+      <pre class="code">const a = { n: 1 };
+const c = a;
+c.n = 2;
+console.log(a.n, a === c);</pre>
+      <div class="opts">
+        <button class="o">1 true</button>
+        <button class="o">2 true</button>
+        <button class="o">2 false</button></div>
+      <div class="fb">c = a는 주소 복사라 같은 객체예요. c로 고치면 a도 2, 같은 주소니까 === 도 true.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c7">외웠어요</label><a href="#review">복습하러 가기 →</a></div>
+  </section>
+
+  <!-- 복습 -->
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험 직전 복습</h2><div class="sub">한 장 정리 → 빈칸 → 이름 카드 → 이름 퀴즈 10 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>시험 당일 아침엔 이것만</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르고 가려진 칸을 말로 채워 보세요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">★ = 시험에 나오기 좋은 것 · 오른쪽 작은 글씨 = 외우는 법</p>
+      <div class="grp"><h4>① HTTP <span class="ex-t">★</span><span class="mn">요청 4 · 응답 3 · 암무인</span></h4><ul>
+        <li>Request : <span class="kw">Method · URL · Header · Body</span></li>
+        <li>Response : <span class="kw">Status Code · Header · Body</span></li>
+        <li>4xx : <span class="kw">Client Error</span> (400 · 401 · 403 · 404)</li>
+        <li>5xx : <span class="kw">Server Error</span> (500 · 503)</li>
+        <li>HTTPS : HTTP + <span class="kw">TLS</span></li></ul></div>
+      <div class="grp"><h4>② DOM · BOM</h4><ul>
+        <li>요소 찾기 : <span class="kw">querySelector</span></li>
+        <li>클래스 붙이기 : <span class="kw">classList.add</span> (DOM만 바뀜)</li>
+        <li>현재 URL : <span class="kw">location</span></li>
+        <li>방문 기록 : <span class="kw">history</span></li>
+        <li>브라우저 정보 : <span class="kw">navigator</span></li></ul></div>
+      <div class="grp"><h4>③ JS 문법 <span class="ex-t">★</span><span class="mn">빈 · 잠긴 · 꽉 찬 상자</span></h4><ul>
+        <li>선언 전 var : <span class="kw">undefined</span></li>
+        <li>선언 전 let · const : <span class="kw">ReferenceError</span> (TDZ)</li>
+        <li>let : 재선언 <span class="kw">불가</span> · 재할당 <span class="kw">가능</span></li>
+        <li>화살표 함수의 this : <span class="kw">바깥 this</span></li></ul></div>
+      <div class="grp"><h4>④ 비동기 <span class="ex-t">★</span><span class="mn">동 · 마 · 매</span></h4><ul>
+        <li>Promise 상태 : <span class="kw">Pending · Fulfilled · Rejected</span></li>
+        <li>모두 성공해야 성공 : <span class="kw">Promise.all</span></li>
+        <li>Body를 JSON으로 : <span class="kw">response.json()</span></li>
+        <li>404일 때 fetch : reject 안 됨, <span class="kw">response.ok</span>로 확인</li></ul></div>
+      <div class="grp"><h4>⑤ React <span class="ex-t">★</span><span class="mn">setter 대신 dispatch</span></h4><ul>
+        <li>useState 반환 : <span class="kw">[state, setState]</span></li>
+        <li>useReducer 반환 : <span class="kw">[state, dispatch]</span></li>
+        <li>[ ] Effect : <span class="kw">Mount 시 1번</span></li>
+        <li>Lifecycle : <span class="kw">Mount · Update · Unmount</span></li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>Timer API에서 반복 타이머를 멈추는 함수는 <span class="cloze">clearInterval</span>이다. Promise의 후속 처리 중 성공 여부와 관계없이 무조건 실행되는 것은 <span class="cloze">finally()</span>다. fetch 결과로 받는 것은 데이터가 아니라 <span class="cloze">Response</span> 객체다. JSX는 빌드 때 <span class="cloze">React.createElement</span>로 바뀐다. 커스텀 훅의 이름은 <span class="cloze">use</span>로 시작한다. reducer는 모르는 type이 오면 <span class="cloze">state를 그대로</span> 반환한다. TDZ는 <span class="cloze">Temporal Dead Zone</span>의 줄임말이다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">이름 카드 <small>쉬는 시간에 폰으로</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">Request 구성 4칸은?</div><div class="a">Method · URL(Path) · Header · Body.</div></div>
+        <div class="fc-item"><div class="q">Response 구성 3칸은?</div><div class="a">Status Code · Header · Body.</div></div>
+        <div class="fc-item"><div class="q">2xx · 3xx · 4xx · 5xx는?</div><div class="a">성공(200 · 201) · Redirect(301 · 302) · Client Error(400 · 401 · 403 · 404) · Server Error(500 · 503).</div></div>
+        <div class="fc-item"><div class="q">TLS가 주는 3가지는?</div><div class="a">암호화 · 무결성 · 인증. SSL은 구버전.</div></div>
+        <div class="fc-item"><div class="q">BOM 객체 5개는?</div><div class="a">window · location(URL) · history(방문 기록) · navigator(브라우저 정보) · screen(화면).</div></div>
+        <div class="fc-item"><div class="q">DOM 실습 세 줄은?</div><div class="a">querySelector("#main_text") · textContent = "…" · classList.add("active").</div></div>
+        <div class="fc-item"><div class="q">Web API 7종은?</div><div class="a">Timer · DOM · Fetch · Event · Geolocation · WebSocket · Storage.</div></div>
+        <div class="fc-item"><div class="q">Macrotask 예 / Microtask 예는?</div><div class="a">setTimeout · setInterval · 이벤트 callback / Promise then.</div></div>
+        <div class="fc-item"><div class="q">Promise 상태 3개와 후속 처리 3개는?</div><div class="a">Pending · Fulfilled · Rejected / then · catch · finally.</div></div>
+        <div class="fc-item"><div class="q">Promise.all과 allSettled 차이는?</div><div class="a">all : 모두 성공해야 성공 / allSettled : 성공 · 실패 결과를 모두 확인.</div></div>
+        <div class="fc-item"><div class="q">Response에서 읽는 값 3개와 Body 변환 3개는?</div><div class="a">status · ok · headers / json() · text() · blob().</div></div>
+        <div class="fc-item"><div class="q">POST fetch 옵션 3개는?</div><div class="a">method: "POST" · headers: { "Content-Type": "application/json" } · body: JSON.stringify(…).</div></div>
+        <div class="fc-item"><div class="q">useState / useReducer 모양은?</div><div class="a">const [state, setState] = useState(초기값) / const [state, dispatch] = useReducer(reducer, 초기값).</div></div>
+        <div class="fc-item"><div class="q">Dependency Array 3가지는?</div><div class="a">없음 : 매 Render / [ ] : Mount 1번 / [value] : Mount + value 변경 시.</div></div>
+        <div class="fc-item"><div class="q">장바구니 Action 5개는?</div><div class="a">ADD_ITEM · INCREASE_QUANTITY · DECREASE_QUANTITY(최소 1) · REMOVE_ITEM · CLEAR_CART.</div></div>
+        <div class="fc-item"><div class="q">React 렌더링 두 단계는?</div><div class="a">Render(새 UI 계산 · 비교) · Commit(필요한 DOM만 반영).</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">이름 퀴즈 <small>객관식 8문제 대비</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="2"><p class="qt"><b>Q1</b>fetch로 받은 Response의 Body를 JS 객체로 바꾸는 메소드는?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">JSON.stringify()</label>
+        <label class="opt"><input type="radio" name="q1" value="1">response.ok</label>
+        <label class="opt"><input type="radio" name="q1" value="2">response.json()</label>
+        <label class="opt"><input type="radio" name="q1" value="3">response.status</label>
+        <div class="explain">response.json()(await 필요). JSON.stringify는 반대로 객체 → 문자열(POST body 만들 때).</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q2</b>현재 페이지의 URL 정보를 가진 BOM 객체는?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">location</label>
+        <label class="opt"><input type="radio" name="q2" value="1">navigator</label>
+        <label class="opt"><input type="radio" name="q2" value="2">history</label>
+        <label class="opt"><input type="radio" name="q2" value="3">screen</label>
+        <div class="explain">URL = location. navigator는 브라우저 환경 정보, history는 방문 기록.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q3</b>Macrotask Queue에 들어가지 않는 것은?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">setTimeout 콜백</label>
+        <label class="opt"><input type="radio" name="q3" value="1">setInterval 콜백</label>
+        <label class="opt"><input type="radio" name="q3" value="2">클릭 이벤트 콜백</label>
+        <label class="opt"><input type="radio" name="q3" value="3">Promise.then 콜백</label>
+        <div class="explain">Promise.then은 Microtask. 그래서 setTimeout보다 먼저 실행돼요.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q4</b>Promise의 상태가 아닌 것은?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">Pending</label>
+        <label class="opt"><input type="radio" name="q4" value="1">Settled</label>
+        <label class="opt"><input type="radio" name="q4" value="2">Fulfilled</label>
+        <label class="opt"><input type="radio" name="q4" value="3">Rejected</label>
+        <div class="explain">자료의 States는 Pending · Fulfilled · Rejected 세 개. Settled는 allSettled 이름에만 나와요.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q5</b>useEffect에서 setInterval로 만든 타이머를 Unmount 때 정리하는 코드로 맞는 것은?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">Effect 밖에서 clearTimeout(timer)</label>
+        <label class="opt"><input type="radio" name="q5" value="1">Dependency Array에 clearInterval을 넣는다</label>
+        <label class="opt"><input type="radio" name="q5" value="2">Effect 안에서 return () =&gt; clearInterval(timer)</label>
+        <label class="opt"><input type="radio" name="q5" value="3">setSeconds(0)</label>
+        <div class="explain">Effect가 return하는 함수가 Cleanup. setInterval 짝은 clearInterval.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q6</b>const [x, y] = useState(0); 에서 y의 역할은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">State를 바꾸고 Re-render를 일으키는 setter 함수</label>
+        <label class="opt"><input type="radio" name="q6" value="1">초기값</label>
+        <label class="opt"><input type="radio" name="q6" value="2">dispatch 함수</label>
+        <label class="opt"><input type="radio" name="q6" value="3">이전 State 값</label>
+        <div class="explain">useState는 [현재 값, setter]. dispatch는 useReducer 쪽.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q7</b>input의 value를 State에 연결하고 onChange에서 setName(e.target.value)를 부르는 패턴의 이름은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">Derived State</label>
+        <label class="opt"><input type="radio" name="q7" value="1">Lifting State Up</label>
+        <label class="opt"><input type="radio" name="q7" value="2">Custom Hook</label>
+        <label class="opt"><input type="radio" name="q7" value="3">Controlled Component</label>
+        <div class="explain">Browser가 아니라 React(State)가 입력값을 관리 = Controlled Component.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q8</b>Default Export에 대한 설명으로 맞는 것은?</p>
+        <label class="opt"><input type="radio" name="q8" value="0">한 모듈에서 여러 개 쓸 수 있다</label>
+        <label class="opt"><input type="radio" name="q8" value="1">모듈당 하나이고 import할 때 이름을 자유롭게 정할 수 있다</label>
+        <label class="opt"><input type="radio" name="q8" value="2">반드시 import { } 중괄호로 가져온다</label>
+        <label class="opt"><input type="radio" name="q8" value="3">class에는 쓸 수 없다</label>
+        <div class="explain">하나만 · 이름 자유 · React Component에서 자주 씀(export default class User도 자료 예).</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q9</b>4xx 상태 코드가 아닌 것은?</p>
+        <label class="opt"><input type="radio" name="q9" value="0">401</label>
+        <label class="opt"><input type="radio" name="q9" value="1">404</label>
+        <label class="opt"><input type="radio" name="q9" value="2">503</label>
+        <label class="opt"><input type="radio" name="q9" value="3">403</label>
+        <div class="explain">503은 5xx Server Error.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q10</b>Hoisting 표에서 "선언 O · 초기화 X"라 선언 전에 쓰면 ReferenceError가 나는 것은?</p>
+        <label class="opt"><input type="radio" name="q10" value="0">let · const</label>
+        <label class="opt"><input type="radio" name="q10" value="1">var</label>
+        <label class="opt"><input type="radio" name="q10" value="2">function 선언</label>
+        <label class="opt"><input type="radio" name="q10" value="3">전부</label>
+        <div class="explain">let · const = TDZ = ReferenceError. var는 undefined, function 선언은 호출 가능.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>주관식 개념 대비</small></h3>
+    <div class="box explain-box">
+      <p class="eq">"fetch로 사용자 목록을 받아 State에 넣는 useEffect 코드"에 나오는 이름들(useEffect · [ ] · async/await · fetch · response.json · setUsers)이 각각 무슨 역할인지 한 줄씩 써 보세요.</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">useEffect : Render 이후에 API 요청 같은 Side Effect를 실행하는 훅. [ ] : Dependency Array가 비어 있어서 Mount 때 한 번만 요청. async/await : Promise를 동기 코드처럼 기다리게 하는 문법(await는 그 함수만 멈춤). fetch : HTTP Request를 보내는 Web API, Response 객체를 Promise로 돌려줌. response.json() : Response의 Body를 JSON에서 JS 데이터로 변환. setUsers : 받은 데이터를 State에 넣는 setter, 그러면 Component가 Re-render돼서 목록이 화면에 나옴.</div>
+    </div>
+
+    <details class="ref"><summary>이 페이지에 안 넣은 것 <small>범위 밖 · 저비중</small></summary><div class="ref-body">
+      <p>MVC · MVVM 구성 요소(교수님이 안 낸다고 함), 브라우저 역사 연도(1990 WorldWideWeb · 1993 Mosaic · 1995 IE · 2008 Chrome), Firefox JS 엔진(자료에 칸만 있고 이름이 빠져 있음), Promise.race · any의 동작(자료에 이름만 있음), 1015 Step 5 디자인. 이유 설명이 필요하면 <a href="규칙8.html">규칙 8개</a> · <a href="중간고사_압축본.html">압축본</a>으로.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>고급웹프로그래밍 · 중간고사 대비 · 외울 것만 (이름 · 숫자 · 순서 · 출력 정답) · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  /* 공책 정리 칸: 장면 질문(왼쪽) + "시험엔 이렇게"(오른쪽) + 그려 볼 그림 + 요약 */
+  var review = $('#review');
+  var scenes = $$('section.ch:not(.review)').filter(function (s) { return $('.key', s); });
+  if (review && scenes.length) {
+    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+    var rows = scenes.map(function (s, i) {
+      var key = $('.key', s), h2 = $('.ch-head h2', s), sub = $('.ch-head .sub', s);
+      var txt = $$('p', key).map(function (p) { return '<p>' + p.innerHTML + '</p>'; }).join('');
+      var mn = $('.mn', key);
+      return '<div class="nb-row"><div class="nb-q"><span class="nb-n">' + (i + 1) + '</span><span>' + (h2 ? h2.innerHTML : '') + (sub ? '<small class="nb-sub">' + sub.innerHTML + '</small>' : '') + '</span></div>' +
+        '<div class="nb-a" tabindex="0"><div class="nb-txt">' + txt + (mn ? '<div class="nb-mn">' + mn.innerHTML + '</div>' : '') + '</div>' +
+        '<label class="nb-ok"><input type="checkbox" data-nb="' + i + '">공책에 적었어요</label></div></div>';
+    }).join('');
+    var figs = $$('section.ch:not(.review) .fig figcaption').map(function (c) {
+      var sec = c.closest('section'), n = sec ? $('.ch-num', sec) : null;
+      var svg = $('svg', c.closest('.fig')), what = svg && svg.getAttribute('aria-label');
+      return '<li>' + (n ? esc(n.textContent) + ' · ' : '') + (what ? esc(what) + '<br><small class="nb-sub">' + c.innerHTML + '</small>' : c.innerHTML) + '</li>';
+    });
+    var h1 = $('.hero h1');
+    var wrapEl = document.createElement('div');
+    wrapEl.className = 'nb-wrap';
+    wrapEl.innerHTML = '<h3 class="rv-h">공책 정리 칸 <small>왼쪽 질문 · 오른쪽 답 · 맨 아래 요약</small></h3>' +
+      '<p class="rv-d">공책에 세로줄을 하나 긋고 왼쪽 좁은 칸에 질문, 오른쪽 넓은 칸에 답을 옮겨 적어요. 그림은 보지 말고 직접 그려 보고, 맨 아래엔 내 말로 한두 줄 요약. 다음 날엔 "답 가리기"를 누르고 질문만 보며 소리 내어 답해 보세요.</p>' +
+      '<div class="box nb" id="nb"><div class="nb-head"><span>질문 (왼쪽 칸)</span><span>공책에 적을 답 (오른쪽 칸)</span></div>' + rows +
+      (figs.length ? '<div class="nb-draw"><b>직접 그려 볼 그림</b><ol>' + figs.join('') + '</ol></div>' : '') +
+      '<div class="nb-sum"><b>맨 아래 요약 칸</b><p>' + (h1 ? '"' + h1.innerHTML + '" — 이 질문에 내 말로 답해서 한두 줄로 적기' : '오늘 배운 것을 내 말로 한두 줄') + '</p></div>' +
+      '<div class="nb-foot"><div class="btns"><button class="btn" type="button" data-nb-hide>답 가리기</button><button class="btn" type="button" data-nb-show>모두 보기</button><button class="btn" type="button" data-nb-print>공책 칸만 인쇄</button></div><span class="nb-count"></span></div></div>';
+    var head = $('.ch-head', review);
+    review.insertBefore(wrapEl, head ? head.nextSibling : review.firstChild);
+    var nb = $('#nb'), nbState = load('notebook', {});
+    function nbCount() {
+      var boxes = $$('[data-nb]', nb), n = boxes.filter(function (b) { return b.checked; }).length;
+      $('.nb-count', nb).textContent = '공책에 적은 것 ' + n + ' / ' + boxes.length;
+    }
+    $$('[data-nb]', nb).forEach(function (b) {
+      b.checked = !!nbState[b.dataset.nb];
+      b.closest('.nb-row').classList.toggle('done', b.checked);
+      b.addEventListener('change', function () { nbState[b.dataset.nb] = b.checked; save('notebook', nbState); b.closest('.nb-row').classList.toggle('done', b.checked); nbCount(); });
+    });
+    $$('.nb-a', nb).forEach(function (a) {
+      function t(e) { if (e.target.closest('.nb-ok')) return; if (nb.classList.contains('hide')) a.classList.toggle('open'); }
+      a.addEventListener('click', t);
+      a.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(e); } });
+    });
+    $('[data-nb-hide]', nb).addEventListener('click', function () { nb.classList.add('hide'); $$('.nb-a.open', nb).forEach(function (a) { a.classList.remove('open'); }); });
+    $('[data-nb-show]', nb).addEventListener('click', function () { nb.classList.remove('hide'); });
+    $('[data-nb-print]', nb).addEventListener('click', function () {
+      body.classList.add('print-nb');
+      window.print();
+      setTimeout(function () { body.classList.remove('print-nb'); }, 500);
+    });
+    nbCount();
+  }
+
+  /* 틀린 문제 체크: 답 칸(.cloze)이 바로 붙은 문제마다 "틀림" 버튼 → 틀린 것만 모아 보기 */
+  if (body.dataset.week === '연습문제') {
+    var wrong = load('wrong', {});
+    var items = $$('.cloze-box li').filter(function (li) {
+      return Array.prototype.some.call(li.children, function (c) { return c.classList.contains('cloze'); });
+    });
+    if (items.length) {
+      var seq = {};
+      items.forEach(function (li) {
+        var sec = li.closest('section'), sid = (sec && sec.id) || 'p';
+        seq[sid] = (seq[sid] || 0) + 1;
+        li.dataset.wr = sid + '-' + seq[sid];
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'wr-btn';
+        var ans = Array.prototype.filter.call(li.children, function (c) { return c.classList.contains('cloze'); })[0];
+        li.insertBefore(b, ans.nextSibling);
+        li._wrb = b;
+        b.addEventListener('click', function () {
+          if (wrong[li.dataset.wr]) delete wrong[li.dataset.wr]; else wrong[li.dataset.wr] = 1;
+          save('wrong', wrong); wrPaint();
+        });
+      });
+      var bar = document.createElement('div');
+      bar.className = 'wr-bar'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', '틀린 문제');
+      bar.innerHTML = '<span>틀린 문제 <b class="wr-n">0</b>개</span>' +
+        '<button type="button" class="btn pri wr-only">틀린 것만 보기</button>' +
+        '<button type="button" class="btn wr-clear">표시 지우기</button>';
+      body.appendChild(bar); body.classList.add('wr-on');
+      var onlyBtn = $('.wr-only', bar), clearBtn = $('.wr-clear', bar);
+      onlyBtn.addEventListener('click', function () {
+        var on = !body.classList.contains('wr-only');
+        body.classList.toggle('wr-only', on);
+        if (on) $$('li.wrong .cloze').forEach(function (c) { c.classList.remove('open'); });
+        wrPaint(); window.scrollTo(0, 0);
+      });
+      clearBtn.addEventListener('click', function () {
+        if (!confirm('틀림 표시를 모두 지울까요?')) return;
+        wrong = {}; save('wrong', wrong); body.classList.remove('wr-only'); wrPaint();
+      });
+      function wrPaint() {
+        var n = 0;
+        $$('.wr-has').forEach(function (el) { el.classList.remove('wr-has'); });
+        items.forEach(function (li) {
+          var on = !!wrong[li.dataset.wr], b = li._wrb;
+          li.classList.toggle('wrong', on);
+          b.textContent = on ? '틀림 ✓' : '틀림';
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          if (!on) return;
+          n++;
+          for (var p = li.parentElement; p && p !== body; p = p.parentElement) {
+            if (p.tagName === 'LI' || p.tagName === 'SECTION') p.classList.add('wr-has');
+          }
+        });
+        if (!n) body.classList.remove('wr-only');
+        $('.wr-n', bar).textContent = n;
+        onlyBtn.disabled = !n && !body.classList.contains('wr-only');
+        onlyBtn.textContent = body.classList.contains('wr-only') ? '전체 보기' : '틀린 것만 보기';
+        clearBtn.disabled = !n;
+      }
+      wrPaint();
+    }
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>
