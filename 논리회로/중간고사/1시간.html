@@ -358,17 +358,29 @@ body.wr-only .cloze-box>p.rv-d{display:none}
       <li><span class="k">50 / 250</span>단위가 같으니 그냥 나누면 0.2 → × 100 = <b>20 %</b>. 한 주기의 5분의 1만 켜져 있다는 뜻이에요.</li>
     </ul>
 
-    <p>개념은 시험 문장 몇 개만 챙겨요.</p>
-    <div class="table-wrap"><table>
-      <thead><tr><th>물으면</th><th>답</th></tr></thead>
-      <tbody>
-        <tr><td>디지털의 장점 / 최대 단점</td><td>잡음에 강하다 / <mark>양자화 오차</mark>(5.5를 5로 저장하듯 계단으로 끊으면서 생기는 오차)</td></tr>
-        <tr><td>word</td><td>특정 CPU가 한 번에 다루는 명령어 · 데이터 길이의 비트 수 (nibble 4 · byte 8)</td></tr>
-        <tr><td>정논리 / 부논리</td><td>High = 1, Low = 0 / High = 0, Low = 1</td></tr>
-        <tr><td>조합 / 순서 논리회로</td><td>기억 없음 / 플립플롭 · 메모리가 <b>하나라도</b> 있으면 순서</td></tr>
-        <tr><td>ADC 순서</td><td>표본화 → 양자화 → 부호화 ("표 · 양 · 부") · 샤논: 최고 주파수의 <b>2배 이상</b>으로 샘플링</td></tr>
-        <tr><td>리딩 / 트레일링 에지</td><td>상승 에지(올라가는 쪽) / 하강 에지(내려가는 쪽)</td></tr>
-      </tbody></table></div>
+    <h3>펄스 용어</h3>
+    <ul class="plain">
+      <li><b>주기(T)</b> : 펄스가 한 번 반복되는 데 걸리는 시간</li>
+      <li><b>펄스 폭(tw)</b> : 한 주기 중 High(1)로 있는 시간</li>
+      <li><b>주파수(f)</b> : 1초에 반복되는 횟수. 주기의 역수 f = 1 / T</li>
+      <li><b>듀티 사이클</b> : 한 주기 중 High인 시간의 비율. (tw / T) × 100 [%]</li>
+      <li><b>리딩 에지</b> : 펄스가 올라가는 쪽(상승 에지)</li>
+      <li><b>트레일링 에지</b> : 펄스가 내려가는 쪽(하강 에지)</li>
+    </ul>
+    <h3>디지털 기본 용어</h3>
+    <ul class="plain">
+      <li><b>디지털의 장점</b> : 잡음에 강하다</li>
+      <li><b>양자화 오차</b> : 연속된 값을 계단처럼 끊어 저장하면서 생기는 오차(5.5를 5로). 디지털의 최대 단점</li>
+      <li><b>word</b> : 특정 CPU가 한 번에 다루는 명령어나 데이터의 길이에 해당하는 비트 수</li>
+      <li><b>nibble</b> : 4비트</li>
+      <li><b>byte</b> : 8비트</li>
+      <li><b>정논리</b> : High를 1, Low를 0으로 읽는 방식</li>
+      <li><b>부논리</b> : High를 0, Low를 1로 읽는 방식</li>
+      <li><b>조합논리회로</b> : 기본 게이트만 조합한 회로. 기억 기능이 없다</li>
+      <li><b>순서논리회로</b> : 조합논리회로에 플립플롭 · 메모리 같은 저장 요소가 더해진 회로. 저장 요소가 하나라도 있으면 순서논리</li>
+      <li><b>ADC</b> : 아날로그를 디지털로 바꾸는 변환기. 표본화 → 양자화 → 부호화 순서</li>
+      <li><b>샤논 정리</b> : 최고 주파수의 2배 이상으로 샘플링하면 원신호를 복구할 수 있다</li>
+    </ul>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>f = 1 / T, 듀티 사이클 = (tw / T) × 100 [%]. 예제 1-4: tw = 50 μs, T = 250 μs → f = 4 kHz, 듀티 = 20 %.</p>
@@ -429,9 +441,11 @@ body.wr-only .cloze-box>p.rv-d{display:none}
 
     <h3>④ 2의 보수와 뺄셈 : 왜 굳이 이렇게 할까?</h3>
     <p>컴퓨터는 회로를 간단히 하려고 <b>덧셈기 하나로 뺄셈까지</b> 하고 싶어요. 5 − 3을 5 + (−3)으로 바꾸려면 −3을 2진수로 만들어야 하는데, 그 방법이 <mark>보수</mark>예요.</p>
+    <h3>보수 용어</h3>
     <ul class="plain">
-      <li><b>1의 보수</b> : 0 ↔ 1을 다 뒤집기. 쉽지만 0이 +0(0000)과 −0(1111) <b>두 개</b> 생겨서 계산이 꼬여요.</li>
-      <li><b>2의 보수</b> : 1의 보수에 <b>+1</b>. 한 단계 더 걸리지만 0이 하나라 결과가 정확해요. 그래서 컴퓨터는 <mark>2의 보수</mark>를 써요.</li>
+      <li><b>보수</b> : 덧셈기만으로 뺄셈을 하기 위해 음수를 표현하는 방법</li>
+      <li><b>1의 보수</b> : 모든 비트를 0 ↔ 1로 뒤집은 것. 만들기 쉽지만 0이 +0(0000)과 −0(1111) 두 개 생긴다</li>
+      <li><b>2의 보수</b> : 1의 보수에 1을 더한 것. 0이 하나라 결과가 정확해서 컴퓨터가 쓴다</li>
     </ul>
     <pre class="code"><span class="file">45 = 00101101 의 2의 보수 (−45 만들기)</span>00101101      <span class="c">// 45</span>
 11010010      <span class="c">// ① 1의 보수: 전부 뒤집기</span>
@@ -520,7 +534,17 @@ C2 = 2·3·6·7번 = 1+1+1+1 = 4개(짝수) → 0
 C4 = 4·5·6·7번 = 0+1+1+1 = 3개(홀수) → 1
 C4 C2 C1 = 101 = <span class="hl">5 → 5번 자리를 뒤집어 정정</span></pre>
     <p>패리티 개수는 공식(2ᵖ⁻¹ − p + 1 ≤ d ≤ 2ᵖ − p − 1)으로 정하는데, <b>p = 4면 데이터 5~11비트</b>, 즉 8비트 데이터면 패리티 4개 · 총 12비트만 기억하면 충분해요. 검사 결과가 <b>0000이면 에러 없음</b>.</p>
-    <p>참고로 <b>3초과 코드</b> = BCD + 0011. 비트를 뒤집으면 9의 보수가 되는 <b>자기보수</b> 코드예요.</p>
+    <h3>코드 용어</h3>
+    <ul class="plain">
+      <li><b>BCD 코드</b> : 10진수 각 자리를 4비트 2진수로 표현한 코드(8421 코드). 0000~1001만 쓴다</li>
+      <li><b>3초과 코드</b> : BCD에 0011(3)을 더한 코드. 비가중치 코드</li>
+      <li><b>자기보수</b> : 비트를 반전하면 9의 보수가 되는 성질. 3초과 코드가 가진다</li>
+      <li><b>그레이 코드</b> : 인접한 값끼리 1비트만 다른 코드. 입출력 장치의 오차가 적다</li>
+      <li><b>패리티 비트</b> : 에러 검사를 위해 데이터에 덧붙이는 1비트. 에러 검출만 가능</li>
+      <li><b>짝수 패리티</b> : 패리티 포함 1의 개수를 짝수로 맞추는 방식</li>
+      <li><b>홀수 패리티</b> : 패리티 포함 1의 개수를 홀수로 맞추는 방식</li>
+      <li><b>해밍 코드</b> : 1 · 2 · 4 · 8번 자리에 패리티를 두어 에러 위치를 찾아 정정하는 코드. 짝수 패리티 사용</li>
+    </ul>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>BCD는 10진수 각 자리를 4비트 2진수로 표현한 코드(8421)로 0000~1001만 쓰며, 덧셈에서 자리 합이 9를 넘으면 0110을 더해 보정한다. 2진 → 그레이는 첫 비트 그대로, 이후 2진의 앞 비트 ⊕ 현재 비트. 그레이 → 2진은 첫 비트 그대로, 이후 방금 구한 2진 비트 ⊕ 현재 그레이 비트. 패리티는 에러 검출만, 해밍 코드는 1 · 2 · 4 · 8번 자리 패리티로 에러 위치를 찾아 정정한다.</p>
@@ -550,14 +574,18 @@ C4 C2 C1 = 101 = <span class="hl">5 → 5번 자리를 뒤집어 정정</span></
     <div class="ch-head"><span class="ch-num">장면 4</span>
       <div><h2>게이트가 얼마나 빠르고, 잡음에 버티고, 몇 개를 먹여 살릴까? (36~46분)</h2><div class="sub">제4장 · 게이트 규칙 · 예제 4-8 XOR · 전파지연(4-11) · 잡음 여유도(4-13) · 팬아웃(4-15) · 3상태 버퍼</div></div></div>
 
-    <div class="table-wrap"><table>
-      <thead><tr><th>게이트</th><th>규칙 (말로)</th><th>식</th></tr></thead>
-      <tbody>
-        <tr><td>AND / NAND</td><td>모두 1일 때만 1 / 그 반대(모두 1일 때만 0)</td><td>AB / (AB)′</td></tr>
-        <tr><td>OR / NOR</td><td>하나라도 1이면 1 / 모두 0일 때만 1</td><td>A + B / (A + B)′</td></tr>
-        <tr><td>XOR / XNOR</td><td>1의 개수가 <b>홀수</b>면 1 (2입력이면 다를 때 1) / 같을 때 1</td><td>A′B + AB′ / (A ⊕ B)′</td></tr>
-        <tr><td>3상태 버퍼</td><td>High · Low · <mark>Hi-Z</mark>(선이 끊긴 상태) — 여러 출력이 한 선을 쓸 때 충돌 방지</td><td>—</td></tr>
-      </tbody></table></div>
+    <h3>게이트 용어</h3>
+    <ul class="plain">
+      <li><b>AND</b> : 입력이 모두 1일 때만 1. 식 AB</li>
+      <li><b>OR</b> : 입력 중 하나라도 1이면 1. 식 A + B</li>
+      <li><b>NOT</b> : 입력을 반전. 식 A′</li>
+      <li><b>NAND</b> : AND의 반대. 입력이 모두 1일 때만 0. 식 (AB)′</li>
+      <li><b>NOR</b> : OR의 반대. 입력이 모두 0일 때만 1. 식 (A + B)′</li>
+      <li><b>XOR</b> : 입력 중 1의 개수가 홀수면 1(2입력이면 서로 다를 때 1). 식 A′B + AB′</li>
+      <li><b>XNOR</b> : XOR의 반대. 2입력이면 서로 같을 때 1</li>
+      <li><b>3상태 버퍼</b> : High · Low · Hi-Z 세 상태를 갖는 버퍼. 여러 출력이 한 선을 공유할 때 충돌을 막는다</li>
+      <li><b>Hi-Z</b> : 선이 끊긴 것 같은 고임피던스 상태</li>
+    </ul>
     <p><b>예제 4-8</b> XOR의 B를 손잡이처럼 써요. <b>B = 0이면 A가 그대로</b>, <b>B = 1이면 A가 뒤집혀서</b> 나와요. A ⊕ 0 = A, A ⊕ 1 = A′이니까요. 비슷하게 AND는 한쪽이 1이면 다른 입력이 통과하고, OR는 한쪽이 0이면 통과해요.</p>
 
     <h3>① 전파지연 → 최대 동작 주파수</h3>
@@ -580,6 +608,16 @@ VNH = VOH(min) − VIH(min) = 3.84 − 3.15 = <span class="hl">0.69 V</span>    
 Low  : IOL ÷ IIL = 20 mA ÷ 0.6 mA = 33.3
 → 작은 쪽, 소수는 버림 → 팬아웃 <span class="hl">33</span></pre>
     <p>전력은 <b>P = VCC × ICC</b> (5 V × 2 mA = 10 mW).</p>
+    <h3>게이트 성능 용어</h3>
+    <ul class="plain">
+      <li><b>전파지연시간</b> : 입력이 바뀐 뒤 출력이 바뀔 때까지 걸리는 시간. tPHL + tPLH</li>
+      <li><b>tPHL</b> : 출력이 High → Low로 바뀔 때의 지연</li>
+      <li><b>tPLH</b> : 출력이 Low → High로 바뀔 때의 지연</li>
+      <li><b>최대 동작 주파수</b> : 게이트가 동작할 수 있는 가장 빠른 주파수. 1 / 전파지연시간</li>
+      <li><b>잡음 여유도</b> : 잡음이 섞여도 0 · 1이 바뀌지 않고 버틸 수 있는 전압 여유. 클수록 잡음에 강하다</li>
+      <li><b>팬아웃</b> : 게이트 출력 하나에 연결할 수 있는 입력의 최대 개수</li>
+      <li><b>소비 전력</b> : P = VCC × ICC</li>
+    </ul>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>전파지연 = tPHL + tPLH, 최대 동작 주파수 = 1 / 전파지연. VNL = VIL(max) − VOL(max), VNH = VOH(min) − VIH(min). 팬아웃 = IOH/IIH와 IOL/IIL 중 작은 값. P = VCC × ICC. XOR은 1의 개수가 홀수일 때 1이며, 한 입력이 0이면 다른 입력을 그대로, 1이면 반전해 출력한다.</p>
@@ -602,19 +640,26 @@ Low  : IOL ÷ IIL = 20 mA ÷ 0.6 mA = 33.3
       <div><h2>불 대수식이 나오면 무슨 법칙으로 줄일까? (46~60분)</h2><div class="sub">제5장 · 공리 · 기본법칙 · 분배(일반 수학에 없는 쪽) · 흡수 · 합의 · 드모르간 "반드시" · 최소항 · 최대항 빈칸 · Σm ↔ ΠM</div></div></div>
 
     <p>불 대수는 값이 <b>0과 1밖에 없는</b> 수학이에요. 그래서 일반 수학과 다른 게 생겨요. 1 + 1 = 2가 아니라 <b>1 + 1 = 1</b>(OR니까). 아래 표가 "적용된 법칙이 뭐냐" 문제의 답 목록이에요.</p>
-    <div class="table-wrap"><table>
-      <thead><tr><th>법칙 이름</th><th>식</th><th>말로</th></tr></thead>
-      <tbody>
-        <tr><td>기본법칙(0과 1)</td><td>A + 0 = A · A + 1 = 1 · A · 1 = A · A · 0 = 0</td><td>1은 OR의 블랙홀, 0은 AND의 블랙홀</td></tr>
-        <tr><td>자기 자신</td><td>A + A = A · A · A = A</td><td>같은 걸 몇 번 더해도 그대로</td></tr>
-        <tr><td>보수</td><td><mark>A + A′ = 1</mark> · A · A′ = 0</td><td>자기와 반대를 OR하면 무조건 1</td></tr>
-        <tr><td>이중 부정</td><td>(A′)′ = A</td><td>두 번 뒤집으면 그대로</td></tr>
-        <tr><td>분배 (일반 수학과 같음)</td><td>A(B + C) = AB + AC</td><td>공통인 걸 묶기 · 풀기</td></tr>
-        <tr><td><mark>분배 (일반 수학에 없음)</mark></td><td>A + BC = (A + B)(A + C)</td><td>합 쪽으로 쪼개기</td></tr>
-        <tr><td>흡수</td><td>A + AB = A</td><td>A가 1이면 어차피 1, 0이면 AB도 0</td></tr>
-        <tr><td>합의</td><td>AB + BC + A′C = AB + A′C</td><td>가운데 BC는 없어도 됨</td></tr>
-        <tr><td>쌍대성</td><td>0 ↔ 1, + ↔ · 바꾸면 짝꿍 식</td><td>A + 0 = A ↔ A · 1 = A</td></tr>
-      </tbody></table></div>
+    <h3>불 대수 용어</h3>
+    <ul class="plain">
+      <li><b>공리</b> : 증명 없이 받아들이는 명제. 불 대수에서 변수는 0 또는 1이고 1 + 1 = 1</li>
+      <li><b>쌍대성</b> : 0 ↔ 1, + ↔ · 를 서로 바꾸면 짝이 되는 식이 얻어지는 성질 (A + 0 = A ↔ A · 1 = A)</li>
+      <li><b>SOP(곱의 합)</b> : AND항들을 OR로 이은 식</li>
+      <li><b>POS(합의 곱)</b> : OR항들을 AND로 이은 식</li>
+    </ul>
+    <h3>법칙 이름 (적용된 법칙 문제용)</h3>
+    <ul class="plain">
+      <li><b>기본법칙(0과 1)</b> : A + 0 = A, A + 1 = 1, A · 1 = A, A · 0 = 0</li>
+      <li><b>기본법칙(자기 자신)</b> : A + A = A, A · A = A. 같은 걸 몇 번 써도 그대로</li>
+      <li><b>보수 법칙</b> : <mark>A + A′ = 1</mark>, A · A′ = 0</li>
+      <li><b>이중 부정</b> : (A′)′ = A</li>
+      <li><b>교환 · 결합법칙</b> : 순서나 괄호 위치를 바꿔도 같다 (A + B = B + A)</li>
+      <li><b>분배법칙 (일반 수학과 같음)</b> : A(B + C) = AB + AC. 공통인 것 묶기 · 풀기</li>
+      <li><b>분배법칙 (불 대수에만)</b> : <mark>A + BC = (A + B)(A + C)</mark>. 합 쪽으로 쪼개기</li>
+      <li><b>흡수법칙</b> : A + AB = A</li>
+      <li><b>합의의 정리</b> : AB + BC + A′C = AB + A′C. 가운데 BC는 없어도 된다</li>
+      <li><b>드모르간의 정리</b> : (A + B)′ = A′B′, (AB)′ = A′ + B′</li>
+    </ul>
 
     <h3>① 드모르간 (시험에 반드시)</h3>
     <p>식 위에 긴 바(모자)가 있으면 <b>모자를 끊고, 그 아래 + 와 · 를 바꿔요</b>. (A + B)′ = A′B′, (AB)′ = A′ + B′. 변수가 몇 개든 똑같아요.</p>
@@ -642,7 +687,14 @@ Low  : IOL ÷ IIL = 20 mA ÷ 0.6 mA = 33.3
     </ul>
 
     <h3>③ 최소항 · 최대항 (진리표 빈칸)</h3>
-    <p><mark>최소항</mark> = 모든 변수가 다 들어 있는 <b>곱(AND)</b>. 진리표 한 줄에서 <b>0이면 바, 1이면 그대로</b>. 기호 소문자 m. 출력이 <b>1인 줄</b>을 모아 OR → <b>Σm</b>. <mark>최대항</mark> = 모든 변수가 다 들어 있는 <b>합(OR)</b>. 반대로 <b>0이면 그대로, 1이면 바</b>. 기호 대문자 M. 출력이 <b>0인 줄</b>을 모아 AND → <b>ΠM</b>. 최대항이 1에 바를 다는 건, 그 줄에서만 OR 결과가 0이 되게 하려고예요.</p>
+    <ul class="plain">
+      <li><b>최소항(minterm)</b> : 모든 변수를 포함하는 AND항. 입력이 0인 변수는 보수(바), 1인 변수는 그대로. 기호 소문자 m</li>
+      <li><b>최소항식</b> : 출력이 1인 줄의 최소항을 OR로 묶은 식. F = Σm(…)</li>
+      <li><b>최대항(maxterm)</b> : 모든 변수를 포함하는 OR항. 입력이 0인 변수는 그대로, 1인 변수는 보수(바). 기호 대문자 M</li>
+      <li><b>최대항식</b> : 출력이 0인 줄의 최대항을 AND로 묶은 식. F = ΠM(…)</li>
+      <li><b>최소항과 최대항의 관계</b> : 같은 번호끼리 서로 보수(Mᵢ = mᵢ′)</li>
+    </ul>
+    <p>최대항이 1에 바를 다는 건, <b>그 줄에서만</b> OR 결과가 0이 되게 하려고예요. 4변수에서 ABC처럼 변수가 하나라도 빠진 항은 최소항이 아니에요.</p>
     <div class="box cloze-box">
       <p class="legend">빈칸을 먼저 말해 보고 눌러서 확인</p>
       <div class="table-wrap"><table>
@@ -658,7 +710,12 @@ Low  : IOL ÷ IIL = 20 mA ÷ 0.6 mA = 33.3
           <tr><td>1 1 1</td><td><span class="cloze">ABC</span></td><td>m₇</td><td><span class="cloze">A′ + B′ + C′</span></td><td>M₇</td></tr>
         </tbody></table></div>
       <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
-    <p><b>Σm ↔ ΠM</b> : 같은 진리표를 1인 줄로 쓰느냐 0인 줄로 쓰느냐 차이라 <b>번호가 서로 나머지</b>예요. F = Σm(1, 2, 3, 4, 5) = <b>ΠM(0, 6, 7)</b>. <b>빠진 변수 채우기</b> : 곱의 항엔 (D + D′) = 1을 곱하고, 합의 항엔 DD′ = 0을 더한 뒤 <b>분배법칙</b>으로 쪼개요(A + B′ + C + DD′ = (A + B′ + C + D)(A + B′ + C + D′)).</p>
+    <h3>④ 변환 규칙</h3>
+    <ul class="plain">
+      <li><b>Σm ↔ ΠM</b> : 같은 진리표를 1인 줄로 쓰느냐 0인 줄로 쓰느냐의 차이라 번호가 서로 나머지. F = Σm(1, 2, 3, 4, 5) = ΠM(0, 6, 7)</li>
+      <li><b>최소항식으로 바꾸기</b> : 빠진 변수 D에 대해 (D + D′) = 1을 곱해서 전개</li>
+      <li><b>최대항식으로 바꾸기</b> : DD′ = 0을 더한 뒤 분배법칙으로 쪼갬. A + B′ + C + DD′ = (A + B′ + C + D)(A + B′ + C + D′)</li>
+    </ul>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
       <p>드모르간: (A + B)′ = A′B′, (AB)′ = A′ + B′. 불 대수에만 있는 분배법칙 A + BC = (A + B)(A + C). 최소항은 모든 변수를 포함한 AND항(0은 보수)으로 출력 1인 행을 모아 Σm, 최대항은 모든 변수를 포함한 OR항(1은 보수)으로 출력 0인 행을 모아 ΠM. 같은 함수의 Σm과 ΠM 번호는 서로 나머지다.</p>
@@ -696,20 +753,37 @@ Low  : IOL ÷ IIL = 20 mA ÷ 0.6 mA = 33.3
     <div class="box sheet" id="sheet">
       <p class="legend">★ = 교수님이 시험에 낸다고 한 것</p>
       <div class="grp"><h4>① 제1장 <span class="ex-t">★ 예제 1-4</span><span class="mn">주파수는 뒤집기 · 듀티는 폭 ÷ 주기</span></h4><ul>
-        <li>주파수 : <span class="kw">f = 1 / T</span> · 듀티 사이클 : <span class="kw">tw / T × 100</span> (50 μs, 250 μs → 4 kHz, 20 %)</li>
-        <li>디지털 최대 단점 : <span class="kw">양자화 오차</span> · ADC : <span class="kw">표본화 → 양자화 → 부호화</span></li></ul></div>
+        <li>주파수 : <span class="kw">f = 1 / T</span></li>
+        <li>듀티 사이클 : <span class="kw">tw / T × 100</span> [%] (50 μs, 250 μs → 4 kHz, 20 %)</li>
+        <li>디지털의 최대 단점 : <span class="kw">양자화 오차</span></li>
+        <li>ADC 순서 : <span class="kw">표본화 → 양자화 → 부호화</span></li>
+        <li>순서논리회로 : 저장 요소(<span class="kw">플립플롭 · 메모리</span>)가 하나라도 있는 회로</li></ul></div>
       <div class="grp"><h4>② 제2장 <span class="ex-t">★ 예제 2-1</span><span class="mn">나거 · 곱순 / 삼팔 · 사십육</span></h4><ul>
-        <li>110010.011(2) = <span class="kw">50.375</span> · 48.8125 = <span class="kw">110000.1101(2)</span> = 60.64(8) = 30.D(16)</li>
-        <li>2의 보수 : <span class="kw">1의 보수 + 1</span> · 컴퓨터가 쓰는 이유 : <span class="kw">0이 하나라 정확</span></li></ul></div>
+        <li>2진 → 10진 : 자리값(2ⁿ)을 곱해 더한다. 110010.011 = <span class="kw">50.375</span></li>
+        <li>10진 → 2진 : 정수는 <span class="kw">나눠서 거꾸로</span>, 소수는 <span class="kw">곱해서 순서대로</span></li>
+        <li>8진 · 16진 : 2진수 <span class="kw">3자리</span> · <span class="kw">4자리</span>씩 묶기</li>
+        <li>2의 보수 : <span class="kw">1의 보수 + 1</span></li>
+        <li>컴퓨터가 2의 보수를 쓰는 이유 : <span class="kw">0이 하나라 정확</span></li></ul></div>
       <div class="grp"><h4>③ 제3장 <span class="ex-t">★ 그레이 · BCD</span><span class="mn">9 넘으면 6 / 위끼리 · 결과와</span></h4><ul>
-        <li>BCD 덧셈 보정 : 9 초과면 <span class="kw">+0110</span> · 2진 1011 → 그레이 <span class="kw">1110</span></li>
-        <li>패리티 : <span class="kw">검출만</span> · 해밍 : <span class="kw">정정</span>, 패리티 자리 <span class="kw">1 · 2 · 4 · 8</span></li></ul></div>
+        <li>BCD : 10진수 각 자리를 <span class="kw">4비트</span> 2진수로</li>
+        <li>BCD 덧셈 보정 : 자리 합이 9를 넘으면 <span class="kw">+0110</span></li>
+        <li>2진 → 그레이 : 첫 비트 그대로, 이후 <span class="kw">2진끼리</span> XOR (1011 → 1110)</li>
+        <li>그레이 → 2진 : 첫 비트 그대로, 이후 <span class="kw">방금 구한 2진</span>과 XOR</li>
+        <li>패리티 : 에러 <span class="kw">검출만</span></li>
+        <li>해밍 코드 : 에러 <span class="kw">정정</span>까지, 패리티 자리 1 · 2 · 4 · 8</li></ul></div>
       <div class="grp"><h4>④ 제4장 <span class="mn">Low는 입력 − 출력 · 팬아웃은 작은 쪽</span></h4><ul>
-        <li>최대 동작 주파수 : <span class="kw">1 / (tPHL + tPLH)</span> · VNL = <span class="kw">VIL(max) − VOL(max)</span> · VNH = <span class="kw">VOH(min) − VIH(min)</span></li>
-        <li>팬아웃 : IOH/IIH와 IOL/IIL 중 <span class="kw">작은 값</span> · XOR : 1의 개수가 <span class="kw">홀수</span>면 1</li></ul></div>
+        <li>XOR : 1의 개수가 <span class="kw">홀수</span>면 1</li>
+        <li>최대 동작 주파수 : <span class="kw">1 / (tPHL + tPLH)</span></li>
+        <li>VNL : <span class="kw">VIL(max) − VOL(max)</span></li>
+        <li>VNH : <span class="kw">VOH(min) − VIH(min)</span></li>
+        <li>팬아웃 : IOH/IIH와 IOL/IIL 중 <span class="kw">작은 값</span></li></ul></div>
       <div class="grp"><h4>⑤ 제5장 <span class="ex-t">★ 드모르간 · 법칙 · 최대항</span><span class="mn">모자 끊고 기호 바꾸고 / 최대는 1에 바</span></h4><ul>
-        <li>(A + B)′ = <span class="kw">A′B′</span> · (AB)′ = <span class="kw">A′ + B′</span> · A + BC = <span class="kw">(A + B)(A + C)</span> (분배)</li>
-        <li>011의 최소항 <span class="kw">A′BC</span> · 최대항 <span class="kw">A + B′ + C′</span> · Σm(1, 2, 3, 4, 5) = <span class="kw">ΠM(0, 6, 7)</span></li></ul></div>
+        <li>드모르간 : (A + B)′ = <span class="kw">A′B′</span>, (AB)′ = <span class="kw">A′ + B′</span></li>
+        <li>불 대수에만 있는 분배법칙 : A + BC = <span class="kw">(A + B)(A + C)</span></li>
+        <li>흡수법칙 : A + AB = <span class="kw">A</span></li>
+        <li>최소항 : 모든 변수의 AND항, <span class="kw">0에 바</span> (011 → A′BC)</li>
+        <li>최대항 : 모든 변수의 OR항, <span class="kw">1에 바</span> (011 → A + B′ + C′)</li>
+        <li>Σm ↔ ΠM : 번호는 <span class="kw">서로 나머지</span> (Σm(1, 2, 3, 4, 5) = ΠM(0, 6, 7))</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
