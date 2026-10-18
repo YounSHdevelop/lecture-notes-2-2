@@ -309,91 +309,147 @@ body.wr-only .cloze-box>p.rv-d{display:none}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">중간고사 전용 · 10월 20일 (화) 9:30 · 30분짜리</div>
+    <div class="eyebrow">중간고사 전용 · 10월 20일 (화) 9:30 · 2~7주차를 처음부터 한 번에</div>
     <h1>시간 없으면 딱 이것만 보면 될까?</h1>
-    <p class="lead">네, 이 세 개만요. <b>한 장 정리</b>는 객관식 8문제용, <b>출력 정답 6개</b>는 주관식(실행 결과 쓰기)용, <b>순서 3개</b>는 둘 다에 나오기 좋은 것. 정답은 가려져 있으니 먼저 말해 보고 눌러서 확인하세요.</p>
+    <p class="lead">처음 보는 사람도 따라올 수 있게, 시험에 나올 다섯 덩어리를 <b>"왜 그렇게 되는지"부터</b> 짧게 설명해요. 외울 이름 하나 던지고 끝내지 않고, 코드는 한 줄씩 같이 따라가요. 장면 하나에 7~8분이에요.</p>
     <div class="goal">
-      <h2>순서대로 30분</h2>
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
       <ol>
-        <li>한 장 정리 : "키워드 가리기" 누르고 말로 채우기 (10분)</li>
-        <li>출력 정답 6개 : 코드 보고 출력 먼저 말하기 (15분)</li>
-        <li>순서 3개 : 1번부터 순서대로 말하기 (5분)</li>
+        <li>주소창에 URL을 치면 화면이 뜨기까지를 순서대로 말할 수 있다</li>
+        <li>Hoisting · 객체 복사 · 출력 순서(동 · 마 · 매) 코드의 실행 결과를 이유와 함께 쓸 수 있다</li>
+        <li>setCount를 세 번 불렀을 때 · dispatch를 여러 번 했을 때 결과를 계산할 수 있다</li>
       </ol>
-      <div class="time">더 볼 시간이 생기면 <a href="암기.html">외울 것 전체</a> · <a href="규칙8.html">규칙 8개</a></div>
+      <div class="time">약 40분 · 장면 5개 + 마지막 한 장 정리 · 시간이 더 생기면 <a href="암기.html">외울 것 전체</a> · <a href="중간고사_압축본.html">압축본 퀴즈 16</a></div>
     </div>
-    <nav class="flow" aria-label="장면 목록">
-      <a href="#c1"><b>1</b>한 장 정리</a>
-      <a href="#c2"><b>2</b>출력 정답 6</a>
-      <a href="#c3"><b>3</b>순서 3</a>
+    <div class="exam">
+      <h2>교수님 시험 공지</h2>
+      <ul>
+        <li><b>18문제 = 객관식 8 + 주관식 10</b> · 주관식은 코드 해석 · <b>실행 결과 쓰기</b> · 개념, <b>손코딩 없음</b> (10/15)</li>
+        <li>범위 <b>2~7주차 강의자료</b> · <b>Summary 위주</b> · "강의자료를 벗어난 내용은 내지 않는다" (10/8)</li>
+        <li>"리액트와 자바스크립트 중점" · MVC · MVVM은 안 물어본다 (10/13)</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="오늘의 흐름">
+      <a href="#c1"><b>장면 1</b>URL → 화면</a>
+      <a href="#c2"><b>장면 2</b>DOM · BOM</a>
+      <a href="#c3"><b>장면 3</b>변수 · 객체</a>
+      <a href="#c4"><b>장면 4</b>출력 순서</a>
+      <a href="#c5"><b>장면 5</b>React State</a>
+      <a href="#review"><b>복습</b>한 장 정리</a>
     </nav>
   </div>
 
-  <!-- 1 -->
+  <!-- 장면 1 -->
   <section class="ch" id="c1">
-    <div class="ch-head"><span class="ch-num">1</span>
-      <div><h2>객관식에 나올 이름, 한 장으로 끝낼 수 있을까?</h2><div class="sub">HTTP · DOM/BOM · JS 문법 · 비동기 · React</div></div></div>
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>주소창에 naver.com을 치면 화면이 뜨기까지 무슨 일이 있을까?</h2><div class="sub">2주차 · DNS · HTTP 요청/응답 · 상태 코드 · HTTPS · 렌더링</div></div></div>
 
-    <div class="box sheet" id="sheet">
-      <p class="legend">"키워드 가리기"를 누르면 형광펜 부분이 가려져요. 가려진 칸을 눌러 하나씩 확인.</p>
-      <div class="grp"><h4>① HTTP <span class="mn">요청 4 · 응답 3 · 암무인</span></h4><ul>
-        <li>Request : <span class="kw">Method · URL · Header · Body</span></li>
-        <li>Response : <span class="kw">Status Code · Header · Body</span></li>
-        <li>4xx : <span class="kw">Client Error</span> (400 · 401 · 403 · 404)</li>
-        <li>5xx : <span class="kw">Server Error</span> (500 · 503)</li>
-        <li>HTTPS : HTTP + <span class="kw">TLS</span> (암호화 · 무결성 · 인증)</li></ul></div>
-      <div class="grp"><h4>② DOM · BOM</h4><ul>
-        <li>요소 찾기 : <span class="kw">querySelector</span></li>
-        <li>클래스 붙이기 : <span class="kw">classList.add</span> (DOM만 바뀜)</li>
-        <li>현재 URL : <span class="kw">location</span></li>
-        <li>방문 기록 : <span class="kw">history</span></li>
-        <li>브라우저 정보 : <span class="kw">navigator</span></li></ul></div>
-      <div class="grp"><h4>③ JS 문법 <span class="mn">빈 · 잠긴 · 꽉 찬 상자</span></h4><ul>
-        <li>선언 전 var : <span class="kw">undefined</span></li>
-        <li>선언 전 let · const : <span class="kw">ReferenceError</span> (TDZ)</li>
-        <li>let : 재선언 <span class="kw">불가</span> · 재할당 <span class="kw">가능</span></li>
-        <li>화살표 함수의 this : <span class="kw">바깥 this</span></li></ul></div>
-      <div class="grp"><h4>④ 비동기 <span class="mn">동 · 마 · 매</span></h4><ul>
-        <li>Promise 상태 : <span class="kw">Pending · Fulfilled · Rejected</span></li>
-        <li>모두 성공해야 성공 : <span class="kw">Promise.all</span></li>
-        <li>Body를 JSON으로 : <span class="kw">response.json()</span></li>
-        <li>404일 때 fetch : reject 안 됨, <span class="kw">response.ok</span>로 확인</li></ul></div>
-      <div class="grp"><h4>⑤ React <span class="mn">setter 대신 dispatch</span></h4><ul>
-        <li>useState 반환 : <span class="kw">[state, setState]</span></li>
-        <li>useReducer 반환 : <span class="kw">[state, dispatch]</span></li>
-        <li>[ ] Effect : <span class="kw">Mount 시 1번</span></li>
-        <li>Lifecycle : <span class="kw">Mount · Update · Unmount</span></li></ul></div>
-      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
-    </div>
+    <div class="hook"><p class="q">엔터 한 번 쳤을 뿐인데 1초 만에 화면이 떠요</p>
+      <p class="h">그 1초 동안 브라우저는 "찾고 → 잇고 → 묻고 → 받고 → 그리는" 다섯 가지 일을 해요.</p></div>
 
-    <div class="next"><label><input type="checkbox" data-done="c1">다 말할 수 있어요</label><a href="#c2">다음 →</a></div>
+    <p>컴퓨터끼리는 이름(naver.com)이 아니라 <b>숫자 주소(IP)</b>로 찾아가요. 그래서 제일 먼저 이름을 IP로 바꾸는 일을 하는데, 이게 <mark>DNS Lookup</mark>이에요. 전화번호부에서 이름으로 번호를 찾는 거랑 같아요. (찾는 순서는 브라우저 캐시 → OS 캐시 → 리졸버, "브 · 오 · 리")</p>
+    <p>번호를 알았으면 전화를 걸어 연결해야겠죠. 이게 <mark>TCP 연결</mark>이고, https면 여기에 암호화 연결(<b>TLS</b>)까지 해요. 연결되면 "이 페이지 주세요"라는 <mark>HTTP Request</mark>를 보내고, 서버가 HTML · CSS · JS를 담은 <mark>Response</mark>를 돌려줘요.</p>
+
+    <h3>요청서와 답장에는 뭐가 들어 있을까?</h3>
+    <p>편지에 비유하면 쉬워요. 요청서에는 <b>무엇을 할지(Method: GET · POST)</b>, <b>어디로(URL)</b>, <b>봉투에 적는 부가 정보(Header)</b>, <b>편지 내용(Body)</b>이 들어가요. 답장은 "어떻게 됐는지"를 숫자로 먼저 알려 줘요. 그게 <mark>Status Code</mark>예요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th></th><th>들어 있는 것</th><th>외우는 법</th></tr></thead>
+      <tbody>
+        <tr><td><b>Request</b></td><td>Method · URL · Header · Body</td><td>4개 (뭘 · 어디로 · 봉투 · 내용)</td></tr>
+        <tr><td><b>Response</b></td><td>Status Code · Header · Body</td><td>3개 (결과 숫자 · 봉투 · 내용)</td></tr>
+      </tbody></table></div>
+    <p>상태 코드는 첫 숫자만 보면 돼요. <b>2xx</b> 성공, <b>3xx</b> 다른 곳으로 가라(Redirect), <mark>4xx</mark>는 <b>요청한 쪽(Client) 잘못</b> — 404는 "그런 페이지 없어요"처럼 내가 주소를 잘못 친 경우죠. <mark>5xx</mark>는 <b>서버 잘못</b> — 500은 서버가 안에서 고장 난 거예요.</p>
+    <p>그냥 HTTP는 편지를 <b>봉투 없이</b> 보내는 거라 중간에 누가 다 읽을 수 있어요. 그래서 <mark>HTTPS = HTTP + TLS</mark>로 감싸요. TLS가 해 주는 건 세 가지: <b>암호화</b>(못 읽게), <b>무결성</b>(중간에 못 바꾸게), <b>인증</b>(진짜 그 서버가 맞는지). "암 · 무 · 인".</p>
+
+    <h3>파일을 받았으면 어떻게 그릴까?</h3>
+    <p>받은 HTML은 그냥 글자예요. 브라우저가 이걸 읽어서(<b>Parsing</b>) 구조를 만들고 JS를 실행한 다음, HTML 구조와 CSS 스타일을 합쳐 <mark>Render Tree</mark>(화면에 실제로 보일 것들의 목록)를 만들어요. 그다음은 그림 그리는 순서랑 똑같아요.</p>
+    <figure class="fig">
+      <svg viewBox="0 0 640 120" role="img" aria-label="Render Tree에서 Layout, Paint, Composite로 이어지는 렌더링 순서">
+        <g font-size="15" text-anchor="middle">
+          <rect x="8" y="30" width="140" height="56" rx="10" fill="var(--teal-soft)" stroke="var(--teal)"/>
+          <text x="78" y="56" fill="var(--ink)" font-weight="700">Render Tree</text><text x="78" y="76" fill="var(--ink-2)" font-size="13">뭘 그릴지</text>
+          <rect x="172" y="30" width="140" height="56" rx="10" fill="var(--teal-soft)" stroke="var(--teal)"/>
+          <text x="242" y="56" fill="var(--ink)" font-weight="700">Layout</text><text x="242" y="76" fill="var(--ink-2)" font-size="13">어디에 · 얼마나 크게</text>
+          <rect x="336" y="30" width="140" height="56" rx="10" fill="var(--teal-soft)" stroke="var(--teal)"/>
+          <text x="406" y="56" fill="var(--ink)" font-weight="700">Paint</text><text x="406" y="76" fill="var(--ink-2)" font-size="13">색칠하기</text>
+          <rect x="500" y="30" width="132" height="56" rx="10" fill="var(--teal-soft)" stroke="var(--teal)"/>
+          <text x="566" y="56" fill="var(--ink)" font-weight="700">Composite</text><text x="566" y="76" fill="var(--ink-2)" font-size="13">층 합치기</text>
+          <path d="M150 58h18" stroke="var(--teal)" stroke-width="2" marker-end="url(#a1)"/><path d="M314 58h18" stroke="var(--teal)" stroke-width="2" marker-end="url(#a1)"/><path d="M478 58h18" stroke="var(--teal)" stroke-width="2" marker-end="url(#a1)"/>
+        </g>
+        <defs><marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+      </svg>
+      <figcaption>밑그림 위치를 잡고(Layout) → 색칠하고(Paint) → 여러 장을 겹쳐 완성(Composite)</figcaption>
+    </figure>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>URL 입력 → DNS Lookup으로 IP 확인 → TCP/TLS 연결 → HTTP Request 전송 → Server가 HTML · CSS · JS 반환 → Parsing · JS 실행 → Render Tree → Layout → Paint → Composite.</p>
+      <div class="mn">외우는 법: <b>찾고 · 잇고 · 묻고 · 받고 · 그린다</b> / 4xx는 <b>내 탓</b>, 5xx는 <b>서버 탓</b> / TLS는 <b>암 · 무 · 인</b></div></div>
+
+    <div class="check" data-id="k2" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">Render Tree를 만든 바로 다음 단계는?</div>
+      <div class="opts">
+        <button class="o">Layout</button>
+        <button class="o">Paint</button>
+        <button class="o">DNS Lookup</button></div>
+      <div class="fb">뭘 그릴지(Render Tree) 정했으면 먼저 <b>어디에 얼마나 크게(Layout)</b> 놓을지 정하고, 그다음에 색칠(Paint)해요. 밑그림 없이 색칠부터 할 순 없죠.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
   </section>
 
-  <!-- 2 -->
+  <!-- 장면 2 -->
   <section class="ch" id="c2">
-    <div class="ch-head"><span class="ch-num">2</span>
-      <div><h2>강의자료 코드, 출력은 뭐가 나올까?</h2><div class="sub">주관식 실행 결과 대비 · 자료 슬라이드 코드 그대로</div></div></div>
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>JS는 이미 뜬 화면을 어떻게 바꿀까?</h2><div class="sub">2주차 · DOM · CSSOM · BOM(window · location · history · navigator)</div></div></div>
 
-    <div class="box cloze-box">
-      <pre class="code"><span class="file">① 출력 순서 (4주차 p.24)</span>console.log("A");
-setTimeout(() =&gt; {
-  console.log("B");
-}, 0);
-Promise.resolve()
-  .then(() =&gt; console.log("C"));
-console.log("D");</pre>
-      <p>출력 : <span class="cloze">A D C B (동기 → 마이크로 → 매크로)</span></p>
+    <div class="hook"><p class="q">버튼을 누르면 글씨가 빨개지는 페이지</p>
+      <p class="h">JS가 HTML 파일을 직접 고치는 걸까요? 아니에요. 브라우저가 만들어 둔 "객체"를 고쳐요.</p></div>
 
-      <pre class="code"><span class="file">② then 체인 (4주차 p.26)</span>setTimeout(() =&gt; {
-  console.log("Timeout");
-}, 0);
-Promise.resolve()
-  .then(() =&gt; console.log("Promise1"))
-  .then(() =&gt; console.log("Promise2"));
-Promise.resolve()
-  .then(() =&gt; console.log("Promise3"));</pre>
-      <p>출력 : <span class="cloze">Promise1 Promise3 Promise2 Timeout (Promise2는 1이 끝나야 줄 섬)</span></p>
+    <p>브라우저는 HTML을 읽어서 <b>나무 모양 객체</b>로 만들어 둬요. html 밑에 body, body 밑에 div… 이렇게요. 이게 <mark>DOM</mark>(Document Object Model)이에요. JS는 이 나무에서 원하는 가지를 찾아 고쳐요. 찾을 때 쓰는 게 <mark>querySelector</mark>예요. CSS 선택자 그대로 쓰면 돼요(<code>"#title"</code>, <code>".box"</code>).</p>
+    <pre class="code"><span class="file">글씨를 빨갛게 (CSS에 .active { color: red } 가 있음)</span>const t = document.querySelector("#title");
+t.classList.add("active");</pre>
+    <ul class="anno">
+      <li><span class="k">querySelector</span>id가 title인 요소를 DOM 나무에서 찾아요.</li>
+      <li><span class="k">classList.add</span>그 요소에 active 클래스를 붙여요. 이때 바뀐 건 <b>DOM뿐</b>이에요.</li>
+    </ul>
+    <p>여기서 교수님이 여러 번 물어본 게 "그럼 CSS(CSSOM)도 바뀌었어?"예요. 답은 <b>그대로</b>예요. CSS 쪽에는 원래부터 ".active면 빨강"이라는 규칙이 있었고, 요소에 그 이름표가 붙었을 뿐이에요. Render Tree를 다시 만들 때 그 규칙을 찾아 빨갛게 그리는 거죠.</p>
 
-      <pre class="code"><span class="file">③ Hoisting (3주차 p.19~21)</span>console.log(a);
+    <p>DOM이 "페이지 안의 내용"이라면, <mark>BOM</mark>(Browser Object Model)은 <b>페이지 밖, 브라우저 자체</b>예요. 제일 위에 <code>window</code>(브라우저 창)가 있고 그 아래에 이런 것들이 달려 있어요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>객체</th><th>뭘 알려 주나</th><th>떠올리기</th></tr></thead>
+      <tbody>
+        <tr><td><code>document</code></td><td>지금 페이지 내용 = DOM</td><td>페이지 안</td></tr>
+        <tr><td><code>location</code></td><td>지금 주소(URL), 다른 주소로 이동</td><td>주소창</td></tr>
+        <tr><td><code>history</code></td><td>방문 기록, 뒤로 · 앞으로</td><td>뒤로 가기 버튼</td></tr>
+        <tr><td><code>navigator</code></td><td>브라우저 · 기기 정보</td><td>"나 크롬이야"</td></tr>
+      </tbody></table></div>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>DOM은 HTML 문서를 객체 기반 Tree로 표현하고 JS는 DOM으로 요소를 변경한다. DOM과 CSSOM이 결합해 Render Tree를 만든다. BOM은 window 아래 document · location · history · navigator 등 브라우저 환경 객체의 집합이다.</p>
+      <div class="mn">외우는 법: <b>DOM은 페이지 안 · BOM은 브라우저 밖</b> / 주소창 location · 뒤로 가기 history · 기기 정보 navigator</div></div>
+
+    <div class="check" data-id="k3" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">"뒤로 가기" 버튼을 JS로 만들려면 어떤 객체를 써야 할까?</div>
+      <div class="opts">
+        <button class="o">location</button>
+        <button class="o">navigator</button>
+        <button class="o">history</button></div>
+      <div class="fb">뒤로 · 앞으로는 <b>방문 기록</b>을 따라가는 거라 <b>history</b>예요. location은 지금 주소, navigator는 브라우저 정보.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 3 -->
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>선언하기도 전에 변수를 쓰면 어떻게 될까?</h2><div class="sub">3주차 · Hoisting · TDZ · let/const · 객체 주소 복사 · 화살표 함수 this</div></div></div>
+
+    <div class="prof"><span class="av">교수</span><div class="bubble"><b>굉장히 굉장히 굉장히 중요한 개념</b>, 호이스팅이 나옵니다. 프론트엔드 면접 질문을 검색해 보면 1~3번쯤에 "호이스팅이 뭐예요?"가 나와요.<small>9/15 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <p>JS는 코드를 한 줄씩 실행하기 <b>전에</b> 한 번 쭉 훑어서 "이 범위에 어떤 변수 · 함수가 있지?"를 먼저 등록해 둬요. 그래서 선언이 위로 끌어올려진 것처럼 보이는데, 이걸 <mark>Hoisting</mark>이라고 해요. 중요한 건 <b>등록만 하고 값은 아직 안 넣는다</b>는 거예요. 그래서 키워드마다 결과가 달라요.</p>
+
+    <div class="analogy"><b>세 가지 상자로 보면</b> — <b>var</b>는 미리 만들어 둔 <b>빈 상자</b>라 열면 undefined가 나와요. <b>let · const</b>는 만들어 두긴 했는데 <b>잠긴 상자</b>라 선언 줄에 가기 전에 열면 에러가 나요(이 잠긴 구간이 <b>TDZ</b>). <b>function 선언</b>은 내용까지 다 들어간 <b>꽉 찬 상자</b>라 미리 불러도 잘 돌아가요.</div>
+
+    <pre class="code"><span class="file">출력 정답 ① Hoisting (3주차 p.19~21)</span>console.log(a);
 var a = 10;
 
 console.log(b);
@@ -403,37 +459,112 @@ hello();
 function hello() {
   console.log("Hello");
 }</pre>
-      <p>출력 : <span class="cloze">undefined / ReferenceError / Hello</span></p>
+    <ul class="anno">
+      <li><span class="k">console.log(a)</span>a는 var라 빈 상자로 등록돼 있음 → <b>undefined</b> (10은 아직 안 들어감)</li>
+      <li><span class="k">console.log(b)</span>b는 let이라 잠긴 상자 → <b>ReferenceError</b></li>
+      <li><span class="k">hello()</span>function 선언은 통째로 등록 → <b>Hello</b> (시험에선 문제마다 따로 묻는다고 생각하고 셋 다 알아 두기)</li>
+    </ul>
+    <p>let과 const의 차이도 하나만 기억하면 돼요. 둘 다 <b>같은 이름으로 다시 선언은 불가</b>. 대신 <mark>let은 값을 바꿀 수 있고(재할당 가능)</mark>, const는 못 바꿔요. 그리고 둘 다 <b>{ } 블록 안에서만</b> 살아요(Block Scope). var는 블록을 무시해요.</p>
 
-      <pre class="code"><span class="file">④ 주소 복사 · 비교 (3주차 p.44~45)</span>const user1 = { name: "Kim" };
+    <h3>객체를 다른 변수에 넣으면 복사될까?</h3>
+    <p>숫자 · 문자열 같은 <b>원시 타입</b>은 대입하면 <b>값이 복사</b>돼요. 그런데 객체 · 배열은 크니까 변수에 객체 자체가 아니라 <mark>객체가 있는 주소</mark>가 들어 있어요. 그래서 대입하면 <b>주소만 복사</b>돼서, 두 변수가 같은 객체를 가리키게 돼요. 집 주소를 적은 쪽지를 복사해 준 거랑 같아요. 친구가 그 주소로 가서 벽지를 바꾸면 내 집 벽지가 바뀌죠.</p>
+    <pre class="code"><span class="file">출력 정답 ② 주소 복사 · 비교 (3주차 p.44~45)</span>const user1 = { name: "Kim" };
 const user2 = user1;
 user2.name = "Lee";
 console.log(user1.name);
 const a = { name: "Kim" };
 const b = { name: "Kim" };
 console.log(a === b);</pre>
-      <p>출력 : <span class="cloze">Lee / false (객체는 주소 복사 · 주소 비교)</span></p>
+    <ul class="anno">
+      <li><span class="k">user2 = user1</span>주소 복사 → 둘이 <b>같은 객체</b>를 가리킴</li>
+      <li><span class="k">user1.name</span>user2로 바꾼 게 그대로 보임 → <b>Lee</b></li>
+      <li><span class="k">a === b</span>내용은 같아도 { }를 두 번 써서 <b>객체가 2개</b> = 주소가 다름 → <b>false</b> (객체 ===는 주소 비교)</li>
+    </ul>
 
-      <pre class="code"><span class="file">⑤ Snapshot (6주차) · count = 1</span>setCount(count + 1);
-setCount(count + 1);
-setCount(count + 1);
-<span class="c">// 대신 아래를 ×3 이면?</span>
-<span class="c">// setCount(prev =&gt; prev + 1)</span></pre>
-      <p>다음 렌더 count : <span class="cloze">2 / 4 (사진이면 2, 릴레이면 4)</span></p>
-
-      <pre class="code"><span class="file">⑥ dispatch (7주차) · { count: 0 }</span>dispatch({ type: "INCREMENT" });
-dispatch({ type: "INCREMENT" });
-dispatch({
-  type: "SET_COUNT",
-  payload: 10,
-});
-dispatch({ type: "DECREMENT" });</pre>
-      <p>count : <span class="cloze">1 · 2 · 10 · 9 (SET_COUNT는 더하기가 아니라 그 값으로)</span></p>
-      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+    <p>마지막으로 <b>this</b>. 일반 메서드 <code>obj.say()</code>에서 this는 <b>점 앞의 객체</b>예요. 그런데 <mark>화살표 함수는 자기 this가 없어서 바깥의 this</mark>를 그대로 써요. 객체 안에 화살표 함수로 메서드를 만들면 this가 그 객체가 아니라 바깥(브라우저에선 window)이라, <code>this.name</code>이 undefined가 나와요.</p>
 
     <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
-      <p>실행 순서는 동기 코드 → 마이크로태스크(Promise) → 매크로태스크(setTimeout). State는 렌더링 시점의 Snapshot이라 이전 값에 의존하면 setCount(prev =&gt; prev + 1)을 쓴다.</p>
-      <div class="mn">외우는 법: <b>동 · 마 · 매 / count는 사진 · prev는 릴레이</b></div></div>
+      <p>선언 전 접근 시 var는 undefined, let · const는 TDZ 때문에 ReferenceError, 함수 선언문은 호출 가능. 원시 타입은 값 복사, 객체는 주소(참조) 복사라 한쪽을 바꾸면 같이 바뀌고, 객체의 ===는 주소를 비교한다. 화살표 함수의 this는 바깥 this다.</p>
+      <div class="mn">외우는 법: <b>빈 상자 · 잠긴 상자 · 꽉 찬 상자</b> / <b>원시는 값, 객체는 주소</b></div></div>
+
+    <div class="check" data-id="k4" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">출력은?</div>
+      <pre class="code">const arr1 = [1];
+const arr2 = arr1;
+arr2.push(2);
+console.log(arr1);</pre>
+      <div class="opts">
+        <button class="o">[1]</button>
+        <button class="o">[1, 2]</button>
+        <button class="o">ReferenceError</button></div>
+      <div class="fb">배열도 객체라 <b>주소 복사</b>예요. arr1 · arr2가 같은 배열이니 arr2에 넣은 2가 arr1에서도 보여요 → <b>[1, 2]</b>.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 4 -->
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>setTimeout을 0초로 줬는데 왜 제일 늦게 찍힐까?</h2><div class="sub">4주차 · Single Thread · Event Loop · 동기 → 마이크로 → 매크로 · Promise · fetch</div></div></div>
+
+    <div class="hook"><p class="q">setTimeout(() =&gt; console.log("B"), 0)</p>
+      <p class="h">"0초 뒤에 실행해" 했으니 바로 찍힐 것 같죠? 실제로는 Promise보다도 늦게 찍혀요.</p></div>
+
+    <p>JS는 일하는 사람이 <b>한 명(Single Thread)</b>이에요. 한 번에 한 가지밖에 못 해요. 그래서 타이머 기다리기 같은 오래 걸리는 일은 브라우저(Web API)한테 맡겨 두고, 다 되면 "이거 실행해 줘" 하고 <b>대기 줄</b>에 세워 둬요. 그 줄을 지켜보다가 순서대로 넣어 주는 게 <mark>Event Loop</mark>예요.</p>
+    <p>핵심은 대기 줄이 <b>두 개</b>라는 거예요. Promise의 then이 서는 <mark>마이크로태스크</mark> 줄(급한 줄)과, setTimeout이 서는 <mark>매크로태스크</mark> 줄(일반 줄). 그리고 순서 규칙은 이것 하나예요.</p>
+
+    <div class="analogy"><b>식당으로 보면</b> — 요리사 한 명이 <b>지금 받은 주문(동기 코드)</b>을 끝까지 다 만들어요. 그게 끝나면 <b>급한 쪽지함(마이크로 = Promise)</b>을 <b>빌 때까지 전부</b> 처리하고, 그다음에야 <b>일반 대기 손님(매크로 = setTimeout)</b>을 한 명 받아요. setTimeout 0초는 "바로 해"가 아니라 "0초 뒤에 <b>일반 줄에 서</b>"라는 뜻이라서 늦어요.</div>
+
+    <figure class="fig">
+      <svg viewBox="0 0 640 110" role="img" aria-label="동기 코드, 마이크로태스크, 매크로태스크 순서">
+        <g font-size="15" text-anchor="middle">
+          <rect x="10" y="22" width="180" height="64" rx="10" fill="var(--teal-soft)" stroke="var(--teal)"/>
+          <text x="100" y="50" fill="var(--ink)" font-weight="700">① 동기 코드</text><text x="100" y="72" fill="var(--ink-2)" font-size="13">console.log 그대로</text>
+          <rect x="230" y="22" width="180" height="64" rx="10" fill="var(--teal-soft)" stroke="var(--teal)"/>
+          <text x="320" y="50" fill="var(--ink)" font-weight="700">② 마이크로 전부</text><text x="320" y="72" fill="var(--ink-2)" font-size="13">Promise .then</text>
+          <rect x="450" y="22" width="180" height="64" rx="10" fill="var(--teal-soft)" stroke="var(--teal)"/>
+          <text x="540" y="50" fill="var(--ink)" font-weight="700">③ 매크로</text><text x="540" y="72" fill="var(--ink-2)" font-size="13">setTimeout</text>
+          <path d="M192 54h34" stroke="var(--teal)" stroke-width="2" marker-end="url(#a2)"/><path d="M412 54h34" stroke="var(--teal)" stroke-width="2" marker-end="url(#a2)"/>
+        </g>
+        <defs><marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--teal)"/></marker></defs>
+      </svg>
+      <figcaption>동 · 마 · 매 — 이 순서 하나로 출력 순서 문제가 다 풀려요</figcaption>
+    </figure>
+
+    <pre class="code"><span class="file">출력 정답 ③ 출력 순서 (4주차 p.24)</span>console.log("A");
+setTimeout(() =&gt; {
+  console.log("B");
+}, 0);
+Promise.resolve()
+  .then(() =&gt; console.log("C"));
+console.log("D");</pre>
+    <ul class="anno">
+      <li><span class="k">1단계 동기</span>위에서부터 바로 실행되는 것만: <b>A</b>, <b>D</b> (B는 일반 줄로, C는 급한 줄로 보내 둠)</li>
+      <li><span class="k">2단계 마이크로</span>급한 줄의 <b>C</b></li>
+      <li><span class="k">3단계 매크로</span>일반 줄의 <b>B</b> → 답 <b>A D C B</b></li>
+    </ul>
+
+    <pre class="code"><span class="file">출력 정답 ④ then 체인 (4주차 p.26)</span>setTimeout(() =&gt; {
+  console.log("Timeout");
+}, 0);
+Promise.resolve()
+  .then(() =&gt; console.log("Promise1"))
+  .then(() =&gt; console.log("Promise2"));
+Promise.resolve()
+  .then(() =&gt; console.log("Promise3"));</pre>
+    <ul class="anno">
+      <li><span class="k">처음 급한 줄</span>Promise1, Promise3 (Promise2는 아직! <b>1이 끝나야</b> 줄을 설 수 있음)</li>
+      <li><span class="k">Promise1 실행 후</span>그제야 Promise2가 급한 줄 맨 뒤에 섬 → 줄: Promise3, Promise2</li>
+      <li><span class="k">급한 줄 다 비움</span>그다음에 Timeout → 답 <b>Promise1 Promise3 Promise2 Timeout</b></li>
+    </ul>
+
+    <h3>Promise와 fetch는 이것만</h3>
+    <p><mark>Promise</mark>는 "나중에 결과를 주겠다"는 약속 객체예요. 상태는 세 가지: 아직 기다리는 중 <b>Pending</b>, 성공 <b>Fulfilled</b>, 실패 <b>Rejected</b>. 여러 개를 동시에 돌리고 <b>전부 성공해야 성공</b>으로 치려면 <mark>Promise.all</mark>을 써요.</p>
+    <p><code>fetch</code>로 서버에 요청하면 Response가 오는데, 그 Body를 JS 객체로 바꾸려면 <mark>response.json()</mark>을 불러요. 함정 하나: 서버가 404 · 500을 줘도 fetch는 <b>"답장은 받았으니까"</b> 실패(reject)로 안 쳐요. 네트워크가 끊겼을 때만 reject예요. 그래서 성공 여부는 <mark>response.ok</mark>(200번대면 true)로 직접 확인해야 해요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>JS는 Single Thread로 실행되고 Event Loop가 콜백 실행 시점을 관리한다. 실행 순서는 동기 코드 → 마이크로태스크(Promise) 전부 → 매크로태스크(setTimeout). fetch는 HTTP 에러여도 reject되지 않으므로 response.ok로 확인한다.</p>
+      <div class="mn">외우는 법: <b>동 · 마 · 매</b> / then 체인은 <b>앞이 끝나야 줄 선다</b></div></div>
 
     <div class="check" data-id="k1" data-answer="1"><div class="lbl">바로 확인</div>
       <div class="q">출력 순서는?</div>
@@ -448,16 +579,129 @@ console.log(4);</pre>
         <button class="o">1 2 3 4</button>
         <button class="o">1 4 3 2</button>
         <button class="o">1 4 2 3</button></div>
-      <div class="fb">동기(1, 4) → 마이크로(3) → 매크로(2). ①번이랑 똑같은 모양이에요.</div></div>
+      <div class="fb">동기(1, 4) → 마이크로(3) → 매크로(2). 출력 정답 ③이랑 똑같은 모양이에요.</div></div>
 
-    <div class="next"><label><input type="checkbox" data-done="c2">다 맞혔어요</label><a href="#c3">다음 →</a></div>
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
   </section>
 
-  <!-- 3 -->
-  <section class="ch" id="c3">
-    <div class="ch-head"><span class="ch-num">3</span>
-      <div><h2>"A 다음 B" 순서, 이 세 개면 될까?</h2><div class="sub">URL → 화면 · 이벤트 루프 · Lifecycle</div></div></div>
+  <!-- 장면 5 -->
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>setCount를 세 번 불렀는데 왜 1밖에 안 올라갈까?</h2><div class="sub">5~7주차 · useState · Snapshot · prev · useEffect · Lifecycle · useReducer</div></div></div>
 
+    <div class="prof"><span class="av">교수</span><div class="bubble">React는 사실 이 개념이 거의 끝이에요. useEffect랑 useState 잘 쓰고, 컴포넌트 어떻게 쪼개고, 리렌더링 언제 일어나는지, 그것만 잘하면 거의 끝이거든요.<small>10/8 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <p>React 컴포넌트에서 <b>바뀌면 화면도 다시 그려야 하는 값</b>을 <mark>State</mark>라고 해요. <code>const [count, setCount] = useState(0)</code>처럼 쓰면 <b>[지금 값, 바꾸는 함수]</b> 두 개를 돌려줘요. 일반 변수(<code>let n</code>)를 바꾸면 React가 몰라서 화면이 안 바뀌고, <b>setCount로 바꿔야</b> React가 알아채고 다시 그려요(Re-render).</p>
+
+    <p>그런데 State는 <mark>Snapshot</mark>, 즉 <b>그 렌더링 순간에 찍힌 사진</b>이에요. 이번 렌더링 안에서 count는 계속 같은 숫자로 고정돼 있어요. setCount를 불러도 지금 사진이 바뀌는 게 아니라 "<b>다음 렌더링에 이 값으로 해 줘</b>"라고 예약하는 거예요.</p>
+
+    <pre class="code"><span class="file">출력 정답 ⑤ Snapshot (6주차) · 지금 count = 1</span>setCount(count + 1);
+setCount(count + 1);
+setCount(count + 1);</pre>
+    <ul class="anno">
+      <li><span class="k">세 줄 모두</span>사진 속 count는 계속 1 → 셋 다 "1 + 1 = <b>2로</b> 해 줘"</li>
+      <li><span class="k">다음 렌더</span>"2로" 세 번 = 그냥 <b>2</b></li>
+    </ul>
+    <pre class="code"><span class="file">대신 이렇게 세 번 쓰면? · 지금 count = 1</span>setCount(prev =&gt; prev + 1);
+setCount(prev =&gt; prev + 1);
+setCount(prev =&gt; prev + 1);</pre>
+    <ul class="anno">
+      <li><span class="k">prev =&gt;</span>사진 값이 아니라 <b>바로 앞 결과를 받아서</b> 계산(Functional Update) — 릴레이 바통처럼</li>
+      <li><span class="k">계산</span>1 → 2 → 3 → <b>4</b></li>
+    </ul>
+
+    <h3>useEffect는 언제 실행될까?</h3>
+    <p>컴포넌트에도 일생이 있어요(<mark>Lifecycle</mark>): 처음 화면에 나타나는 <b>Mount</b> → State · Props가 바뀌어 다시 그려지는 <b>Update</b> → 화면에서 사라지는 <b>Unmount</b>. <code>useEffect</code>는 <b>화면을 그린 뒤에</b> 할 일(타이머, API 요청 같은 Side Effect)을 적는 곳이고, 두 번째 인자(Dependency Array)로 언제 실행할지 정해요.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>두 번째 인자</th><th>실행 시점</th></tr></thead>
+      <tbody>
+        <tr><td>없음 <code>useEffect(fn)</code></td><td>렌더링될 때마다 매번</td></tr>
+        <tr><td><mark>빈 배열</mark> <code>useEffect(fn, [])</code></td><td><b>Mount 때 딱 1번</b></td></tr>
+        <tr><td><code>useEffect(fn, [count])</code></td><td>Mount 때 + count가 바뀔 때마다</td></tr>
+      </tbody></table></div>
+    <p>Effect 안에서 <code>return () =&gt; { … }</code>로 돌려준 함수가 <b>Cleanup</b>이에요. Unmount될 때 실행돼서 켜 둔 타이머를 꺼 줘요.</p>
+
+    <h3>useReducer는 뭐가 다를까?</h3>
+    <p>State 바꾸는 규칙이 많아지면(증가 · 감소 · 초기화 · 특정 값으로…) setter를 여기저기 부르기 복잡해져요. 그래서 <b>바꾸는 규칙을 reducer 함수 한 곳에 모아 두고</b>, 화면에서는 "이거 해 줘"라는 쪽지(action)만 보내요. 그 보내는 함수가 <mark>dispatch</mark>예요. 그래서 반환값도 <code>[state, setState]</code> 대신 <mark>[state, dispatch]</mark>예요.</p>
+    <pre class="code"><span class="file">출력 정답 ⑥ dispatch (7주차) · 처음 { count: 0 }</span>dispatch({ type: "INCREMENT" });
+dispatch({ type: "INCREMENT" });
+dispatch({
+  type: "SET_COUNT",
+  payload: 10,
+});
+dispatch({ type: "DECREMENT" });</pre>
+    <ul class="anno">
+      <li><span class="k">INCREMENT ×2</span>0 → 1 → <b>2</b></li>
+      <li><span class="k">SET_COUNT 10</span>더하기가 아니라 payload 값 <b>그대로</b> → <b>10</b></li>
+      <li><span class="k">DECREMENT</span>10 → <b>9</b> (모르는 type이 오면 default로 state 그대로)</li>
+    </ul>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>State는 렌더링 시점의 Snapshot이라 이전 값에 의존하면 setCount(prev =&gt; prev + 1)처럼 Functional Update를 쓴다. useEffect는 Render 이후 실행되고 Dependency Array로 실행 시점이 정해지며([]는 Mount 때 1번), Cleanup은 Unmount 때 실행된다. useReducer는 [state, dispatch]를 반환하고, dispatch로 보낸 action을 reducer가 받아 새 state를 반환한다.</p>
+      <div class="mn">외우는 법: <b>count는 사진(2) · prev는 릴레이(4)</b> / <b>없으면 매번 · 비면 처음만 · 넣으면 바뀔 때</b> / <b>setter 대신 dispatch</b></div></div>
+
+    <div class="vs"><div class="x"><b>✗ 이렇게 생각하면 틀려요</b>setCount(count + 1)을 세 번 부르면 3 올라간다</div>
+      <div class="o"><b>○ 맞는 생각</b>세 번 다 같은 사진 값으로 계산해서 <b>1만</b> 올라간다. 이어서 올리려면 prev.</div></div>
+
+    <div class="check" data-id="k5" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">count가 0일 때 아래를 실행했다. 다음 렌더의 count는?</div>
+      <pre class="code">setCount(count + 5);
+setCount(prev =&gt; prev + 1);</pre>
+      <div class="opts">
+        <button class="o">6</button>
+        <button class="o">1</button>
+        <button class="o">5</button></div>
+      <div class="fb">첫 줄은 사진 값 0으로 "5로 해 줘". 둘째 줄은 앞 결과(5)를 받아서 +1 → <b>6</b>.</div></div>
+
+    <div class="check" data-id="k6" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q"><code>useEffect(() =&gt; console.log("E"), [])</code>가 있는 컴포넌트가 Mount된 뒤 State가 3번 바뀌었다. "E"는 몇 번 찍힐까?</div>
+      <div class="opts">
+        <button class="o">4번</button>
+        <button class="o">3번</button>
+        <button class="o">1번</button></div>
+      <div class="fb">빈 배열 = <b>Mount 때 딱 1번</b>. 이후 Update가 몇 번 일어나도 다시 실행 안 해요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">한 장 정리로 →</a></div>
+  </section>
+
+  <!-- 복습 -->
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험장 가기 직전, 이 한 장만</h2><div class="sub">한 장 정리 → 순서 3개 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>객관식 8문제용</small></h3>
+    <p class="rv-d">위 장면을 다 봤다면 이제 이름만 떠올리면 돼요. "키워드 가리기"를 누르고 말로 채워 보세요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">★ = 실행 결과 문제 단골 · 오른쪽 작은 글씨 = 외우는 법</p>
+      <div class="grp"><h4>① HTTP (장면 1) <span class="mn">요청 4 · 응답 3 · 암무인</span></h4><ul>
+        <li>Request : <span class="kw">Method · URL · Header · Body</span></li>
+        <li>Response : <span class="kw">Status Code · Header · Body</span></li>
+        <li>4xx : <span class="kw">Client Error</span> (내 탓, 404 = 없는 페이지)</li>
+        <li>5xx : <span class="kw">Server Error</span> (서버 탓, 500)</li>
+        <li>HTTPS : HTTP + <span class="kw">TLS</span> (암호화 · 무결성 · 인증)</li></ul></div>
+      <div class="grp"><h4>② DOM · BOM (장면 2) <span class="mn">안은 DOM · 밖은 BOM</span></h4><ul>
+        <li>요소 찾기 : <span class="kw">querySelector</span></li>
+        <li>클래스 붙이기 : <span class="kw">classList.add</span> (DOM만 바뀜, CSSOM 그대로)</li>
+        <li>현재 URL : <span class="kw">location</span> · 방문 기록 : <span class="kw">history</span> · 브라우저 정보 : <span class="kw">navigator</span></li></ul></div>
+      <div class="grp"><h4>③ JS 문법 (장면 3) <span class="ex-t">★</span><span class="mn">빈 · 잠긴 · 꽉 찬 상자</span></h4><ul>
+        <li>선언 전 var : <span class="kw">undefined</span> · let · const : <span class="kw">ReferenceError</span> (TDZ)</li>
+        <li>let : 재선언 <span class="kw">불가</span> · 재할당 <span class="kw">가능</span></li>
+        <li>객체 대입 : <span class="kw">주소 복사</span> → 같이 바뀜 · 객체 === : 주소 비교</li>
+        <li>화살표 함수의 this : <span class="kw">바깥 this</span></li></ul></div>
+      <div class="grp"><h4>④ 비동기 (장면 4) <span class="ex-t">★</span><span class="mn">동 · 마 · 매</span></h4><ul>
+        <li>순서 : 동기 → <span class="kw">마이크로(Promise)</span> 전부 → <span class="kw">매크로(setTimeout)</span></li>
+        <li>Promise 상태 : <span class="kw">Pending · Fulfilled · Rejected</span></li>
+        <li>모두 성공해야 성공 : <span class="kw">Promise.all</span> · Body를 JSON으로 : <span class="kw">response.json()</span></li>
+        <li>404일 때 fetch : reject 안 됨, <span class="kw">response.ok</span>로 확인</li></ul></div>
+      <div class="grp"><h4>⑤ React (장면 5) <span class="ex-t">★</span><span class="mn">사진이면 2 · 릴레이면 4 / setter 대신 dispatch</span></h4><ul>
+        <li>useState 반환 : <span class="kw">[state, setState]</span> · useReducer 반환 : <span class="kw">[state, dispatch]</span></li>
+        <li>count 1에서 setCount(count + 1) ×3 : <span class="kw">2</span> · prev =&gt; prev + 1 ×3 : <span class="kw">4</span></li>
+        <li>[ ] Effect : <span class="kw">Mount 시 1번</span> · Cleanup : <span class="kw">Unmount 때</span></li>
+        <li>Lifecycle : <span class="kw">Mount · Update · Unmount</span></li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">순서 3개 <small>눌러서 정답 확인</small></h3>
     <div class="box cloze-box">
       <h4>① URL 입력부터 화면까지 <small>찾고 · 잇고 · 묻고 · 받고 · 그린다</small></h4>
       <ol class="plain">
@@ -485,19 +729,21 @@ console.log(4);</pre>
       </ol>
       <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
 
-    <div class="check" data-id="k2" data-answer="0"><div class="lbl">바로 확인</div>
-      <div class="q">Render Tree를 만든 바로 다음 단계는?</div>
-      <div class="opts">
-        <button class="o">Layout</button>
-        <button class="o">Paint</button>
-        <button class="o">DNS Lookup</button></div>
-      <div class="fb">Render Tree → <b>Layout</b>(위치 · 크기) → Paint → Composite.</div></div>
+    <h3 class="rv-h">내 말로 설명하기 <small>주관식 대비</small></h3>
+    <div class="box explain-box">
+      <p class="eq">"console.log A · setTimeout B · Promise C · console.log D의 출력이 왜 A D C B인지 설명해 보세요."</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">JS는 Single Thread라 먼저 동기 코드를 끝까지 실행해서 A와 D를 찍어요. setTimeout의 콜백은 0초여도 매크로태스크 큐로, Promise의 then 콜백은 마이크로태스크 큐로 보내져요. 동기 코드가 끝나 Call Stack이 비면 Event Loop가 마이크로태스크를 먼저 전부 실행해서 C를 찍고, 그다음 매크로태스크인 B를 찍어요. 그래서 A D C B예요.</div>
+    </div>
 
-    <div class="next"><label><input type="checkbox" data-done="c3">끝!</label><a href="#c1">처음으로 ↑</a></div>
+    <details class="ref"><summary>여기서 뺀 것 <small>시간 남으면</small></summary><div class="ref-body">
+      <p>Closure(createCounter 1 · 2 · 3), GET vs POST, 쿠키 · 세션 · 토큰, Virtual DOM, Props · Lifting State Up, 장바구니 reducer 실습은 이 페이지에서 뺐어요. <a href="중간고사_압축본.html">압축본</a>의 장면 3 · 1 · 5 · 7과 퀴즈 16문항에 있어요.</p>
+    </div></details>
   </section>
 </main>
 
-<footer>고급웹프로그래밍 · 중간고사 대비 · 시간 없으면 이것만 (한 장 정리 · 출력 정답 6 · 순서 3) · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<footer>고급웹프로그래밍 · 중간고사 대비 · 시간 없으면 이것만 (장면 5 · 한 장 정리 · 순서 3) · 진행률은 이 브라우저에만 저장됩니다.</footer>
 <script>
 /* study-html v3 공통 스크립트 */
 (function () {
