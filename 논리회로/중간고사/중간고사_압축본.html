@@ -294,7 +294,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">중간고사 대비 · 제1장 ~ 제5장 · 9/3 ~ 10/8 강의</div>
+    <div class="eyebrow">중간고사 대비 · 제1장 ~ 제5장 · 9/3 ~ 10/13 강의 (시험 범위 끝까지)</div>
     <h1>중간고사, 손으로 푸는 문제로 한 바퀴 돌자</h1>
     <p class="lead">논리회로 시험은 <b>계산</b>이 많아요. 교수님이 "무조건 나온다", "100% 출제", "반드시 나옴"이라고 짚은 것만 골라, 장마다 <b>공식 한 줄 + 직접 풀어 보는 문제</b>로 묶었어요. 설명이 기억 안 나면 장면마다 달린 날짜 페이지로 가세요. 시험은 <b>10/21</b>이에요(10/13 수업 말씀, 시간은 공지 확인). 문제를 더 많이 풀고 싶으면 <a href="연습문제.html">중간고사 연습문제 168문제</a>로 가세요.</p>
     <div class="goal">
@@ -302,9 +302,10 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <ol>
         <li>듀티 사이클 · 진법 변환 · 2의 보수를 종이에 풀 수 있다</li>
         <li>게이트 출력 · 전파지연 · 잡음 여유도 · 팬아웃을 계산할 수 있다</li>
-        <li>BCD · 그레이 · 패리티 · 해밍 · 드모르간 · 최소항 문제를 풀 수 있다</li>
+        <li>BCD · 그레이 · 패리티 · 해밍 · 드모르간 문제를 풀 수 있다</li>
+        <li>최소항 · 최대항 진리표 빈칸을 채우고, Σm ↔ ΠM 변환과 "적용된 법칙"에 답할 수 있다 (10/13)</li>
       </ol>
-      <div class="time">약 60분 · 장면 5개(장별) · 퀴즈 14문항</div>
+      <div class="time">약 75분 · 장면 6개 · 퀴즈 18문항</div>
     </div>
     <div class="exam">
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험이라고 짚은 것 (모음)</h2>
@@ -323,7 +324,8 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <a href="#c2"><b>장면 2</b>제2장 수의 체계</a>
       <a href="#c3"><b>장면 3</b>제4장 게이트</a>
       <a href="#c4"><b>장면 4</b>제3장 코드</a>
-      <a href="#c5"><b>장면 5</b>제5장 불 대수</a>
+      <a href="#c5"><b>장면 5</b>제5장 ① 드모르간 · 법칙</a>
+      <a href="#c6"><b>장면 6</b>제5장 ② 최소항 · 최대항</a>
       <a href="#review"><b>복습</b>계산 퀴즈</a>
     </nav>
   </div>
@@ -449,7 +451,7 @@ VCC=5V, ICC=2mA → P = <span class="hl">10 mW</span></pre>
 
   <section class="ch" id="c5">
     <div class="ch-head"><span class="ch-num">장면 5</span>
-      <div><h2>제5장 — 드모르간(반드시) · 법칙 · 최소항 · 최대항</h2><div class="sub">자세히: <a href="../1006/1006_학습자료.html">10/6</a> · <a href="../1008/1008_학습자료.html">10/8</a> · <a href="../1013/1013_학습자료.html">10/13</a></div></div></div>
+      <div><h2>제5장 ① — 드모르간(반드시)과 불 대수 법칙</h2><div class="sub">자세히: <a href="../1006/1006_학습자료.html">10/6</a> · <a href="../1008/1008_학습자료.html">10/8</a> · 최소항 · 최대항은 장면 6</div></div></div>
 
     <div class="key" style="margin-top:0"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>드모르간 (시험에 반드시)</span>
       <p>(A + B)′ = A′B′ · (AB)′ = A′ + B′ · n항도 같다 · 진리표에서 좌변 = 우변으로 증명</p>
@@ -458,16 +460,7 @@ VCC=5V, ICC=2mA → P = <span class="hl">10 mW</span></pre>
 
 <span class="file">법칙으로 줄이기</span>A + AB = <span class="hl">A</span>                (흡수)
 A + A′B = <span class="hl">A + B</span>            (분배 15: (A + A′)(A + B))
-AB + BC + A′C = <span class="hl">AB + A′C</span>   (합의)
-
-<span class="file">최소항 · 최대항</span>최소항 = 모든 변수의 AND항, 0에 바   011 → A′BC = m₃
-최대항 = 모든 변수의 OR항, 1에 바    011 → <span class="hl">A + B′ + C′ = M₃</span>
-F = Σm(1, 2, 3, 4, 5) = ΠM(0, 6, 7) · F′ = Σm(0, 6, 7)   (나머지 번호)
-Σm(0, 1, 3, 5, 7) = <span class="hl">A′B′ + C</span>
-
-<span class="file">최소항식 · 최대항식으로 변환</span>AB′C = AB′C(D + D′) = AB′CD + AB′CD′        (1을 곱함)
-A + B′ + C = A + B′ + C + DD′
-           = (A + B′ + C + D)(A + B′ + C + D′)  (<span class="hl">분배법칙</span>)</pre>
+AB + BC + A′C = <span class="hl">AB + A′C</span>   (합의)</pre>
     <div class="table-wrap"><table>
       <thead><tr><th>꼭 쓸 줄 알아야 하는 법칙</th><th></th></tr></thead>
       <tbody>
@@ -484,12 +477,90 @@ A + B′ + C = A + B′ + C + DD′
         <button class="o">AB′C</button></div>
       <div class="fb">각자 바 + 곱으로: A′ · B · C′.</div></div>
 
-    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#review">계산 퀴즈로 →</a></div>
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#c6">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 6 (10/13) -->
+  <section class="ch" id="c6">
+    <div class="ch-head"><span class="ch-num">장면 6</span>
+      <div><h2>제5장 ② — 1인 줄은 최소항, 0인 줄은 최대항. 표 빈칸이 나오면 어떻게 채울까?</h2><div class="sub">10/13 · 최소항 정의 · 고르기 · 최대항 진리표 빈칸 ★ · 없는 변수 채우기 · 적용된 법칙 ★ · Σm ↔ ΠM · 예제 5-8 · 자세히: <a href="../1013/1013_학습자료.html">10/13 페이지</a></div></div></div>
+
+    <div class="hook"><p class="q">교수님: "이 표도 여기를 다 가리는 거예요. 가리면 그런 문제를 내는 거예요."</p>
+      <p class="h">10/13은 중간고사 전 마지막 이론 수업이었고, 시험 문제를 어떻게 낼지 대놓고 보여 준 날이에요. 표 가리고 채우기, 최소항 고르기, 적용된 법칙 묻기. 이 세 가지만 확실히 해 두면 돼요.</p></div>
+
+    <h3>① 최소항이 뭐예요? — 변수가 전부 들어 있는 곱</h3>
+    <p><mark>최소항</mark>은 <b>모든 변수가 다 들어 있는 AND항</b>이에요. 변수가 A, B, C, D면 넷 다 있어야 해요(바가 붙든 안 붙든). 진리표의 한 줄을 그대로 옮긴 거라서, 입력이 <b>0이면 바(′)</b>, <b>1이면 그대로</b> 써요. 011 줄이면 A′BC, 번호는 2진수 011 = 3이라서 m₃.</p>
+    <p>그래서 "최소항을 고르세요"가 나오면 <b>빠진 변수가 있는지</b>만 보면 돼요. 4변수에서 ABC는 D가 빠졌으니(간소화된 항) 최소항이 아니고, A + B + C + D는 곱이 아니라 합이라 최소항이 아니에요(그건 최대항 쪽).</p>
+
+    <h3>② 최대항은 왜 1에 바를 달까?</h3>
+    <p><mark>최대항</mark>은 반대로 <b>모든 변수가 다 들어 있는 OR항</b>이고, 기호는 대문자 <b>M</b>이에요. 여기서 다들 헷갈리는 게 <b>0이면 그대로, 1이면 바</b>라는 거예요. 최소항과 정반대죠.</p>
+    <p>이유는 간단해요. 최대항은 <b>딱 그 줄에서만 0이 나와야</b> 하는 OR항이에요. OR가 0이 되려면 안에 든 게 전부 0이어야 하죠. 011 줄에서 A + B′ + C′를 계산하면 0 + 1′ + 1′ = 0 + 0 + 0 = 0. 1인 자리에 바를 달아야 0이 돼요.</p>
+
+    <div class="box cloze-box">
+      <p class="legend">시험 메모 "최대항 진리표 빈칸 채우기" 연습 — 칸을 먼저 떠올리고 눌러서 확인</p>
+      <div class="table-wrap"><table>
+        <thead><tr><th>A B C</th><th>최소항</th><th>기호</th><th>최대항</th><th>기호</th></tr></thead>
+        <tbody>
+          <tr><td>0 0 0</td><td>A′B′C′</td><td>m₀</td><td>A + B + C</td><td>M₀</td></tr>
+          <tr><td>0 0 1</td><td><span class="cloze">A′B′C</span></td><td>m₁</td><td><span class="cloze">A + B + C′</span></td><td>M₁</td></tr>
+          <tr><td>0 1 0</td><td>A′BC′</td><td>m₂</td><td><span class="cloze">A + B′ + C</span></td><td><span class="cloze">M₂</span></td></tr>
+          <tr><td>0 1 1</td><td><span class="cloze">A′BC</span></td><td>m₃</td><td><span class="cloze">A + B′ + C′</span></td><td>M₃</td></tr>
+          <tr><td>1 0 0</td><td>AB′C′</td><td><span class="cloze">m₄</span></td><td><span class="cloze">A′ + B + C</span></td><td>M₄</td></tr>
+          <tr><td>1 0 1</td><td><span class="cloze">AB′C</span></td><td>m₅</td><td>A′ + B + C′</td><td><span class="cloze">M₅</span></td></tr>
+          <tr><td>1 1 0</td><td>ABC′</td><td>m₆</td><td><span class="cloze">A′ + B′ + C</span></td><td>M₆</td></tr>
+          <tr><td>1 1 1</td><td><span class="cloze">ABC</span></td><td>m₇</td><td><span class="cloze">A′ + B′ + C′</span></td><td>M₇</td></tr>
+        </tbody></table></div>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div></div>
+
+    <p>표가 채워지면 식은 줄만 모으면 돼요. 출력이 <b>1인 줄</b>의 최소항을 OR로 이으면 <b>최소항식 Σm</b>(곱의 합, SOP), 출력이 <b>0인 줄</b>의 최대항을 AND로 이으면 <b>최대항식 ΠM</b>(합의 곱, POS).</p>
+
+    <h3>③ 빠진 변수를 다시 채울 때, 아무거나 붙이면 안 되는 이유</h3>
+    <p>간소화의 거꾸로예요. D가 빠진 항에 D를 그냥 붙이면 식의 값이 바뀌어 버리죠(교수님 말로 "오염"). 그래서 <b>값을 안 바꾸는 것</b>만 붙여요. 곱의 항엔 <b>1을 곱하고</b>, 합의 항엔 <b>0을 더하고</b>.</p>
+    <pre class="code"><span class="file">최소항식으로: 1 = (D + D′)을 곱한다</span>AB′C = AB′C(D + D′) = <span class="hl">AB′CD + AB′CD′</span>
+
+<span class="file">최대항식으로: 0 = DD′를 더하고 쪼갠다 (예제 5-6)</span>A + B′ + C = A + B′ + C + DD′                <span class="c">// 공리 X · X′ = 0</span>
+           = <span class="hl">(A + B′ + C + D)(A + B′ + C + D′)</span>  <span class="c">// 분배법칙</span></pre>
+    <p>둘째 줄에서 X = A + B′ + C, Y = D, Z = D′로 보면 X + YZ = (X + Y)(X + Z)예요. 일반 수학엔 없는 그 분배법칙이죠. 교수님이 바로 여기서 "이게 무슨 법칙? <b>분배법칙</b>. 시험에 여기 적힌 법칙이 뭐냐고 나오면 분배법칙이라고 써야 돼"라고 했어요.</p>
+
+    <h3>④ Σm을 ΠM으로 바꾸면 번호는? — 나머지 번호</h3>
+    <p>같은 함수를 1인 줄로 쓰든 0인 줄로 쓰든 결국 같은 진리표예요. 그러니까 <b>Σm의 번호와 ΠM의 번호는 서로 나머지</b>예요. 3변수 F = Σm(1, 2, 3, 4, 5)면 0인 줄은 0, 6, 7 → F = <b>ΠM(0, 6, 7)</b>. 그리고 F′(뒤집은 함수)는 1과 0이 바뀌니까 F′ = Σm(0, 6, 7).</p>
+    <p>배경은 드모르간이에요. 같은 번호의 최소항과 최대항은 서로 보수(<b>Mᵢ = mᵢ′</b>)거든요. m₃ = A′BC에 드모르간을 쓰면 (A′BC)′ = A + B′ + C′ = M₃. 그래서 번호를 <b>그대로</b> 두고 Σ를 Π로 바꾸려면 위에 모자(′)를 씌워야 하고, 모자 없이 바꾸려면 <b>나머지 번호</b>를 써요.</p>
+
+    <h3>⑤ 간소화하면서 줄마다 법칙 이름 대기 (예제 5-8 · 실습 5)</h3>
+    <pre class="code"><span class="file">F1 = A′B′C′ + A′BC′ + A′BC + AB′C′</span>   = B′C′(A′ + A) + A′B(C′ + C)   <span class="c">// 공통 부분 묶기 → 분배법칙</span>
+   = B′C′ · 1 + A′B · 1           <span class="c">// 공리 X + X′ = 1</span>
+   = <span class="hl">B′C′ + A′B</span>                  <span class="c">// X · 1 = X</span></pre>
+    <p>짝이 안 맞아 하나가 남으면 이미 있는 항을 <b>한 번 더 써도</b> 돼요. X + X = X라서 값이 안 변하거든요(p.43~45). 이것도 "적용된 법칙"으로 물을 수 있어요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>최소항은 모든 변수를 포함하는 AND항(0은 보수, 1은 그대로, 기호 m)이고 출력이 1인 행을 OR로 묶어 F = Σm(…)으로 쓴다. 최대항은 모든 변수를 포함하는 OR항(0은 그대로, 1은 보수, 기호 M)이고 출력이 0인 행을 AND로 묶어 F = ΠM(…)으로 쓴다. 둘은 상호 보수(Mᵢ = mᵢ′)이며 같은 함수의 Σm과 ΠM 번호는 서로 나머지다. 최대항식 변환 시 XX′ = 0을 더한 뒤 분배법칙 X + YZ = (X + Y)(X + Z)로 나눈다.</p>
+      <div class="mn">외우는 법: <b>최소 = 1 모아 Σm, 0에 바</b> / <b>최대 = 0 모아 ΠM, 1에 바</b> / <b>모자 없이 바꾸면 나머지 번호</b> / 쪼갤 때 = <b>분배법칙</b></div></div>
+
+    <div class="vs"><div class="x"><b>✗ 이렇게 쓰면 틀려요</b>011 줄의 최대항 = A′ + B + C (최소항처럼 0에 바)</div>
+      <div class="o"><b>○ 맞게 쓰기</b>최대항은 <b>1에 바</b>: 011 → A + B′ + C′ = M₃</div></div>
+
+    <div class="check" data-id="k6" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">3변수에서 입력 1 1 0 줄의 최대항과 기호는?</div>
+      <div class="opts">
+        <button class="o">ABC′, m₆</button>
+        <button class="o">A + B + C′, M₆</button>
+        <button class="o">A′ + B′ + C, M₆</button></div>
+      <div class="fb">최대항은 <b>1에 바</b>: A, B가 1이니 A′, B′, C는 0이니 그대로 → A′ + B′ + C. 110 = 6이라 M₆. ABC′는 같은 줄의 <b>최소항</b> m₆이에요.</div></div>
+
+    <div class="check" data-id="k7" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">F(A, B, C) = ΠM(0, 2, 3, 7)을 최소항식으로 바꾸면? (예제 5-7)</div>
+      <div class="opts">
+        <button class="o">Σm(0, 2, 3, 7)</button>
+        <button class="o">Σm(1, 4, 5, 6)</button>
+        <button class="o">ΠM(1, 4, 5, 6)</button></div>
+      <div class="fb">0인 줄이 0 · 2 · 3 · 7이니 1인 줄은 <b>나머지 1 · 4 · 5 · 6</b> → Σm(1, 4, 5, 6).</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c6">이해했어요</label><a href="#review">계산 퀴즈로 →</a></div>
   </section>
 
   <section class="ch review" id="review">
     <div class="ch-head"><span class="ch-num">복습</span>
-      <div><h2>시험 직전 복습 — 계산 퀴즈</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 14 → 내 말로</div></div></div>
+      <div><h2>시험 직전 복습 — 계산 퀴즈</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 18 → 내 말로</div></div></div>
 
     <h3 class="rv-h">한 장 정리 <small>시험장 가기 전 마지막으로</small></h3>
     <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요.</p>
@@ -511,12 +582,15 @@ A + B′ + C = A + B′ + C + DD′
       <div class="grp"><h4>⑤ 제5장 <span class="ex-t">★ 드모르간</span><span class="mn">끊고 · 바꾸고 = 위에 그은 바를 끊고, +와 ·을 바꾼다</span></h4><ul>
         <li>드모르간: <span class="kw">(A + B)′ = A′B′</span>, <span class="kw">(AB)′ = A′ + B′</span>. 흡수 법칙 A + AB = A(A가 1이면 어차피 1).</li>
         <li>진리표에서 출력이 1인 줄을 모으면 최소항의 합 Σm, 출력이 0인 줄을 모으면 최대항의 곱 ΠM이에요.</li></ul></div>
+      <div class="grp"><h4>⑥ 제5장 ② (10/13) <span class="ex-t">★ 최대항 빈칸 · 법칙</span><span class="mn">최소는 0에 바 · 최대는 1에 바 / 모자 없이 바꾸면 나머지 번호</span></h4><ul>
+        <li>최소항은 모든 변수가 들어 있는 곱이라 4변수에서 ABC처럼 하나라도 빠지면 <span class="kw">최소항이 아니에요</span>. 최대항은 0이면 그대로, <span class="kw">1이면 바</span>: 011 → A + B′ + C′ = M₃.</li>
+        <li>Σm(1, 2, 3, 4, 5)를 최대항식으로 쓰면 <span class="kw">ΠM(0, 6, 7)</span>(나머지 번호). 최대항식으로 바꿀 때 DD′를 더하고 쪼개는 단계는 <span class="kw">분배법칙</span>, A′ + A = 1은 공리 X + X′ = 1.</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
     <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
     <div class="box cloze-box">
-      <p>디지털의 최대 단점은 <span class="cloze">양자화 오차</span>다. 주파수는 주기의 <span class="cloze">역수</span>다. 2의 보수는 1의 보수에 <span class="cloze">1</span>을 더한 것이다. XOR은 입력 중 1의 개수가 <span class="cloze">홀수</span>일 때 1이다. BCD 덧셈에서 자리별 합이 9를 넘으면 <span class="cloze">0110</span>을 더한다. 패리티는 에러 <span class="cloze">검출</span>만, 해밍 코드는 <span class="cloze">정정</span>까지 할 수 있다. 드모르간에 의해 (AB)′ = <span class="cloze">A′ + B′</span>이다.</p>
+      <p>디지털의 최대 단점은 <span class="cloze">양자화 오차</span>다. 주파수는 주기의 <span class="cloze">역수</span>다. 2의 보수는 1의 보수에 <span class="cloze">1</span>을 더한 것이다. XOR은 입력 중 1의 개수가 <span class="cloze">홀수</span>일 때 1이다. BCD 덧셈에서 자리별 합이 9를 넘으면 <span class="cloze">0110</span>을 더한다. 패리티는 에러 <span class="cloze">검출</span>만, 해밍 코드는 <span class="cloze">정정</span>까지 할 수 있다. 드모르간에 의해 (AB)′ = <span class="cloze">A′ + B′</span>이다. 최대항은 입력이 1인 변수에 <span class="cloze">보수(바)</span>를 붙인다. 3변수 Σm(1, 2, 3, 4, 5)를 최대항식으로 쓰면 <span class="cloze">ΠM(0, 6, 7)</span>이다.</p>
       <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
     </div>
 
@@ -541,11 +615,15 @@ A + B′ + C = A + B′ + C + DD′
         <div class="fc-item"><div class="q">해밍 코드에서 에러 위치는?</div><div class="a">다시 계산한 패리티를 P8 P4 P2 P1로 세운 2진값(0이면 에러 없음).</div></div>
         <div class="fc-item"><div class="q">드모르간 두 식은?</div><div class="a">(A + B)′ = A′B′, (AB)′ = A′ + B′.</div></div>
         <div class="fc-item"><div class="q">최소항식과 최대항식은?</div><div class="a">최소항식 Σm = 출력 1인 행의 곱의 항을 OR. 최대항식 ΠM = 출력 0인 행의 합의 항을 AND.</div></div>
+        <div class="fc-item"><div class="q">최소항이 뭐예요? (10/13 "이렇게 나온다")</div><div class="a">모든 변수를 포함하는 AND항. 0인 변수는 보수, 1은 그대로, 기호 m. 4변수에서 ABC는 D가 없어서 최소항이 아님.</div></div>
+        <div class="fc-item"><div class="q">3변수 011의 최소항 · 최대항은?</div><div class="a">최소항 A′BC = m₃, 최대항 A + B′ + C′ = M₃ (최대항은 1에 바).</div></div>
+        <div class="fc-item"><div class="q">최대항식으로 바꿀 때 DD′를 더하고 쪼개는 데 쓰는 법칙은?</div><div class="a">분배법칙 X + YZ = (X + Y)(X + Z). DD′ = 0을 더해도 되는 근거는 공리 X · X′ = 0.</div></div>
+        <div class="fc-item"><div class="q">최소항과 최대항의 관계는?</div><div class="a">상호 보수 Mᵢ = mᵢ′(드모르간). 같은 함수의 Σm과 ΠM 번호는 서로 나머지.</div></div>
       </div>
       <ol class="fc-print"></ol>
     </div>
 
-    <h3 class="rv-h">계산 퀴즈 14문항 <small>종이에 먼저 풀기</small></h3>
+    <h3 class="rv-h">계산 퀴즈 18문항 <small>종이에 먼저 풀기</small></h3>
     <form class="box quiz" data-quiz>
       <div class="q" data-answer="2"><p class="qt"><b>Q1</b>tw = 10 μs, T = 40 μs인 펄스의 주파수와 듀티 사이클은?</p>
         <label class="opt"><input type="radio" name="q1" value="0">40 kHz, 25 %</label>
@@ -631,6 +709,30 @@ A + B′ + C = A + B′ + C + DD′
         <label class="opt"><input type="radio" name="q14" value="2">Σm(1, 2, 4, 5, 7)</label>
         <label class="opt"><input type="radio" name="q14" value="3">ΠM(0, 1, 2)</label>
         <div class="explain">나머지 번호(0인 줄)로 ΠM.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q15</b>3변수에서 입력 0 1 0 줄의 최대항은?</p>
+        <label class="opt"><input type="radio" name="q15" value="0">A′BC′</label>
+        <label class="opt"><input type="radio" name="q15" value="1">A + B′ + C</label>
+        <label class="opt"><input type="radio" name="q15" value="2">A′ + B + C′</label>
+        <label class="opt"><input type="radio" name="q15" value="3">A + B + C</label>
+        <div class="explain">최대항은 1에 바: B만 1 → A + B′ + C = M₂. A′BC′는 같은 줄의 최소항 m₂예요.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q16</b>4변수 A, B, C, D에서 최소항인 것은?</p>
+        <label class="opt"><input type="radio" name="q16" value="0">ABC</label>
+        <label class="opt"><input type="radio" name="q16" value="1">A + B′ + C + D</label>
+        <label class="opt"><input type="radio" name="q16" value="2">A′CD</label>
+        <label class="opt"><input type="radio" name="q16" value="3">AB′C′D</label>
+        <div class="explain">네 변수가 다 들어 있는 곱은 AB′C′D뿐이에요. ABC는 D, A′CD는 B가 없고, A + B′ + C + D는 합(최대항 쪽)이에요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q17</b>F(A, B, C) = ΠM(1, 3, 4)를 최소항식으로 쓰면?</p>
+        <label class="opt"><input type="radio" name="q17" value="0">Σm(0, 2, 5, 6, 7)</label>
+        <label class="opt"><input type="radio" name="q17" value="1">Σm(1, 3, 4)</label>
+        <label class="opt"><input type="radio" name="q17" value="2">ΠM(0, 2, 5, 6, 7)</label>
+        <label class="opt"><input type="radio" name="q17" value="3">Σm(0, 2, 5)</label>
+        <div class="explain">0인 줄이 1 · 3 · 4니까 1인 줄은 나머지 0 · 2 · 5 · 6 · 7이에요.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q18</b>A + B′ + C + DD′ = (A + B′ + C + D)(A + B′ + C + D′)에 적용된 법칙은?</p>
+        <label class="opt"><input type="radio" name="q18" value="0">드모르간의 정리</label>
+        <label class="opt"><input type="radio" name="q18" value="1">흡수법칙 X + XY = X</label>
+        <label class="opt"><input type="radio" name="q18" value="2">분배법칙 X + YZ = (X + Y)(X + Z)</label>
+        <label class="opt"><input type="radio" name="q18" value="3">교환법칙</label>
+        <div class="explain">X = A + B′ + C, Y = D, Z = D′로 보면 X + YZ = (X + Y)(X + Z). 10/13에 교수님이 "법칙이 뭐냐고 나오면 분배법칙"이라고 짚은 줄이에요.</div></div>
       <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
     </form>
 
@@ -644,7 +746,7 @@ A + B′ + C = A + B′ + C + DD′
   </section>
 </main>
 
-<footer>논리회로 · 중간고사 대비 · 제1장 ~ 제5장 · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<footer>논리회로 · 중간고사 대비 · 제1장 ~ 제5장 (9/3 ~ 10/13) · 진행률은 이 브라우저에만 저장됩니다.</footer>
 <script>
 /* study-html v3 공통 스크립트 */
 (function () {
