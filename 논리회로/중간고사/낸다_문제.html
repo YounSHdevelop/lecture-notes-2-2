@@ -331,6 +331,7 @@ body.wr-only .cloze-box>p.rv-d{display:none}
       </ul>
     </div>
     <nav class="flow" aria-label="주제">
+      <a href="#c0"><b>필수</b>서술형 6</a>
       <a href="#c1"><b>주제 1</b>듀티 사이클</a>
       <a href="#c2"><b>주제 2</b>2진 → 10진</a>
       <a href="#c3"><b>주제 3</b>2의 보수</a>
@@ -343,6 +344,55 @@ body.wr-only .cloze-box>p.rv-d{display:none}
       <a href="#review"><b>마무리</b>섞어서 14문항</a>
     </nav>
   </div>
+
+  <section class="ch" id="c0">
+    <div class="ch-head"><span class="ch-num">필수</span>
+      <div><h2>서술형 필수 — 이 6개는 문장으로 쓸 수 있어야 해요</h2><div class="sub">★ = 교수님이 "이렇게 물으면 답해야 돼요"라고 직접 말한 것 · 나머지는 채점 포인트만 들어가면 자기 말로 써도 돼요</div></div></div>
+
+    <div class="box explain-box">
+      <p class="eq">★ 1. "최소항이 뭐예요?" 설명하시오.</p>
+      <p class="rv-d">출처: 10/13 수업 "시험에 최소항이 뭐예요, 설명하시오 이렇게 나오겠죠"</p>
+      <textarea data-save="essay1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">최소항(minterm)은 모든 입력 변수를 한 번씩 포함하는 곱(AND)항으로, 각 변수는 그대로 또는 보수(′)로 들어간다. 진리표의 한 줄에서만 1이 되며, 변수가 n개면 2ⁿ개가 있다(3변수는 m0~m7, 4변수는 m0~m15). 예를 들어 4변수에서 AB′C′D는 1001이므로 m9이다. 변수가 하나라도 빠진 항(예: ABC)은 간소화된 항이라 최소항이 아니다.<br><b>채점 포인트:</b> 모든 변수 포함 · 곱 · 2ⁿ개 · 예시 하나</div>
+    </div>
+    <div class="box explain-box">
+      <p class="eq">2. 최대항이란 무엇인지 설명하시오.</p>
+      <p class="rv-d">출처: 10/13 수업(최소항과 짝) · 시험 메모 "최대항 표현방법"</p>
+      <textarea data-save="essay2" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">최대항(maxterm)은 모든 입력 변수를 한 번씩 포함하는 합(OR)항이다. 진리표의 한 줄에서만 0이 되며, 그 줄의 값이 0인 변수는 그대로, 1인 변수는 보수(′)로 쓴다. 함수 F는 F가 0인 줄의 최대항들을 곱해 F = ΠM( )으로 나타내며(POS, 합의 곱), 최소항식 Σm에서 빠진 번호가 ΠM의 번호가 된다.<br><b>채점 포인트:</b> 모든 변수 포함 · 합 · 0이면 그대로 1이면 ′ · F가 0인 줄을 곱해 ΠM</div>
+    </div>
+    <div class="box explain-box">
+      <p class="eq">★ 3. "BCD 코드가 뭐예요?" 2~3문장으로 답하시오.</p>
+      <p class="rv-d">출처: 10/1 수업 "BCD 코드 뭐예요? 이렇게 물으면 답을 잘해야 돼요"</p>
+      <textarea data-save="essay3" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">BCD 코드는 10진수의 각 자리를 4비트 2진수로 표현한 코드(8421 코드)다. 예를 들어 32는 0011 0010으로 쓴다. 0000~1001만 쓰고 1010~1111은 쓰지 않아 비트가 낭비되며, 덧셈에서 자리 합이 9를 넘으면 0110(6)을 더해 보정한다.<br><b>채점 포인트:</b> 10진 한 자리 = 4비트 · 예시 · 1010~1111 안 씀 · +6 보정</div>
+    </div>
+    <div class="box explain-box">
+      <p class="eq">4. 2의 보수가 왜 필요한지, 1의 보수와 비교한 장단점, 컴퓨터가 결국 무엇을 쓰는지 설명하시오.</p>
+      <p class="rv-d">출처: 2의 보수 "장단점 · 왜 · 뭘 쓰는지 꼭 기억"</p>
+      <textarea data-save="essay4" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">보수는 덧셈기만으로 뺄셈을 하기 위해 음수를 표현하는 방법이다. 1의 보수는 모든 비트를 반전하면 되므로 만들기 쉽지만 0이 +0(0000)과 −0(1111) 두 개 생겨 결과를 다시 보정해야 한다. 2의 보수는 1의 보수에 1을 더해 만들어 한 단계가 더 필요하지만 0이 하나라 결과가 정확하다. 그래서 컴퓨터는 2의 보수를 쓴다.<br><b>채점 포인트:</b> 덧셈으로 뺄셈 · 1의 보수 = 반전, 0이 두 개 · 2의 보수 = +1, 0이 하나 · 결론 2의 보수</div>
+    </div>
+    <div class="box explain-box">
+      <p class="eq">5. 패리티 비트와 해밍 코드의 차이를 설명하시오.</p>
+      <p class="rv-d">출처: 9/29 "패리티는 그레이 코드만큼 중요해요" · 10/1 설명 (단, "낸다"는 말은 없음)</p>
+      <textarea data-save="essay5" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">패리티 비트는 데이터에 비트 1개를 덧붙여 1의 개수를 짝수(짝수 패리티) 또는 홀수(홀수 패리티)로 맞추는 것이다. 받는 쪽에서 1의 개수가 약속과 다르면 에러를 검출할 수 있지만, 어느 비트가 틀렸는지는 알 수 없다. 해밍 코드는 패리티 비트를 여러 개(1, 2, 4, 8번 자리) 넣어 에러의 위치까지 찾아 정정할 수 있다.<br><b>채점 포인트:</b> 1의 개수 맞추기 · 짝수/홀수 · 패리티 = 검출만 · 해밍 = 위치 찾아 정정</div>
+    </div>
+    <div class="box explain-box">
+      <p class="eq">6. 두 논리식이 같다는 것을 보이는 방법을 설명하시오.</p>
+      <p class="rv-d">출처: 10/8 · 10/13 수업, 실습 과제 5 "불 대수로 증명했는데 실습으로도 증명할 수 있나요?"</p>
+      <textarea data-save="essay6" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">두 논리식이 같다는 것은 세 가지 방법으로 보일 수 있다. ① 불 대수 법칙(분배, 공리, 드모르간 등)으로 한쪽 식을 전개 · 간소화해 다른 쪽 식으로 만든다. ② 모든 입력 조합의 진리표를 만들어 출력이 같은지 비교한다. ③ 두 식을 각각 회로로 그려 같은 입력을 넣고 출력 파형이 같은지 확인한다(LogicWorks 실습).<br><b>채점 포인트:</b> 불 대수 · 진리표 · 회로 실습 세 가지</div>
+    </div>
+    <div class="next"><label><input type="checkbox" data-done="c0">다 써 봤어요</label><a href="#c1">주제 1로 →</a></div>
+  </section>
 
   <section class="ch" id="c1">
     <div class="ch-head"><span class="ch-num">주제 1</span>
