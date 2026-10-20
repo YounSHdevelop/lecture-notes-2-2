@@ -74,10 +74,10 @@ footer { margin-top: 32px; color: var(--muted); font-size: .82rem; }
   <div class="info">
     <h2>수업 정보</h2>
     <ul>
-      <li><strong>교재</strong> 1장 운영체제 개요 · 2장 컴퓨터의 구조 · 3장 프로세스 · 4장 스레드와 IPC · 5장 CPU 스케줄링 (이론은 교재 사진 기준, 설명은 강의 녹음 기준)</li>
+      <li><strong>교재</strong> 1장 운영체제 개요 · 2장 컴퓨터의 구조 · 3장 프로세스 · 4장 스레드와 IPC · 5장 CPU 스케줄링 · 6장 임계구역과 동기화 (이론은 교재 사진 기준, 설명은 강의 녹음 기준)</li>
       <li><strong>수업</strong> 월·수 · 강의 녹음은 수업txt/운영체제 MMDD.txt (9/21과 9/28 사이 버퍼·병렬 처리 부분은 녹음 없음)</li>
-      <li><strong>중간고사</strong> <b>10/21(수)</b> — 범위는 <b>10/19(월) 수업까지</b>(10/14 다시 말함) · 시간·장소는 공지 확인</li>
-      <li><strong>강조</strong> <b>평균 대기 시간 계산은 출제</b> · 시스템 콜 · 레지스터("꼭 외워라") · 프로세스 상태도("평생 잊지 마") · fork · 선점/비선점(별표 5개) · 동기/비동기</li>
+      <li><strong>중간고사</strong> <b>10/21(수)</b> — 범위는 <b>6장 동기화까지</b>(10/19 수업, 교재 265쪽까지) · 시간·장소는 공지 확인</li>
+      <li><strong>강조</strong> <b>평균 대기 시간 계산은 출제</b> · 시스템 콜 · 레지스터("꼭 외워라") · 프로세스 상태도("평생 잊지 마") · fork · 선점/비선점(별표 5개) · 동기/비동기 · 임계구역 해결 3조건 · 세마포어("오늘의 가장 핵심") · synchronized</li>
       <li><strong>안 냄</strong> 운영체제 목표·특징, 역사 연도, 커널 구조, 스케줄링 목표 — 교수님이 "읽어만 보라 / 시험 안 낸다"고 한 것은 페이지 아래 접힌 칸에만</li>
     </ul>
   </div>
@@ -85,7 +85,7 @@ footer { margin-top: 32px; color: var(--muted); font-size: .82rem; }
   <div class="section-title">중간고사 대비</div>
   <ul class="weeks">
     <li><a class="week" href="중간고사/중간고사_압축본.html" data-week="중간고사">
-      <div class="n">1장~5장 · 중요 표시만</div><h2>중간고사, 교수님이 "중요하다"고 한 것만 한 바퀴 돌자</h2><p>시스템 콜 · 레지스터 · 버스 · 상태도 · fork/exec 출력 · 스레드 · 동기/비동기 · 선점/비선점 · FCFS 계산 연습 · SJF~MLFQ · 멀티프로세서</p>
+      <div class="n">1장~6장 · 중요 표시만</div><h2>중간고사, 교수님이 "중요하다"고 한 것만 한 바퀴 돌자</h2><p>시스템 콜 · 레지스터 · 버스 · 상태도 · fork/exec 출력 · 스레드 · 동기/비동기 · 선점/비선점 · FCFS 계산 연습 · SJF~MLFQ · 멀티프로세서 · 6장 임계구역 · 3조건 · 세마포어 · 모니터</p>
       <div class="bar"><span></span></div><div class="pct">0%</div>
     </a></li>
   </ul>
@@ -152,10 +152,14 @@ footer { margin-top: 32px; color: var(--muted); font-size: .82rem; }
       <div class="n">10/14 보충 · 그림 설명</div><h2>HRN, 결국 "내 일 시간에 비해 몇 배나 기다렸나"를 재는 거예요</h2><p>응답률 = 1 + 대기 ÷ 실행(억울함 점수), 기다릴수록 오르는 그래프, 시점마다 응답률 계산, 교재 예제 2.5 vs 3.67</p>
       <div class="bar"><span></span></div><div class="pct">0%</div>
     </a></li>
-    <li><span class="week soon" data-week="next">
-      <div class="n">다음 강의</div><h2>준비 중</h2><p>10/19 6장 (중간고사 범위 마지막). 강의 텍스트가 추가되면 여기에 표시됩니다.</p>
-      <div class="bar"><span></span></div><div class="pct">-</div>
-    </span></li>
+  </ul>
+
+  <div class="section-title">8주차 · 6장 임계구역과 동기화</div>
+  <ul class="weeks">
+    <li><a class="week" href="1019/1019_학습자료.html" data-week="1019">
+      <div class="n">10월 19일 (월) · 8주차 ① · 중간고사 범위 끝</div><h2>10만 원씩 두 번 넣었는데, 왜 통장엔 10만 원뿐일까?</h2><p>경쟁 상태 · 임계구역, 해결 3조건(상호 배제 ★), 틀린 잠금 코드 3개, 검사와 지정 · 뮤텍스, 세마포어 S 값(init · wait · post), 모니터 synchronized, 우선순위 역전 · 상속</p>
+      <div class="bar"><span></span></div><div class="pct">0%</div>
+    </a></li>
   </ul>
 
   <footer>진행률은 이 브라우저에만 저장됩니다.</footer>

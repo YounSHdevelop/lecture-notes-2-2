@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>운영체제 10월 19일 · 임계구역과 동기화</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* study-html v3 · 교수님 설명을 다시 듣는 페이지 — 모든 수업 파일이 이 블록을 바이트 동일하게 공유한다 */
+:root{
+  --font:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,"D2Coding",monospace;
+  --bg:#F5F7F6; --surface:#FFFFFF; --ink:#1A2523; --ink-2:#4A5754; --ink-3:#6E7B78; --line:#E3E8E6;
+  --teal:#0F766E; --teal-soft:#E6F4F1; --teal-ink:#0B5C55;
+  --exam:#B45309; --exam-soft:#FFF4DC; --exam-line:#F5C772;
+  --mark:#FDE68A; --mark-ink:#3B2F05;
+  --ok:#15803D; --ok-soft:#E8F6EC; --no:#B91C1C; --no-soft:#FDECEC;
+  --code-bg:#1E2A28; --code-ink:#E6EEEC; --code-hl:#FDE68A; --code-dim:#8FA39F;
+  --r:14px;
+}
+:root[data-theme="dark"]{
+  --bg:#111716; --surface:#18201F; --ink:#E8EEEC; --ink-2:#B4C0BD; --ink-3:#8D9A97; --line:#2A3533;
+  --teal:#2DD4BF; --teal-soft:#14302C; --teal-ink:#5EEAD4;
+  --exam:#FBBF24; --exam-soft:#2E2512; --exam-line:#6B5220;
+  --mark:#6B5A1E; --mark-ink:#FDE68A;
+  --ok:#4ADE80; --ok-soft:#14291B; --no:#F87171; --no-soft:#2E1616;
+  --code-bg:#0B1110;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.75;word-break:keep-all;overflow-wrap:break-word;-webkit-font-smoothing:antialiased}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.9em;background:var(--teal-soft);color:var(--teal-ink);border-radius:5px;padding:1px 5px}
+a{color:var(--teal)}
+.wrap{max-width:720px;margin:0 auto;padding:0 16px}
+.icon{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon[hidden]{display:none}
+button{font-family:inherit}
+
+/* 상단 바 */
+.topbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;height:52px;font-size:14px}
+.topbar .home{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar .bar{flex:1;height:6px;background:var(--line);border-radius:9px;overflow:hidden;min-width:40px}
+.topbar .bar>i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.topbar .pct{color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:38px;text-align:right}
+.tbtn{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:8px;height:34px;width:34px;cursor:pointer;display:grid;place-items:center;flex:none}
+.tbtn:hover{color:var(--ink);border-color:var(--ink-3)}
+:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+
+/* 히어로 */
+.hero{padding:40px 0 8px}
+.eyebrow{font-size:14px;color:var(--teal);font-weight:600}
+.hero h1{font-size:clamp(26px,5vw,32px);line-height:1.3;margin:6px 0 12px;letter-spacing:-.02em}
+.hero .lead{font-size:18px;color:var(--ink-2);margin:0 0 24px}
+.goal{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:20px 22px}
+.goal h2{margin:0 0 8px;font-size:15px;color:var(--ink-3);font-weight:600}
+.goal ol{margin:0;padding:0;list-style:none;counter-reset:g}
+.goal li{counter-increment:g;display:flex;gap:12px;padding:5px 0;font-weight:500}
+.goal li::before{content:counter(g);flex:none;width:26px;height:26px;border-radius:50%;background:var(--teal-soft);color:var(--teal-ink);font-size:14px;font-weight:700;display:grid;place-items:center;margin-top:2px}
+.goal .time{margin-top:10px;font-size:14px;color:var(--ink-3)}
+.exam{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:14px 20px;margin-top:14px}
+.exam h2{display:flex;align-items:center;gap:6px;margin:0 0 4px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.exam ul{margin:0;padding-left:18px;font-size:16px}
+.exam li{margin:2px 0}
+
+/* 오늘의 흐름 = 목차 */
+.flow{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.flow a{flex:1 0 118px;text-decoration:none;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;line-height:1.4;transition:border-color .15s,background .15s}
+.flow a b{display:block;color:var(--teal);font-size:12px}
+.flow a:hover{border-color:var(--teal)}
+.flow a.done{border-color:var(--teal);background:var(--teal-soft)}
+.flow a.done b::after{content:" ✓"}
+.flow a.active{box-shadow:inset 0 -3px 0 var(--teal)}
+
+/* 장면 */
+.ch{padding:48px 0 8px}
+.ch-head{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.ch-num{flex:none;font-size:14px;font-weight:800;color:var(--teal);background:var(--teal-soft);border-radius:10px;padding:6px 10px;margin-top:4px;white-space:nowrap}
+.ch-head h2{margin:0;font-size:clamp(21px,4vw,26px);line-height:1.35;letter-spacing:-.02em}
+.ch-head .sub{color:var(--ink-3);font-size:15px;margin-top:4px}
+.ch h3{font-size:19px;margin:28px 0 10px;letter-spacing:-.01em}
+.ch p{margin:0 0 16px}
+.ch ul.plain,.ch ol.plain{margin:0 0 16px;padding-left:22px}
+.ch ul.plain li,.ch ol.plain li{margin:4px 0}
+mark{background:linear-gradient(transparent 55%,var(--mark) 55%);color:inherit;padding:0 2px;font-weight:600}
+
+.hook{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:0 0 20px}
+.hook .q{font-size:19px;font-weight:700;margin:0 0 4px;line-height:1.5}
+.hook .h{color:var(--ink-3);font-size:15px;margin:0}
+
+.prof{display:flex;gap:12px;margin:20px 0}
+.prof .av{flex:none;width:36px;height:36px;border-radius:50%;background:var(--teal);color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
+:root[data-theme="dark"] .prof .av{color:#062b27}
+.prof .bubble{background:var(--teal-soft);border-radius:4px 14px 14px 14px;padding:12px 16px;font-size:16px;color:var(--teal-ink);flex:1}
+.prof .bubble small{display:block;color:var(--ink-3);font-size:12px;margin-top:4px}
+
+.analogy{border-left:4px solid var(--teal);padding:4px 0 4px 16px;margin:20px 0;color:var(--ink-2)}
+.analogy b{color:var(--ink)}
+
+.code{background:var(--code-bg);color:var(--code-ink);border-radius:var(--r);padding:16px 18px;font-size:14.5px;line-height:1.7;overflow-x:auto;margin:16px 0 8px;white-space:pre}
+.code .c{color:var(--code-dim)}
+.code .hl{background:color-mix(in srgb,var(--code-hl) 22%,transparent);color:var(--code-hl);border-radius:4px;padding:0 3px}
+.code .file{display:block;color:var(--code-dim);font-size:12px;margin-bottom:6px;letter-spacing:.03em}
+.anno{list-style:none;margin:0 0 20px;padding:0}
+.anno li{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line);font-size:16px}
+.anno li:last-child{border:0}
+.anno .k{flex:none;font-family:var(--mono);font-size:14px;background:var(--mark);color:var(--mark-ink);border-radius:5px;padding:1px 7px;height:fit-content;margin-top:3px;max-width:45%;overflow-wrap:anywhere}
+
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:20px 0}
+.fig svg{width:100%;height:auto;display:block}
+.fig svg text{font-family:var(--font)}
+.fig figcaption{font-size:14px;color:var(--ink-3);text-align:center;margin-top:8px}
+
+.table-wrap{overflow-x:auto;margin:16px 0 20px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.table-wrap table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.55}
+.table-wrap th,.table-wrap td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+.table-wrap th{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;white-space:nowrap}
+.table-wrap tr:last-child td{border-bottom:0}
+.table-wrap td.hl,.table-wrap th.hl{background:color-mix(in srgb,var(--mark) 45%,transparent)}
+.table-wrap caption{caption-side:bottom;font-size:13px;color:var(--ink-3);padding:8px;text-align:left}
+
+.key{background:var(--exam-soft);border:2px solid var(--exam-line);border-radius:var(--r);padding:16px 20px;margin:24px 0}
+.key .lbl{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--exam);letter-spacing:.04em}
+.key .lbl svg,.exam h2 svg{width:16px;height:16px;fill:currentColor}
+.key p{margin:6px 0 0;font-size:18px;font-weight:700;line-height:1.55}
+.key .mn{margin-top:8px;font-size:15px;color:var(--ink-2);font-weight:500}
+.key .mn b{color:var(--exam)}
+
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 24px}
+.vs>div{border-radius:12px;padding:12px 14px;font-size:15px}
+.vs .x{background:var(--no-soft)} .vs .o{background:var(--ok-soft)}
+.vs>div>b:first-child{display:block;font-size:13px}
+.vs .x>b:first-child{color:var(--no)} .vs .o>b:first-child{color:var(--ok)}
+@media(max-width:560px){.vs{grid-template-columns:1fr}}
+
+.check{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;margin:24px 0}
+.check .lbl{font-size:13px;font-weight:800;color:var(--teal);letter-spacing:.04em}
+.check .q{font-weight:700;margin:4px 0 12px}
+.check .opts{display:grid;gap:8px}
+.check .o{text-align:left;cursor:pointer;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 14px;font-size:16px;line-height:1.5;transition:border-color .15s,background .15s}
+.check .o:hover{border-color:var(--teal)}
+.check .o.right{border-color:var(--ok);background:var(--ok-soft)}
+.check .o.wrong{border-color:var(--no);background:var(--no-soft)}
+.check .fb{display:none;margin-top:12px;font-size:15px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:12px}
+.check .fb b{color:var(--ink)}
+.check.answered .fb{display:block}
+.check.answered .o{cursor:default}
+
+.next{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:28px 0 0;padding:12px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);font-size:15px}
+.next label{display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;min-height:32px}
+.next input{width:20px;height:20px;accent-color:var(--teal);cursor:pointer}
+.next a{color:var(--teal);text-decoration:none;font-weight:600}
+
+/* 시험 직전 복습 */
+.review{border-top:2px solid var(--line);margin-top:48px}
+.rv-h{display:flex;align-items:baseline;gap:8px;font-size:19px;margin:36px 0 6px}
+.rv-h small{font-size:14px;color:var(--ink-3);font-weight:500}
+.rv-d{color:var(--ink-3);font-size:15px;margin:0 0 12px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;font-size:15px;font-weight:600;cursor:pointer;min-height:40px}
+.btn:hover{border-color:var(--teal)}
+.btn.pri{background:var(--teal);border-color:var(--teal);color:#fff}
+:root[data-theme="dark"] .btn.pri{color:#062b27}
+
+/* 공책 정리 칸 (코넬식, 스크립트가 장면의 "시험엔 이렇게"로 채움) */
+.nb{padding:0;overflow:hidden}
+.nb-head,.nb-row{display:grid;grid-template-columns:34% 1fr}
+.nb-head{background:var(--teal-soft);color:var(--teal-ink);font-weight:700;font-size:14px}
+.nb-head span{padding:10px 16px}
+.nb-head span+span{border-left:2px solid var(--teal)}
+.nb-row{border-top:1px solid var(--line)}
+.nb-q{padding:14px 16px;font-weight:700;font-size:15px;line-height:1.55;display:flex;gap:8px}
+.nb-n{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;margin-top:1px}
+:root[data-theme="dark"] .nb-n{color:#062b27}
+.nb-a{position:relative;padding:14px 16px 40px;border-left:2px solid var(--teal);font-size:15.5px;line-height:1.75}
+.nb-a p{margin:0}
+.nb-sub{display:block;margin-top:4px;font-size:13px;font-weight:500;color:var(--ink-3)}
+.nb-draw li{margin:4px 0}
+.nb-mn{margin-top:6px;font-size:13.5px;font-weight:700;color:var(--exam)}
+.nb-ok{position:absolute;right:12px;bottom:8px;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);cursor:pointer}
+.nb-ok input{width:17px;height:17px;accent-color:var(--teal);cursor:pointer}
+.nb-row.done .nb-q{color:var(--ink-3)}
+.nb.hide .nb-a:not(.open){background:var(--bg);cursor:pointer}
+.nb.hide .nb-a:not(.open) .nb-txt,.nb.hide .nb-a:not(.open) .nb-txt *{color:transparent!important;background:none!important;user-select:none}
+.nb.hide .nb-a:not(.open)::before{content:"눌러서 답 확인";position:absolute;left:16px;top:14px;font-size:13px;color:var(--ink-3)}
+.nb-draw,.nb-sum{border-top:1px solid var(--line);padding:14px 16px;font-size:15px}
+.nb-draw ol{margin:6px 0 0;padding-left:20px}
+.nb-sum p{margin:6px 0 0;padding:12px 14px;border:1.5px dashed var(--line);border-radius:10px;color:var(--ink-2)}
+.nb-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:0 16px 16px}
+.nb-foot .btns{margin-top:14px}
+.nb-count{margin-top:14px;font-size:14px;color:var(--teal-ink);font-weight:700}
+@media(max-width:640px){
+  .nb-head{display:none}
+  .nb-row{grid-template-columns:1fr}
+  .nb-a{border-left:0;border-top:1px dashed var(--line)}
+}
+
+.sheet .grp{padding:12px 0;border-bottom:1px dashed var(--line)}
+.sheet .grp:last-of-type{border-bottom:0}
+.sheet h4{margin:0 0 6px;font-size:16px}
+.sheet ul{margin:0;padding-left:20px;font-size:15.5px}
+.sheet li{margin:3px 0}
+.sheet .kw{font-weight:700;background:linear-gradient(transparent 55%,var(--mark) 55%);padding:0 2px;border-radius:2px;transition:color .15s}
+.sheet .mn{display:inline-block;font-size:13px;font-weight:700;color:var(--exam);background:var(--exam-soft);border-radius:6px;padding:0 7px;margin-left:4px}
+.sheet .ex-t{color:var(--exam);font-weight:800;font-size:14px}
+.sheet .legend{font-size:13px;color:var(--ink-3);margin:0 0 6px}
+.sheet.hide .kw{color:transparent;background:var(--mark);cursor:pointer;user-select:none}
+.sheet.hide .kw.open{color:var(--mark-ink)}
+
+.cloze-box p{margin:0;line-height:2.1}
+.cloze{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--teal);color:transparent;background:var(--teal-soft);border-radius:4px 4px 0 0;padding:0 6px;cursor:pointer;line-height:1.5;transition:color .15s}
+.cloze.open{color:var(--teal-ink);font-weight:700}
+.cloze{max-width:100%;overflow-wrap:anywhere;word-break:normal}
+
+.fc-top{display:flex;justify-content:space-between;font-size:14px;color:var(--ink-3);margin-bottom:10px}
+.fc-stage{perspective:1200px}
+.fc-card{all:unset;display:block;width:100%;min-height:190px;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .35s}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-card:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:var(--r)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--r);padding:22px;display:flex;flex-direction:column;justify-content:center;border:1.5px solid var(--line);background:var(--bg)}
+.fc-face.back{transform:rotateY(180deg);background:var(--teal-soft);border-color:var(--teal)}
+.fc-face .lbl{font-size:12px;font-weight:800;color:var(--teal);letter-spacing:.06em;margin-bottom:6px}
+.fc-face .txt{font-size:17px;font-weight:600;line-height:1.6}
+.fc-items,.fc-print{display:none}
+.fc-keys{font-size:13px;color:var(--ink-3);margin-top:8px}
+
+.quiz .q{padding:16px 0;border-bottom:1px solid var(--line)}
+.quiz .q:first-child{padding-top:0}
+.quiz .qt{font-weight:700;margin:0 0 10px}
+.quiz .qt b{color:var(--teal);margin-right:4px}
+.quiz .opt{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;margin:6px 0;cursor:pointer;font-size:16px;line-height:1.5}
+.quiz .opt:hover{border-color:var(--teal)}
+.quiz .opt input{margin-top:5px;accent-color:var(--teal);flex:none}
+.quiz .opt.correct{border-color:var(--ok);background:var(--ok-soft)}
+.quiz .opt.wrong{border-color:var(--no);background:var(--no-soft)}
+.quiz .explain{display:none;margin-top:10px;font-size:15px;color:var(--ink-2);background:var(--bg);border-radius:10px;padding:10px 14px}
+.quiz .q.graded .explain{display:block}
+.quiz-foot{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:16px}
+.quiz-foot [data-quiz-score]{font-weight:800;color:var(--teal)}
+.quiz-foot [data-quiz-score].perfect{color:var(--ok)}
+
+.explain-box .eq{font-weight:700;margin:0 0 10px}
+.explain-box textarea{width:100%;min-height:120px;border:1.5px solid var(--line);border-radius:10px;padding:12px;font:inherit;font-size:16px;background:var(--bg);color:var(--ink);resize:vertical}
+.explain-box .eb-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-3)}
+.model-answer{display:none;margin-top:12px;background:var(--teal-soft);color:var(--ink);border-radius:10px;padding:12px 16px;font-size:15.5px}
+.model-answer.open{display:block}
+
+details.ref{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:0 20px;margin-top:36px}
+details.ref summary{cursor:pointer;padding:16px 0;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details.ref summary::-webkit-details-marker{display:none}
+details.ref summary::after{content:"펼치기";font-size:13px;color:var(--ink-3);font-weight:500}
+details.ref[open] summary::after{content:"접기"}
+details.ref summary small{font-weight:500;color:var(--ink-3);font-size:14px}
+details.ref .ref-body{padding-bottom:16px;font-size:16px}
+details.ref h4{margin:16px 0 6px;font-size:16px}
+details.ref p{margin:0 0 10px}
+
+footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
+
+@media(max-width:560px){
+  body{font-size:16.5px}
+  .hero{padding-top:28px}
+  .ch{padding-top:40px}
+  .ch-head{flex-direction:column;gap:8px}
+  .ch-num{margin-top:0}
+  .goal,.hook,.check,.key,.box{padding-left:16px;padding-right:16px}
+}
+/* 틀린 문제 체크 (연습문제 페이지만, data-week가 "연습문제"로 시작) */
+.wr-btn{margin-left:6px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink-3);border-radius:8px;padding:0 9px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;min-height:30px;vertical-align:middle;white-space:nowrap}
+.wr-btn:hover{border-color:var(--no);color:var(--no)}
+li.wrong{background:var(--no-soft);box-shadow:inset 3px 0 0 var(--no);border-radius:6px;padding-left:8px}
+li.wrong>.wr-btn{border-color:var(--no);background:var(--no);color:#fff}
+:root[data-theme="dark"] li.wrong>.wr-btn{color:#2e1616}
+body.wr-on{padding-bottom:84px}
+.wr-bar{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;width:max-content;max-width:calc(100% - 32px);background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:8px 12px;font-size:14px;box-shadow:0 6px 24px rgba(0,0,0,.12)}
+.wr-bar b{color:var(--no);font-variant-numeric:tabular-nums}
+.wr-bar .btn{min-height:36px;padding:5px 12px;font-size:14px}
+.wr-bar .btn[disabled]{opacity:.45;cursor:not-allowed}
+body.wr-only .cloze-box li:not(.wrong):not(.wr-has),body.wr-only main>section.ch:not(.wr-has),body.wr-only .flow{display:none}
+body.wr-only .cloze-box>p.rv-d{display:none}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .wr-btn,.wr-bar{display:none!important}
+  .topbar,.flow,.next,.btns,.btn,.quiz-foot,.fc-stage,.fc-top,.fc-keys,.eb-foot,textarea{display:none!important}
+  body{background:#fff;font-size:12pt}
+  .fc-print{display:block}
+  .check .fb,.quiz .explain,.model-answer{display:block}
+  .cloze{color:inherit}
+  .ch{break-inside:auto;padding-top:20px}
+  .key,.check,.fig,.table-wrap{break-inside:avoid}
+  .nb-ok,.nb-count,.nb-foot{display:none!important}
+  .nb .nb-a .nb-txt,.nb .nb-a .nb-txt *{color:inherit!important}
+  .nb .nb-a::before{content:none!important}
+  .nb-row{break-inside:avoid}
+  body.print-nb main>:not(#review),body.print-nb #review>:not(.nb-wrap),body.print-nb footer{display:none!important}
+  body.print-nb .review{border-top:0;margin-top:0}
+}
+</style>
+</head>
+<body data-course="운영체제" data-week="1019">
+<header class="topbar"><div class="wrap">
+  <a class="home" href="../index.html"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>운영체제</a>
+  <span class="bar" aria-hidden="true"><i id="pbar"></i></span><span class="pct" id="ppct">0%</span>
+  <button class="tbtn" id="btn-print" type="button" aria-label="인쇄"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><path d="M6 14h12v8H6z"/></svg></button>
+  <button class="tbtn" id="btn-theme" type="button" aria-label="다크 모드 전환"><svg class="icon icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="icon icon-moon" viewBox="0 0 24 24" aria-hidden="true" hidden><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="hero">
+    <div class="eyebrow">10월 19일 (월) · 8주차 ① · 6장 임계구역과 동기화 (교재 241~265쪽) · 교재 6장 사진 기준</div>
+    <h1>10만 원씩 두 번 넣었는데, 왜 통장엔 10만 원뿐일까?</h1>
+    <p class="lead">중간고사 범위의 마지막 날이에요. 스레드 여럿이 <b>같은 변수 하나</b>를 동시에 건드리면 돈이 사라지는 일이 생겨요. 오늘은 그걸 막는 방법을 순서대로 봐요. 남이 들어오면 안 되는 구역(임계구역)을 정하고, 그 구역을 지키는 조건 3개를 배우고, 그다음 도구 세 가지(뮤텍스 → 세마포어 → 모니터)로 넘어가요. 교수님은 오늘 내용 내내 <b>화장실</b>로 비유했어요.</p>
+    <div class="goal">
+      <h2>이 페이지를 다 보면 할 수 있는 것</h2>
+      <ol>
+        <li>경쟁 상태와 임계구역을 예금 예시로 설명하고, 해결 조건 3개(상호 배제 · 한정 대기 · 진행의 융통성)를 말할 수 있다</li>
+        <li>잘못된 잠금 코드 3개가 각각 어떤 조건을 어기는지 고를 수 있다</li>
+        <li>세마포어의 init · wait · post 동작에 따라 S 값을 따라가고, 모니터와 우선순위 역전을 설명할 수 있다</li>
+      </ol>
+      <div class="time">약 40분 · 장면 6개 · 장면마다 확인 문제 1개</div>
+    </div>
+    <div class="exam">
+      <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것</h2>
+      <ul>
+        <li><b>중간고사 10/21(수)</b> · 범위는 <b>"오늘 배운 6장 동기화까지"</b> (교재 265쪽에 "중간시험 범위" 손글씨)</li>
+        <li><b>임계구역 해결 3조건</b>: 상호 배제에서 "<b>별표해 주세요</b>". 교재에도 세 조건 모두 별표 · 밑줄</li>
+        <li><b>세마포어</b>는 "오늘 내용에서 가장 핵심". init(n) · wait() · post() 내부 코드와 S 값 변화까지 설명함</li>
+        <li><b>synchronized(lock)</b>에 "밑줄 쳐 놓으세요". 모니터에서 임계구역이 시작되는 곳을 알려 줘요</li>
+        <li>교재 밑줄: <b>임계구역의 정의</b>, <b>검사와 지정(test-and-set)</b></li>
+        <li>259~265쪽 C 코드(경쟁 상태 · 뮤텍스 · 세마포어)와 자바 모니터 전체 코드는 "궁금하면 보세요"라고만 함 → 아래 접힌 칸에 정리</li>
+      </ul>
+    </div>
+    <nav class="flow" aria-label="오늘의 흐름">
+      <a href="#c1"><b>장면 1</b>경쟁 상태 · 임계구역</a>
+      <a href="#c2"><b>장면 2</b>해결 조건 3개</a>
+      <a href="#c3"><b>장면 3</b>틀린 코드 3개</a>
+      <a href="#c4"><b>장면 4</b>검사와 지정 · 뮤텍스</a>
+      <a href="#c5"><b>장면 5</b>세마포어</a>
+      <a href="#c6"><b>장면 6</b>모니터 · 우선순위 역전</a>
+      <a href="#review"><b>복습</b>시험 직전 정리</a>
+    </nav>
+  </div>
+
+  <!-- 장면 1 -->
+  <section class="ch" id="c1">
+    <div class="ch-head"><span class="ch-num">장면 1</span>
+      <div><h2>10만 원씩 두 번 넣었는데, 왜 통장엔 10만 원뿐일까?</h2><div class="sub">공유 자원 · 경쟁 상태(race condition) · 임계구역(critical section) ★ 밑줄 · 동기화 · 생산자-소비자 문제</div></div></div>
+
+    <div class="hook"><p class="q">나랑 동생이 같은 통장에 동시에 10만 원씩 입금</p>
+      <p class="h">통장엔 0원이 있었어요. 둘 다 넣었으니 20만 원이어야 하는데, 찍힌 건 10만 원. 교수님: "참을 수 있어요? 못 참죠."</p></div>
+
+    <p>스레드 여러 개는 각자 돌아가지만, 가끔 변수 · 파일 · 주변장치 같은 <mark>공유 자원</mark>(shared resource)을 같이 써요. 예금이 바로 그 공유 변수예요. 문제는 "예금에 10만 원 더하기"가 사실 <b>세 단계</b>라는 거예요. 예금을 읽고, 10만 원을 더하고, 다시 저장하죠. 이 세 단계 사이에 다른 스레드가 끼어들 수 있어요.</p>
+
+    <figure class="fig">
+      <svg viewBox="0 0 400 236" role="img" aria-label="경쟁 상태: T1이 0원을 읽고, T2도 0원을 읽고, T2가 10만 원을 저장한 뒤, T1이 10만 원을 덮어써 결과가 10만 원">
+        <g font-size="14" font-weight="700" text-anchor="middle">
+          <text x="80" y="16" fill="var(--teal-ink)">T1</text>
+          <text x="235" y="16" fill="var(--exam)">T2</text>
+          <text x="355" y="16" fill="var(--ink-2)">예금</text></g>
+        <g font-size="13.5" text-anchor="middle">
+          <rect x="6" y="28" width="148" height="36" rx="6" fill="var(--teal-soft)"/><text x="80" y="51" fill="var(--teal-ink)">① 0원 읽고 +10만</text>
+          <text x="355" y="51" fill="var(--ink-2)">0원</text>
+          <rect x="161" y="74" width="148" height="36" rx="6" fill="var(--exam-soft)" stroke="var(--exam-line)"/><text x="235" y="97" fill="var(--exam)">② 0원 읽고 +10만</text>
+          <text x="355" y="97" fill="var(--ink-2)">0원</text>
+          <rect x="161" y="120" width="148" height="36" rx="6" fill="var(--exam-soft)" stroke="var(--exam-line)"/><text x="235" y="143" fill="var(--exam)">③ 10만 원 저장</text>
+          <text x="355" y="143" fill="var(--ink-2)">10만 원</text>
+          <rect x="6" y="166" width="148" height="36" rx="6" fill="var(--teal-soft)"/><text x="80" y="189" fill="var(--teal-ink)">④ 10만 원 덮어씀</text>
+          <text x="355" y="189" font-weight="700" fill="var(--exam)">10만 원?</text></g>
+        <text x="200" y="228" font-size="13" font-weight="600" text-anchor="middle" fill="var(--ink-2)">둘 다 0원을 읽었으니 결과는 10만 원</text>
+      </svg>
+      <figcaption>교재 그림 6-1 공유 자원과 경쟁 상태 (T1이 저장하기 전에 T2가 끼어듦)</figcaption>
+    </figure>
+
+    <p>이렇게 둘 이상의 스레드가 같은 공유 자원에 동시에 접근해서, <b>누가 언제 읽고 쓰느냐에 따라</b> 결과가 달라지는 상황을 <mark>경쟁 상태</mark>(race condition)라고 해요. 각자 다른 데이터를 만질 때는 아무 문제가 없어요. 예금처럼 <b>데이터 하나를 둘이 같이</b> 만질 때만 생기는 문제예요.</p>
+    <p>해결책은 "읽고 → 더하고 → 저장"하는 부분을 <b>한 번에 한 스레드만</b> 들어갈 수 있는 구역으로 묶는 거예요. 그 구역이 <mark>임계구역</mark>(critical section)이에요. 결과에 중대한(critical) 영향을 주는 곳이라 이런 이름이 붙었어요. T1이 임계구역에서 일하는 동안 T2는 밖에서 기다리고, T1이 끝나면 "들어와도 돼" 하고 알려 줘요. 그러면 T2는 10만 원을 읽어서 20만 원을 저장하죠(그림 6-2). 이렇게 임계구역에 들어가는 순서를 조절하는 걸 <mark>동기화</mark>(synchronization)라고 해요. 그래서 임계구역 문제는 곧 동기화 문제예요.</p>
+    <div class="prof"><span class="av">교수</span><div class="bubble">우리가 작업을 하다가, 어떤 영역은 내가 작업하는 동안에 남이 진입하면 안 되는 영역이 있습니다. 그걸 이 장의 주제인 크리티컬 섹션, 임계구역이라고 합니다.<small>10/19 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <h3>다른 책의 단골 예시 — 생산자-소비자 문제</h3>
+    <p>다른 책들은 보통 이 예시로 설명한대요. 생산자(producer)는 원형 버퍼에 데이터를 넣고 <code>sum = sum + 1</code>, 소비자(consumer)는 데이터를 빼고 <code>sum = sum - 1</code>을 해요. sum이 3일 때 하나 넣고 하나 빼면 여전히 3이어야 하죠. 그런데 sum을 고치는 두 줄이 서로 끼어들면, <b>소비자가 나중에 저장되면 2, 생산자가 나중에 저장되면 4</b>가 돼요(그림 6-4). 둘 다 틀린 값이에요. 해결은 똑같아요. <code>input(buf)</code>와 <code>sum = sum + 1</code>을 한 임계구역으로 묶고, <code>output(buf)</code>와 <code>sum = sum - 1</code>도 한 임계구역으로 묶어요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>경쟁 상태(race condition)는 둘 이상의 스레드가 동일한 공유 자원에 동시에 접근해 실행 결과를 예측할 수 없게 되는 상황이다. 이를 막으려면 임계구역을 지정해야 하며, 임계구역(critical section)은 둘 이상의 스레드가 동시에 접근해서는 안 되는 공유 영역을 가리킨다. 임계구역에 대한 접근을 제어하는 과정을 동기화(synchronization)라 한다.</p>
+      <div class="mn">외우는 법: <b>동시에 건드리면 경쟁 상태 → 한 명씩만 들어가는 방이 임계구역 → 순서 정리가 동기화</b></div></div>
+
+    <div class="check" data-id="k1" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">sum = 3인 상태에서 생산자는 sum = sum + 1, 소비자는 sum = sum − 1을 하는데 두 코드가 서로 끼어들었다. 나올 수 없는 결과는?</div>
+      <div class="opts">
+        <button class="o">sum = 2</button>
+        <button class="o">sum = 4</button>
+        <button class="o">sum = 5</button></div>
+      <div class="fb">둘 다 3을 읽은 뒤 끼어들면, 나중에 저장한 쪽의 값이 남아요. 소비자가 나중이면 <b>2</b>, 생산자가 나중이면 <b>4</b>예요(그림 6-4). +1과 −1밖에 없으니 5는 나올 수 없어요. 올바른 값은 3이에요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c1">이해했어요</label><a href="#c2">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 2 -->
+  <section class="ch" id="c2">
+    <div class="ch-head"><span class="ch-num">장면 2</span>
+      <div><h2>화장실 문을 잠그기만 하면 끝일까?</h2><div class="sub">잠금(lock) · 잠금 해제(unlock) · 해결 조건 3개 ★ : 상호 배제 ★ · 한정 대기 · 진행의 융통성</div></div></div>
+
+    <div class="hook"><p class="q">임계구역 = 화장실</p>
+      <p class="h">"둘이 같이 쓰면 안 돼요. 아무리 친해도." 그래서 들어갈 때 문을 잠그고(lock), 나올 때 잠금을 풀어요(unlock). 잠금을 풀면 기다리던 사람에게 "비었어요" 신호를 보내는 거고, 이게 곧 동기화예요(교재 옆 "비유" 손글씨).</p></div>
+
+    <p>임계구역을 지키는 가장 기본적인 방법은 <mark>잠금</mark>(lock)과 <mark>잠금 해제</mark>(unlock)예요. 그런데 교수님 말로는 "락을 쓴다고 해서 문제가 무조건 다 해결되는 건 아니에요". 어떤 방법은 해결했다고 주장하지만 실제로는 아닌 경우가 있어요. 그래서 어떤 방법이든 <b>다음 3가지를 무조건 만족해야</b> 제대로 된 해결이에요.</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>조건</th><th>교재 정의</th><th>화장실로 말하면</th></tr></thead>
+      <tbody>
+        <tr><td><b>상호 배제</b> ★<br><small>mutual exclusion</small></td><td>한 스레드가 임계구역에 들어가면 다른 스레드는 임계구역에 들어갈 수 없다. 이게 안 지켜지면 임계구역을 설정한 의미가 없다.</td><td>내가 쓰는 동안 남은 끼어들 수 없어요. 같이 쓸 수는 없어요.</td></tr>
+        <tr><td><b>한정 대기</b><br><small>bounded waiting</small></td><td>임계구역에 진입하려는 스레드 중 무한히 기다리는 스레드가 있어서는 안 된다.</td><td>누구는 계속 들어가고 누구는 계속 밀리면 안 돼요. 일정 시간 안에는 내 차례가 와야 해요.</td></tr>
+        <tr><td><b>진행의 융통성</b><br><small>progress flexibility</small></td><td>한 스레드의 작업이 임계구역에 진입하려는 다른 스레드의 진행을 방해해서는 안 된다.</td><td>내가 화장실에 들어가는 게 다른 사람 때문에 막히면 안 돼요.</td></tr>
+      </tbody></table></div>
+    <div class="prof"><span class="av">교수</span><div class="bubble">첫 번째 조건이 뭡니까? Mutual exclusion. 별표해 주세요. 뒤에 또 나올 겁니다. 상호 배제. 내가 화장실을 쓰는 동안에는 다른 사람이 그 자원을 쓰면 안 된다.<small>10/19 강의 중 (말을 조금 다듬음)</small></div></div>
+    <p>"진행의 융통성"은 교수님도 "이해시키기가 애매하다"고 했어요. 다음 장면의 세 번째 코드를 보면 바로 감이 와요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>임계구역을 보호하는 대표적인 방법은 잠금(lock)과 잠금 해제(unlock)이며, 어떤 방법이든 다음 세 조건을 반드시 충족해야 한다. 상호 배제: 한 스레드가 임계구역에 들어가면 다른 스레드는 들어갈 수 없다. 한정 대기: 임계구역에 진입하려는 스레드 중 무한히 기다리는 스레드가 있어서는 안 된다. 진행의 융통성: 한 스레드의 작업이 다른 스레드의 진행을 방해해서는 안 된다.</p>
+      <div class="mn">외우는 법: <b>상 · 한 · 진</b> — <b>혼자</b> 쓰고(상호 배제), <b>언젠간</b> 들어가고(한정 대기), <b>남 때문에 막히지 않게</b>(진행의 융통성)</div></div>
+
+    <div class="check" data-id="k2" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">"임계구역에 진입하려는 스레드 중 무한히 기다리는 스레드가 있어서는 안 된다"는 어떤 조건일까?</div>
+      <div class="opts">
+        <button class="o">한정 대기</button>
+        <button class="o">상호 배제</button>
+        <button class="o">진행의 융통성</button></div>
+      <div class="fb">"무한히 기다리면 안 된다" = 기다림에 <b>한도</b>가 있어야 한다 = <b>한정 대기</b>(bounded waiting)예요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c2">이해했어요</label><a href="#c3">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 3 -->
+  <section class="ch" id="c3">
+    <div class="ch-head"><span class="ch-num">장면 3</span>
+      <div><h2>잠금 코드 세 개, 각각 어떤 조건을 어겼을까?</h2><div class="sub">그림 6-6 상호 배제 위반 · 6-7 한정 대기 위반 · 6-8 진행의 융통성 위반 · 타임 슬라이스 아웃 · 경직된 동기화</div></div></div>
+
+    <p>세 코드 모두 T1과 T2가 <b>같은 모양의 코드</b>를 갖고 경쟁해요(그래서 경쟁 상태죠). 겉보기엔 멀쩡한데, <b>딱 안 좋은 순간에 타임 슬라이스 아웃</b>이 걸리면 문제가 터져요. 시험에선 "이 코드는 어떤 조건을 위반하나?"로 묻기 좋으니 짝을 꼭 맞춰 두세요.</p>
+
+    <h3>① 잠금 1개 — 둘 다 들어가 버림 → 상호 배제 위반</h3>
+    <pre class="code"><span class="file">그림 6-6 · lock = false (초기값, 문이 열려 있음)</span>while(lock == true);   <span class="c">// ① 누가 쓰고 있으면 여기서 계속 돈다(바쁜 대기)</span>
+lock = true;            <span class="c">// ② 비었으면 문 잠그고</span>
+<span class="hl">임계구역</span>
+lock = false;           <span class="c">// 나오면서 문 열기</span></pre>
+    <p>T1이 ①을 통과(아직 false)했는데 <b>②로 잠그기 직전에</b> 타임 슬라이스 아웃. 이제 T2가 실행돼요. 잠금은 아직 false니까 T2도 ①을 통과하고, 잠그고 들어가요. 그다음 T1이 돌아와 ②를 실행하고 들어가요. <b>화장실 하나에 둘이 들어간 거예요.</b> 원인은 ①(검사)과 ②(잠금) 사이가 잘렸다는 것. 이건 장면 4의 검사와 지정으로 해결해요.</p>
+
+    <h3>② 잠금 2개 — 둘 다 영원히 못 들어감 → 한정 대기 위반</h3>
+    <pre class="code"><span class="file">그림 6-7 · lock1 = false; lock2 = false;</span><span class="c">// 스레드 T1                     // 스레드 T2</span>
+lock1 = true;              lock2 = true;            <span class="c">// 일단 내 잠금부터 걸고</span>
+while(lock2 == true);      while(lock1 == true);    <span class="c">// 상대가 안에 있으면 기다림</span>
+<span class="hl">임계구역</span>                    <span class="hl">임계구역</span>
+lock1 = false;             lock2 = false;</pre>
+    <p>이번엔 먼저 잠그고 나서 상대를 확인하니까 둘 다 들어가는 일은 없어요. 그런데 T1이 <code>lock1 = true</code> 직후 타임 슬라이스 아웃, T2도 <code>lock2 = true</code> 직후 타임 슬라이스 아웃. 이제 서로 "저쪽이 잠갔네" 하며 기다려요. <b>둘 다 영원히 화장실에 못 들어가요.</b> 무한 대기니까 한정 대기 위반이에요. (교재 하이퍼링크: 이렇게 잠금 때문에 작업이 더 진행되지 않는 상태가 7장의 교착상태예요.)</p>
+
+    <h3>③ lock = 1/2 번갈아 — 혼자 두 번은 못 감 → 진행의 융통성 위반</h3>
+    <pre class="code"><span class="file">그림 6-8 · lock = 1 (T1이 먼저)</span><span class="c">// 스레드 T1                     // 스레드 T2</span>
+while(lock == 2);          while(lock == 1);
+<span class="hl">임계구역</span>                    <span class="hl">임계구역</span>
+lock = 2;                  lock = 1;                <span class="c">// 다음은 상대 차례라고 넘겨줌</span></pre>
+    <p>제일 단순한데 둘이 같이 들어가지도 않고(상호 배제 ○) 영원히 기다리지도 않아요(한정 대기 ○). 그런데 <b>반드시 번갈아</b> 들어가야 해요. T1이 화장실 다녀오면 lock이 2가 되니까, T1이 배탈 나서 또 가려면 <b>T2가 한 번 다녀와야</b> 해요. 교수님 말로 "제발 화장실 좀 들어갔다 나와라, 너 안 다녀오면 난 오늘 죽는다". 상대가 나의 진행을 방해하니 <b>진행의 융통성 위반</b>이고, 이렇게 서로 진행을 방해하는 현상을 <mark>경직된 동기화</mark>(lockstep synchronization)라고 해요.</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>코드</th><th>무슨 일이 생기나</th><th>위반 조건</th></tr></thead>
+      <tbody>
+        <tr><td>잠금 1개 (6-6)</td><td>검사와 잠금 사이에 잘려서 둘 다 진입</td><td><b>상호 배제</b></td></tr>
+        <tr><td>잠금 2개 (6-7)</td><td>둘 다 잠그고 서로 기다리다 무한 대기</td><td><b>한정 대기</b></td></tr>
+        <tr><td>lock 1/2 번갈아 (6-8)</td><td>무조건 번갈아야 해서 연달아 못 들어감</td><td><b>진행의 융통성</b> (경직된 동기화)</td></tr>
+      </tbody></table></div>
+    <p>교수님 정리: "이게 생각보다 간단하지 않다는 거야. 그 문제를 해결하는 방법 자체가 생각만큼 간단하지 않다."</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>잠금 변수 하나로 검사 후 잠그는 코드는 검사와 잠금 사이에 타임 슬라이스 아웃이 발생하면 두 스레드가 모두 임계구역에 진입해 상호 배제를 위반한다. 각자 잠금을 건 뒤 상대의 잠금을 확인하는 코드는 두 스레드가 모두 무한 대기에 빠질 수 있어 한정 대기를 위반한다. lock 값으로 차례를 정해 번갈아 들어가는 코드는 한 스레드가 연달아 진입할 수 없어 진행의 융통성을 위반하며, 이를 경직된 동기화라 한다.</p>
+      <div class="mn">외우는 법: <b>잠금 1개 = 둘 다 들어감(상호) · 2개 = 둘 다 못 들어감(한정) · 번갈아 = 혼자 두 번 못 감(진행)</b></div></div>
+
+    <div class="check" data-id="k3" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">T1은 while(lock == 2), T2는 while(lock == 1)로 기다리고, 나올 때 상대 번호를 lock에 넣는 코드. T2가 한동안 임계구역을 쓰지 않으면 T1은 어떻게 될까?</div>
+      <div class="opts">
+        <button class="o">T1과 T2가 동시에 임계구역에 들어간다 (상호 배제 위반)</button>
+        <button class="o">T1이 다시 들어가지 못한다 (진행의 융통성 위반)</button>
+        <button class="o">아무 문제 없이 T1이 계속 들어간다</button></div>
+      <div class="fb">T1이 나오면서 lock = 2로 바꿨으니, T2가 들어갔다 나와서 1로 바꿔 줘야 T1이 다시 들어가요. 상대가 내 진행을 방해 = <b>진행의 융통성 위반</b>(경직된 동기화).</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c3">이해했어요</label><a href="#c4">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 4 -->
+  <section class="ch" id="c4">
+    <div class="ch-head"><span class="ch-num">장면 4</span>
+      <div><h2>검사하고 잠그는 두 줄, 잘리지 않게 한 줄로 만들 수 없을까?</h2><div class="sub">검사와 지정(test-and-set) ★ 밑줄 · 원자적 연산 · 하드웨어 지원 · 동기화 도구 · 뮤텍스(mutex)</div></div></div>
+
+    <p>장면 3의 첫 번째 코드는 <code>while(lock == true)</code>(검사)와 <code>lock = true</code>(잠금) <b>사이가 잘려서</b> 망했어요. 그럼 두 줄을 <b>한 줄로 합쳐서</b> 중간에 못 자르게 하면 되죠. 그게 <mark>검사와 지정</mark>(test-and-set)이에요.</p>
+    <pre class="code"><span class="file">그림 6-9 · 검사와 지정 코드</span>while(<span class="hl">test_and_set(lock)</span> == true);   <span class="c">// 검사 + 잠금을 한 번에</span>
+<span class="hl">임계구역</span>
+lock = false;</pre>
+    <p>두 연산이 떨어지지 않고 하나처럼 실행되는 걸 <b>원자적</b>(atomic)이라고 해요. 중요한 점: 이건 소프트웨어로 "나 안 잘릴게" 한다고 되는 게 아니라, <b>CPU 명령어 안에 마련되어 있어야</b> 해요. 즉 <b>하드웨어의 도움</b>을 받아요. 실행되는 동안 문맥 교환이 안 일어나니 T1, T2가 동시에 불러도 차례로 실행돼서, 둘이 같이 들어가는 문제가 사라져요.</p>
+    <p>그런데 하드웨어에 의존하니 저수준 언어로 짜야 하고 시스템마다 구현이 달라요. 그래서 운영체제는 고수준 언어에서 쓸 수 있는 <mark>동기화 도구</mark>를 제공해요. 바로 <b>뮤텍스, 세마포어, 모니터</b>예요. 교수님 표현으로 동기화 도구는 "누구 있어요? 네. 그러면 화장실 들어가면 안 되잖아. 그게 동기화 도구예요".</p>
+
+    <h3>첫 번째 도구 — 뮤텍스</h3>
+    <p><mark>뮤텍스</mark>(mutex)는 'MUTual EXclusion(상호 배제)'의 약자예요. 가장 오래된 기본 도구로, 들어가기 전에 <code>mutex_lock()</code>으로 잠그고, 나오면서 <code>mutex_unlock()</code>으로 풀어요. 화장실 들어갈 때 잠그고 나올 때 푸는 것 그대로예요. 내부는 앞의 검사와 지정 같은 기본 코드로 구현되어 있어요. 잠긴 상태에서 기다리는 스레드는 CPU를 양보하고 대기 상태로 가서, 기다리는 동안 CPU를 쓰지 않아요.</p>
+    <p>한계는 <b>하나의 공유 자원에 대해서만</b> 동기화할 수 있다는 거예요. 교수님 비유로 화장실 안에 좌변기가 1개면 잘 돌아가지만, 좌변기가 3개인데 쓰려는 사람이 4명이면 쓸 수 없어요. 교재는 한 가지 더 짚어요. 뮤텍스는 칸마다 따로 줄을 서는 것과 같아서, 앞사람이 오래 걸리는 줄에 서면 <b>먼저 온 사람이 오히려 늦게</b> 들어갈 수 있어요. 스레드를 한 줄로 세우는 기능이 없거든요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>검사와 지정(test-and-set)은 잠금을 확인하는 연산과 잠금을 거는 연산을 하드웨어의 도움을 받아 원자적으로 실행해, 그 사이에 문맥 교환이 일어나지 않게 하는 하드웨어적 해결 방식이다. 뮤텍스(mutex)는 MUTual EXclusion의 약자로, 임계구역 진입 전 mutex_lock()으로 잠그고 작업 후 mutex_unlock()으로 해제해 상호 배제를 보장하는 기본 동기화 도구이며, 하나의 공유 자원에 대해서만 동기화할 수 있다.</p>
+      <div class="mn">외우는 법: <b>검사 + 잠금 = 한 줄(원자적) = 하드웨어</b> · <b>뮤텍스 = 좌변기 1개용</b></div></div>
+
+    <div class="check" data-id="k4" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">test_and_set()이 해결하려는 원인은?</div>
+      <div class="opts">
+        <button class="o">두 스레드가 서로의 잠금을 기다리며 무한 대기하는 것</button>
+        <button class="o">두 스레드가 반드시 번갈아 들어가야 하는 것</button>
+        <button class="o">잠금을 확인하는 것과 잠금을 거는 것 사이에 문맥 교환이 일어나는 것</button></div>
+      <div class="fb">그림 6-6(상호 배제 위반)의 원인이 <b>검사와 잠금 사이의 타임 슬라이스 아웃</b>이었어요. 두 연산을 원자적으로 묶어 이걸 막아요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c4">이해했어요</label><a href="#c5">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 5 -->
+  <section class="ch" id="c5">
+    <div class="ch-head"><span class="ch-num">장면 5</span>
+      <div><h2>화장실이 두 칸이면? 숫자 하나(S)로 줄 세우기</h2><div class="sub">세마포어(semaphore) ★ 오늘의 핵심 · 데이크스트라 · init(n) · wait() · post() · S = 사용 가능한 자원 수 · 이진 세마포어 · p() / v()</div></div></div>
+
+    <div class="hook"><p class="q">미국은 우주용 볼펜을 몇억 들여 개발했고, 소련은 연필을 깎아 갔다</p>
+      <p class="h">교수님이 세마포어를 소개하며 든 이야기예요. 앞의 복잡한 문제들을 아주 단순한 방법으로 처리했다는 뜻이에요. "세상에 참 머리 좋은 사람들이 많은 것 같아."</p></div>
+
+    <p><mark>세마포어</mark>(semaphore)는 데이크스트라(Edsger Dijkstra)가 제안했어요. 화장실이 여러 칸이어도 사람들을 <b>도착한 순서대로 한 줄로</b> 세워서, 빈 칸이 생기면 맨 앞사람이 들어가게 해요. 그래서 뮤텍스와 달리 <b>여러 개의 자원을 동시에 관리</b>할 수 있고 <b>진입 순서까지</b> 제어할 수 있어요. 교수님: "오늘 내용의 가장 핵심이 되는 내용이 바로 세마포어라고 하는 거야."</p>
+
+    <h3>쓰는 법은 세 줄, 속은 몇 줄 (그림 6-12, 6-13)</h3>
+    <pre class="code"><span class="file">세마포어 사용법 → 내부 코드</span>init(n);   <span class="c">// S = n;   사용 가능한 자원 개수로 초기화 (화장실 1칸이면 1, 2칸이면 2)</span>
+wait();    <span class="c">// if S &lt;= 0 then pause();   자원이 없으면 일시정지(대기)</span>
+           <span class="c">// S = S - 1;                들어가면서 하나 쓴다고 빼기</span>
+<span class="hl">임계구역</span>
+post();    <span class="c">// S = S + 1;   나오면서 하나 돌려놓고</span>
+           <span class="c">// wake_up();   기다리는 스레드가 있으면 깨운다</span></pre>
+    <p>핵심은 <mark>S = 현재 사용할 수 있는 자원의 수</mark>예요. wait()는 뮤텍스의 lock(), post()는 unlock()에 해당해요. S가 0 이하면 남은 칸이 없으니 pause()로 멈춰서 <b>세마포어 큐</b>에서 기다리고, 누가 post()로 wake_up() 신호를 보내면 깨어나서 S를 1 빼고 들어가요.</p>
+    <ul class="plain">
+      <li><b>이진 세마포어</b>(binary): init(1)인 경우. 자원 상태가 '비어 있음'과 '사용 중' 둘 중 하나라서 이렇게 불러요. 뮤텍스와 같아요.</li>
+      <li><b>함수 이름</b>: 처음엔 잠금에 p(), 해제에 v()를 썼는데 직관적이지 않아서 지금은 wait() · post()를 써요. post()는 signal()이라고도 해요.</li>
+      <li>wait() · post() 내부 코드도 도중에 문맥 교환이 일어나면 안 되니, 검사와 지정처럼 <b>하드웨어 도움을 받아 분리 실행되지 않게</b> 되어 있어요.</li>
+    </ul>
+
+    <h3>예금 예제를 세마포어로 (그림 6-14, init(1))</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>순서</th><th>무슨 일</th><th>S</th></tr></thead>
+      <tbody>
+        <tr><td>시작</td><td>예금 1개 → init(1)</td><td>1</td></tr>
+        <tr><td>T1 wait()</td><td>S가 1이니 통과, 1 빼고 진입. 0원 읽고 10만 원 저장</td><td>0</td></tr>
+        <tr><td>T2 wait()</td><td>S가 0이니 pause(), 세마포어 큐에서 대기</td><td>0</td></tr>
+        <tr><td>T1 post()</td><td>1 더하고 T2에 wake_up()</td><td>1</td></tr>
+        <tr><td>T2 진입</td><td>깨어나서 1 빼고 진입. 10만 원 읽고 <b>20만 원</b> 저장</td><td>0</td></tr>
+        <tr><td>T2 post()</td><td>1 더함 → 원래대로</td><td>1</td></tr>
+      </tbody></table></div>
+
+    <h3>자원 2개, 스레드 3개 (그림 6-15, init(2))</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>순서</th><th>무슨 일</th><th>S</th></tr></thead>
+      <tbody>
+        <tr><td>시작</td><td>화장실 2칸 → init(2)</td><td>2</td></tr>
+        <tr><td>T1 wait()</td><td>1 빼고 진입</td><td>1</td></tr>
+        <tr><td>T2 wait()</td><td>1 빼고 진입</td><td>0</td></tr>
+        <tr><td>T3 wait()</td><td>S가 0 → pause(), 큐에서 대기</td><td>0</td></tr>
+        <tr><td>T1 post()</td><td>1 더하고 T3에 wake_up() → T3가 1 빼고 진입</td><td>1 → 0</td></tr>
+        <tr><td>T2 post()</td><td>1 더함</td><td>1</td></tr>
+        <tr><td>T3 post()</td><td>1 더함 → 처음 값으로 복원</td><td><b>2</b></td></tr>
+      </tbody></table></div>
+    <p>T3는 "자원 2개 중 1개라도 사용 가능할 때까지" 기다렸다가, 먼저 비는 칸에 들어가요. 모든 작업이 끝나면 S는 다시 처음 값(2)으로 돌아와요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>세마포어(semaphore)는 자원을 사용하려는 스레드가 세마포어 큐에 순서대로 대기하도록 하여 자원의 접근을 제어하는 동기화 도구로, 하나의 자원만 보호하는 뮤텍스와 달리 여러 개의 자원을 동시에 관리하고 진입 순서까지 제어할 수 있다. init(n)은 세마포어 변수 S(현재 사용할 수 있는 자원의 수)를 n으로 초기화하고, wait()는 S가 0 이하이면 pause()로 대기한 뒤 S를 1 감소시키고 진입하며, post()는 S를 1 증가시키고 wake_up()으로 대기 중인 스레드를 깨운다. init(1)인 경우를 이진 세마포어라 한다.</p>
+      <div class="mn">외우는 법: <b>S = 빈 칸 수</b> · <b>wait = 0 이하면 멈춤, 아니면 −1</b> · <b>post = +1 하고 깨우기</b></div></div>
+
+    <div class="check" data-id="k5" data-answer="1"><div class="lbl">바로 확인</div>
+      <div class="q">init(3)으로 시작한 세마포어에 스레드 4개가 차례로 wait()를 호출했다. 네 번째 스레드는 어떻게 되고, 그때 S는?</div>
+      <div class="opts">
+        <button class="o">진입한다, S = −1</button>
+        <button class="o">pause()로 대기한다, S = 0</button>
+        <button class="o">진입한다, S = 0</button></div>
+      <div class="fb">3 → 2 → 1 → 0으로 세 스레드가 진입하고, 네 번째는 S가 0이라 <b>pause()</b>. 교재 코드에서는 pause 다음에 빼니까 S는 <b>0</b>에 머물러요. 누가 post()하면 1이 되고, 깨어나서 다시 0으로 만들고 들어가요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c5">이해했어요</label><a href="#c6">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 6 -->
+  <section class="ch" id="c6">
+    <div class="ch-head"><span class="ch-num">장면 6</span>
+      <div><h2>세마포어를 사람이 잘못 쓰면? 그리고 1등이 꼴찌로 끝나는 이상한 일</h2><div class="sub">세마포어 잘못 쓰는 사례 · 모니터(monitor) · synchronized(lock) ★ 밑줄 · 우선순위 역전 · 우선순위 상속 · 우선순위 상한</div></div></div>
+
+    <h3>세마포어는 멀쩡한데, 쓰는 사람이 틀린다</h3>
+    <p>세마포어 자체엔 문제가 없어요. 그런데 프로그래머가 실수하면 임계구역이 또 무너져요(그림 6-16).</p>
+    <ul class="plain">
+      <li>세마포어 없이 <b>그냥 임계구역에 들어가는</b> 경우</li>
+      <li>wait()와 post()를 <b>뒤바꿔 쓰는</b> 경우</li>
+      <li><b>wait()를 2번</b> 쓰거나, <b>post()를 2번</b> 쓰는 경우</li>
+    </ul>
+
+    <h3>그래서 모니터 — 은행원에게 맡기기</h3>
+    <div class="analogy"><b>교수님 비유: 은행원</b><br>두 사람이 예금에 직접 손대면 세마포어를 무조건 써야 하는데, 잘못 쓸 수가 있어요. 그러니까 은행원 한 명을 두고 "입금 좀 해 주세요" 하고 부탁해요. 은행원이 도착한 순서대로 큐에서 하나씩 처리해 주면 문제가 없죠. 그게 모니터예요.</div>
+    <p><mark>모니터</mark>(monitor)는 공유 자원을 안전하게 보호하고 임계구역에 대한 동기화를 <b>자동으로 처리하는 고수준 동기화 도구</b>예요. 스레드는 직접 동기화 연산(lock/unlock, wait/post)을 하지 않고, <b>모니터를 통해서만</b> 임계구역에 접근해요. 요청은 <b>모니터 큐</b>에 저장되어 순서대로 처리되고, 끝나면 결과를 알려 줘요.</p>
+    <pre class="code"><span class="file">코드 6-1 · 자바로 구현한 모니터 코드</span>class MonitorCode {
+    private int dep = 0;                      <span class="c">// 예금</span>
+    private Object lock = new Object();
+
+    public void increase(int amt) {
+        <span class="hl">synchronized(lock)</span> {                  <span class="c">// 임계구역 시작 ← 밑줄!</span>
+            dep = dep + amt;
+            System.out.println(dep);
+        }                                     <span class="c">// 임계구역 끝</span>
+    }
+}
+<span class="c">// 사용: 스레드 T1도 increase(10);  스레드 T2도 increase(10);  → 끝</span></pre>
+    <p><code>synchronized(lock) { }</code>으로 둘러싼 부분이 임계구역으로 보호돼요. 진입과 탈출을 이 한 줄이 알아서 처리하니까, 스레드는 그냥 <code>increase(10)</code>만 부르면 돼요. C로 짤 때처럼 우리가 직접 잠그고 풀 필요가 아예 없어요.</p>
+    <div class="prof"><span class="av">교수</span><div class="bubble">synchronized(lock) 밑줄 쳐 놓으세요. 그게 뭐야, 임계구역을 시작하는 놈을 알려 주는 거야. 나중에 자바 책을 보다가 synchronized를 보시게 되면, 아 이게 운영체제의 모니터라고 하는 거구나 하고 이해하시면 될 것 같습니다.<small>10/19 강의 중 (말을 조금 다듬음)</small></div></div>
+
+    <h3>우선순위 역전 — 우선순위 1인 T1이 제일 늦게 끝난다</h3>
+    <p>보통은 우선순위가 높은 스레드가 먼저 실행돼요. 그런데 <b>임계구역</b>이 끼면, 우선순위 낮은 스레드 때문에 높은 스레드가 늦어지는 일이 생겨요. 이게 <mark>우선순위 역전</mark>(priority inversion)이에요. 여기선 숫자가 작을수록 우선순위가 높아요(T1 &gt; T5 &gt; T9).</p>
+    <figure class="fig">
+      <svg viewBox="0 0 420 200" role="img" aria-label="우선순위 역전: T9가 임계구역을 쓰는 중 T1이 와서 대기, 그 사이 T5가 먼저 실행되고, T9가 마저 끝난 뒤에야 T1이 실행됨">
+        <g font-size="13.5" font-weight="700">
+          <text x="2" y="44" fill="var(--teal-ink)">T1 (1)</text>
+          <text x="2" y="94" fill="var(--ink-2)">T5 (5)</text>
+          <text x="2" y="144" fill="var(--exam)">T9 (9)</text></g>
+        <g font-size="13" text-anchor="middle">
+          <rect x="58" y="122" width="82" height="34" rx="5" fill="var(--exam-soft)" stroke="var(--exam-line)"/><text x="99" y="144" fill="var(--exam)">임계구역</text>
+          <rect x="140" y="22" width="180" height="34" rx="5" fill="none" stroke="var(--teal)" stroke-dasharray="5 4"/><text x="230" y="44" fill="var(--teal-ink)">pause() 대기</text>
+          <rect x="140" y="72" width="120" height="34" rx="5" fill="var(--teal-soft)"/><text x="200" y="94" fill="var(--teal-ink)">T5 끼어듦</text>
+          <rect x="260" y="122" width="60" height="34" rx="5" fill="var(--exam-soft)" stroke="var(--exam-line)"/><text x="290" y="144" fill="var(--exam)">마저</text>
+          <rect x="320" y="22" width="96" height="34" rx="5" fill="var(--teal)"/><text x="368" y="44" font-weight="700" fill="var(--surface)">이제야 실행</text></g>
+        <line x1="58" y1="176" x2="416" y2="176" stroke="var(--ink-2)" stroke-width="1.5"/>
+        <text x="416" y="194" font-size="12.5" text-anchor="end" fill="var(--ink-2)">CPU 사용 시간 →</text>
+      </svg>
+      <figcaption>교재 그림 6-19 우선순위 역전 (T9가 T5에 밀리는 동안 T1도 같이 밀림)</figcaption>
+    </figure>
+    <ol class="plain">
+      <li>우선순위 9인 T9가 먼저 임계구역에 들어가 작업해요.</li>
+      <li>우선순위 1인 T1이 와서 임계구역에 들어가려 하지만, T9가 쓰고 있어 pause() 상태로 기다려요.</li>
+      <li>그 사이 우선순위 5인 T5가 생겨요. T5는 임계구역을 쓰지 않지만 T9보다 높으니 <b>먼저 실행</b>돼요. T9가 밀리니 T9를 기다리는 <b>T1도 같이 밀려요</b>.</li>
+      <li>결국 우선순위가 가장 높은 T1이 <b>가장 늦게</b> 실행돼요.</li>
+    </ol>
+    <p>해결 방법은 두 가지예요.</p>
+    <ul class="plain">
+      <li><mark>우선순위 상속</mark>(priority inheritance): T1이 공유 자원을 기다릴 때 <b>T1의 우선순위를 T9에 물려줘요</b>. T9가 우선순위 1로 작업하니 T5가 끼어들지 못하고, T9가 끝나면 T1이 바로 실행돼요. 교수님 설명도 이거예요. "T9의 우선순위를 T1까지 확 높여 주면" 해결된다고.</li>
+      <li><mark>우선순위 상한</mark>(priority ceiling): 임계구역을 쓰는 <b>모든 스레드의 우선순위를 일정 수준까지</b> 높여요. 그런데 얼마나 올릴지 계산하기 어렵고, 역전이 안 생기는 상황에서도 무조건 높이는 문제가 있어서, 보통은 단순하고 구현이 쉬운 <b>우선순위 상속</b>을 써요.</li>
+    </ul>
+    <p>교수님 덧붙임: "이렇게 극단적인 예는 거의 없어요. 이론적으로 그렇다."</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>세마포어를 사용하지 않거나 wait()와 post()를 바꾸어 쓰거나 한쪽을 2번 쓰면 임계구역을 보호할 수 없다. 모니터(monitor)는 공유 자원을 안전하게 보호하고 임계구역에 대한 동기화를 자동으로 처리하는 고수준 동기화 도구로, 스레드는 모니터를 통해서만 임계구역에 접근하며 자바에서는 synchronized(lock){ }으로 둘러싼 코드가 임계구역으로 보호된다. 우선순위 역전(priority inversion)은 임계구역 때문에 우선순위가 높은 프로세스가 낮은 프로세스에 의해 지연되는 현상으로, 우선순위 상속이나 우선순위 상한으로 해결한다.</p>
+      <div class="mn">외우는 법: <b>모니터 = 은행원 = synchronized</b> · <b>역전 = 1등이 꼴찌 → 9한테 1을 물려준다(상속)</b></div></div>
+
+    <div class="check" data-id="k6" data-answer="0"><div class="lbl">바로 확인</div>
+      <div class="q">T9(우선순위 9)가 임계구역을 쓰는 중이고, T1(우선순위 1)이 그걸 기다리고 있다. 우선순위 상속을 적용하면?</div>
+      <div class="opts">
+        <button class="o">T9가 T1의 우선순위 1을 물려받아 T5에게 밀리지 않고 작업을 끝낸다</button>
+        <button class="o">T1이 T9의 우선순위 9를 물려받는다</button>
+        <button class="o">임계구역을 쓰는 모든 스레드의 우선순위를 일정 수준으로 높인다</button></div>
+      <div class="fb">상속 = 기다리는 높은 놈(T1)의 우선순위를 자원을 쥔 낮은 놈(T9)에게 물려주는 것. 세 번째 보기는 <b>우선순위 상한</b>이에요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c6">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
+  </section>
+
+  <!-- 복습 -->
+  <section class="ch review" id="review">
+    <div class="ch-head"><span class="ch-num">복습</span>
+      <div><h2>시험 직전 복습</h2><div class="sub">한 장 정리 → 빈칸 → 카드 → 퀴즈 → 내 말로</div></div></div>
+
+    <h3 class="rv-h">한 장 정리 <small>공책에 옮겨 적기</small></h3>
+    <p class="rv-d">"키워드 가리기"를 누르면 형광펜 부분이 가려져요.</p>
+    <div class="box sheet" id="sheet">
+      <p class="legend">★ 교재 별표 · 밑줄 · 시험 언급</p>
+      <div class="grp"><h4>① 문제 — 경쟁 상태와 임계구역 <span class="ex-t">★ 밑줄</span></h4><ul>
+        <li><span class="kw">경쟁 상태</span> : 둘 이상의 스레드가 같은 공유 자원에 동시에 접근해 결과를 예측할 수 없게 되는 상황</li>
+        <li><span class="kw">임계구역</span> : 둘 이상의 스레드가 동시에 접근해서는 안 되는 공유 영역</li>
+        <li><span class="kw">동기화</span> : 임계구역에 대한 접근을 제어하는 과정</li>
+        <li>예금 예시 : 10만 원씩 두 번 넣었는데 10만 원 · 생산자-소비자 : sum이 3이어야 하는데 2 또는 4</li></ul></div>
+      <div class="grp"><h4>② 해결 조건 3개 <span class="ex-t">★ 별표</span></h4><ul>
+        <li><span class="kw">상호 배제</span> : 한 스레드가 임계구역에 들어가면 다른 스레드는 들어갈 수 없다</li>
+        <li><span class="kw">한정 대기</span> : 진입하려는 스레드 중 무한히 기다리는 스레드가 있으면 안 된다</li>
+        <li><span class="kw">진행의 융통성</span> : 한 스레드의 작업이 다른 스레드의 진행을 방해하면 안 된다</li></ul></div>
+      <div class="grp"><h4>③ 틀린 코드 → 위반 조건 <span class="mn">1개 · 2개 · 번갈아</span></h4><ul>
+        <li>잠금 1개 (6-6) : 검사와 잠금 사이에 잘려 둘 다 진입 → <span class="kw">상호 배제</span> 위반</li>
+        <li>잠금 2개 (6-7) : 둘 다 잠그고 서로 기다림 → <span class="kw">한정 대기</span> 위반</li>
+        <li>lock 1/2 (6-8) : 반드시 번갈아 → <span class="kw">진행의 융통성</span> 위반 = 경직된 동기화</li></ul></div>
+      <div class="grp"><h4>④ 검사와 지정 · 뮤텍스 <span class="ex-t">★ 밑줄</span></h4><ul>
+        <li><span class="kw">검사와 지정</span> : 검사와 잠금을 하드웨어 도움으로 원자적으로 실행 (test-and-set)</li>
+        <li><span class="kw">뮤텍스</span> : MUTual EXclusion. mutex_lock()으로 잠그고 mutex_unlock()으로 해제. 자원 1개만 가능</li></ul></div>
+      <div class="grp"><h4>⑤ 세마포어 <span class="ex-t">★ 오늘의 핵심</span></h4><ul>
+        <li><span class="kw">세마포어</span> : 세마포어 큐에 순서대로 대기시켜 여러 자원을 관리하고 진입 순서까지 제어 (데이크스트라)</li>
+        <li><span class="kw">S</span> : 현재 사용할 수 있는 자원의 수. init(n) → S = n</li>
+        <li>wait() : S ≤ 0이면 pause(), 아니면 S = S − 1 후 진입 · post() : S = S + 1, wake_up()</li>
+        <li><span class="kw">이진 세마포어</span> : init(1). 뮤텍스와 같음 · 옛 이름 p() = wait(), v() = post() (= signal())</li></ul></div>
+      <div class="grp"><h4>⑥ 모니터 · 우선순위 역전 <span class="ex-t">★ synchronized</span></h4><ul>
+        <li><span class="kw">모니터</span> : 동기화를 자동으로 처리하는 고수준 도구. 모니터 큐로 순서대로 처리 (은행원)</li>
+        <li><span class="kw">synchronized(lock)</span> : 자바 모니터의 핵심. 중괄호 안이 임계구역</li>
+        <li><span class="kw">우선순위 역전</span> : 임계구역 때문에 높은 우선순위가 낮은 우선순위에 의해 지연 (T1이 가장 늦게)</li>
+        <li><span class="kw">우선순위 상속</span> : 기다리는 높은 우선순위를 자원을 쥔 스레드에 물려줌 · 상한 : 임계구역 쓰는 모든 스레드를 일정 수준까지 올림</li></ul></div>
+      <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
+    </div>
+
+    <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
+    <div class="box cloze-box">
+      <p>둘 이상의 스레드가 같은 공유 자원에 동시에 접근해 결과를 예측할 수 없는 상황을 <span class="cloze">경쟁 상태</span>라 하고, 동시에 접근하면 안 되는 공유 영역을 <span class="cloze">임계구역</span>이라 한다. 임계구역 해결 조건은 <span class="cloze">상호 배제</span> · 한정 대기 · 진행의 융통성이며, lock 값으로 번갈아 들어가는 코드는 <span class="cloze">진행의 융통성</span>을 위반한다. 검사와 잠금을 하드웨어 도움으로 원자적으로 실행하는 것을 <span class="cloze">검사와 지정</span>이라 한다. 세마포어의 S는 현재 <span class="cloze">사용할 수 있는 자원의 수</span>이며, wait()는 S가 0 이하면 <span class="cloze">pause()</span>로 대기하고, post()는 S를 1 증가시키고 <span class="cloze">wake_up()</span>을 보낸다. init(1)인 세마포어를 <span class="cloze">이진 세마포어</span>라 한다. 자바 모니터에서 임계구역은 <span class="cloze">synchronized(lock)</span>으로 둘러싸고, 낮은 우선순위 스레드에 높은 우선순위를 물려주는 해결법은 <span class="cloze">우선순위 상속</span>이다.</p>
+      <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
+    </div>
+
+    <h3 class="rv-h">플래시카드 <small>알면 →, 모르면 ←</small></h3>
+    <div class="box fc-wrap" data-fc>
+      <div class="fc-top"><span class="fc-count"></span><span class="fc-known"></span></div>
+      <div class="fc-stage"></div>
+      <div class="btns"><button class="btn" type="button" data-fc-dunno>모르겠어요</button><button class="btn" type="button" data-fc-flip>뒤집기</button><button class="btn pri" type="button" data-fc-know>알아요</button><button class="btn" type="button" data-fc-reset>모르는 카드만 다시</button></div>
+      <div class="fc-keys">키보드: Space 뒤집기 · → 알아요 · ← 모르겠어요</div>
+      <div class="fc-items">
+        <div class="fc-item"><div class="q">경쟁 상태란?</div><div class="a">둘 이상의 스레드가 동일한 공유 자원에 동시에 접근하여 실행 결과를 예측할 수 없게 되는 상황.</div></div>
+        <div class="fc-item"><div class="q">임계구역이란?</div><div class="a">둘 이상의 스레드가 동시에 접근해서는 안 되는 공유 영역. 결과에 중대한(critical) 영향을 미쳐서 이렇게 부른다.</div></div>
+        <div class="fc-item"><div class="q">동기화란?</div><div class="a">임계구역에 대한 접근을 제어하는 과정. 그래서 임계구역 문제는 곧 동기화 문제.</div></div>
+        <div class="fc-item"><div class="q">임계구역 해결 조건 3개는?</div><div class="a">상호 배제(한 명만), 한정 대기(무한 대기 금지), 진행의 융통성(다른 스레드의 진행을 방해하면 안 됨).</div></div>
+        <div class="fc-item"><div class="q">잠금 1개 · 잠금 2개 · lock 1/2 번갈아 코드는 각각 어떤 조건을 위반?</div><div class="a">상호 배제 위반 · 한정 대기 위반 · 진행의 융통성 위반(경직된 동기화).</div></div>
+        <div class="fc-item"><div class="q">경직된 동기화란?</div><div class="a">스레드가 반드시 번갈아 실행되어 서로의 진행을 방해하는 현상 (lockstep synchronization).</div></div>
+        <div class="fc-item"><div class="q">검사와 지정(test-and-set)이란?</div><div class="a">잠금 확인(test)과 잠금 설정(set)을 하드웨어의 도움으로 원자적으로 실행해, 그 사이에 문맥 교환이 일어나지 않게 하는 방식.</div></div>
+        <div class="fc-item"><div class="q">뮤텍스란? 한계는?</div><div class="a">MUTual EXclusion의 약자. mutex_lock()으로 잠그고 mutex_unlock()으로 해제하는 기본 동기화 도구. 하나의 공유 자원에 대해서만 동기화할 수 있다.</div></div>
+        <div class="fc-item"><div class="q">세마포어가 뮤텍스보다 나은 점 2가지는?</div><div class="a">여러 개의 자원을 동시에 관리할 수 있고, 세마포어 큐로 스레드의 진입 순서까지 제어할 수 있다.</div></div>
+        <div class="fc-item"><div class="q">세마포어 wait()와 post()의 내부 코드는?</div><div class="a">wait(): if S &lt;= 0 then pause(); S = S − 1; · post(): S = S + 1; wake_up();</div></div>
+        <div class="fc-item"><div class="q">init(2), 스레드 3개가 차례로 wait()하면?</div><div class="a">T1 진입(S = 1), T2 진입(S = 0), T3 pause(). 누가 post()하면 T3가 깨어나 진입하고, 모두 끝나면 S = 2로 복원.</div></div>
+        <div class="fc-item"><div class="q">모니터란?</div><div class="a">공유 자원을 안전하게 보호하고 임계구역 동기화를 자동으로 처리하는 고수준 동기화 도구. 스레드는 모니터를 통해서만 임계구역에 접근. 자바 synchronized.</div></div>
+        <div class="fc-item"><div class="q">우선순위 역전이란? 해결법은?</div><div class="a">임계구역 때문에 높은 우선순위 프로세스가 낮은 우선순위 프로세스에 의해 지연되는 현상. 우선순위 상속, 우선순위 상한.</div></div>
+      </div>
+      <ol class="fc-print"></ol>
+    </div>
+
+    <h3 class="rv-h">퀴즈 <small>다 풀고 채점하기</small></h3>
+    <form class="box quiz" data-quiz>
+      <div class="q" data-answer="3"><p class="qt"><b>Q1</b>"둘 이상의 스레드가 동시에 접근해서는 안 되는 공유 영역"을 무엇이라 하는가?</p>
+        <label class="opt"><input type="radio" name="q1" value="0">경쟁 상태</label>
+        <label class="opt"><input type="radio" name="q1" value="1">세마포어 큐</label>
+        <label class="opt"><input type="radio" name="q1" value="2">공유 자원</label>
+        <label class="opt"><input type="radio" name="q1" value="3">임계구역</label>
+        <div class="explain">교재 밑줄 문장 그대로예요. 경쟁 상태는 "동시에 접근해 결과를 예측할 수 없게 되는 상황"이라는 <b>상황</b>이고, 임계구역은 <b>영역</b>이에요.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q2</b>잠금 변수 하나로 while(lock == true); 다음 lock = true;를 실행하는 코드가 위반하는 조건과 그 원인은?</p>
+        <label class="opt"><input type="radio" name="q2" value="0">한정 대기 — 두 스레드가 서로의 잠금을 기다림</label>
+        <label class="opt"><input type="radio" name="q2" value="1">상호 배제 — 검사와 잠금 사이에 타임 슬라이스 아웃</label>
+        <label class="opt"><input type="radio" name="q2" value="2">진행의 융통성 — 반드시 번갈아 실행</label>
+        <label class="opt"><input type="radio" name="q2" value="3">아무 조건도 위반하지 않음</label>
+        <div class="explain">그림 6-6. 검사(①)를 통과한 뒤 잠그기(②) 전에 잘리면 다른 스레드도 통과해서 둘 다 들어가요 → 상호 배제 위반.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q3</b>T1은 lock1 = true; while(lock2 == true);, T2는 lock2 = true; while(lock1 == true);를 실행한다. 둘 다 첫 줄 직후에 타임 슬라이스 아웃이 걸리면?</p>
+        <label class="opt"><input type="radio" name="q3" value="0">둘 다 임계구역에 진입하지 못하고 무한히 기다린다</label>
+        <label class="opt"><input type="radio" name="q3" value="1">둘 다 임계구역에 진입한다</label>
+        <label class="opt"><input type="radio" name="q3" value="2">T1만 진입한다</label>
+        <label class="opt"><input type="radio" name="q3" value="3">번갈아 진입한다</label>
+        <div class="explain">둘 다 이미 잠금을 걸어 두었으니 서로 "저쪽이 안에 있네" 하며 무한 루프 → 한정 대기 위반(그림 6-7).</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q4</b>test_and_set()에 대한 설명으로 <b>틀린</b> 것은?</p>
+        <label class="opt"><input type="radio" name="q4" value="0">잠금 확인과 잠금 설정을 원자적으로 실행한다</label>
+        <label class="opt"><input type="radio" name="q4" value="1">하드웨어의 도움을 받는다</label>
+        <label class="opt"><input type="radio" name="q4" value="2">하드웨어와 무관해 모든 시스템에서 같은 방식으로 구현된다</label>
+        <label class="opt"><input type="radio" name="q4" value="3">실행되는 동안 문맥 교환이 발생하지 않는다</label>
+        <div class="explain">하드웨어 의존적이라 저수준 언어로 짜야 하고 시스템마다 구현 방식이 달라요. 그래서 OS가 뮤텍스 · 세마포어 · 모니터를 따로 제공해요.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q5</b>세마포어를 init(2)로 초기화하고 T1, T2, T3가 차례로 wait()를 호출했다. 그 뒤 T1이 post()를 실행한 직후 일어나는 일은?</p>
+        <label class="opt"><input type="radio" name="q5" value="0">S가 2가 되고 아무 일도 없다</label>
+        <label class="opt"><input type="radio" name="q5" value="1">S가 1이 되고 wake_up()으로 T3가 깨어나 S를 0으로 만들고 진입한다</label>
+        <label class="opt"><input type="radio" name="q5" value="2">T2가 다시 진입한다</label>
+        <label class="opt"><input type="radio" name="q5" value="3">S가 −1이 된다</label>
+        <div class="explain">T1(S = 1), T2(S = 0) 진입 후 T3는 pause(). T1의 post()로 S = 1, wake_up() → T3가 1 빼고(S = 0) 진입. 그림 6-15.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q6</b>세마포어를 잘못 사용한 사례가 <b>아닌</b> 것은?</p>
+        <label class="opt"><input type="radio" name="q6" value="0">wait()와 post()의 순서를 바꿔 쓴다</label>
+        <label class="opt"><input type="radio" name="q6" value="1">wait()를 2번 쓴다</label>
+        <label class="opt"><input type="radio" name="q6" value="2">세마포어 없이 임계구역에 들어간다</label>
+        <label class="opt"><input type="radio" name="q6" value="3">임계구역 앞에 wait(), 뒤에 post()를 쓴다</label>
+        <div class="explain">들어갈 때 wait(), 나올 때 post()가 올바른 사용법이에요. 나머지 셋이 그림 6-16의 잘못 쓰는 사례이고, 이 문제 때문에 모니터가 나왔어요.</div></div>
+      <div class="q" data-answer="0"><p class="qt"><b>Q7</b>자바에서 모니터의 핵심으로, 둘러싼 코드를 임계구역으로 보호하는 것은?</p>
+        <label class="opt"><input type="radio" name="q7" value="0">synchronized(lock) { }</label>
+        <label class="opt"><input type="radio" name="q7" value="1">mutex_lock()</label>
+        <label class="opt"><input type="radio" name="q7" value="2">init(n)</label>
+        <label class="opt"><input type="radio" name="q7" value="3">test_and_set(lock)</label>
+        <div class="explain">교수님이 "밑줄 쳐 놓으세요" 한 부분이에요. 스레드는 increase(10)만 부르면 모니터가 진입과 탈출을 알아서 처리해요.</div></div>
+      <div class="q" data-answer="2"><p class="qt"><b>Q8</b>우선순위 상한(priority ceiling)보다 우선순위 상속이 주로 쓰이는 이유는?</p>
+        <label class="opt"><input type="radio" name="q8" value="0">상속은 모든 스레드의 우선순위를 높여 주기 때문</label>
+        <label class="opt"><input type="radio" name="q8" value="1">상한은 우선순위 역전을 해결하지 못하기 때문</label>
+        <label class="opt"><input type="radio" name="q8" value="2">상한은 얼마나 올릴지 계산하기 어렵고, 역전이 없을 때도 무조건 높이기 때문</label>
+        <label class="opt"><input type="radio" name="q8" value="3">상속은 하드웨어 지원이 필요 없기 때문</label>
+        <div class="explain">교재 258쪽: 상한은 계산이 어렵고 불필요할 때도 우선순위를 올리는 문제가 있어서, 비교적 단순하고 구현이 쉬운 상속 방식이 쓰여요.</div></div>
+      <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
+    </form>
+
+    <h3 class="rv-h">내 말로 설명하기 <small>친구한테 말하듯이</small></h3>
+    <div class="box explain-box">
+      <p class="eq">예금 10만 원이 사라진 문제를 "임계구역 → 조건 3개 → 뮤텍스 → 세마포어 → 모니터" 순서로, 각 도구가 앞의 무엇을 고쳤는지 이어서 설명해 보세요.</p>
+      <textarea data-save="explain1" placeholder="여기에 적으면 이 브라우저에 자동 저장돼요"></textarea>
+      <div class="eb-foot"><button class="btn" type="button" data-toggle-model>모범 답안 보기</button><span data-saved-msg></span></div>
+      <div class="model-answer">두 스레드가 예금을 동시에 읽고 쓰는 경쟁 상태 때문에 10만 원이 사라졌어요. 그래서 읽고 더하고 저장하는 부분을 한 번에 한 스레드만 들어가는 임계구역으로 정해요. 임계구역을 지키는 방법은 상호 배제, 한정 대기, 진행의 융통성을 모두 만족해야 하는데, 단순한 잠금 코드들은 각각 하나씩 어겨요. 특히 검사와 잠금 사이가 잘리는 문제는 하드웨어의 검사와 지정으로 원자적으로 묶어 해결해요. 이걸 고수준 언어에서 쓰게 한 게 뮤텍스(lock/unlock)인데, 자원 하나만 다룰 수 있어요. 세마포어는 S(사용 가능한 자원 수)와 wait/post로 여러 자원을 관리하고 큐로 순서까지 정해요. 하지만 사람이 wait/post를 잘못 쓰면 또 무너지니까, 동기화를 자동으로 처리해 주는 모니터(자바 synchronized)가 나왔어요.</div>
+    </div>
+
+    <details class="ref"><summary>더 알아두면 좋은 것 <small>시험 비중 낮음 · "궁금하면 보세요"</small></summary><div class="ref-body">
+      <h4>스핀락 (교재 250쪽 Note)</h4>
+      <p>뮤텍스와 비슷한 동기화 도구로, 잠긴 상태에서 스레드가 대기 상태로 가지 않고 CPU를 계속 쓰면서 바쁜 대기(회전, spin)를 해요. 자원을 낭비해서 자주 쓰지 않아요. 강의에서는 언급하지 않았어요.</p>
+      <h4>동기화 코드 사례 (교재 259~265쪽)</h4>
+      <p>교수님: "궁금하시면 보시면 됩니다." 스레드 2개가 같은 변수에 10씩 3번 더해서 60이 나와야 하는 예제를 세 가지로 짰어요. 임계구역 없이 돌리면 가끔 60이 안 나오고(경쟁 상태), 뮤텍스로 막은 C 코드(11번 줄 lock, 16번 줄 unlock)와 세마포어 C 코드(init · wait · post)는 늘 60이에요.</p>
+      <h4>자바 모니터 전체 코드 (코드 6-5, 265쪽)</h4>
+      <p>MonitorCode의 increase(int amt, int no) 안에서 synchronized(lock)으로 for문(10씩 3번)을 감싸고, ThreadTest가 run()에서 mt.increase(10, no)를 불러요. main에서 모니터 객체 하나(mo)를 두 스레드에 넘겨주고 start()하면 출력은 Td 1: 10, 20, 30 → Td 2: 40, 50, 60. 한 스레드가 임계구역 안의 for문을 다 끝낸 뒤 다음 스레드가 들어가기 때문이에요. 교수님은 "자바 책의 거의 맨 뒤에 나오는 코드"라고 했어요.</p>
+      <h4>교재 오타 하나</h4>
+      <p>247쪽 본문 마지막 줄의 "T2가 ④ while(lock2 == true)"는 그림대로 <b>while(lock1 == true)</b>가 맞아요. T2는 상대인 T1의 잠금(lock1)을 확인하거든요.</p>
+      <h4>교수님 설명과 교재 그림의 차이 (우선순위 역전)</h4>
+      <p>녹음에서는 "T1과 T9가 하나의 자원을 같이 잡고 있다"는 식으로 설명했지만, 교재 그림 6-19는 T9가 임계구역을 쓰고 T1이 그걸 기다리는 상황이에요. 이 페이지는 교재 기준으로 썼어요. 해결(T9의 우선순위를 T1만큼 올림 = 우선순위 상속)은 같아요.</p>
+    </div></details>
+  </section>
+</main>
+
+<footer>운영체제 · 10월 19일 (월) · 6장 임계구역과 동기화 · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<script>
+/* study-html v3 공통 스크립트 */
+(function () {
+  'use strict';
+  var body = document.body;
+  var NS = 'study:' + (body.dataset.course || 'course') + ':' + (body.dataset.week || 'w') + ':';
+  function load(k, f) { try { var v = localStorage.getItem(NS + k); return v === null ? f : JSON.parse(v); } catch (e) { return f; } }
+  function save(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} }
+  function $(s, r) { return (r || document).querySelector(s); }
+  function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+
+  /* 테마: 기본 라이트, 전 과목 공통 키 */
+  var THEME_KEY = 'study:theme';
+  function applyTheme(t) {
+    if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); else document.documentElement.removeAttribute('data-theme');
+    var sun = $('.icon-sun'), moon = $('.icon-moon');
+    if (sun) sun.toggleAttribute('hidden', t === 'dark');
+    if (moon) moon.toggleAttribute('hidden', t !== 'dark');
+  }
+  var savedTheme = null; try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) {}
+  applyTheme(savedTheme || 'light');
+  var tb = $('#btn-theme');
+  if (tb) tb.addEventListener('click', function () {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next);
+  });
+  var pb = $('#btn-print');
+  if (pb) pb.addEventListener('click', function () { $$('details').forEach(function (d) { d.open = true; }); window.print(); });
+
+  /* 진행률 = 이해했어요 + 바로 확인 정답 + 퀴즈 정답 + 아는 카드 → index 가 읽는 pct */
+  var st = load('progress', { quiz: 0, quizTotal: 0, fc: 0, fcTotal: 0 });
+  var doneBoxes = $$('input[data-done]');
+  var checks = $$('.check[data-answer]');
+  var checkPicks = load('checks', {});
+  function updateProgress() {
+    var done = 0, total = 0;
+    total += doneBoxes.length; done += doneBoxes.filter(function (c) { return c.checked; }).length;
+    total += checks.length; done += checks.filter(function (b) { var p = checkPicks[b.dataset.id]; return p !== undefined && p === +b.dataset.answer; }).length;
+    total += st.quizTotal; done += st.quiz;
+    total += st.fcTotal; done += st.fc;
+    var pct = total ? Math.round(done / total * 100) : 0;
+    var bar = $('#pbar'), el = $('#ppct');
+    if (bar) bar.style.width = pct + '%';
+    if (el) el.textContent = pct + '%';
+    save('progress', st); save('pct', pct);
+  }
+
+  /* 이해했어요 체크 → 흐름 카드 표시 */
+  var doneState = load('scenes', {});
+  function markFlow() {
+    doneBoxes.forEach(function (c) {
+      var a = $('.flow a[href="#' + c.dataset.done + '"]');
+      if (a) a.classList.toggle('done', c.checked);
+    });
+  }
+  doneBoxes.forEach(function (c) {
+    c.checked = !!doneState[c.dataset.done];
+    c.addEventListener('change', function () { doneState[c.dataset.done] = c.checked; save('scenes', doneState); markFlow(); updateProgress(); });
+  });
+  markFlow();
+
+  /* 흐름(목차) 현재 위치 */
+  var secs = $$('main section[id]');
+  function onScroll() {
+    var cur = null;
+    secs.forEach(function (s) { if (s.getBoundingClientRect().top <= 140) cur = s.id; });
+    $$('.flow a').forEach(function (a) { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 바로 확인 */
+  checks.forEach(function (box) {
+    var ans = +box.dataset.answer, opts = $$('.o', box);
+    function show(i) {
+      box.classList.add('answered');
+      opts.forEach(function (o, j) { o.classList.toggle('right', j === ans); o.classList.toggle('wrong', j === i && i !== ans); o.setAttribute('aria-disabled', 'true'); });
+    }
+    opts.forEach(function (o, i) {
+      o.type = 'button';
+      o.addEventListener('click', function () {
+        if (box.classList.contains('answered')) return;
+        checkPicks[box.dataset.id] = i; save('checks', checkPicks); show(i); updateProgress();
+      });
+    });
+    var p = checkPicks[box.dataset.id];
+    if (p !== undefined) show(p);
+  });
+
+  /* 빈칸 */
+  $$('.cloze').forEach(function (c) {
+    c.setAttribute('role', 'button'); c.setAttribute('tabindex', '0'); c.setAttribute('aria-label', '빈칸, 누르면 정답');
+    function t() { c.classList.toggle('open'); }
+    c.addEventListener('click', t);
+    c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+  });
+  $$('[data-cloze]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var open = b.dataset.cloze === 'open';
+      $$('.cloze', b.closest('.cloze-box') || document).forEach(function (c) { c.classList.toggle('open', open); });
+    });
+  });
+
+  /* 플래시카드 */
+  $$('[data-fc]').forEach(function (wrap) {
+    var items = $$('.fc-item', wrap).map(function (el, i) { return { i: i, q: $('.q', el).innerHTML, a: $('.a', el).innerHTML }; });
+    if (!items.length) return;
+    var stage = $('.fc-stage', wrap), count = $('.fc-count', wrap), knownEl = $('.fc-known', wrap);
+    var known = load('fc-known', {});
+    var order = items.map(function (x) { return x.i; }), pos = 0, flipped = false;
+    var print = $('.fc-print', wrap);
+    if (print) print.innerHTML = items.map(function (x) { return '<li><strong>Q.</strong> ' + x.q + '<br><strong>A.</strong> ' + x.a + '</li>'; }).join('');
+    function render() {
+      var k = Object.keys(known).filter(function (key) { return known[key]; }).length;
+      knownEl.textContent = '아는 카드 ' + k + ' / ' + items.length;
+      st.fc = k; st.fcTotal = items.length; updateProgress();
+      if (!order.length) { stage.innerHTML = '<div class="fc-face" style="position:static;min-height:190px"><div class="txt">모든 카드를 알고 있어요.</div></div>'; count.textContent = '완료'; return; }
+      var it = items[order[pos]];
+      stage.innerHTML = '<button type="button" class="fc-card' + (flipped ? ' flipped' : '') + '" aria-label="카드 뒤집기">' +
+        '<div class="fc-face front"><div class="lbl">질문</div><div class="txt">' + it.q + '</div></div>' +
+        '<div class="fc-face back"><div class="lbl">정답</div><div class="txt">' + it.a + '</div></div></button>';
+      $('.fc-card', stage).addEventListener('click', flip);
+      count.textContent = (pos + 1) + ' / ' + order.length;
+    }
+    function flip() { flipped = !flipped; var c = $('.fc-card', stage); if (c) c.classList.toggle('flipped', flipped); }
+    function next(mark) { if (!order.length) return; known[order[pos]] = mark; save('fc-known', known); flipped = false; pos = (pos + 1) % order.length; render(); }
+    $('[data-fc-flip]', wrap).addEventListener('click', flip);
+    $('[data-fc-know]', wrap).addEventListener('click', function () { next(true); });
+    $('[data-fc-dunno]', wrap).addEventListener('click', function () { next(false); });
+    $('[data-fc-reset]', wrap).addEventListener('click', function () {
+      var unknown = items.filter(function (x) { return !known[x.i]; }).map(function (x) { return x.i; });
+      order = unknown.length ? unknown : items.map(function (x) { return x.i; });
+      if (!unknown.length) { known = {}; save('fc-known', known); }
+      pos = 0; flipped = false; render();
+    });
+    wrap.setAttribute('tabindex', '0');
+    wrap.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'TEXTAREA' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ') { e.preventDefault(); flip(); }
+      else if (e.key === 'ArrowRight') { e.preventDefault(); next(true); }
+      else if (e.key === 'ArrowLeft') { e.preventDefault(); next(false); }
+    });
+    render();
+  });
+
+  /* 퀴즈 */
+  $$('[data-quiz]').forEach(function (form) {
+    var qs = $$('.q', form), scoreEl = $('[data-quiz-score]', form);
+    st.quizTotal = qs.length;
+    function grade(silent) {
+      var correct = 0;
+      qs.forEach(function (q) {
+        var ans = +q.dataset.answer, picked = $('input:checked', q);
+        q.classList.add('graded');
+        $$('.opt', q).forEach(function (o, i) { o.classList.toggle('correct', i === ans); o.classList.toggle('wrong', !!picked && +picked.value === i && i !== ans); });
+        $$('input', q).forEach(function (r) { r.disabled = true; });
+        if (picked && +picked.value === ans) correct++;
+      });
+      scoreEl.textContent = correct + ' / ' + qs.length + (correct === qs.length ? ' 완벽해요' : '');
+      scoreEl.classList.toggle('perfect', correct === qs.length);
+      st.quiz = correct; updateProgress();
+      if (!silent) save('quiz-picks', qs.map(function (q) { var p = $('input:checked', q); return p ? +p.value : null; }));
+    }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var missing = qs.filter(function (q) { return !$('input:checked', q); });
+      if (missing.length) { missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' }); scoreEl.textContent = '아직 ' + missing.length + '문항 남았어요'; return; }
+      grade(false);
+    });
+    $('[data-quiz-reset]', form).addEventListener('click', function () {
+      qs.forEach(function (q) { q.classList.remove('graded'); $$('.opt', q).forEach(function (o) { o.classList.remove('correct', 'wrong'); }); $$('input', q).forEach(function (r) { r.disabled = false; r.checked = false; }); });
+      scoreEl.textContent = ''; scoreEl.classList.remove('perfect'); st.quiz = 0; save('quiz-picks', null); updateProgress();
+    });
+    var picks = load('quiz-picks', null);
+    if (picks && picks.length === qs.length) {
+      qs.forEach(function (q, i) { if (picks[i] !== null) { var r = $$('input', q)[picks[i]]; if (r) r.checked = true; } });
+      grade(true);
+    }
+  });
+
+  /* 내 말로 설명 */
+  $$('textarea[data-save]').forEach(function (ta) {
+    var key = ta.dataset.save, msg = $('[data-saved-msg]', ta.closest('.explain-box'));
+    ta.value = load(key, '');
+    var t;
+    ta.addEventListener('input', function () {
+      clearTimeout(t);
+      t = setTimeout(function () { save(key, ta.value); if (msg) { msg.textContent = '자동 저장됨'; setTimeout(function () { msg.textContent = ''; }, 1500); } }, 400);
+    });
+  });
+  $$('[data-toggle-model]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var m = $('.model-answer', b.closest('.explain-box'));
+      var open = m.classList.toggle('open');
+      b.textContent = open ? '모범 답안 닫기' : '모범 답안 보기';
+    });
+  });
+
+  /* 한 장 정리: 키워드 가리기 */
+  var sheet = $('#sheet');
+  if (sheet) {
+    $$('[data-note]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (b.dataset.note === 'hide') { sheet.classList.add('hide'); $$('.kw.open', sheet).forEach(function (k) { k.classList.remove('open'); }); }
+        else sheet.classList.remove('hide');
+      });
+    });
+    $$('.kw', sheet).forEach(function (k) {
+      k.setAttribute('tabindex', '0');
+      function t() { if (sheet.classList.contains('hide')) k.classList.toggle('open'); }
+      k.addEventListener('click', t);
+      k.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(); } });
+    });
+  }
+
+  /* 공책 정리 칸: 장면 질문(왼쪽) + "시험엔 이렇게"(오른쪽) + 그려 볼 그림 + 요약 */
+  var review = $('#review');
+  var scenes = $$('section.ch:not(.review)').filter(function (s) { return $('.key', s); });
+  if (review && scenes.length) {
+    function esc(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+    var rows = scenes.map(function (s, i) {
+      var key = $('.key', s), h2 = $('.ch-head h2', s), sub = $('.ch-head .sub', s);
+      var txt = $$('p', key).map(function (p) { return '<p>' + p.innerHTML + '</p>'; }).join('');
+      var mn = $('.mn', key);
+      return '<div class="nb-row"><div class="nb-q"><span class="nb-n">' + (i + 1) + '</span><span>' + (h2 ? h2.innerHTML : '') + (sub ? '<small class="nb-sub">' + sub.innerHTML + '</small>' : '') + '</span></div>' +
+        '<div class="nb-a" tabindex="0"><div class="nb-txt">' + txt + (mn ? '<div class="nb-mn">' + mn.innerHTML + '</div>' : '') + '</div>' +
+        '<label class="nb-ok"><input type="checkbox" data-nb="' + i + '">공책에 적었어요</label></div></div>';
+    }).join('');
+    var figs = $$('section.ch:not(.review) .fig figcaption').map(function (c) {
+      var sec = c.closest('section'), n = sec ? $('.ch-num', sec) : null;
+      var svg = $('svg', c.closest('.fig')), what = svg && svg.getAttribute('aria-label');
+      return '<li>' + (n ? esc(n.textContent) + ' · ' : '') + (what ? esc(what) + '<br><small class="nb-sub">' + c.innerHTML + '</small>' : c.innerHTML) + '</li>';
+    });
+    var h1 = $('.hero h1');
+    var wrapEl = document.createElement('div');
+    wrapEl.className = 'nb-wrap';
+    wrapEl.innerHTML = '<h3 class="rv-h">공책 정리 칸 <small>왼쪽 질문 · 오른쪽 답 · 맨 아래 요약</small></h3>' +
+      '<p class="rv-d">공책에 세로줄을 하나 긋고 왼쪽 좁은 칸에 질문, 오른쪽 넓은 칸에 답을 옮겨 적어요. 그림은 보지 말고 직접 그려 보고, 맨 아래엔 내 말로 한두 줄 요약. 다음 날엔 "답 가리기"를 누르고 질문만 보며 소리 내어 답해 보세요.</p>' +
+      '<div class="box nb" id="nb"><div class="nb-head"><span>질문 (왼쪽 칸)</span><span>공책에 적을 답 (오른쪽 칸)</span></div>' + rows +
+      (figs.length ? '<div class="nb-draw"><b>직접 그려 볼 그림</b><ol>' + figs.join('') + '</ol></div>' : '') +
+      '<div class="nb-sum"><b>맨 아래 요약 칸</b><p>' + (h1 ? '"' + h1.innerHTML + '" — 이 질문에 내 말로 답해서 한두 줄로 적기' : '오늘 배운 것을 내 말로 한두 줄') + '</p></div>' +
+      '<div class="nb-foot"><div class="btns"><button class="btn" type="button" data-nb-hide>답 가리기</button><button class="btn" type="button" data-nb-show>모두 보기</button><button class="btn" type="button" data-nb-print>공책 칸만 인쇄</button></div><span class="nb-count"></span></div></div>';
+    var head = $('.ch-head', review);
+    review.insertBefore(wrapEl, head ? head.nextSibling : review.firstChild);
+    var nb = $('#nb'), nbState = load('notebook', {});
+    function nbCount() {
+      var boxes = $$('[data-nb]', nb), n = boxes.filter(function (b) { return b.checked; }).length;
+      $('.nb-count', nb).textContent = '공책에 적은 것 ' + n + ' / ' + boxes.length;
+    }
+    $$('[data-nb]', nb).forEach(function (b) {
+      b.checked = !!nbState[b.dataset.nb];
+      b.closest('.nb-row').classList.toggle('done', b.checked);
+      b.addEventListener('change', function () { nbState[b.dataset.nb] = b.checked; save('notebook', nbState); b.closest('.nb-row').classList.toggle('done', b.checked); nbCount(); });
+    });
+    $$('.nb-a', nb).forEach(function (a) {
+      function t(e) { if (e.target.closest('.nb-ok')) return; if (nb.classList.contains('hide')) a.classList.toggle('open'); }
+      a.addEventListener('click', t);
+      a.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); t(e); } });
+    });
+    $('[data-nb-hide]', nb).addEventListener('click', function () { nb.classList.add('hide'); $$('.nb-a.open', nb).forEach(function (a) { a.classList.remove('open'); }); });
+    $('[data-nb-show]', nb).addEventListener('click', function () { nb.classList.remove('hide'); });
+    $('[data-nb-print]', nb).addEventListener('click', function () {
+      body.classList.add('print-nb');
+      window.print();
+      setTimeout(function () { body.classList.remove('print-nb'); }, 500);
+    });
+    nbCount();
+  }
+
+  /* 틀린 문제 체크: 답 칸(.cloze)이 바로 붙은 문제마다 "틀림" 버튼 → 틀린 것만 모아 보기 */
+  if ((body.dataset.week || '').indexOf('연습문제') === 0) {
+    var wrong = load('wrong', {});
+    var items = $$('.cloze-box li').filter(function (li) {
+      return Array.prototype.some.call(li.children, function (c) { return c.classList.contains('cloze'); });
+    });
+    if (items.length) {
+      var seq = {};
+      items.forEach(function (li) {
+        var sec = li.closest('section'), sid = (sec && sec.id) || 'p';
+        seq[sid] = (seq[sid] || 0) + 1;
+        li.dataset.wr = sid + '-' + seq[sid];
+        var b = document.createElement('button');
+        b.type = 'button'; b.className = 'wr-btn';
+        var ans = Array.prototype.filter.call(li.children, function (c) { return c.classList.contains('cloze'); })[0];
+        li.insertBefore(b, ans.nextSibling);
+        li._wrb = b;
+        b.addEventListener('click', function () {
+          if (wrong[li.dataset.wr]) delete wrong[li.dataset.wr]; else wrong[li.dataset.wr] = 1;
+          save('wrong', wrong); wrPaint();
+        });
+      });
+      var bar = document.createElement('div');
+      bar.className = 'wr-bar'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', '틀린 문제');
+      bar.innerHTML = '<span>틀린 문제 <b class="wr-n">0</b>개</span>' +
+        '<button type="button" class="btn pri wr-only">틀린 것만 보기</button>' +
+        '<button type="button" class="btn wr-clear">표시 지우기</button>';
+      body.appendChild(bar); body.classList.add('wr-on');
+      var onlyBtn = $('.wr-only', bar), clearBtn = $('.wr-clear', bar);
+      onlyBtn.addEventListener('click', function () {
+        var on = !body.classList.contains('wr-only');
+        body.classList.toggle('wr-only', on);
+        if (on) $$('li.wrong .cloze').forEach(function (c) { c.classList.remove('open'); });
+        wrPaint(); window.scrollTo(0, 0);
+      });
+      clearBtn.addEventListener('click', function () {
+        if (!confirm('틀림 표시를 모두 지울까요?')) return;
+        wrong = {}; save('wrong', wrong); body.classList.remove('wr-only'); wrPaint();
+      });
+      function wrPaint() {
+        var n = 0;
+        $$('.wr-has').forEach(function (el) { el.classList.remove('wr-has'); });
+        items.forEach(function (li) {
+          var on = !!wrong[li.dataset.wr], b = li._wrb;
+          li.classList.toggle('wrong', on);
+          b.textContent = on ? '틀림 ✓' : '틀림';
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          if (!on) return;
+          n++;
+          for (var p = li.parentElement; p && p !== body; p = p.parentElement) {
+            if (p.tagName === 'LI' || p.tagName === 'SECTION') p.classList.add('wr-has');
+          }
+        });
+        if (!n) body.classList.remove('wr-only');
+        $('.wr-n', bar).textContent = n;
+        onlyBtn.disabled = !n && !body.classList.contains('wr-only');
+        onlyBtn.textContent = body.classList.contains('wr-only') ? '전체 보기' : '틀린 것만 보기';
+        clearBtn.disabled = !n;
+      }
+      wrPaint();
+    }
+  }
+
+  updateProgress();
+})();
+</script>
+</body>
+</html>

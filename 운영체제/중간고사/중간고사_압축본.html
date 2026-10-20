@@ -294,17 +294,18 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
 
 <main class="wrap">
   <div class="hero">
-    <div class="eyebrow">중간고사 대비 · 1장 ~ 5장 · 9/9 ~ 10/14 수업 기준 (범위는 10/19 수업까지)</div>
+    <div class="eyebrow">중간고사 대비 · 1장 ~ 6장 · 9/9 ~ 10/19 수업 기준 (범위는 6장 동기화까지)</div>
     <h1>중간고사, 교수님이 "중요하다"고 한 것만 한 바퀴 돌자</h1>
-    <p class="lead">8번의 수업에서 교수님이 <b>별표·"꼭 기억"·"평생 잊지 마"</b>라고 한 것만 골라 장면 6개로 묶었어요. "읽어만 보라", "시험 안 낸다"고 한 건 뺐어요. 날짜별 페이지를 다 보고 나서 시험 전날 이 페이지 하나로 정리하면 돼요.</p>
+    <p class="lead">9번의 수업에서 교수님이 <b>별표·"꼭 기억"·"평생 잊지 마"</b>라고 한 것만 골라 장면 8개로 묶었어요. "읽어만 보라", "시험 안 낸다"고 한 건 뺐어요. 날짜별 페이지를 다 보고 나서 시험 전날 이 페이지 하나로 정리하면 돼요.</p>
     <div class="goal">
       <h2>이 페이지를 다 보면 할 수 있는 것</h2>
       <ol>
         <li>시스템 콜·레지스터·버스·프로세스 상태도를 빈 종이에 쓰고 그릴 수 있다</li>
         <li>fork·exec·join 코드의 출력 결과를 말할 수 있다</li>
-        <li>FCFS 평균 대기 시간을 계산할 수 있다</li>
+        <li>FCFS · SJF · RR 평균 대기 시간을 계산할 수 있다</li>
+        <li>임계구역 해결 조건 3개를 말하고, 세마포어의 S 값 변화를 따라갈 수 있다</li>
       </ol>
-      <div class="time">약 30분 · 장면 6개 · 장면마다 확인 문제 1개</div>
+      <div class="time">약 40분 · 장면 8개 · 장면마다 확인 문제 1개</div>
     </div>
     <div class="exam">
       <h2><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>교수님이 시험 얘기한 것</h2>
@@ -312,7 +313,8 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
         <li><b>중간고사 10/21(수) 예정</b> — 10/7 말씀: "배운 데서 배운 데까지, 다다음 주 월요일(10/19) 수업까지가 범위". 시간·장소는 공지 확인</li>
         <li><b>평균 대기 시간 계산 문제는 나온다</b> (10/12, "나 분명히 얘기했어요") · 5장 알고리즘은 "대부분 시험에 나올 것"</li>
         <li>★ 시스템 콜 · 듀얼 모드 · 폰노이만 특징 · 레지스터 · 프로세스 상태도 · PCB · 문맥 교환 · fork · 선점/비선점 · 동기/비동기</li>
-        <li><b>아직 안 배운 것</b>: SJF · HRN · 라운드 로빈 · SRT · 다단계 큐 · 다단계 피드백 큐 → 10/14·10/19 수업 녹음이 들어오면 이 페이지에 추가</li>
+        <li><b>범위 확정 (10/19)</b>: "시험 범위는 오늘 배운 <b>6장 동기화까지</b>" (교재 265쪽까지)</li>
+        <li>★ 6장: 임계구역 해결 3조건(상호 배제 "별표해 주세요") · 세마포어("오늘의 가장 핵심") · synchronized(lock)("밑줄 쳐 놓으세요")</li>
       </ul>
     </div>
     <nav class="flow" aria-label="오늘의 흐름">
@@ -323,6 +325,7 @@ footer{color:var(--ink-3);font-size:13px;padding:48px 0 64px;text-align:center}
       <a href="#c5"><b>장면 5</b>4장 스레드 · IPC</a>
       <a href="#c6"><b>장면 6</b>5장 스케줄링 ①</a>
       <a href="#c7"><b>장면 7</b>5장 알고리즘 ②</a>
+      <a href="#c8"><b>장면 8</b>6장 동기화</a>
       <a href="#review"><b>복습</b>시험 직전 정리</a>
     </nav>
   </div>
@@ -919,7 +922,47 @@ if (pid == 0) {
         <button class="o">69</button></div>
       <div class="fb">0 + 7 + 14 + 19 + 19 + 8 = <b>67</b>. 60은 SJF, 69는 FCFS의 합.</div></div>
 
-    <div class="next"><label><input type="checkbox" data-done="c7">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
+    <div class="next"><label><input type="checkbox" data-done="c7">이해했어요</label><a href="#c8">다음 장면 →</a></div>
+  </section>
+
+  <!-- 장면 8 -->
+  <section class="ch" id="c8">
+    <div class="ch-head"><span class="ch-num">장면 8</span>
+      <div><h2>6장 — 10만 원씩 두 번 넣었는데, 왜 10만 원뿐일까?</h2><div class="sub">자세히: <a href="../1019/1019_학습자료.html">10/19 페이지</a> · 경쟁 상태 · 임계구역 ★ · 해결 3조건 ★ · 검사와 지정 · 뮤텍스 · 세마포어 ★ · 모니터 ★ · 우선순위 역전</div></div></div>
+
+    <p>T1과 T2가 0원을 동시에 읽고 각자 10만 원을 더해 저장하면 20만 원이 아니라 10만 원이 남아요. 이렇게 둘 이상의 스레드가 같은 공유 자원에 동시에 접근해 결과를 예측할 수 없는 상황이 <mark>경쟁 상태</mark>예요. 그래서 한 번에 한 스레드만 들어가게 묶는 공유 영역이 <mark>임계구역</mark>, 그 접근을 제어하는 과정이 <mark>동기화</mark>예요(교재 밑줄). 교수님은 임계구역을 <b>화장실</b>에 비유했어요. 들어갈 때 잠그고(lock), 나올 때 풀어요(unlock).</p>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>해결 조건 ★</th><th>뜻</th><th>어기는 코드</th></tr></thead>
+      <tbody>
+        <tr><td><b>상호 배제</b></td><td>한 스레드가 임계구역에 들어가면 다른 스레드는 들어갈 수 없다</td><td>잠금 1개: 검사와 잠금 사이에 잘려 둘 다 진입 (6-6)</td></tr>
+        <tr><td><b>한정 대기</b></td><td>무한히 기다리는 스레드가 있어서는 안 된다</td><td>잠금 2개: 둘 다 잠그고 서로 기다림 (6-7)</td></tr>
+        <tr><td><b>진행의 융통성</b></td><td>한 스레드의 작업이 다른 스레드의 진행을 방해해서는 안 된다</td><td>lock 1/2 번갈아: 혼자 연달아 못 들어감 = 경직된 동기화 (6-8)</td></tr>
+      </tbody></table></div>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>도구</th><th>핵심</th><th>한계 · 특징</th></tr></thead>
+      <tbody>
+        <tr><td>검사와 지정</td><td>검사 + 잠금을 하드웨어 도움으로 원자적으로 (test-and-set)</td><td>하드웨어 의존 → OS가 아래 도구를 제공</td></tr>
+        <tr><td>뮤텍스</td><td>mutex_lock() / mutex_unlock()</td><td>공유 자원 1개만</td></tr>
+        <tr><td><b>세마포어</b> ★</td><td>init(n): S = n · wait(): S ≤ 0이면 pause(), 아니면 S − 1 · post(): S + 1, wake_up()</td><td>S = 사용 가능한 자원 수. 여러 자원 + 진입 순서. init(1) = 이진 세마포어</td></tr>
+        <tr><td><b>모니터</b> ★</td><td>동기화를 자동으로 처리하는 고수준 도구, 자바 <code>synchronized(lock) { }</code></td><td>세마포어를 잘못 쓰는 문제(빠뜨림 · 뒤바꿈 · 2번)를 막음</td></tr>
+      </tbody></table></div>
+    <p>마지막으로 <mark>우선순위 역전</mark>이 있어요. 임계구역을 쥔 T9(우선순위 9)를 T1(우선순위 1)이 기다리는데, 그 사이 T5가 T9보다 먼저 실행돼서 결국 T1이 가장 늦게 실행되는 현상이에요. 해결은 T1의 우선순위를 T9에 물려주는 <b>우선순위 상속</b>(주로 사용)과, 임계구역 쓰는 모든 스레드를 일정 수준까지 올리는 <b>우선순위 상한</b>이에요.</p>
+
+    <div class="key"><span class="lbl"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.9 7.5.6-5.7 4.9 1.7 7.4L12 18l-6.5 3.8 1.7-7.4L1.5 9.5 9 8.9z"/></svg>시험엔 이렇게</span>
+      <p>임계구역은 둘 이상의 스레드가 동시에 접근해서는 안 되는 공유 영역이며, 해결 방법은 상호 배제 · 한정 대기 · 진행의 융통성을 모두 충족해야 한다. 세마포어는 S(사용 가능한 자원 수)를 init(n)으로 초기화하고, wait()에서 S가 0 이하면 대기 후 S를 1 감소시켜 진입하며, post()에서 S를 1 증가시키고 wake_up()으로 대기 스레드를 깨운다. 모니터는 임계구역 동기화를 자동으로 처리하는 고수준 도구로, 자바에서는 synchronized(lock)으로 구현한다.</p>
+      <div class="mn">외우는 법: <b>상 · 한 · 진</b> · <b>S = 빈 칸 수</b> · <b>모니터 = 은행원 = synchronized</b></div></div>
+
+    <div class="check" data-id="k8" data-answer="2"><div class="lbl">바로 확인</div>
+      <div class="q">init(2)인 세마포어에 T1, T2, T3가 차례로 wait()를 호출했다. T3는?</div>
+      <div class="opts">
+        <button class="o">진입한다 (S = −1)</button>
+        <button class="o">진입한다 (S = 0)</button>
+        <button class="o">pause()로 대기한다 (S = 0)</button></div>
+      <div class="fb">T1 진입(S = 1), T2 진입(S = 0), T3는 S가 0이라 <b>pause()</b>. 누가 post()하면 S = 1이 되고 wake_up()으로 T3가 깨어나 진입해요.</div></div>
+
+    <div class="next"><label><input type="checkbox" data-done="c8">이해했어요</label><a href="#review">복습하러 가기 →</a></div>
   </section>
 
   <!-- 복습 -->
@@ -951,12 +994,15 @@ if (pid == 0) {
       <div class="grp"><h4>⑥ 5장 CPU 스케줄링 <span class="ex-t">★ 계산</span></h4><ul>
         <li>실행 중인 프로세스의 CPU를 빼앗을 수 있으면 <span class="kw">선점형</span>, 끝날 때까지 못 빼앗으면 <span class="kw">비선점형</span>이에요. 시스템 효율을 위해 I/O 집중 프로세스에 우선순위를 더 줘요.</li>
         <li>대기 시간은 시작 시각 − 도착 시각이고, 평균 대기 시간은 그 합을 프로세스 수로 나눠요. 도착 순서대로 처리하는 <span class="kw">FCFS</span>는 긴 작업 뒤에서 짧은 작업이 오래 기다리는 <span class="kw">콘보이 효과</span>가 약점이에요.</li></ul></div>
+      <div class="grp"><h4>⑦ 6장 임계구역과 동기화 <span class="ex-t">★ 3조건 · 세마포어</span></h4><ul>
+        <li>둘 이상의 스레드가 같은 공유 자원에 동시에 접근해 결과를 예측할 수 없는 상황이 <span class="kw">경쟁 상태</span>, 동시에 접근하면 안 되는 공유 영역이 <span class="kw">임계구역</span>이에요. 해결 조건은 <span class="kw">상호 배제</span> · 한정 대기 · 진행의 융통성이고, 잠금 1개 · 2개 · 번갈아 코드는 차례로 이 셋을 하나씩 어겨요.</li>
+        <li>검사와 잠금을 하드웨어로 원자적으로 묶는 게 <span class="kw">검사와 지정</span>, 자원 1개용이 뮤텍스, S(사용 가능한 자원 수)와 wait · post로 여러 자원을 관리하는 게 <span class="kw">세마포어</span>, 동기화를 자동으로 처리하는 게 <span class="kw">모니터</span>(synchronized)예요. 높은 우선순위가 낮은 우선순위 때문에 늦어지는 우선순위 역전은 <span class="kw">우선순위 상속</span>으로 해결해요.</li></ul></div>
       <div class="btns"><button class="btn" type="button" data-note="hide">키워드 가리기</button><button class="btn" type="button" data-note="show">모두 보기</button></div>
     </div>
 
     <h3 class="rv-h">빈칸 채우기 <small>눌러서 정답 확인</small></h3>
     <div class="box cloze-box">
-      <p>사용자가 자발적으로 커널 모드에 들어가는 유일한 방법은 <span class="cloze">시스템 콜</span>이다. 폰노이만 구조에서 모든 프로그램은 <span class="cloze">메모리</span>에 올라와야만 실행된다. 다음에 실행할 명령어의 위치는 <span class="cloze">PC</span>가, 메모리에서 읽을 주소는 <span class="cloze">MAR</span>가 가진다. 준비 상태의 프로세스에 CPU를 주는 것을 <span class="cloze">디스패치</span>라 하고, 실행 중인 프로세스의 정보를 PCB에 저장하고 다음 것으로 바꾸는 것을 <span class="cloze">문맥 교환</span>이라 한다. fork는 자식에게 <span class="cloze">0</span>을 반환하며, 코드를 바꿔치기하는 시스템 콜은 <span class="cloze">exec</span>이다. 실행 중인 프로세스의 CPU를 빼앗을 수 있는 스케줄링은 <span class="cloze">선점형</span>이고, FCFS에서 긴 작업 때문에 짧은 작업이 오래 기다리는 현상은 <span class="cloze">콘보이 효과</span>다.</p>
+      <p>사용자가 자발적으로 커널 모드에 들어가는 유일한 방법은 <span class="cloze">시스템 콜</span>이다. 폰노이만 구조에서 모든 프로그램은 <span class="cloze">메모리</span>에 올라와야만 실행된다. 다음에 실행할 명령어의 위치는 <span class="cloze">PC</span>가, 메모리에서 읽을 주소는 <span class="cloze">MAR</span>가 가진다. 준비 상태의 프로세스에 CPU를 주는 것을 <span class="cloze">디스패치</span>라 하고, 실행 중인 프로세스의 정보를 PCB에 저장하고 다음 것으로 바꾸는 것을 <span class="cloze">문맥 교환</span>이라 한다. fork는 자식에게 <span class="cloze">0</span>을 반환하며, 코드를 바꿔치기하는 시스템 콜은 <span class="cloze">exec</span>이다. 실행 중인 프로세스의 CPU를 빼앗을 수 있는 스케줄링은 <span class="cloze">선점형</span>이고, FCFS에서 긴 작업 때문에 짧은 작업이 오래 기다리는 현상은 <span class="cloze">콘보이 효과</span>다. 둘 이상의 스레드가 동시에 접근해서는 안 되는 공유 영역은 <span class="cloze">임계구역</span>이고, 세마포어의 S는 현재 <span class="cloze">사용할 수 있는 자원의 수</span>를 나타낸다.</p>
       <div class="btns"><button class="btn" type="button" data-cloze="open">모두 보기</button><button class="btn" type="button" data-cloze="close">모두 가리기</button></div>
     </div>
 
@@ -979,6 +1025,9 @@ if (pid == 0) {
         <div class="fc-item"><div class="q">멀티스레드 장점 4가지는?</div><div class="a">자원 공유, 문맥 교환이 효율적, 응답 속도 향상, 적응성 향상.</div></div>
         <div class="fc-item"><div class="q">동기화 통신과 비동기화 통신은?</div><div class="a">비동기 = 받는 쪽이 계속 확인. 동기 = 도착하면 알려 줌.</div></div>
         <div class="fc-item"><div class="q">선점형과 비선점형은?</div><div class="a">선점형 = CPU를 뺏을 수 있음(시분할). 비선점형 = 끝날 때까지 못 뺏음(일괄 작업).</div></div>
+        <div class="fc-item"><div class="q">임계구역 해결 조건 3개는?</div><div class="a">상호 배제(한 명만), 한정 대기(무한 대기 금지), 진행의 융통성(다른 스레드의 진행을 방해하면 안 됨).</div></div>
+        <div class="fc-item"><div class="q">세마포어 wait()와 post()의 내부 코드는?</div><div class="a">wait(): if S &lt;= 0 then pause(); S = S − 1; · post(): S = S + 1; wake_up(); (S = 사용 가능한 자원 수)</div></div>
+        <div class="fc-item"><div class="q">모니터란?</div><div class="a">임계구역 동기화를 자동으로 처리하는 고수준 동기화 도구. 자바 synchronized(lock) { }.</div></div>
       </div>
       <ol class="fc-print"></ol>
     </div>
@@ -1033,6 +1082,18 @@ if (pid == 0) {
         <label class="opt"><input type="radio" name="q8" value="2">5.75</label>
         <label class="opt"><input type="radio" name="q8" value="3">4.75</label>
         <div class="explain">간트 차트: P1 0~5, P2 5~8, P3 8~16, P4 16~22. 대기: 0, 5 − 1 = 4, 8 − 2 = 6, 16 − 3 = 13. (0 + 4 + 6 + 13) ÷ 4 = 23 ÷ 4 = 5.75.</div></div>
+      <div class="q" data-answer="1"><p class="qt"><b>Q9</b>T1은 while(lock == 2), T2는 while(lock == 1)로 기다리고 나올 때 상대 번호를 lock에 넣는다. 이 코드가 위반하는 조건은?</p>
+        <label class="opt"><input type="radio" name="q9" value="0">상호 배제</label>
+        <label class="opt"><input type="radio" name="q9" value="1">진행의 융통성</label>
+        <label class="opt"><input type="radio" name="q9" value="2">한정 대기</label>
+        <label class="opt"><input type="radio" name="q9" value="3">위반 없음</label>
+        <div class="explain">반드시 번갈아 들어가야 해서 혼자 연달아 들어갈 수 없어요 = 진행의 융통성 위반(경직된 동기화). 상호 배제와 한정 대기는 지켜요.</div></div>
+      <div class="q" data-answer="3"><p class="qt"><b>Q10</b>세마포어를 잘못 사용하는 문제를 막기 위해, 동기화를 자동으로 처리하는 고수준 동기화 도구는?</p>
+        <label class="opt"><input type="radio" name="q10" value="0">뮤텍스</label>
+        <label class="opt"><input type="radio" name="q10" value="1">검사와 지정</label>
+        <label class="opt"><input type="radio" name="q10" value="2">이진 세마포어</label>
+        <label class="opt"><input type="radio" name="q10" value="3">모니터</label>
+        <div class="explain">모니터는 스레드가 직접 wait/post를 쓰지 않고 모니터를 통해서만 임계구역에 접근하게 해요. 자바의 synchronized.</div></div>
       <div class="quiz-foot"><button class="btn pri" type="submit">채점하기</button><button class="btn" type="button" data-quiz-reset>다시 풀기</button><span data-quiz-score aria-live="polite"></span></div>
     </form>
 
@@ -1054,6 +1115,7 @@ if (pid == 0) {
         <li>멀티스레딩 모델 (10/7 "나중에 읽어 보시라")</li>
         <li>파이프·소켓·클라이언트-서버 코드 (10/12 "중간고사 전엔 지나가겠다")</li>
         <li>스케줄링 3단계 중 고수준·중간 수준, 스케줄링의 목표 (10/12 "시험 문제 내지 않아요")</li>
+        <li>6장 동기화 코드 사례(C 경쟁 상태 · 뮤텍스 · 세마포어 코드, 자바 모니터 전체 코드 259~265쪽) (10/19 "궁금하시면 보시면 됩니다")</li>
       </ul>
       <h4>녹음이 없는 부분</h4>
       <p>9/21과 9/28 사이(교재 85~99쪽 무렵, 버퍼·병렬 처리 등)는 녹음 파일이 없어서 이 페이지에 넣지 않았어요. 9/28 첫머리 버퍼 마무리는 9/28 페이지 맨 아래에 있어요.</p>
@@ -1061,7 +1123,7 @@ if (pid == 0) {
   </section>
 </main>
 
-<footer>운영체제 · 중간고사 압축본 · 1장 ~ 5장 · 진행률은 이 브라우저에만 저장됩니다.</footer>
+<footer>운영체제 · 중간고사 압축본 · 1장 ~ 6장 · 진행률은 이 브라우저에만 저장됩니다.</footer>
 <script>
 /* study-html v3 공통 스크립트 */
 (function () {
